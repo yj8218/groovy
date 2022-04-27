@@ -64,7 +64,7 @@ public class GroovyAOP {
 			} catch (ServletException | IOException e) {
 				e.printStackTrace();
 			}
-	
+			
 		}
 		
 	}//end of public void loginCheck(JoinPoint joinpoint) 
