@@ -125,7 +125,7 @@
    <h1 align="center">로그인</h1>
        <form name="loginFrm">
          <div id = "IdPasswd">
-            <input type="text" id="loginUserid" class="LOGIN" name="userid" size="30" placeholder="아이디" ><br><br>
+            <input type="text" id="loginUserid" class="LOGIN" name="userid" size="30" placeholder="사원번호" ><br><br>
          
             <input type="password" id="loginPwd" class="LOGIN" name="pwd" size="30" placeholder="비밀번호"><br><br>
          </div>

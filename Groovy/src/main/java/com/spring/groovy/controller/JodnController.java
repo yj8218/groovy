@@ -24,14 +24,6 @@ public class JodnController {
 	}//end of public void getCurrentURL(HttpServletRequest request)
 	
 	////////////////////////////////////////////////////////////////////////
-	
-	@RequestMapping(value="/login.groovy")
-	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
-		
-		mav.setViewName("login");
-		
-		return mav;
-	}
-	
+
 	
 }//end of public class JodnController
