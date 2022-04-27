@@ -5,6 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.service.InterJodnService;
@@ -22,6 +24,14 @@ public class JodnController {
 	}//end of public void getCurrentURL(HttpServletRequest request)
 	
 	////////////////////////////////////////////////////////////////////////
+	
+	@RequestMapping(value="/login.groovy")
+	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
+		
+		mav.setViewName("login");
+		
+		return mav;
+	}
 	
 	
 }//end of public class JodnController
