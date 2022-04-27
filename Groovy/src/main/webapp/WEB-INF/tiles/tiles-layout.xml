@@ -12,6 +12,7 @@
 	<definition name="layout-tiles1"  template="/WEB-INF/tiles/layout/layout-tiles1.jsp"> 
 		<put-attribute name="header"  value="/WEB-INF/tiles/tile1/header.jsp" />
 		<put-attribute name="content" value="" />
+		<put-attribute name="sideinfo"  value="/WEB-INF/tiles/tile1/sideinfo.jsp" />
 		<!-- <put-attribute name="footer"  value="/WEB-INF/tiles/tile1/footer.jsp" /> -->
 	</definition>
 	
@@ -31,7 +32,7 @@
 		<put-attribute name="header"  value="/WEB-INF/tiles/tile2/header.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="sideinfo"  value="/WEB-INF/tiles/tile2/sideinfo.jsp" />
-		<put-attribute name="footer"  value="/WEB-INF/tiles/tile2/footer.jsp" />
+		<!-- <put-attribute name="footer"  value="/WEB-INF/tiles/tile2/footer.jsp" /> -->
 	</definition>
 	
 	<definition name="*.tiles2" extends="layout-tiles2">
