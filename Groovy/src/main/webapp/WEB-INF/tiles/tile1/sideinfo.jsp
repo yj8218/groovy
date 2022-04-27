@@ -187,7 +187,7 @@ form.main-search{
  
 <!-- 사이드바 시작 -->
 <div class="sidenav" style="background-color:#2c2a34; ">
-	<div  align="center" class="mainlogo borderline" style=" color:white;  border-bottom: solid 0.8px #595959; "><a href="#"><img src="<%= ctxPath%>/resources/images/common/logo.png"  alt="로고"  /></a></div>
+	<div  align="center" class="mainlogo borderline" style=" color:white;  border-bottom: solid 0.8px #595959; "><a href="#"><img src="<%= ctxPath%>/resources/images/common/로고그루비.png"  alt="로고"  /></a></div>
 	<div style="margin: 15px 25.5px;">
   		<div class="btn_newpjt" ><i class="fas fa-expand"></i>새 프로젝트</div>
   	</div>
