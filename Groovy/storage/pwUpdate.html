@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>비밀번호 변경</title>
+	
+	<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/product/style_header_footer.css" />
+	
+	<script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
+	<script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> 
+	
+	<script type="text/javascript">	
+		$(document).ready(function(){
+			
+			
+		});
+	</script>
+	
+	<style type="text/css">
+	div.container {
+		width: 100%;
+		margin: 0 auto;
+		
+	}
+	
+	form[name="pwFindFrm"] {
+		text-align: center;
+		width: 500px;
+		margin: 20px auto;
+	}
+	
+	input.requiredInfo {
+		width: 486px;
+	    height: 52px;
+	    background: #fff;
+	    border: 1px solid #ddd;
+	    -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    box-sizing: border-box;
+	    -webkit-border-radius: 8px;
+	    border-radius: 8px;
+	    padding-left: 20px;
+	    font-size: 16px;
+	}
+	
+	
+	
+	button#pwUpdate {
+		display: block;
+	    color: #fff;
+	    text-align: center;
+	    background: #623ad6;
+	    line-height: 52px;
+	    height: 52px;
+	    width: 100%;
+	    -webkit-border-radius: 8px;
+	    border-radius: 8px;
+	    margin-top: 20px;
+	    font-weight: 486px;
+	    font-size: 16px;
+	}	
+	
+	button#pwUpdate:hover {
+		font-weight: bold;
+		filter: brightness(90%);
+		cursor: pointer;
+	}
+	
+	img.logo {
+		height: 300px;
+		width: 300px;
+	}
+	
+	div.logo {
+		text-align: center;
+	}
+	
+	</style>
+</head>
+<body>
+<div class="container">
+   <div class="logo">
+       <img class="logo" src="../images/logo.png" />
+   </div>
+   <h1 align="center">비밀번호 재설정</h1>
+   <div align="center">비밀번호는 영문, 숫자 포함 6자리 이상이어야 합니다.</div>
+       
+      <form name="pwFindFrm">
+         <div id = "IdPasswd">
+	         <input type="password" class="requiredInfo" id="pwd" name="pwd" size="20" maxlength="20" required placeholder="비밀번호는 영문, 숫자 포함 6자리 이상이어야 합니다."/>
+	         <br><br>
+	         <input type="password" class="requiredInfo" id="pwdCheck" size="20" maxlength="20" required placeholder="비밀번호 재입력"/>
+	     </div>
+         <div id = "loginbutton">
+            <button id="pwUpdate">비밀번호 변경 하기</button>
+         </div>
+      </form>
+      
+</div>
+</body>
+</html>
