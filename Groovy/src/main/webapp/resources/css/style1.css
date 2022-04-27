@@ -106,7 +106,7 @@ ul.scroll > li a{
    
   }
   
-  div.header_side ul{
+  div.header ul, div.sidenav ul{
   	padding: 0;
   }
  
