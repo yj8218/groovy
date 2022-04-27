@@ -27,6 +27,14 @@ public class LeejhController {
 	
 	////////////////////////////////////////////////////////////////////////
 	
+	@RequestMapping(value="/login.groovy")
+	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
+		
+		mav.setViewName("login");
+		
+		return mav;
+	}
+	
 	
 	
 }//end of public class LeejhController
