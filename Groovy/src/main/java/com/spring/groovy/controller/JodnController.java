@@ -25,5 +25,12 @@ public class JodnController {
 	
 	////////////////////////////////////////////////////////////////////////
 
+	@RequestMapping(value="/approval.groovy")
+	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
+		
+		mav.setViewName("board/approval.tiles1");
+		
+		return mav;
+	}
 	
 }//end of public class JodnController
