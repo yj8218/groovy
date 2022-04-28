@@ -68,4 +68,7 @@ local.properties
 # Spring Boot Tooling
 .sts4-cache/
 
+### 20220428 ###
+/Board/target/m2e-wtp/web-resources/META-INF/maven/com.spring/board/pom.properties
+/Board/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
