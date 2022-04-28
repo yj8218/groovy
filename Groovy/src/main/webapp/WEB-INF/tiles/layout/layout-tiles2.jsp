@@ -40,21 +40,21 @@
 </head>
 <body>
 	<div id="mycontainer">
-		<div id="myheader">
+		<%-- <div id="myheader">
 			<tiles:insertAttribute name="header" />
-		</div>
+		</div> --%>
 		
 		<div id="mycontent">
 			<tiles:insertAttribute name="content" />
 		</div>
 		
-		<div id="mysideinfo">
+		<%-- <div id="mysideinfo">
 			<tiles:insertAttribute name="sideinfo" />
-		</div>
+		</div> --%>
 		
-		<div id="myfooter">
+	<%-- 	<div id="myfooter">
 			<tiles:insertAttribute name="footer" />
-		</div>
+		</div> --%>
 	</div>
 </body>
 </html>    

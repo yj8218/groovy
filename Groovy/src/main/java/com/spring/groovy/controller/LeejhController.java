@@ -34,7 +34,7 @@ public class LeejhController {
 	@RequestMapping(value="/login.groovy")
 	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
 		
-		mav.setViewName("login/loginform.tiles1");
+		mav.setViewName("login/loginform.tiles2");
 		
 		return mav;
 	}
