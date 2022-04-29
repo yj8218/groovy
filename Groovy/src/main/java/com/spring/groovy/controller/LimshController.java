@@ -5,6 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.service.InterLimshService;
@@ -23,5 +25,12 @@ public class LimshController {
 	
 	////////////////////////////////////////////////////////////////////////
 	
+	@RequestMapping(value="/index.groovy")
+	public ModelAndView showIndex(ModelAndView mav) {
+		
+		mav.setViewName("index.tiles1");
+		
+		return mav;
+	}
 	
 }//end of public class LimshController
