@@ -5,5 +5,36 @@
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="yuhr">
-
+	
+	<!-- // 부서명을 가져오기 위함  -->
+	<select id="getDepts" resultType="com.spring.groovy.model.DepartmentVO">
+		select PK_DEPTNUM, DEPTNAMEKOR
+		from TBL_DEPARTMENT
+		order by pk_deptnum
+	</select>
+	
+	<!-- // 직위명을 가져오기 위함  -->
+	<select id="getSpots" resultType="com.spring.groovy.model.SpotVO">
+		select PK_SPOTNUM, SPOTNAMEKOR
+		from TBL_SPOT
+		order by PK_SPOTNUM
+	</select>
+	
+	<select id="empnumCheck" parameterType="HashMap" resultType="String">
+		select pk_empnum
+		from tbl_employee
+		where pk_empnum = #{pk_empnum}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>
