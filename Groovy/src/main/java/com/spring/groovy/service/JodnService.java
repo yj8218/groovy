@@ -20,8 +20,8 @@ public class JodnService implements InterJodnService {
 	
 	// 결재 종류 가져오기
 	@Override
-	public List<ApprovalVO> approval() {
-		List<ApprovalVO> approvalList = dao.approval();
+	public List<ApprovalVO> approvalView() {
+		List<ApprovalVO> approvalList = dao.approvalView();
 		return approvalList;
 	}
 

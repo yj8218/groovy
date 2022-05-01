@@ -98,6 +98,10 @@
 	div#body {
 		text-align: center;
 	}
+	
+	div.employeeList{
+		
+	}
 
 </style>
 	
@@ -158,7 +162,7 @@ $(document).ready(function(){
 	
 		<div id="employeeList">
 			<div>회원목록</div>
-			<div id="employeeList" ></div>
+			<div class="employeeList" ></div>
 		</div>
 	
 		<div id="inputEmployee">
