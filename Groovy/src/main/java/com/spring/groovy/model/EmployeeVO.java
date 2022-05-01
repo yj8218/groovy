@@ -1,5 +1,7 @@
 package com.spring.groovy.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class EmployeeVO {
 
 	private String pk_empnum;         // 사원번호
@@ -23,19 +25,29 @@ public class EmployeeVO {
 	private String emppicturename;    // 직원사진
 	private int salary;               // 월급
 	private String lastpwdchangedate; // 최근암호변경일
+	private String emppicturefilename;// 직원사진 파일명
 	
-	
+	private MultipartFile attach;
+	/* form 태그에서 type="file" 인 파일을 받아서 저장되는 필드이다. 
+	      진짜파일 ==> WAS(톰캣) 디스크에 저장됨.
+	           조심할것은 MultipartFile attach 는 오라클 데이터베이스 tbl_board 테이블의 컬럼이 아니다.   
+	    /Board/src/main/webapp/WEB-INF/views/tiles1/board/add.jsp 파일에서 input type="file" 인 name 의 이름(attach)과 
+	      동일해야만 파일첨부가 가능해진다.!!!!
+	 */
 	private boolean requirePwdChange = false;
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false
-	
+		
 	//Source - Generate Constructor using Fields
+	
+	private String deptnamekor; // 부서명
+	
 	public EmployeeVO() {}
 	
 	public EmployeeVO(String pk_empnum, String pwd, String name, String address, String detailaddress,
 			String extraaddress, String postcode, String phone, String email, String birthday, String gender,
 			String registerday, String startday, int resignationstatus, String resignationday, int fk_vstatus,
-			int fk_deptnum, int fk_spotnum, String emppicturename, int salary, String lastpwdchangedate) {
+			int fk_deptnum, int fk_spotnum, String emppicturename, int salary, String deptnamekor, String lastpwdchangedate) {
 		
 		this.pk_empnum = pk_empnum;
 		this.pwd = pwd;
@@ -57,6 +69,7 @@ public class EmployeeVO {
 		this.fk_spotnum = fk_spotnum;
 		this.emppicturename = emppicturename;
 		this.salary = salary;
+		this.deptnamekor = deptnamekor;
 		this.lastpwdchangedate = lastpwdchangedate;
 	}
 
@@ -66,6 +79,22 @@ public class EmployeeVO {
 
 	public void setLastpwdchangedate(String lastpwdchangedate) {
 		this.lastpwdchangedate = lastpwdchangedate;
+	}
+
+	public boolean isRequirePwdChange() {
+		return requirePwdChange;
+	}
+
+	public void setRequirePwdChange(boolean requirePwdChange) {
+		this.requirePwdChange = requirePwdChange;
+	}
+
+	public String getDeptnamekor() {
+		return deptnamekor;
+	}
+
+	public void setDeptnamekor(String deptnamekor) {
+		this.deptnamekor = deptnamekor;
 	}
 
 	public String getPk_empnum() {
@@ -208,15 +237,30 @@ public class EmployeeVO {
 		this.salary = salary;
 	}
 
-	public boolean isRequirePwdChange() {
-		return requirePwdChange;
+	public String getEmppicturefilename() {
+		return emppicturefilename;
 	}
 
-	public void setRequirePwdChange(boolean requirePwdChange) {
-		this.requirePwdChange = requirePwdChange;
+	public void setEmppicturefilename(String emppicturefilename) {
+		this.emppicturefilename = emppicturefilename;
 	}
 
+	public MultipartFile getAttach() {
+		return attach;
+	}
 
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
+	}
+
+	public String getdeptnamekor() {
+		return deptnamekor;
+	}
+
+	public void setdeptnamekor(String deptnamekor) {
+		this.deptnamekor = deptnamekor;
+	}
+	
 	
 	
 }
