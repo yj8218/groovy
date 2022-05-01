@@ -14,8 +14,8 @@ public class YuhrService implements InterYuhrService {
 	
 	@Autowired
 	private InterYuhrDAO dao;
-	@Autowired
-	private AES256 aes;
+	
+	
 	/////////////////////////////////////////////////////
 	
 	// 부서정보를 가져오기 위함
