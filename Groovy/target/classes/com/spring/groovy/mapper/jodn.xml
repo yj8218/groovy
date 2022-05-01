@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #29. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="jodn">
+
+	<!-- 전자결재서류 신청 보여주는 것 -->
+	<select id="approvalView" resultType="com.spring.groovy.model.ApprovalVO">
+		select apl_no, apl_name, apl_img, apl_categoryno, apl_categoryname 
+		from TBL_APPROVAL A
+		join TBL_APP_CATEGORY B
+		on PK_APL_CATEGORYNO = APL_CATEGORYNO
+		order by apl_no
+	</select>
+
+	<!-- 회계부서 직원 보여주기 -->
+	<select id="getAccountEmployee" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, deptnamekor ,name, fk_spotnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_deptnum = 1
+		order by fk_spotnum desc
+	</select>
+	
+	<!-- 영업부서 직원 보여주기 -->
+	<select id="getSalesEmployee" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, deptnamekor ,name, fk_spotnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_deptnum = 2
+		order by fk_spotnum desc
+	</select>
+	
+	<!-- 인사부서 직원 보여주기 -->
+	<select id="getPersonnelEmployee" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, deptnamekor ,name, fk_spotnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_deptnum = 3
+		order by fk_spotnum desc
+	</select>
+	
+	<!-- 총무부서 직원 보여주기 -->
+	<select id="getManagerEmployee" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, deptnamekor ,name, fk_spotnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_deptnum = 4
+		order by fk_spotnum desc
+	</select>
+
+</mapper>
