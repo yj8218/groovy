@@ -13,12 +13,24 @@
 		SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 			 extraaddress, postcode, phone,  email,  birthday, gender,
 			 registerday, startday, resignationstatus,  nvl(resignationday,'2099-12-31'),  fk_vstatus,
-			  fk_deptnum,  fk_spotnum,  emppicturename,  salary
+			  fk_deptnum,  fk_spotnum,  emppicturename,  salary, lastpwdchangedate
 		from tbl_employee
 		where pk_empnum = #{pk_empnum} and pwd= #{pwd}
 	</select>
 	
+	<!-- << 로그인 기록 카운트 >> -->
 	
+	<!-- === 해당하는 이메일과 사원번호에 존재하는 사원 정보 찾기(select) === -->
+	<select id="sendCodeEmail" parameterType="HashMap" resultType="String">
+		select pk_empnum
+		from tbl_employee
+		where pk_empnum = #{pk_empnum} and  email = #{email} 
+	</select>
 	
+	<!-- === 새비밀번호 업데이트 메서드(update) === -->
+	<update id="newPwdUpdate" parameterType="HashMap">
+		update tbl_employee set pwd = #{newPassword}
+		where pk_empnum = #{pk_empnum} and  email = #{email} 
+	</update>
 
 </mapper>

@@ -80,7 +80,7 @@
 
 
 div.nav_right  a{
-	color:white !important;
+	color:white ;
 }
 
 .icons-search:before {

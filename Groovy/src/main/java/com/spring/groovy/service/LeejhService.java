@@ -19,12 +19,33 @@ public class LeejhService implements InterLeejhService {
 	/////////////////////////////////////////////////////
 	
 	
-	//  << 로그인 처리하기 >>
+	//   === 로그인 처리하기  ===
 	@Override
 	public EmployeeVO getLoginEmployee(Map<String, String> paraMap) {
 		EmployeeVO loginuser = dao.getLoginEmployee(paraMap);
 
 		return loginuser;
+	}
+	
+	//  === 로그인 기록 카운트  ===
+	@Override
+	public int getLoginHistory(String pk_empnum) {
+		int n = dao.getLoginHistory(pk_empnum);
+		return n;
+	}
+	
+	// === 비밀번호 찾기 인증번호 발송 메서드 === //
+	@Override
+	public boolean sendCodeEmail(Map<String, String> paraMap) {
+		boolean isExists = dao.sendCodeEmail(paraMap);
+		return isExists;
+	}
+
+	// === 새비밀번호 업데이트 메서드(update) === //
+	@Override
+	public int newPwdUpdate(Map<String, String> paraMap) {
+		int n = dao.newPwdUpdate(paraMap);
+		return n;
 	}
 
 

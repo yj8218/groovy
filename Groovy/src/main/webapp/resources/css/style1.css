@@ -25,7 +25,7 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
   position: fixed;
   z-index: 1;
   top: 0;
-  left: 0;
+  left: 0;  
   background-color: #111;
   overflow-x: hidden;
   padding-top: 45px;
@@ -151,7 +151,7 @@ ul.scroll > li a{
 }
 
 
-div.nav_right a{
+div.nav_right > a{
 	padding: 0 5px;
 	
 }
