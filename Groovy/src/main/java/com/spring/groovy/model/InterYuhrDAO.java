@@ -14,5 +14,8 @@ public interface InterYuhrDAO {
 	// 사원번호 입력칸 유효성검사(중복검사, ajax 로 처리)
 	String empnumCheck(Map<String, String> paraMap);
 
+	// 사원테이블에 사원정보 insert
+	int addEmp(EmployeeVO empVo);
+
 
 }//end of public interface InterYuhrDAO

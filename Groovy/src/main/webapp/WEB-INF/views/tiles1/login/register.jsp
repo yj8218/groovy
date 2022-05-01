@@ -177,15 +177,15 @@
 		  
 			b_flagEmpnumuplicateClick = true;
 			
-			const pk_empnum = $("input#deptnumOfEmpnum").val() + $("input#empnum").val() ; // 입력된 전체 사원번호
+			const pk_empnum = $("input#deptnumOfEmpnum").val() + $("input#pk_empnum").val() ; // 입력된 전체 사원번호
 			
 			if($("input#deptnumOfEmpnum").val() == ""){ // 부서선택을 안해서 부서번호칸에 아무것도 안들어있을때
 				$("span#empnumcheckResult").html("부서를 먼저 선택하세요.").css("color","orange");
 			}
 			else{ // 부서 선택해서 부서번호칸에 값이 들어오고나서 사원번호 중복검사
-				if(!Number($("input#empnum").val())){ // 사원번호칸에 문자열이 들어왔을 때
+				if(!Number($("input#pk_empnum").val())){ // 사원번호칸에 문자열이 들어왔을 때
 					$("span#empnumcheckResult").html("사원번호는 숫자만 입력해주세요.").css("color","orange");
-					$("input#empnum").val("");
+					$("input#pk_empnum").val("");
 				}
 				else{// 사원번호칸에 숫자를 제대로 입력했을 때
 					// (+중복검사) ajax
@@ -196,18 +196,19 @@
 		        	    	  
 		        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
 		        	    	  
-		        	    	  let s_deptnum = $("input#empnum").val();
+		        	    	  let s_deptnum = $("input#pk_empnum").val();
 		        	    	  const dash = s_deptnum.indexOf('-'); // 없으면 -1
 		        	    	  s_deptnum = s_deptnum.substring(0,dash);
 		        	    	  
 		       	    	      // 입력된 전체 사원번호 -> true 면 중복된거고, false 면 중복안된것
 		           	    	  if(json.isEmpnumDuplicated) { // 중복인경우
-		           	    		  $("span#empnumcheckResult").html($("input#empnum").val() +" 은 이미 사용중인 사원번호입니다").css("color","orange");
-		           	    		  $("input#empnum").val("");
+		           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 이미 사용중인 사원번호입니다").css("color","orange");
+		           	    		  $("input#pk_empnum").val("");
 		           	    	  }
 		           	    	  else { // 중복아닌경우
-		           	    		  $("span#empnumcheckResult").html($("input#empnum").val() +" 은 사용가능한 사원번호입니다").css("color","green");
+		           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 사용가능한 사원번호입니다").css("color","green");
 		           	    	  	  $("input#pwd").val(pk_empnum);	
+		           	    	  	  $("input#total_pk_empnum").val(pk_empnum);
 		           	    	  }	  
 		        	      },
 		        	      error:function(request, status, error){
@@ -220,17 +221,20 @@
 		
 		
 	  	// 8. 월급 입력칸 유효성검사
-		$("input#salary").bind("keyup", function(){
+		$("input#s_salary").bind("keyup", function(){
 			
 			const s_inputVal = $(this).val();
 			const n_inputVal = Number(s_inputVal.replaceAll(',', ''));
 			
 			if(isNaN(n_inputVal)) {//NaN인지 판별
-				$("input#salary").val("");
+				$("input#s_salary").val("");
 			}
 			else{
 				const formatValue = n_inputVal.toLocaleString();
-				$("input#salary").val(formatValue);
+				$("input#s_salary").val(formatValue);
+				
+				// Number 타입의 n_salary 를 submit() 하기 위함 
+				$("input#n_salary").val(Number(formatValue.replaceAll(',', '')) );
 				
 			}
 			
@@ -274,14 +278,14 @@
                 }
             
             } else {
-                document.getElementById("extraAddress").value = '';
+                document.getElementById("detailaddress").value = '';
             }
 
             // 우편번호와 주소 정보를 해당 필드에 넣는다.
             document.getElementById('postcode').value = data.zonecode;
             document.getElementById("address").value = addr;
             // 커서를 상세주소 필드로 이동한다.
-            document.getElementById("detailAddress").focus();
+            document.getElementById("detailaddress").focus();
           	}
 	      }).open();
 	  		
@@ -322,8 +326,9 @@
       ///////////////////////////////////////////////////////////////////
 		
       	// 사원번호 값이 변경되면, 등록하기 버튼 클릭시 "사원번호중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
-		$("input#empnum").bind("change", function(){
+		$("input#pk_empnum").bind("change", function(){
 			b_flagEmpnumuplicateClick = false;
+			$("input#total_pk_empnum").val(""); // 제출할 사원번호값도 초기화한다.
 		});
       
       
@@ -372,7 +377,7 @@
 			// 제출요청
 			const frm = document.registerFrm;
 			frm.action = "<%= ctxPath%>/registerEnd.groovy"; 
-			frm.method = "post";
+			frm.method = "POST";
 			frm.submit();
 		
 		});	// end of $("input#btnRegister").click(function(){
@@ -387,12 +392,11 @@
 <div class="container">
 <%--
 EMPNUM          v     NUMBER(10)    
-PK_USERID       x     VARCHAR2(20)  
 PWD             v     VARCHAR2(200) 
 NAME            v     VARCHAR2(20)  
 ADDRESS              VARCHAR2(100) 
-DETAILADDRESS        VARCHAR2(100) 
-EXTRAADDRESS         VARCHAR2(100) 
+detailaddress        VARCHAR2(100) 
+detailaddress         VARCHAR2(100) 
 POSTCODE             VARCHAR2(20)  
 PHONE           v     VARCHAR2(200) 
 EMAIL           v     VARCHAR2(200) 
@@ -413,7 +417,7 @@ SALARY          v     NUMBER(20) 	월급
    
    <h1 align="center">사원 등록</h1>
        <form name="registerFrm"
-	  		 enctype="multipart/form-data">
+	  		enctype="multipart/form-data" >
 	  	 <%-- 1. 이름 --%>
        	 <span class="title">이름</span><br>
          <input type="text" class="requiredInfo" id="name" name="name" maxlength="20" required  placeholder="이름">
@@ -422,7 +426,7 @@ SALARY          v     NUMBER(20) 	월급
          <br><br>
          <%-- 2. 이메일 --%>
          <span class="title">이메일</span><br>
-         <input type="email" class="requiredInfo" id="email" name="email" size="20" maxlength="20" required placeholder="example@gmail.com" />
+         <input type="email" class="requiredInfo" id="email" name="email" size="20" required placeholder="example@gmail.com" />
          <span class="error">이메일 형식에 맞게 입력해주세요.</span>
             
          <br><br>
@@ -446,8 +450,9 @@ SALARY          v     NUMBER(20) 	월급
          <br><br>
          <%-- 5. 사원번호(아이디) --%>
          <span class="title">사원번호(아이디)</span><br>
-         <input type="text" class="requiredInfo" id="deptnumOfEmpnum" name="deptnumOfEmpnum" placeholder="부서를 먼저 선택하세요." maxlength="20" required readonly>
-         <input type="text" class="requiredInfo" id="empnum" name="empnum" maxlength="20" required placeholder="사원번호(아이디)">
+         <input type="text" class="requiredInfo" id="deptnumOfEmpnum" placeholder="부서를 먼저 선택하세요."  required readonly>
+         <input type="text" class="requiredInfo" id="pk_empnum"  maxlength="20" required placeholder="사원번호(아이디)">
+         <input type="hidden" class="requiredInfo" id="total_pk_empnum" name="pk_empnum" maxlength="20" required placeholder="사원번호(아이디)">
          <!-- 사원번호(아이디)중복체크 -->
 	     <img id="empnumCheck" src="<%=ctxPath%>/resources/images/common/b_id_check.gif" style="vertical-align: middle;" />
 	     <span id="empnumcheckResult"></span>
@@ -455,7 +460,7 @@ SALARY          v     NUMBER(20) 	월급
          <br><br>
          <%-- 6. 초기 비밀번호 --%>
          <span class="title">초기 비밀번호</span><br>
-         <input type="text" class="requiredInfo" id="pwd" name="pwd" size="20" maxlength="20" required placeholder="초기 비밀번호는 자동으로 설정됩니다." readonly/>
+         <input type="text" class="requiredInfo" id="pwd" name="pwd" size="20" required placeholder="초기 비밀번호는 자동으로 설정됩니다." readonly/>
          
          
          <br><br>
@@ -472,7 +477,8 @@ SALARY          v     NUMBER(20) 	월급
          <br><br>
          <%-- 8. 월급--%>
          <span class="title">월급</span><br>
-         <input type="text" class="requiredInfo" id="salary" name="salary"  required  placeholder="월급">
+         <input type="text" class="requiredInfo" id="s_salary" required  placeholder="월급">
+         <input type="hidden" class="requiredInfo" id="n_salary" name="salary"  required  placeholder="월급">
          <span class="error">월급를 입력해주세요.</span>
          
          <br><br>
@@ -485,7 +491,7 @@ SALARY          v     NUMBER(20) 	월급
          <span class="error">우편번호 형식이 아닙니다.</span>
          
          <input type="text" class="requiredInfo" id="address" name="address" maxlength="20" size="40" required placeholder="주소" /><br/>
-         <input type="text" class="requiredInfo" id="detailAddress" name="detailAddress" size="40" placeholder="상세주소" />
+         <input type="text" class="requiredInfo" id="detailaddress" name="detailaddress" size="40" placeholder="상세주소" />
          <span class="error">주소를 입력하세요</span>
 	            
          <br><br>
@@ -504,10 +510,11 @@ SALARY          v     NUMBER(20) 	월급
          <span class="title">입사일자</span><br>
          <input type="text" class="requiredInfo" id="startday" name="startday" maxlength="20" required  placeholder="이름">
          
+         
          <br><br>
-         <%-- 13. 사진--%>
+         <%-- 13. 사진 --%>
          <span class="title">사진</span><br>
-         <input type="file" class="requiredInfo" id="emppicturename" name="emppicturename" maxlength="20" required style="border:none; padding-left: 4px;">
+         <input type="file" class="requiredInfo" id="emppicturename" name="attach"  required style="border:none; padding-left: 4px;">
          
                   
          

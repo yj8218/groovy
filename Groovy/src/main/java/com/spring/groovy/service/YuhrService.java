@@ -39,6 +39,13 @@ public class YuhrService implements InterYuhrService {
 		return s_usingPk_empnum;
 	}
 
+	// 사원테이블에 사원정보 insert
+	@Override
+	public int addEmp(EmployeeVO empVo) {
+		int n = dao.addEmp(empVo);
+		return n;
+	}
+
 
 
 
