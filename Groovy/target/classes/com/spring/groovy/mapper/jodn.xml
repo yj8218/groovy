@@ -6,4 +6,12 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="jodn">
 
+	<select id="approval" resultType="com.spring.groovy.model.ApprovalVO">
+		select apl_no, apl_name, apl_img, apl_categoryno, apl_categoryname 
+		from TBL_APPROVAL A
+		join TBL_APP_CATEGORY B
+		on PK_APL_CATEGORYNO = APL_CATEGORYNO
+		order by apl_no
+	</select>
+
 </mapper>
