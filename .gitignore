@@ -95,6 +95,6 @@ hs_err_pid*
 replay_pid*
 
 ### 20220428 ###
-/Board/target/m2e-wtp/web-resources/META-INF/maven/com.spring/board/pom.properties
-/Board/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+/Groovy/target/m2e-wtp/web-resources/META-INF/maven/com.spring/board/pom.properties
+/Groovy/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
 # End of https://www.toptal.com/developers/gitignore/api/eclipse
