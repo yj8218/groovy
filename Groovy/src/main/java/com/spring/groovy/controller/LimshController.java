@@ -32,5 +32,14 @@ public class LimshController {
 		
 		return mav;
 	}
+/*	
+	@RequestMapping(value="/writeBoardModal.groovy")
+	public ModelAndView writeBoardModal(ModelAndView mav) {
+		
+		mav.setViewName("board/writeBoardModal.tiles2");
+		
+		return mav;
+	}
+*/
 	
 }//end of public class LimshController
