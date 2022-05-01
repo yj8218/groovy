@@ -1,5 +1,7 @@
 package com.spring.groovy.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class EmployeeVO {
 
 	private String pk_empnum;         // 사원번호
@@ -22,6 +24,16 @@ public class EmployeeVO {
 	private int fk_spotnum;           // 직위번호
 	private String emppicturename;    // 직원사진
 	private int salary;               // 월급
+	
+	private String emppicturefilename;// 직원사진 파일명
+	
+	private MultipartFile attach;
+	/* form 태그에서 type="file" 인 파일을 받아서 저장되는 필드이다. 
+	      진짜파일 ==> WAS(톰캣) 디스크에 저장됨.
+	           조심할것은 MultipartFile attach 는 오라클 데이터베이스 tbl_board 테이블의 컬럼이 아니다.   
+	    /Board/src/main/webapp/WEB-INF/views/tiles1/board/add.jsp 파일에서 input type="file" 인 name 의 이름(attach)과 
+	      동일해야만 파일첨부가 가능해진다.!!!!
+	 */
 	
 	//Source - Generate Constructor using Fields
 	public EmployeeVO() {}
@@ -191,6 +203,22 @@ public class EmployeeVO {
 	}
 	public void setSalary(int salary) {
 		this.salary = salary;
+	}
+
+	public String getEmppicturefilename() {
+		return emppicturefilename;
+	}
+
+	public void setEmppicturefilename(String emppicturefilename) {
+		this.emppicturefilename = emppicturefilename;
+	}
+
+	public MultipartFile getAttach() {
+		return attach;
+	}
+
+	public void setAttach(MultipartFile attach) {
+		this.attach = attach;
 	}
 	
 	
