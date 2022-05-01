@@ -16,8 +16,8 @@ public class JodnDAO implements InterJodnDAO {
 
 	// 결재 종류 가져오기
 	@Override
-	public List<ApprovalVO> approval() {
-		List<ApprovalVO> approvalList = sqlsession.selectList("jodn.approval");
+	public List<ApprovalVO> approvalView() {
+		List<ApprovalVO> approvalList = sqlsession.selectList("jodn.approvalView");
 		return approvalList;
 	}
 
