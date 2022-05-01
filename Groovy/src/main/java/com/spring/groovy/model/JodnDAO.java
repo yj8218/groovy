@@ -1,5 +1,7 @@
 package com.spring.groovy.model;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,6 +13,13 @@ public class JodnDAO implements InterJodnDAO {
 	@Resource
 	private SqlSessionTemplate sqlsession;
 	////////////////////////////////////////////////////////////
+
+	// 결재 종류 가져오기
+	@Override
+	public List<ApprovalVO> approval() {
+		List<ApprovalVO> approvalList = sqlsession.selectList("jodn.approval");
+		return approvalList;
+	}
 
 
 }//end of public class JodnDAO implements InterJodnDAO
