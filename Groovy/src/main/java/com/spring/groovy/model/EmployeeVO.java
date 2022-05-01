@@ -73,168 +73,172 @@ public class EmployeeVO {
 		this.lastpwdchangedate = lastpwdchangedate;
 	}
 
+	public String getPk_empnum() {
+		return pk_empnum;
+	}
+
+	public void setPk_empnum(String pk_empnum) {
+		this.pk_empnum = pk_empnum;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getDetailaddress() {
+		return detailaddress;
+	}
+
+	public void setDetailaddress(String detailaddress) {
+		this.detailaddress = detailaddress;
+	}
+
+	public String getExtraaddress() {
+		return extraaddress;
+	}
+
+	public void setExtraaddress(String extraaddress) {
+		this.extraaddress = extraaddress;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getRegisterday() {
+		return registerday;
+	}
+
+	public void setRegisterday(String registerday) {
+		this.registerday = registerday;
+	}
+
+	public String getStartday() {
+		return startday;
+	}
+
+	public void setStartday(String startday) {
+		this.startday = startday;
+	}
+
+	public int getResignationstatus() {
+		return resignationstatus;
+	}
+
+	public void setResignationstatus(int resignationstatus) {
+		this.resignationstatus = resignationstatus;
+	}
+
+	public String getResignationday() {
+		return resignationday;
+	}
+
+	public void setResignationday(String resignationday) {
+		this.resignationday = resignationday;
+	}
+
+	public int getFk_vstatus() {
+		return fk_vstatus;
+	}
+
+	public void setFk_vstatus(int fk_vstatus) {
+		this.fk_vstatus = fk_vstatus;
+	}
+
+	public int getFk_deptnum() {
+		return fk_deptnum;
+	}
+
+	public void setFk_deptnum(int fk_deptnum) {
+		this.fk_deptnum = fk_deptnum;
+	}
+
+	public int getFk_spotnum() {
+		return fk_spotnum;
+	}
+
+	public void setFk_spotnum(int fk_spotnum) {
+		this.fk_spotnum = fk_spotnum;
+	}
+
+	public String getEmppicturename() {
+		return emppicturename;
+	}
+
+	public void setEmppicturename(String emppicturename) {
+		this.emppicturename = emppicturename;
+	}
+
+	public int getSalary() {
+		return salary;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
 	public String getLastpwdchangedate() {
 		return lastpwdchangedate;
 	}
 
 	public void setLastpwdchangedate(String lastpwdchangedate) {
 		this.lastpwdchangedate = lastpwdchangedate;
-	}
-
-	public boolean isRequirePwdChange() {
-		return requirePwdChange;
-	}
-
-	public void setRequirePwdChange(boolean requirePwdChange) {
-		this.requirePwdChange = requirePwdChange;
-	}
-
-	public String getDeptnamekor() {
-		return deptnamekor;
-	}
-
-	public void setDeptnamekor(String deptnamekor) {
-		this.deptnamekor = deptnamekor;
-	}
-
-	public String getPk_empnum() {
-		return pk_empnum;
-	}
-	public void setPk_empnum(String pk_empnum) {
-		this.pk_empnum = pk_empnum;
-	}
-	
-	public String getPwd() {
-		return pwd;
-	}
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
-	public String getDetailaddress() {
-		return detailaddress;
-	}
-	public void setDetailaddress(String detailaddress) {
-		this.detailaddress = detailaddress;
-	}
-	
-	public String getExtraaddress() {
-		return extraaddress;
-	}
-	public void setExtraaddress(String extraaddress) {
-		this.extraaddress = extraaddress;
-	}
-	
-	public String getPostcode() {
-		return postcode;
-	}
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
-	
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getBirthday() {
-		return birthday;
-	}
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
-	
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	
-	public String getRegisterday() {
-		return registerday;
-	}
-	public void setRegisterday(String registerday) {
-		this.registerday = registerday;
-	}
-	
-	public String getStartday() {
-		return startday;
-	}
-	public void setStartday(String startday) {
-		this.startday = startday;
-	}
-	
-	public int getResignationstatus() {
-		return resignationstatus;
-	}
-	public void setResignationstatus(int resignationstatus) {
-		this.resignationstatus = resignationstatus;
-	}
-	
-	public String getResignationday() {
-		return resignationday;
-	}
-	public void setResignationday(String resignationday) {
-		this.resignationday = resignationday;
-	}
-	
-	public int getFk_vstatus() {
-		return fk_vstatus;
-	}
-	public void setFk_vstatus(int fk_vstatus) {
-		this.fk_vstatus = fk_vstatus;
-	}
-	
-	public int getFk_deptnum() {
-		return fk_deptnum;
-	}
-	public void setFk_deptnum(int fk_deptnum) {
-		this.fk_deptnum = fk_deptnum;
-	}
-	
-	public int getFk_spotnum() {
-		return fk_spotnum;
-	}
-	public void setFk_spotnum(int fk_spotnum) {
-		this.fk_spotnum = fk_spotnum;
-	}
-	
-	public String getEmppicturename() {
-		return emppicturename;
-	}
-	public void setEmppicturename(String emppicturename) {
-		this.emppicturename = emppicturename;
-	}
-	
-	public int getSalary() {
-		return salary;
-	}
-	public void setSalary(int salary) {
-		this.salary = salary;
 	}
 
 	public String getEmppicturefilename() {
@@ -253,16 +257,24 @@ public class EmployeeVO {
 		this.attach = attach;
 	}
 
-	public String getdeptnamekor() {
+	public boolean isRequirePwdChange() {
+		return requirePwdChange;
+	}
+
+	public void setRequirePwdChange(boolean requirePwdChange) {
+		this.requirePwdChange = requirePwdChange;
+	}
+
+	public String getDeptnamekor() {
 		return deptnamekor;
 	}
 
-	public void setdeptnamekor(String deptnamekor) {
+	public void setDeptnamekor(String deptnamekor) {
 		this.deptnamekor = deptnamekor;
 	}
-	
-	
-	
+
+
+
 }
 
 

@@ -88,7 +88,7 @@ public class LeejhController {
 				session.setAttribute("loginuser", loginuser);
 				// session(세션)에 로그인 되어진 사용자 정보인 loginuser 을 키이름을 "loginuser" 으로 저장시켜두는 것이다.
 				
-				
+				/*
 				int count = service.getLoginHistory(pk_empnum);
 				
 				if(count == 1) {
@@ -96,7 +96,7 @@ public class LeejhController {
 					mav.setViewName("redirect:/pwdChange.groovy");
 				}
 				else {
-					
+				*/	
 					if(loginuser.isRequirePwdChange() == true) { // 암호를 마지막으로 변경한 것이 3개월이 경과한 경우
 						
 						String message = "비밀번호를 변경하신지 3개월이 지났습니다.\n암호를 변경하시는 것을 추천합니다";
@@ -127,7 +127,7 @@ public class LeejhController {
 						
 					}
 					
-				}
+				
 				
 				
 				
