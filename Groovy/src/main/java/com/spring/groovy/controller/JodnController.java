@@ -29,13 +29,13 @@ public class JodnController {
 	////////////////////////////////////////////////////////////////////////
 
 	// 전자결재 창 띄우기
-	@RequestMapping(value="/approvalEdit.groovy")
+	@RequestMapping(value="/approvalView.groovy")
 	public ModelAndView approvalView(ModelAndView mav) {
 		
 		List<ApprovalVO> approvalList = service.approvalView();
 		
 		mav.addObject("approvalList", approvalList);
-		mav.setViewName("board/approvalEdit.tiles1");
+		mav.setViewName("board/approvalView.tiles1");
 		
 		return mav;
 	}
