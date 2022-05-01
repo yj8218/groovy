@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ==== #29. mapper 기본설정 ==== -->
@@ -46,4 +47,54 @@
 	
 	
 	
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #29. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="yuhr">
+	
+	<!-- // 부서명을 가져오기 위함  -->
+	<select id="getDepts" resultType="com.spring.groovy.model.DepartmentVO">
+		select PK_DEPTNUM, DEPTNAMEKOR
+		from TBL_DEPARTMENT
+		order by pk_deptnum
+	</select>
+	
+	<!-- // 직위명을 가져오기 위함  -->
+	<select id="getSpots" resultType="com.spring.groovy.model.SpotVO">
+		select PK_SPOTNUM, SPOTNAMEKOR
+		from TBL_SPOT
+		order by PK_SPOTNUM
+	</select>
+	
+	<select id="empnumCheck" parameterType="HashMap" resultType="String">
+		select pk_empnum
+		from tbl_employee
+		where pk_empnum = #{pk_empnum}
+	</select>
+	
+	<insert id="addEmp" parameterType="com.spring.groovy.model.EmployeeVO">
+		insert into TBL_EMPLOYEE(PK_EMPNUM, PWD, NAME, ADDRESS, DETAILADDRESS, POSTCODE, 
+								PHONE, EMAIL, BIRTHDAY, GENDER, REGISTERDAY, STARTDAY, RESIGNATIONSTATUS, 
+								RESIGNATIONDAY, FK_VSTATUS, FK_DEPTNUM, FK_SPOTNUM, EMPPICTURENAME, SALARY, 
+								LASTPWDCHANGEDATE, EMPPICTUREFILENAME)
+		values(#{pk_empnum}, #{pwd}, #{name}, #{address}, #{detailaddress}, #{postcode}, 
+			   #{phone}, #{email}, #{birthday}, #{gender}, sysdate, #{startday}, 0, 
+			   '', 0, #{fk_deptnum}, #{fk_spotnum}, #{emppicturename}, #{salary}, 
+			   sysdate, #{emppicturefilename}    )
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+>>>>>>> branch 'main' of https://github.com/yj8218/groovy.git
 </mapper>

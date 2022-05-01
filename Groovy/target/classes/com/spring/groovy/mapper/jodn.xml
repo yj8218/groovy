@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ==== #29. mapper 기본설정 ==== -->
@@ -14,4 +15,22 @@
 		order by apl_no
 	</select>
 
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==== #29. mapper 기본설정 ==== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
+<mapper namespace="jodn">
+
+	<select id="approvalView" resultType="com.spring.groovy.model.ApprovalVO">
+		select apl_no, apl_name, apl_img, apl_categoryno, apl_categoryname 
+		from TBL_APPROVAL A
+		join TBL_APP_CATEGORY B
+		on PK_APL_CATEGORYNO = APL_CATEGORYNO
+		order by apl_no
+	</select>
+
+>>>>>>> branch 'main' of https://github.com/yj8218/groovy.git
 </mapper>
