@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%
     String ctxPath = request.getContextPath();
-%>      
+%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+     
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,12 +98,38 @@
 	}
 
 	div#body {
-		text-align: center;
+		text-align: left;
 	}
 	
 	div.employeeList{
 		
 	}
+
+	/* 부스트랩 아코디언   */
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  border: none;
+  text-align: left;
+  width: 100%;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc; 
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+  text-align: left;
+}
 
 </style>
 	
@@ -136,8 +164,24 @@
 
 $(document).ready(function(){
 	
-	
+// 회원목록 불러오는 아코디언
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+
 });
+
 
 
 
@@ -162,7 +206,47 @@ $(document).ready(function(){
 	
 		<div id="employeeList">
 			<div>회원목록</div>
-			<div class="employeeList" ></div>
+			<button class="accordion">회계</button>
+					<div class="panel">
+						<c:forEach var="empvo" items="${requestScope.accountEmployeeList }">
+							<p>
+								<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
+								<span>${empvo.name }</span>
+								<span>(${empvo.pk_empnum })</span>
+							</p>
+						</c:forEach>	
+					</div>
+			<br>		
+			<button class="accordion">영업</button>
+					<div class="panel">
+						<c:forEach var="empvo" items="${requestScope.salesEmployeeList }">
+							<p>
+								<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
+								<span>${empvo.name }</span>
+								<span>(${empvo.pk_empnum })</span>
+							</p>
+						</c:forEach>	
+					</div>
+			<button class="accordion">인사</button>
+					<div class="panel">
+						<c:forEach var="empvo" items="${requestScope.personnelEmployeeList }">
+							<p>
+								<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
+								<span>${empvo.name }</span>
+								<span>(${empvo.pk_empnum })</span>
+							</p>
+						</c:forEach>	
+					</div>
+			<button class="accordion">총무</button>
+					<div class="panel">
+						<c:forEach var="empvo" items="${requestScope.managerEmployeeList }">
+							<p>
+								<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
+								<span>${empvo.name }</span>
+								<span>(${empvo.pk_empnum })</span>
+							</p>
+						</c:forEach>	
+					</div>
 		</div>
 	
 		<div id="inputEmployee">

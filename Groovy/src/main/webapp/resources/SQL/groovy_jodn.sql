@@ -94,6 +94,44 @@ create table tbl_equipment
 );
 
 
+
+
+
 --- 문서번호
 select to_char(sysdate, 'yyyymmddhh24miss')
 from dual
+
+
+
+-- 회원목록 조회하기 
+select PK_empnum, deptnamekor ,name, fk_spotnum
+from tbl_employee A
+join tbl_spot B
+on B.pk_spotNum = A.fk_spotnum
+join tbl_department C
+on C.PK_deptnum = A.FK_deptnum
+order by pk_deptnum desc
+where PK_DEPTNUM = 
+
+
+
+select *
+from tbl_department
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

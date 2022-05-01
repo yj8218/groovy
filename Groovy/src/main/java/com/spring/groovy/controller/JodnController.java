@@ -130,10 +130,19 @@ public class JodnController {
 	@RequestMapping(value="/approvePersonAdd.groovy")
 	public ModelAndView approvePersonAdd(ModelAndView mav) {
 		
+		// 회계부서
+		List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
+		// 영업부서
+		List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
+		// 인사부서
+		List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
+		// 총무부서
+		List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
 		
-		
-		
-	//	mav.addObject("", );
+		mav.addObject("accountEmployeeList", accountEmployeeList);
+		mav.addObject("salesEmployeeList", salesEmployeeList);
+		mav.addObject("personnelEmployeeList", personnelEmployeeList);
+		mav.addObject("managerEmployeeList", managerEmployeeList);
 		
 		mav.setViewName("approval/approvePersonAdd");
 		// /WEB-INF/views/approval/approvalEdit.jsp

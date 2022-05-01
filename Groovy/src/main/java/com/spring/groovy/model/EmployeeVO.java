@@ -36,12 +36,15 @@ public class EmployeeVO {
 	 */
 	
 	//Source - Generate Constructor using Fields
+	
+	private String deptnamekor; // 부서명
+	
 	public EmployeeVO() {}
 	
 	public EmployeeVO(String pk_empnum, String pwd, String name, String address, String detailaddress,
 			String extraaddress, String postcode, String phone, String email, String birthday, String gender,
 			String registerday, String startday, int resignationstatus, String resignationday, int fk_vstatus,
-			int fk_deptnum, int fk_spotnum, String emppicturename, int salary) {
+			int fk_deptnum, int fk_spotnum, String emppicturename, int salary, String deptnamekor) {
 		
 		this.pk_empnum = pk_empnum;
 		this.pwd = pwd;
@@ -63,6 +66,7 @@ public class EmployeeVO {
 		this.fk_spotnum = fk_spotnum;
 		this.emppicturename = emppicturename;
 		this.salary = salary;
+		this.deptnamekor = deptnamekor;
 	}
 
 	public String getPk_empnum() {
@@ -219,6 +223,14 @@ public class EmployeeVO {
 
 	public void setAttach(MultipartFile attach) {
 		this.attach = attach;
+	}
+
+	public String getdeptnamekor() {
+		return deptnamekor;
+	}
+
+	public void setdeptnamekor(String deptnamekor) {
+		this.deptnamekor = deptnamekor;
 	}
 	
 	
