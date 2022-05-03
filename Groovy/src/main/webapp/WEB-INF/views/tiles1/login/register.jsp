@@ -85,8 +85,14 @@
 		$("span.error").hide();
 		$("input#name").focus();
 		
-		let b_flagEmpnumuplicateClick = false;
+		let b_flagEmpnumduplicateClick = false;
 		// 등록하기 버튼 클릭시 "사원번호 중복확인" 을 클릭했는지를 알아보기 위한 용도
+		
+		let b_flagemailduplicateClick = false;
+		// 등록하기 버튼 클릭시 "이메일 중복확인" 을 클릭했는지를 알아보기 위한 용도
+		
+		let b_flagphoneduplicateClick = false;
+		// 등록하기 버튼 클릭시 "휴대폰번호 중복확인" 을 했는지를 알아보기 위한 용도
 		
 		
 		// 1. 이름 입력칸 유효성검사
@@ -109,53 +115,110 @@
 		});// -------------------------------------------------
 		
 		
-		// 2. 이메일 입력칸 유효성검사
-		$("input#email").blur(function(){
+		// 2. 이메일 입력칸 유효성검사 및 중복검사
+		$("img#emailCheck").click(function(){
 			
-			const $target = $(this); 
+			const $target = $("input#email");
 			
-	     	// 이메일 정규표현식 객체 생성
+			// 이메일 정규표현식 객체 생성
 	        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
 			
 		 	const bool = regExp.test($target.val());
-		 
-			if(!bool){ // 이메일 정규표현식에 위배시
+			
+		 	if(!bool){ // 이메일 정규표현식에 위배시
 				$("form.registerFrm :input").prop("disabled", true);
 				$target.prop("disabled",false);
 				
 			    $target.next().show();
 				$target.focus();
+				$("span#emailcheckResult").html("");
+				
+				b_flagemailduplicateClick = false;
 			}
 			else{ // 이메일정규표현식에 통과시
 				$("form.registerFrm :input").prop("disabled", false);
 				$target.next().hide();
+				
+				b_flagemailduplicateClick = true;
+				
+				$.ajax({
+	        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+	        	      data:{"checkColumn":"email",
+	        	    	  "checkValue":$target.val()},
+	        	      success:function(text){
+	        	    	  
+	        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
+	        	    	  
+	       	    	      // 이메일 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
+	           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
+	           	    		  $("span#emailcheckResult").html($("input#email").val() +" 은 이미 사용중인 이메일입니다").css("color","orange");
+	           	    		  $("input#email").val("");
+	           	    	  }
+	           	    	  else { // 중복아닌경우
+	           	    		  $("span#emailcheckResult").html($("input#email").val() +" 은 사용가능한 이메일입니다").css("color","green");
+	           	    	  }	  
+	        	      },
+	        	      error:function(request, status, error){
+	        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        	      }
+	          	});// end of ajax
 			}
-		});// -------------------------------------------------
-		
-		
+	     });// end of $("img#empnumCheck").click(function(){
+	    	 
+	    	 
 		// 3. 휴대폰번호 입력칸 유효성검사
-		$("input#phone").blur(function(){
-			
+		$("input#phone").bind("keyup", function(){
+				
 			const $target = $(this);
+			b_flagphoneduplicateClick = false;
 			
-		    // 휴대폰번호 정규표현식 객체 생성(010-1234-1234 또는 010-123-1234 만 가능)
+			// 휴대폰번호 정규표현식 객체 생성(010-1234-1234 또는 010-123-1234 만 가능)
 	        const regExp = new RegExp(/^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/g); 
 			
 		 	const bool = regExp.test($target.val());
-		 
+		 	
+				
 			if(!bool){ // 휴대폰번호 정규표현식에 위배시
 				$("form.registerFrm :input").prop("disabled", true);
 				$target.prop("disabled",false);
 				
 			    $target.next().show();
 				$target.focus();
+				$("span#phonecheckResult").html("");
+				
+				
 			}
 			else{ // 국번이 정규표현식에 통과시 
 				$("form.registerFrm :input").prop("disabled", false);
 				$target.next().hide();
+				
+				// 휴대폰번호 유효성검사
+				$.ajax({
+	        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+	        	      data:{"checkColumn":"phone",
+	        	    	  "checkValue":$target.val()},
+	        	      success:function(text){
+	        	    	  
+	        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
+	        	    	  
+	       	    	      // 휴대폰번호 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
+	           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
+	           	    		  $("span#phonecheckResult").html($("input#phone").val() +" 은 이미 사용중인 휴대폰번호입니다").css("color","orange");
+	           	    		  $("input#phone").val("");
+	           	    	  }
+	           	    	  else { // 중복아닌경우
+	           	    		  $("span#phonecheckResult").html($("input#phone").val() +" 은 사용가능한 휴대폰번호입니다").css("color","green");
+	           	    		  b_flagphoneduplicateClick = true;
+	           	    	  }	  
+	        	      },
+	        	      error:function(request, status, error){
+	        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        	      }
+	          	});// end of ajax
+	          	
+	          	
 			}
-			
-		});// -------------------------------------------------
+		});
 		
 		
 		// 4. 부서 선택시 사원번호(아이디)와 초기비밀번호 자동입력
@@ -175,7 +238,7 @@
 		// 5. 사원번호 입력칸 유효성검사(+중복검사)
 		$("img#empnumCheck").click(function(){
 		  
-			b_flagEmpnumuplicateClick = true;
+			b_flagEmpnumduplicateClick = true;
 			
 			const pk_empnum = $("input#deptnumOfEmpnum").val() + $("input#pk_empnum").val() ; // 입력된 전체 사원번호
 			
@@ -190,8 +253,9 @@
 				else{// 사원번호칸에 숫자를 제대로 입력했을 때
 					// (+중복검사) ajax
 					$.ajax({
-		        	      url:"<%= ctxPath%>/empnumCheck.groovy",
-		        	      data:{"pk_empnum":pk_empnum},
+		        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+		        	      data:{"checkColumn":"pk_empnum",
+		        	    	  "checkValue":pk_empnum},
 		        	      success:function(text){
 		        	    	  
 		        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
@@ -201,7 +265,7 @@
 		        	    	  s_deptnum = s_deptnum.substring(0,dash);
 		        	    	  
 		       	    	      // 입력된 전체 사원번호 -> true 면 중복된거고, false 면 중복안된것
-		           	    	  if(json.isEmpnumDuplicated) { // 중복인경우
+		           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
 		           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 이미 사용중인 사원번호입니다").css("color","orange");
 		           	    		  $("input#pk_empnum").val("");
 		           	    	  }
@@ -327,8 +391,14 @@
 		
       	// 사원번호 값이 변경되면, 등록하기 버튼 클릭시 "사원번호중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
 		$("input#pk_empnum").bind("change", function(){
-			b_flagEmpnumuplicateClick = false;
+			b_flagEmpnumduplicateClick = false;
 			$("input#total_pk_empnum").val(""); // 제출할 사원번호값도 초기화한다.
+		});
+  
+		// 이메일 값이 변경되면, 등록하기 버튼 클릭시 "이메일중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
+		$("input#email").bind("change", function(){
+			b_flagemailduplicateClick = false;
+	//		$("input#email").val(""); // 제출할 이메일값도 초기화한다.
 		});
       
       
@@ -368,9 +438,23 @@
 			}
 			
 			// ** 사원번호 중복확인을 통과 했는지 검사한다. ** //
-			// b_flagEmpnumuplicateClick
-			if(!b_flagEmpnumuplicateClick){// 사원번호 중복확인 버튼을 클릭하지 않았을 때
+			// b_flagEmpnumduplicateClick
+			if(!b_flagEmpnumduplicateClick){// 사원번호 중복확인 버튼을 클릭하지 않았을 때
 				alert("사원번호 중복확인 버튼을 클릭하여 사원번호 중복검사를 하세요");
+				return; // 종료
+			}
+			
+			// ** 이메일 중복확인을 통과 했는지 검사한다. ** //
+			// b_flagemailduplicateClick
+			if(!b_flagemailduplicateClick){// 이메일 중복확인 버튼을 클릭하지 않았을 때
+				alert("이메일 중복확인 버튼을 클릭하여 이메일 중복검사를 하세요");
+				return; // 종료
+			}
+			
+			// ** 이메일 중복확인을 통과 했는지 검사한다. ** //
+			// b_flagphoneduplicateClick
+			if(!b_flagphoneduplicateClick){// 이메일 중복확인 버튼을 클릭하지 않았을 때
+				alert("휴대폰 번호가 중복되었는지 확인하세요");
 				return; // 종료
 			}
 			
@@ -428,12 +512,15 @@ SALARY          v     NUMBER(20) 	월급
          <span class="title">이메일</span><br>
          <input type="email" class="requiredInfo" id="email" name="email" size="20" required placeholder="example@gmail.com" />
          <span class="error">이메일 형식에 맞게 입력해주세요.</span>
+         <img id="emailCheck" src="<%=ctxPath%>/resources/images/common/b_id_check.gif" style="vertical-align: middle;" />
+	     <span id="emailcheckResult"></span>
             
          <br><br>
          <%-- 3. 휴대폰번호 --%>
          <span class="title">휴대폰번호</span><br>
          <input type="text" class="requiredInfo" id="phone" name="phone" maxlength="20" required  placeholder="010-1234-1234">
          <span class="error">휴대폰번호 형식에 맞게 입력해주세요.</span>
+         <span id="phonecheckResult"></span>
 
          <br><br>
 		 <!-- 부서선택시 자동으로 사원번호와 비밀번호 처음부분 입력됨 -->         

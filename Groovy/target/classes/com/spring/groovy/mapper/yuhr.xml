@@ -23,7 +23,7 @@
 	<select id="empnumCheck" parameterType="HashMap" resultType="String">
 		select pk_empnum
 		from tbl_employee
-		where pk_empnum = #{pk_empnum}
+		where ${checkColumn} = #{checkValue}
 	</select>
 	
 	<insert id="addEmp" parameterType="com.spring.groovy.model.EmployeeVO">

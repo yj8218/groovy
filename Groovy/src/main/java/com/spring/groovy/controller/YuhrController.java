@@ -60,27 +60,28 @@ public class YuhrController {
 	}//end of public ModelAndView register()
 	
 	
-	// 사원번호 입력칸 유효성검사(중복검사, ajax 로 처리)
+	// 사원 정보 중복검사(ajax 로 처리, 이메일, 휴대폰번호, 사원번호)
 	@ResponseBody
-	@RequestMapping(value="/empnumCheck.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/empDuplicatedCheck.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	public String empnumCheck(HttpServletRequest request ) {
 		
-		String pk_empnum = request.getParameter("pk_empnum");
-	//	System.out.println("fk_deptnum =>>"+fk_deptnum);
+		String checkColumn = request.getParameter("checkColumn");
+		String checkValue = request.getParameter("checkValue");
 		
 		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("checkColumn", checkColumn);
+		paraMap.put("checkValue", checkValue);
 		
-		String s_usingPk_empnum = service.empnumCheck(paraMap);
+		String s_using_infoVal = service.empDuplicatedCheck(paraMap);
 		
-		boolean isEmpnumDuplicated = false; // true 면 중복된거고, false 면 중복안된것
+		boolean isDuplicatedInfoVal = false; // true 면 중복된거고, false 면 중복안된것
 		
-		if(s_usingPk_empnum != null ) {
-			isEmpnumDuplicated = true; // 중복이면 true 로 전환됨
+		if(s_using_infoVal != null ) {
+			isDuplicatedInfoVal = true; // 중복이면 true 로 전환됨
 		}
 		
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("isEmpnumDuplicated", isEmpnumDuplicated);
+		jsonObj.put("isDuplicatedInfoVal", isDuplicatedInfoVal);
 		
 		return jsonObj.toString();
 	}
