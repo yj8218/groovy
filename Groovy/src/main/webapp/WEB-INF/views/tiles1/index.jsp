@@ -269,7 +269,7 @@
 			
 			<%-- 프로젝트 참여자 목록 --%>
 			<div id="memberlist" class="col-lg-3">
-				<h5>참여자{참여자수}</h5>
+				<h5>참여자<span class="text-muted ml-2">${requestScope.empvoList.size()}</span></h5>
 				<div class="card mb-3">
 					<div class="card-body">
 				    	<table style="width: 100%;">
@@ -277,15 +277,17 @@
 				    			<th>프로젝트관리자(직책)</th>
 				    		</tr>
 				    		<%-- 반복 --%>
+				    		<c:forEach var="empvo" items="${requestScope.empvoList}">
 				    		<tr>
 				    			<td>
 				    				<i class="far fa-user-circle"></i>
-				    				{이름}
+				    				${empvo.name}
 				    			</td>
 				    			<td align="right">
 				    				<i class="far fa-comment-dots"></i>
 				    			</td>
 				    		</tr>
+				    		</c:forEach>
 				    	</table>
 				  	</div>
 				  	<div class="card-footer" align="center" style="padding: 0; height: 50px;">

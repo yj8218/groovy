@@ -6,4 +6,10 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="limsh">
 
+	<!-- 직원 목록 가져오기(select) -->
+	<select id="showEmployeeList" resultType="com.spring.groovy.model.EmployeeVO">
+      select pk_empnum, name, phone, email, emppicturename, emppicturefilename
+      from tbl_employee
+   	</select>
+
 </mapper>

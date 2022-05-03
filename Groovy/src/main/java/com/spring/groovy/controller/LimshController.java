@@ -1,5 +1,7 @@
 package com.spring.groovy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.MyUtil;
+import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.service.InterLimshService;
 
 @Controller //bean + controller
@@ -26,9 +29,25 @@ public class LimshController {
 	////////////////////////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/index.groovy")
-	public ModelAndView showIndex(ModelAndView mav) {
+	public ModelAndView showIndex(ModelAndView mav, HttpServletRequest request) {
+		
+		List<EmployeeVO> empvoList = service.showEmployeeList();
+		
+		request.setAttribute("empvoList", empvoList);
 		
 		mav.setViewName("index.tiles1");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/showEmployeeList.groovy")
+	public ModelAndView showEmployeeList(ModelAndView mav, HttpServletRequest request) {
+		
+		List<EmployeeVO> empvoList = service.showEmployeeList();
+		
+		request.setAttribute("empvoList", empvoList);
+		
+		mav.setViewName("employee/showEmployeeList.tiles2");
 		
 		return mav;
 	}
