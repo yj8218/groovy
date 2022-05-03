@@ -68,7 +68,7 @@
          </div>
          <div id = "link">
             <a href="">사원번호 찾기</a>&nbsp;
-            <a href="">비밀번호 찾기</a>&nbsp;
+            <a href="<%= ctxPath%>/findpwd.groovy">비밀번호 찾기</a>&nbsp;
             <a href="">회원가입</a><br>
          </div>
          <div id = "loginbutton">

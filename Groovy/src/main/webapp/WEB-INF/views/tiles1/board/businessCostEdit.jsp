@@ -225,7 +225,7 @@ function approvePerson() {
 			
 			<div id="btn" class="box">
 				<button type="button"  class="btn">신청하기</button>
-				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalEdit.groovy'">취소</button>
+				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
 			</div>
 		</form>
 	
