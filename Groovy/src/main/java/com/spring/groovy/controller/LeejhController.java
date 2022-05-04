@@ -123,7 +123,7 @@ public class LeejhController {
 						mav.addObject("empList", empList);
 						mav.addObject("deptList", deptList);
 						*/
-						mav.setViewName("redirect:/main.groovy"); //시작페이지로 이동
+						mav.setViewName("redirect:/index.groovy"); //시작페이지로 이동
 						
 					}
 					
@@ -174,8 +174,8 @@ public class LeejhController {
 	
 	
 	// 메인홈
-	
-	@RequestMapping(value="/main.groovy")
+/*	
+	@RequestMapping(value="/index.groovy")
 	public ModelAndView main(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		/*
 		HttpSession session = request.getSession();
@@ -185,12 +185,12 @@ public class LeejhController {
 		
 		request.setAttribute("pk_empnum", pk_empnum);
 		*/
-		mav.setViewName("main/mainhome.tiles1");
+	/*			mav.setViewName("index.tiles1");
 		
 		return mav;
 	}
 	
-	
+*/	
 	
 	// === 비밀번호 찾기 화면 메서드 === //
 	@RequestMapping(value = "findpwd.groovy")
