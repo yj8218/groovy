@@ -35,7 +35,7 @@ public class LeejhController {
 	////////////////////////////////////////////////////////////////////////
 	
 	//  << 로그인 폼요청 >>
-	@RequestMapping(value="/login.groovy")
+	@RequestMapping(value="/login.groovy", method= {RequestMethod.GET})
 	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
 		
 		mav.setViewName("login/loginform.tiles2");
@@ -44,7 +44,7 @@ public class LeejhController {
 	}
 	
 	//  << 로그인 처리하기 >>
-	@RequestMapping(value="/loginEnd.groovy")
+	@RequestMapping(value="/loginEnd.groovy", method= {RequestMethod.POST})
 	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
 		
 		String pk_empnum = request.getParameter("pk_empnum");
@@ -176,7 +176,7 @@ public class LeejhController {
 	// 메인홈
 	
 	@RequestMapping(value="/main.groovy")
-	public ModelAndView main(ModelAndView mav, HttpServletResponse response, HttpServletRequest request) {
+	public ModelAndView main(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
 		/*
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");

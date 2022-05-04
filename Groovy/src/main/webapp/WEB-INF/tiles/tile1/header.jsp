@@ -294,6 +294,18 @@ button#btnChat{
     background-size: cover;
 
 }
+
+.myprofile-photo2{
+	z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 320px;
+    width: 100%;
+    background: linear-gradient(180deg,rgba(102,102,102,0) 45.31%,rgba(51,51,51,.6) 100%);
+}
 strong.user-name{
 	display: block;
     line-height: 21px;
@@ -316,6 +328,30 @@ li.infoList {
 }
 li.infoList:hover{
 	 font-weight: bold;
+}
+
+div#myModal{
+position: absolute;
+    overflow-y: auto;
+/*     -ms-overflow-y: hidden; */
+    position: fixed;
+    
+    right: 0;
+    top:150px;
+    left: 0;
+   
+}
+
+div.modal-dialog{
+	margin: 0 auto;
+    padding-bottom: 15px;
+    
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #fff;
+    height: 320px;
+    width: 350px;
+
 }
 
 
@@ -624,19 +660,8 @@ li.infoList:hover{
 				</div>
             	
        <!-- 유저정보 -->
-            	 <!-- <a onclick="OpenMyinfoForm()" type="button" id="MyinfoTopButton" >
-	                <i class="fas fa-user-circle">
-            	</a> -->
-            	<!-- 
-            	<div class="myinfo-popup" id="myForm4">
-                	<article action="" class="myinfo-container">
-					    내정보
-					</article>
-                
-				</div> -->
             	 
-            	 
-            	<a onclick="OpenMyinfoForm()" data-toggle="modal" data-target="#myModal" type="button" ><i class="fas fa-user-circle"></i></a>
+            	<a onclick="OpenMyinfoForm()"  type="button" ><i class="fas fa-user-circle"></i></a>
         		
         		<div class="myinfo-popup layer_pop" id="myForm4">
         		
@@ -676,7 +701,7 @@ li.infoList:hover{
         					</div>
         					
         				</li>
-        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="far fa-user"></i> 내 프로필</li>
+        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</li>
         				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</li>
         				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
         				
@@ -686,17 +711,26 @@ li.infoList:hover{
         			
         		</div>
         		
-        		<!--
         		
-        		The Modal
-				  <div class="modal" id="myModal" >
-				    <div class="modal-dialog"  >
+        		
+        	    <div class="modal" id="myModal" >
+        	       <div class="modal-dialog"  >
+	        	      <div class="card" style="width:400px">
+					    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
+					    <div class="card-body">
+					      <h4 class="card-title">John Doe</h4>
+					      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+					      <a href="#" class="btn btn-primary">See Profile</a>
+					    </div>
+					  </div>
+        	    	</div>
+        	    
+				    <%-- <div class="modal-dialog"  >
 				      <div class="modal-content">
 				      
 				        Modal Header
 				        <div class="modal-header">
-				          <h4 class="modal-title">Modal Heading</h4>
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        	<img class="myprofile-photo2" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
 				        </div>
 				        
 				        Modal body
@@ -710,12 +744,12 @@ li.infoList:hover{
 				        </div>
 				        
 				      </div>
-				    </div>
+				    </div> --%>
 				  </div>
         		
         		
         	</div>
-        	 -->
+        	
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 -->
