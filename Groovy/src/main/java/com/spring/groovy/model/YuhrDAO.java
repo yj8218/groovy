@@ -1,5 +1,6 @@
 package com.spring.groovy.model;
 
+
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.List;
@@ -85,6 +86,32 @@ public class YuhrDAO implements InterYuhrDAO {
 		
 		int n = sqlsession.insert("yuhr.addEmp", empVo);
 		return n;
+	}
+
+	// 직원정보를 가져오기 위함
+	@Override
+	public List<EmployeeVO> getEmps(Map<String, String> paraMap) {
+		
+		List<EmployeeVO> emps = sqlsession.selectList("yuhr.getEmps", paraMap);
+	/*	
+		try {
+			for(EmployeeVO emp : emps) {
+				
+				String email = emp.getEmail();
+				
+				// 전부 다 암호화 되어있어야하는데, 되어있는것도 있고 안되어있는 것도 있다.
+				System.out.println("확인용 email 1 " + email);
+				email = aes.decrypt(email);
+				
+				System.out.println("확인용 email 2 " + email);
+				emp.setEmail(email);
+			}
+		
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		} 
+	*/	
+		return emps;
 	}
 
 

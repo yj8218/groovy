@@ -38,6 +38,7 @@ public class EmployeeVO {
 	//Source - Generate Constructor using Fields
 	
 	private String deptnamekor; // 부서명
+	private String spotnamekor; // 직급명
 	
 	public EmployeeVO() {}
 	
@@ -232,6 +233,15 @@ public class EmployeeVO {
 	public void setdeptnamekor(String deptnamekor) {
 		this.deptnamekor = deptnamekor;
 	}
+
+	public String getSpotnamekor() {
+		return spotnamekor;
+	}
+
+	public void setSpotnamekor(String spotnamekor) {
+		this.spotnamekor = spotnamekor;
+	}
+	
 	
 	
 	

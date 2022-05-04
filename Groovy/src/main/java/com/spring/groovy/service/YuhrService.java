@@ -46,6 +46,13 @@ public class YuhrService implements InterYuhrService {
 		return n;
 	}
 
+	// 직원정보를 가져오기 위함
+	@Override
+	public List<EmployeeVO> getEmps(Map<String, String> paraMap) {
+		List<EmployeeVO> emps = dao.getEmps(paraMap);
+		return emps;
+	}
+
 
 
 
