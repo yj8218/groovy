@@ -52,7 +52,7 @@ public class LeejhController {
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum",pk_empnum);
-		paraMap.put("pwd",pwd);
+		paraMap.put("pwd",Sha256.encrypt(pwd));
 	//	System.out.println("확인 pk_empnum:"+pk_empnum);
 	//	System.out.println("확인 pwd:"+pwd);
 		

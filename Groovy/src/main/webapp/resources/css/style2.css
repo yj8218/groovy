@@ -22,13 +22,13 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 		
 	}
 	
-	form[name="loginFrm"] {
+	form[name="loginFrm"] ,form[name="findPwdFrm"] {
 		text-align: center;
 		width: 500px;
 		margin: 0 auto;
 	}
 	
-	input.LOGIN {
+	input.LOGIN ,input.FINDPWD {
 		width: 486px;
 	    height: 52px;
 	    background: #fff;
@@ -63,7 +63,7 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 	    vertical-align: baseline;
 	}
 	
-	button#goLogin {
+	button#goLogin , button#goFindPwd {
 		display: block;
 	    color: #fff;
 	    text-align: center;
@@ -78,7 +78,7 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 	    font-size: 16px;
 	}	
 	
-	button#goLogin:hover {
+	button#goLogin:hover , button#goFindPwd:hover {
 		font-weight: bold;
 		filter: brightness(90%);
 		cursor: pointer;

@@ -165,7 +165,11 @@ input.searchInput{
     
 }
 
-ul.pjtList:hover{
+ul.pjtList{
+	padding:5px 20px;
+}
+
+ul.pjtList li:hover{
     background-color: #efebff;
     cursor: pointer;
     color: #6449fc;
@@ -320,11 +324,11 @@ li.infoList:hover{
 	$(document).ready(function(){
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myModal').appendTo("body"); 
-	  	
+	  	/* 
 	  	$('ul.pjtList').click(function(){
 	  		$( 'ul.pjtList' ).addClass( 'active' );
 	  		
-	  	});
+	  	}); */
 	  	
 	  	
 	});
@@ -481,12 +485,20 @@ li.infoList:hover{
 							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name" required>
 							
 						</div>
-						<div    style= "padding: 7px 20px 20px 20px;">
-							<ul  class="pjtList" style="   padding:5px 20px; ">
-								<li class="department-item " dvsn-cd="1" depth="0" hgrn-dvsn-cd="" dvsn-nm="프로젝트 관리" empl_cnt="" >
-						          
-						            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">프로젝트 관리</span>
+						<div    style= "padding: 7px 20px 20px 20px;"><span data-toggle="collapse" data-target="#accounting" style="cursor:pointer " class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">회계부</span>
+							<ul  class="pjtList"  style=" list-style:none;" >
+								
+								<li id="accounting" class="department-item collase "  >
+						           	ㅎㅎ
 						        </li>
+						        <li id="accounting" class="department-item collase "  >
+						           	이재희
+						        </li>
+						        
+							</ul>
+							<ul class="pjtList " >
+								<span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">영업부</span>
+							
 							</ul>
 						</div>
 						
@@ -597,7 +609,7 @@ li.infoList:hover{
 							
 							<div id="allAlarm" class="tabcontent">
 							  <div    style= "padding: 7px 20px 20px 20px;">
-								<ul  class="pjtList" style="   padding:5px 20px; ">
+								<ul  class="pjtList" style="   padding:5px 20px; list-style:none;">
 									<li class="department-item "  >
 							          
 							            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">전체알림목록</span>
@@ -632,11 +644,35 @@ li.infoList:hover{
         			
         			<ul style="list-style: none; margin:0;">
         				<li style="    display: flex;">
-        					<img class="myprofile-photo" src="<%= ctxPath%>/resources/images/common/profile-default.png"  alt="icon-myprofile"  />
+        					<%-- <img class="myprofile-photo" src="<%= ctxPath%>/resources/images/common/profile-default.png"  alt="icon-myprofile"  /> --%>
+        					<img class="myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
         					<div style="display: inline-block; box-sizing: border-box;">
         						<strong class="user-name" >${sessionScope.loginuser.name}</strong>
-        						<span class="dept">부서명</span>
-        						<span class="spot">직책명</span>
+        						<span class="dept">
+        							<c:choose>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '0'}">임원진</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '1'}">회계부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '2'}">영업부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '3'}">인사부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '4'}">총무부</c:when>
+        							
+        							<c:otherwise></c:otherwise>
+        							</c:choose>
+        						</span>
+        						<span class="spot">
+        						<c:choose>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '0'}">관리자</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '1'}">인턴</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '2'}">사원</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '3'}">대리</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '4'}">과장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '5'}">차장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '6'}">부장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '7'}">이사</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '8'}">사장</c:when>
+        							<c:otherwise></c:otherwise>
+        							</c:choose>
+        						</span>
         					</div>
         					
         				</li>
