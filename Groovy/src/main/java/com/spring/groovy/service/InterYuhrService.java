@@ -22,4 +22,10 @@ public interface InterYuhrService {
 	// 직원정보를 가져오기 위함
 	List<EmployeeVO> getEmps(Map<String, String> paraMap);
 
+	// 조회한 조건에 따른 총 사원의 수
+	int getTotalCount(Map<String, String> paraMap);
+
+	// 한 사원만 조회해오기
+	EmployeeVO getOneEmpInfo(String pk_empnum);
+
 }//end of public interface InterYuhrService

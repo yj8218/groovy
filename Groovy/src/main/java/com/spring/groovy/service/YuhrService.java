@@ -53,6 +53,20 @@ public class YuhrService implements InterYuhrService {
 		return emps;
 	}
 
+	// 조회한 조건에 따른 총 사원의 수
+	@Override
+	public int getTotalCount(Map<String, String> paraMap) {
+		int totalCount = dao.getTotalCount(paraMap);
+		return totalCount;
+	}
+
+	// 한 사원만 조회해오기
+	@Override
+	public EmployeeVO getOneEmpInfo(String pk_empnum) {
+		EmployeeVO oneEmp = dao.getOneEmpInfo(pk_empnum);
+		return oneEmp;
+	}
+
 
 
 

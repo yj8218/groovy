@@ -11,18 +11,10 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/style1.css" />
 
 <style type="text/css">
-.fileUL {
-	list-style-type: none;
-}
-.fleft{
-	float: left;
-}
-.tcenter{
-	text-align: center;
-}
-.bnone{
-	border: none;
-}
+.fileUL {list-style-type: none;}
+.fleft{float: left;}
+.tcenter{text-align: center;}
+.bnone{border: none;}
 #fileItemTapLi{
 	padding: 30px auto; 
 	background-color: rgba(190, 190, 190, 0.1);  
@@ -98,19 +90,13 @@ select{
 	color: #9966FF;
 	font-weight: bold;
 }
-input{
-	width: 80px;
-}
-th, td{
-	padding: 7px 0 0 9px;
-}
+input{width: 80px;}
+th, td{padding: 7px 0 0 9px;}
 #orderby{
 	height: 50px;
 	text-align: right;
 }
-#select_order{
-	width: 130px;
-}
+#select_order{width: 130px;}
 #tbl_viewEmp{
 	width: 65%; 
 	border: solid 2px #9966FF;
@@ -127,25 +113,40 @@ a#goSearch:hover{
 	background-color: rgba(200, 200, 200, 0.3);
 	
 }
-#tbl_result{
-	margin-bottom: 100px;
+#tbl_result{margin-bottom: 100px;}
+.date{width:100px;}
+div#pageBar{
+	width: 70%; 
+	margin: 20px auto 150px auto; 
 }
-.date{
-	width:100px;
+a{
+	text-decoration: none !important;
+	color: #6449fc;
 }
+
+
 
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
 	
 	// 뷰단에 값을 고정시키기 위함
-	$("select[name='dept']").val( ${requestScope.dept} );
-	$("select[name='spot']").val( ${requestScope.spot} );
+	$("select[name='dept']").val( '${requestScope.dept}' );
+	$("select[name='spot']").val( '${requestScope.spot}' );
 	$('input#date_start').val('${requestScope.date_start}');
 	$('input#date_end').val('${requestScope.date_end}');
-	$("select[name='resign_status']").val( ${requestScope.resign_status} );
+	$("select[name='resign_status']").val( '${requestScope.resign_status}' );
 	$("select[name='search_item']").val( '${requestScope.search_item}' );
 	$("input#search_value").val( '${requestScope.search_value}' );
+	$("select#select_order").val('${requestScope.select_order}');
+	
+	// select#select_order 선택시 재정렬
+	$("select#select_order").bind("change", function(){
+		
+		goSearch();
+		
+	})// end of $("select#select_order").bind("change", function(){
+
 	
 	
 	// === 전체 datepicker 옵션 일괄 설정하기 ===  
@@ -167,16 +168,16 @@ $(document).ready(function(){
           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트             
-  });
-
-    //input을 datepicker로 선언
-    $("input#date_start").datepicker();                    
-    $("input#date_end").datepicker();
-      
-    // startday의 초기값을 오늘 날짜로 설정
-    $('input#startday').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
-
-});// end of $(function() 
+	  });
+	
+	    //input을 datepicker로 선언
+	    $("input#date_start").datepicker();                    
+	    $("input#date_end").datepicker();
+	      
+	    // startday의 초기값을 오늘 날짜로 설정
+	    $('input#startday').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+	
+	});// end of $(function() 
 	
 	
 	
@@ -210,7 +211,6 @@ function goSearch(){
 		return;
 	}
 	
-//	alert("값이 넘어감");
 	
 	
 	const frm = document.searchFrm;
@@ -218,7 +218,31 @@ function goSearch(){
 	frm.action = "viewEmp.groovy"; // 자기자신한테 간다.
 	frm.submit();
 	
-}
+}// end of function goSearch()
+
+
+//ajax 로 한명의 사원 정보 select => 모달로 보여주기
+function getOneEmpInfo(pk_empnum){
+	
+	$.ajax({
+		url:"<%=ctxPath%>/getOneEmpInfo.groovy",
+		data:{"pk_empnum":pk_empnum },
+		type:"GET",
+		dataType:"JSON",
+		success:function(json){
+			
+			
+			
+		},
+		error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+	});// end of $.ajax({
+	
+	
+	
+	
+}// end of function getOneEmpInfo()
 
 </script>
 
@@ -324,18 +348,20 @@ VTYPE		휴가종류
 			</tr>
 			
 		</table>
-	</form>
-	
+		
 	<div id="orderby">
 		<div>
-			<select id="select_order">
-				<option class="op">최근등록순</option>
-				<option class="op">사번순</option>
-				<option class="op">이름순</option>
-				<option class="op">직급순</option>
+			<select id="select_order" name="select_order">
+				<option class="op" value="pk_empnum desc" >사번 높은순</option>
+				<option class="op" value="name asc">이름 가나다순</option>
+				<option class="op" value="pk_spotnum desc">직급 높은순</option>
+				<option class="op" value="startday desc">최근 입사일순</option>
 			</select>
 		</div>
 	</div>
+	
+	</form>
+	
 	
 	<h2>관리자 전용 사원조회</h2>
 	<table id="tbl_result" class="tcenter">
@@ -360,9 +386,8 @@ VTYPE		휴가종류
 		
 		<c:if test="${not empty requestScope.emps }">
 			<c:forEach var="emp" items="${requestScope.emps }" varStatus="status">
-				<tr class="">
-				
-					<td>${status.count }</td>
+				<tr class="" style="border: solid 1px gray;" onclick="getOneEmpInfo('${emp.pk_empnum}')">
+					<td>${(10 * (requestScope.currentShowPageNo-1))+ status.count }</td>
 					<td>${emp.pk_empnum }</td>
 					<td>${emp.name }</td>
 					<td>${emp.deptnamekor }</td>
@@ -386,7 +411,7 @@ VTYPE		휴가종류
 	</table>
 	
 	<%-- 페이지바 보여주는 곳! --%>
-	<div align="center" style="border: solid 0px gray; width: 70%; margin: 20px auto;">
+	<div align="center" id="pageBar" >
 		${requestScope.pageBar }
 	</div>
         
