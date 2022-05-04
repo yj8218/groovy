@@ -9,6 +9,17 @@
 
 	$(document).ready(function() {
 		
+		
+		
+		
+		
+		
+/* 		if(localStorage.getItem("keep") != null){
+		       var gab   = localStorage.getItem("keep");
+		       $('#pk_empnum').attr('value', gab );
+		       $('#keep').attr('checked', "checked");
+		} */
+		
 		$("button#goLogin").click(function(){
 			func_Login();
 		});
@@ -20,6 +31,17 @@
 			}
 				
 		});
+		
+		
+		////////////////////////////////////////////////////////////////////
+		
+		// === 로컬스토리지(localStorage)에 저장된 key 가 "saveid" 인 userid 값을 불러와서 input 태그 userid 에 넣어주기 === //
+		const loginUserid = localStorage.getItem('keep');
+		if(loginUserid != null){
+			$("input#pk_empnum").val(loginUserid);
+			$("input:checkbox[id='keep']").prop("checked",true);
+		}
+		////////////////////////////////////////////////////////////////////
 		
 	});// end of $(document).ready(function(){})-------------
 
@@ -42,6 +64,24 @@
 		   $("input#pwd").focus();
 		   return; // 종료 
 		}
+		
+		/* if( $("input:checkbox[id='keep']").prop("checked") ) {
+		    localStorage.setItem('keep',$("input#pk_empnum").val());
+		}
+		else {
+		    localStorage.removeItem('keep');
+		} */
+		
+		// 체크박스 선택 유무에 따라 아이디 저장 여부
+	    if( $("input:checkbox[id='keep']").prop("checked") ){ 
+		//  alert("아이디저장 체크를 하셨네요");
+		
+		   	localStorage.setItem('keep',$("input#pk_empnum").val());
+	    }
+	    else{
+	    //	alert("아이디저장 체크를 해제 하셨네요");
+	    	localStorage.removeItem('keep');
+	    }
 		
 		const frm = document.loginFrm;
 		
@@ -67,9 +107,9 @@
             <input type="password" id="pwd" class="LOGIN" name="pwd" size="30" placeholder="비밀번호"><br><br>
          </div>
          <div id = "link">
-            <a href="">사원번호 찾기</a>&nbsp;
-            <a href="">비밀번호 찾기</a>&nbsp;
-            <a href="">회원가입</a><br>
+            <!-- <a href="">사원번호 찾기</a>&nbsp; -->
+            <a href="<%= ctxPath%>/findpwd.groovy">비밀번호 찾기</a>&nbsp;
+           <!--  <a href="">회원가입</a><br> -->
          </div>
          <div id = "loginbutton">
             <button type="button" id="goLogin">로그인</button>

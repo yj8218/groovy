@@ -47,7 +47,7 @@ public class GroovyAOP {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginuser") == null) {
 			String message = "먼저 로그인부터 하세요.";
-			String loc = request.getContextPath()+"/login.action";
+			String loc = request.getContextPath()+"/login.groovy";
 			
 			request.setAttribute("message", message);
 			request.setAttribute("loc", loc);
