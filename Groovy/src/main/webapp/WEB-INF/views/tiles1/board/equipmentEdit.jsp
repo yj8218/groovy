@@ -104,6 +104,39 @@ button#approvePersonAdd {
 	<script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> 
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+	
+	
+	if(localStorage.getItem("approver") != null){
+        var approver   = localStorage.getItem("approver");
+        
+	
+	////////////////////////////////// 실험
+	
+	}
+        
+    $.ajax({
+	  url:"<%= request.getContextPath()%>/addApprover.groovy",
+	  data:{"approver":approver},
+	  type:"POST",
+	  dataType:"JSON",
+	  success:function(json){
+		  alert(json.approver);
+		  $('div#employeeList').html(json.approver);
+	  },
+	  error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	  } 
+        
+    })
+    
+    
+      
+     
+	
+	
+}); // $(document).ready(function()
 	
 	
 function add_textbox() {
@@ -120,7 +153,7 @@ function remove(obj) {
 // 팝업창 띄우기 (사람 선택창)
 function approvePerson() {
 	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approvePersonAdd.groovy";
+	const url = "<%= request.getContextPath()%>/approver.groovy";
 	
 	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	const pop_width = 900;
@@ -128,10 +161,21 @@ function approvePerson() {
 	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
 	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
 	
+	if(localStorage.getItem("approver") != null){
+		localStorage.removeItem('approver'); 
+	}
+	
 	window.open(url, "approvePersonAdd",
 			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
 }	
 	
+	
+function cancel() {
+	if(localStorage.getItem("approver") != null){
+		localStorage.removeItem('approver'); 
+	}
+	location.href='<%= ctxPath%>/approvalView.groovy';
+}
 	
 </script>
 
@@ -187,7 +231,7 @@ function approvePerson() {
 			 -->
 			<div id="btn" class="box">
 				<button type="button"  class="btn">신청하기</button>
-				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
+				<button type="button"  class="btn" onclick="cancel()">취소</button>
 				<!-- history.back(); -->
 			</div>
 
@@ -198,8 +242,12 @@ function approvePerson() {
 		
 <div id="approvePerson" style="margin: 70px;">
 	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
+
+	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
 	<div id="employeeList"></div>
+
+	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
+	
 </div> 
 
 </body>

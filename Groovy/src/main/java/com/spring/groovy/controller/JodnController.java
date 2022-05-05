@@ -5,9 +5,12 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.MyUtil;
@@ -126,9 +129,9 @@ public class JodnController {
 	
 	
 	
-	// 결제선 등록 팝업 띄우기
-	@RequestMapping(value="/approvePersonAdd.groovy")
-	public ModelAndView approvePersonAdd(ModelAndView mav) {
+	// 승인자 등록 팝업 띄우기
+	@RequestMapping(value="/approver.groovy")
+	public ModelAndView approver(ModelAndView mav) {
 		
 		// 회계부서
 		List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
@@ -144,7 +147,7 @@ public class JodnController {
 		mav.addObject("personnelEmployeeList", personnelEmployeeList);
 		mav.addObject("managerEmployeeList", managerEmployeeList);
 		
-		mav.setViewName("approval/approvePersonAdd");
+		mav.setViewName("approval/approver");
 		// /WEB-INF/views/approval/approvalEdit.jsp
 		
 		return mav;
@@ -152,8 +155,21 @@ public class JodnController {
 	
 	
 	
-	
-	
+	@ResponseBody
+	@RequestMapping(value="/addApprover.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+	public String addApprover(HttpServletRequest request) {
+		
+		String approver = request.getParameter("approver");
+		
+	//	System.out.println("확인용 approver = > "+approver);
+		//List<String> approverList = service.approverAdd();
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("approver", approver);
+		
+		return jsonObj.toString();
+	}
 	
 	
 }//end of public class JodnController
