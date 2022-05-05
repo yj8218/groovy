@@ -147,7 +147,7 @@ $(document).ready(function(){
 // 팝업창 띄우기 (사람 선택창)
 function approvePerson() {
 	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approvePersonAdd.groovy";
+	const url = "<%= request.getContextPath()%>/approver.groovy";
 	
 	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	const pop_width = 900;
@@ -182,7 +182,7 @@ function approvePerson() {
 	
 			<div class="box">
 				<label>사용 금액</label><br>
-				<input type="text" name="foodExpensesCost" size="50" class="box" autocomplete="off" />
+				<input type="text" name="foodExpensesCost" size="50" class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
 			</div>
 			
 			<div class="box">

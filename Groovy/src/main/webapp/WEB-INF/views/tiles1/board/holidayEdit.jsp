@@ -184,7 +184,7 @@ $(document).ready(function(){
 function approvePerson() {
 
 	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approvePersonAdd.groovy";
+	const url = "<%= request.getContextPath()%>/approver.groovy";
 	
 	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	const pop_width = 900;

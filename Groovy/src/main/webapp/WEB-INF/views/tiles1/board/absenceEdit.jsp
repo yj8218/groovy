@@ -50,20 +50,22 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.btn_abs {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 40px;
+	border-radius: 7px;
 }
 
-div#btn {
+div#btn_abs {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.btn_abs:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -151,7 +153,7 @@ $(document).ready(function(){
 // 팝업창 띄우기 (사람 선택창)
 function approvePerson() {
 	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approvePersonAdd.groovy";
+	const url = "<%= request.getContextPath()%>/approver.groovy";
 	
 	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	const pop_width = 900;
@@ -198,9 +200,9 @@ function approvePerson() {
 			<input type="text" name="absenceETC" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 		</div>
 		
-		<div id="btn" class="box">
-			<button type="button"  class="btn">신청하기</button>
-			<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
+		<div id="btn_abs" class="box">
+			<button type="button"  class="btn_abs">신청하기</button>
+			<button type="button"  class="btn_abs" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
 			<!-- history.back(); -->
 		</div>
 	</form>
@@ -209,7 +211,7 @@ function approvePerson() {
 		
 <div id="approvePerson" style="margin: 70px;">
 	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
+	<button type="button" class="btn_abs" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
 	<div id="employeeList"></div>
 </div> 
 

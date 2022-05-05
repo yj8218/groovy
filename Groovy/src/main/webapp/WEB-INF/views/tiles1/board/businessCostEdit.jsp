@@ -151,21 +151,10 @@ $(document).ready(function(){
 });
 	
 	
-function add_textbox() {
-    const box = document.getElementById("box");
-    const newP = document.createElement('p');
-    newP.innerHTML = "<input type='text'> <input type='button' value='삭제' onclick='remove(this)'>";
-    box.appendChild(newP);
-}
-
-function remove(obj) {
-    document.getElementById('box').removeChild(obj.parentNode);
-}
-	
 // 팝업창 띄우기 (사람 선택창)
 function approvePerson() {
 	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approvePersonAdd.groovy";
+	const url = "<%= request.getContextPath()%>/approver.groovy";
 	
 	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	const pop_width = 900;
