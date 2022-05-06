@@ -27,16 +27,8 @@ emppicturename    not null varchar2(20)
 salary            not null number(20)    
 
 
-SELECT *
-from tbl_employee;
-
-select *
-from USER_TAB_COMMENTS
-WHERE comments IS NOT NULL;
-
-SELECT * FROM USER_COL_COMMENTS WHERE comments IS NOT NULL; 
-
-desc tbl_employee;
+SELECT pk_empnum 
+from tbl_employee
         
         
 insert into tbl_employee( pk_empnum, pwd, name,  address,  detailaddress,
@@ -53,48 +45,31 @@ SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 		where pk_empnum = '001-01' and pwd= 'qwer1234$';
 
 
--- tbl_employee 테이블 lastpwdchangedate  컬럼추가 
--- lastpwdchangedate  date default sysdate     -- 마지막으로 암호를 변경한 날짜 
--- 
-alter table tbl_employee add lastpwdchangedate date default sysdate; -- 마지막으로 암호를 변경한 날짜 
-COMMENT ON COLUMN tbl_employee.lastpwdchangedate IS '최근암호변경일';
-
-
-select *
-from tbl_employee;
-
-
--- 로그인기록 테이블 생성
-create table tbl_loginhistory
-(fk_empnum   varchar2(20)  not null 
-,logindate   date default sysdate not null
-,clientip    varchar2(20) not null
-,constraint FK_tbl_loginhistory foreign key(fk_empnum) references tbl_employee(pk_empnum)  
-);
-
-COMMENT ON TABLE tbl_loginhistory IS '로그인기록';
-COMMENT ON COLUMN tbl_loginhistory.fk_empnum IS '사원번호(아이디)';
-COMMENT ON COLUMN tbl_loginhistory.clientip IS '사용자 ip';
-COMMENT ON COLUMN tbl_loginhistory.logindate IS '로그인일시';
-
-
-select *
-from tbl_loginhistory
 
 
 
-    
-insert into tbl_employee( pk_empnum, pwd, name,  address,  detailaddress,
-			 extraaddress, postcode, phone,  email,  birthday, gender,
-			 registerday, startday, 
-			  fk_deptnum,  fk_spotnum,  emppicturename,  salary ,lastpwdchangedate)
-values('001-02', 'qwer1234$', '이재희', '주소1','주소2','주소3','우편번호','010-3261-3081',
-'0jaehui@gmail.com','1996-05-17','2',sysdate,sysdate, '01', '02', '로고그루비.png','100',sysdate)
 
-
-commit;
-
-
-select pk_empnum
-		from tbl_employee
-		where email = '0jaehui@gmail.com' and pk_empnum = '001-02'
+		select  pk_empnum, name, address, detailaddress, postcode, 
+		        phone, email, birthday, gender, registerday, 
+		        startday, resignationstatus,  
+		        resignationday,  fk_vstatus,     
+		        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+		        spotnamekor, deptnamekor, pk_spotnum
+		from
+		(
+			SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+			        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+			        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+			        E.resignationday,  E.fk_vstatus,     
+			        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+			        s.spotnamekor, s.pk_spotnum,
+			        d.deptnamekor, d.pk_deptnum
+			from tbl_employee E
+			JOIN TBL_SPOT S 
+			ON E.fk_spotnum = S.pk_spotnum
+			JOIN TBL_DEPARTMENT D 
+			ON E.fk_deptnum = D.pk_deptnum
+		) V
+		where 1=1
+        	and pk_deptnum = 1 
+        order by pk_deptnum , pk_spotnum desc;

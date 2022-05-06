@@ -33,4 +33,48 @@
 		where pk_empnum = #{pk_empnum} and  email = #{email} 
 	</update>
 
+
+	<!-- === 부서명 가져오기  === -->
+	<select id="getDepts" resultType="com.spring.groovy.model.DepartmentVO">
+		select PK_DEPTNUM, DEPTNAMEKOR
+		from TBL_DEPARTMENT
+		order by pk_deptnum
+	</select>
+	
+	<!-- === 직위명을 가져오기 위함  === -->
+	<select id="getSpots" resultType="com.spring.groovy.model.SpotVO">
+		select PK_SPOTNUM, SPOTNAMEKOR
+		from TBL_SPOT
+		order by PK_SPOTNUM
+	</select>
+	
+	<select id="getEmpList" resultType="com.spring.groovy.model.EmployeeVO">
+				select  pk_empnum, name, address, detailaddress, postcode, 
+				        phone, email, birthday, gender, registerday, 
+				        startday, resignationstatus,  
+				        resignationday,  fk_vstatus,     
+				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+				        spotnamekor, deptnamekor, pk_spotnum
+				from
+				(
+					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+					        E.resignationday,  E.fk_vstatus,     
+					        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+					        s.spotnamekor, s.pk_spotnum,
+					        d.deptnamekor, d.pk_deptnum
+					from tbl_employee E
+					JOIN TBL_SPOT S 
+					ON E.fk_spotnum = S.pk_spotnum
+					JOIN TBL_DEPARTMENT D 
+					ON E.fk_deptnum = D.pk_deptnum
+				) V
+				where 1=1
+					and name = #{searchEmp}
+		        	<!-- and pk_deptnum = #{pk_deptnum} -->
+		        order by pk_deptnum , pk_spotnum desc;
+	
+	</select>
+	
 </mapper>

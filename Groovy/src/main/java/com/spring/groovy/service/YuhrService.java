@@ -14,8 +14,8 @@ public class YuhrService implements InterYuhrService {
 	
 	@Autowired
 	private InterYuhrDAO dao;
-	@Autowired
-	private AES256 aes;
+	
+	
 	/////////////////////////////////////////////////////
 	
 	// 부서정보를 가져오기 위함
@@ -32,11 +32,11 @@ public class YuhrService implements InterYuhrService {
 		return spots;
 	}
 
-	// 사원번호 입력칸 유효성검사(중복검사, ajax 로 처리)
+	// 사원 정보 중복검사(ajax 로 처리, 이메일, 휴대폰번호, 사원번호)
 	@Override
-	public String empnumCheck(Map<String, String> paraMap) {
-		String s_usingPk_empnum = dao.empnumCheck(paraMap);
-		return s_usingPk_empnum;
+	public String empDuplicatedCheck(Map<String, String> paraMap) {
+		String s_using_infoVal = dao.empDuplicatedCheck(paraMap);
+		return s_using_infoVal;
 	}
 
 	// 사원테이블에 사원정보 insert
@@ -44,6 +44,13 @@ public class YuhrService implements InterYuhrService {
 	public int addEmp(EmployeeVO empVo) {
 		int n = dao.addEmp(empVo);
 		return n;
+	}
+
+	// 직원정보를 가져오기 위함
+	@Override
+	public List<EmployeeVO> getEmps(Map<String, String> paraMap) {
+		List<EmployeeVO> emps = dao.getEmps(paraMap);
+		return emps;
 	}
 
 

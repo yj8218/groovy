@@ -48,6 +48,27 @@ public class LeejhService implements InterLeejhService {
 		return n;
 	}
 
+	// === 부서정보을 가져오기 위함 ===
+	@Override
+	public List<DepartmentVO> getDepts() {
+		List<DepartmentVO> departList = dao.getDepts();
+		return departList;
+	}
+
+	// === 직위정보을 가져오기 위함 ===
+	@Override
+	public List<SpotVO> getSpots() {
+		List<SpotVO> spotList = dao.getSpots();
+		return spotList;
+	}
+
+	// === 직원정보를 가져오기 위함 === 
+	@Override
+	public List<EmployeeVO> getEmpList(Map<String, String> paraMap) {
+		List<EmployeeVO> empList = dao.getEmpList(paraMap);
+		return empList;
+	}
+
 
 
 

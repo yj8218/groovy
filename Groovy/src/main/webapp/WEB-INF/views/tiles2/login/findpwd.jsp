@@ -115,7 +115,7 @@
 					}
 					else {
 						alert(json.message);
-						window.close();
+						
 					}
 				},
 				error: function(request, status, error){
@@ -128,35 +128,58 @@
 		// === 새비밀번호 입력할 경우 이벤트 === //
 		$("span#newPasswordBtn").click(function() {
 			var newPassword = $("input#newPassword").val().trim();
+			var newPassword2 = $("input#newPassword2").val().trim();
 			var email = $("input#email").val().trim();
-			var name = $("input#pk_empnum").val().trim();
+			var pk_empnum = $("input#pk_empnum").val().trim();
 			
 			if(newPassword == "") {
 				alert("비밀번호를 입력하세요.");
 				return;
 			}
 			
-			$.ajax({
-				url:"<%= ctxPath%>/newPwdUpdate.groovy",
-				type:"POST",
-				data:{"newPassword":newPassword,
-					  "email":email,
-					  "pk_empnum":pk_empnum},
-				dataType:"JSON",
-				success:function(json) {
-					if(json.isSuccess) {
-						alert("비밀번호가 변경되었습니다.");
-						window.close();
-					}
-					else {
-						alert("비밀번호가 변경이 실패하였습니다. 다시 시도해주세요.");
-						window.close();
-					}
-				},
-				error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        	}
-			});
+			const regExp = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
+			const bool = regExp.test(newPassword);
+			
+			 if(!bool) {
+				  // 암호가 정규표현식에 위배된 경우 
+				  alert("암호는 8글자 이상 15글자 이하에 영문자,숫자,특수기호가 혼합되어야만 합니다.")
+				  $("input#newPassword").val("");
+				  $("input#newPassword2").val("");
+				  return; // 종료
+			 }
+			 else if(bool && newPassword != newPassword2){
+				  alert("암호가 일치하지 않습니다.")
+				  $("input#newPassword").val("");
+				  $("input#newPassword2").val("");
+				  return; // 종료
+			 }
+			 else {
+			
+			
+				$.ajax({
+					url:"<%= ctxPath%>/newPwdUpdate.groovy",
+					type:"POST",
+					data:{"newPassword":newPassword,
+						
+						"pk_empnum":pk_empnum,
+						"email":email},
+						  
+					dataType:"JSON",
+					success:function(json) {
+						if(json.isSuccess) {
+							alert("비밀번호가 변경되었습니다.");
+							location.href="<%= ctxPath%>/login.groovy";
+						}
+						else {
+							alert("비밀번호가 변경이 실패하였습니다. 다시 시도해주세요.");
+							return;
+						}
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        	}
+				});
+			 }
 			
 		});
 		
@@ -183,7 +206,7 @@
          <div id = "IdPasswd">
             <input type="text" id="pk_empnum" class="FINDPWD" name="pk_empnum" size="30" placeholder="아이디(사원번호)" ><br><br>
         
-            <input type="email" id="email" class="EMAIL" name="email" size="30" placeholder="이메일"><br><br>
+            <input type="email" id="email" class="FINDPWD" name="email" size="30" placeholder="이메일"><br><br>
          </div>
         
          <div id = "findPwdbutton">
@@ -205,7 +228,7 @@
 	    </div>
 	    <div class="row justify-content-center mt-4">
 		    <div class="col-9 col-lg-5">
-		       <span id="btnCode" class="btn btn-primary" style="display:flex; margin: auto; width: 30%; justify-content: center;">확인</span>
+		       <span id="btnCode" class="btn btn-primary" style="background: #623ad6; display:flex; margin: auto; width: 30%; justify-content: center;">확인</span>
 		    </div>
 	    </div>
     </div>
@@ -217,12 +240,13 @@
 			    <div class="col-8 col-lg-6">
 			       <label>새 비밀번호</label>
 			       <input type="password" class="form-control mb-1" id="newPassword" placeholder="Enter Password" name="newPassword">
+			        <input type="password" class="form-control mb-1" id="newPassword2" placeholder="Enter Password" name="newPassword2">
 			    </div>
 		   </div>
 	    </div>
 	    <div class="row justify-content-center mt-4">
 		    <div class="col-9 col-lg-5">
-		       <span id="newPasswordBtn" class="btn btn-primary" style="display:flex; margin: auto; width: 30%; justify-content: center;">확인</span>
+		       <span id="newPasswordBtn" class="btn btn-primary" style="background: #623ad6; display:flex; margin: auto; width: 30%; justify-content: center;">확인</span>
 		    </div>
 	    </div>
     </div>
