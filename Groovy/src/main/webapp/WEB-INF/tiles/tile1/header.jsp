@@ -342,7 +342,7 @@ position: absolute;
    
 }
 
-div.modal-dialog{
+div#myModal div.modal-dialog{
 	margin: 0 auto;
     padding-bottom: 15px;
     
@@ -354,6 +354,49 @@ div.modal-dialog{
 
 }
 
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+div.card-body ul{
+	margin:0;
+	padding:0;
+}
+
+div.card-body ul li i {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+div.card-body ul li span {
+    width: 280px;
+    padding: 0 0 0 10px;
+    display: inline-block;
+    border-bottom: 1px solid #eee;
+}
+div.btn-probottom {
+	display: inline-block;
+	justify-content: center;
+	width:100%;
+}
+
+
+button.btn-bottom{
+    width: 140px;
+    height: 50px;
+    padding: 0 20px;
+    margin: 0 5px;
+    position: relative;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+    line-height: 50px;
+    cursor: pointer;
+}
 
 </style>
 <script type="text/javascript">
@@ -466,7 +509,43 @@ div.modal-dialog{
   		document.getElementById("myForm4").style.display = "none";
 	}
 	
-	
+	  // === 직원목록읽어오기  === //
+	function goReadEmp() {
+		  const queryString = $("form[name=readEmpFrm]").serialize();
+		  $("form[name=readEmpFrm]").ajax({
+			  url:"<%= request.getContextPath()%>/empList.groovy",
+			  data: queryString,
+			  dataType:"JSON",
+			  success:function(json){
+				  // [{"name":"엄정화","regDate":"2022-04-25 10:23:51","content":"두번째 댓글 입니다."},{"name":"엄정화","regDate":"2022-04-25 10:13:47","content":"첫번째 댓글 입니다."}] 
+				  // 또는
+				  // [] 
+				  
+				  let html = "";
+				  if(json.length > 0) {
+					  $.each(json, function(index, item){
+						  html += "<tr>";
+						  html += "<td class='comment'>"+(index+1)+"</td>";
+						  html += "<td>"+item.content+"</td>";
+						  html += "<td class='comment'>"+item.name+"</td>";
+						  html += "<td class='comment'>"+item.age+"</td>";
+						  html += "</tr>";
+					  });
+				  }
+				  else {
+					  html += "<tr>";
+					  html += "<td colspan='4' class='comment'>댓글이 없습니다</td>";
+					  html += "</tr>";
+				  }
+				  
+				  $("tbody#commentDisplay").html(html);
+			  },
+			  error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			  }
+		  });
+		  
+	  }// end of function goReadEmp(){}--------------------------
 	
 	
 	
@@ -521,8 +600,9 @@ div.modal-dialog{
 							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name" required>
 							
 						</div>
-						<div    style= "padding: 7px 20px 20px 20px;"><span data-toggle="collapse" data-target="#accounting" style="cursor:pointer " class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">회계부</span>
-							<ul  class="pjtList"  style=" list-style:none;" >
+						<div> re</div>
+						<!-- <div    style= "padding: 7px 20px 20px 20px;"><span data-toggle="collapse" data-target="#accounting" style="cursor:pointer " class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">회계부</span> -->
+							<!-- <ul  class="pjtList"  style=" list-style:none;" >
 								
 								<li id="accounting" class="department-item collase "  >
 						           	ㅎㅎ
@@ -535,12 +615,78 @@ div.modal-dialog{
 							<ul class="pjtList " >
 								<span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">영업부</span>
 							
-							</ul>
+							</ul> -->
+							
+						<!-- 	<div id="displayList" style="position:absolute; z-index:2; background-color: white;  border: solid 1px #bfbfbf; width: 336px; height: 150px; margin-left: 8px; margin-top: 58px; border-top:0px; padding-left: 9px; border-radius: 10px;"></div>
+							  <div class="table-responsive" style="z-index: 1; height: 315px;"> -->
+							  <div>
+							  	<form name="readEmpFrm" id="readEmpFrm">
+							  		<ul>
+										<c:forEach var="empvo" items="${requestScope.empList}">
+											<c:if test="${empvo.spotnamekor == '사장'}">
+												<li>${empvo.name}&nbsp;${empvo.spotnamekor}ㅎㅎ</li>
+											</c:if>
+											
+											<c:if test="${empvo.spotnamekor == '이사'}">
+												<li>${empvo.name}&nbsp;${empvo.spotnamekor}</li>
+											</c:if>
+										</c:forEach>
+										<li>
+										
+										</li>
+									
+									
+									</ul>
+								
+								<c:if test="${not empty requestScope.emps }">
+									<c:forEach var="emp" items="${requestScope.emps }" varStatus="status">
+										<tr class="">
+										
+											<td>${status.count }</td>
+											<td>${emp.pk_empnum }</td>
+											<td>${emp.name }</td>
+											<td>${emp.deptnamekor }</td>
+											<td>${emp.spotnamekor }</td>
+											<c:if test="${emp.resignationstatus == 0 }">
+												<td>재직</td>
+											</c:if>
+											<c:if test="${emp.resignationstatus != 0 }">
+												<td>퇴사</td>
+											</c:if>
+											<td>${emp.startday }</td>
+											<td>${emp.phone }</td>
+											<td>${emp.email }</td>
+											
+										</tr>
+									</c:forEach>
+									
+									
+								</c:if>
+								
+							  	</form>
+							  </div>
+									
+								
+								  <%--   <c:if test="${not empty requestScope.empList}">
+								    	<c:forEach var="map" items="${requestScope.empList}">
+								    		<ul class="empTr">
+										        <li class="name">${map.name}</li>
+										        <li class="deptnamekor">${map.deptnamekor}</li>
+										        <li class="departmentname">${map.departmentname}</li>
+										        <li class="spotnamekor">${map.spotnamekor}</li>
+										        <li class="email">${map.email}</li>
+										        <li class="mobile"><span>${map.mobile.substring(0, 3)}-${map.mobile.substring(3, 7)}-${map.mobile.substring(7)}</span></li>
+										    </ul>
+								    	</c:forEach>
+								    </c:if> --%>
+					<!-- 		  </div>
+							
+							
 						</div>
-						
+						 -->
 						
 	   
-					</div>
+					<!-- </div> -->
 				    
 				  </article>
 				</div>
@@ -715,15 +861,48 @@ div.modal-dialog{
         		
         	    <div class="modal" id="myModal" >
         	       <div class="modal-dialog"  >
-	        	      <div class="card" style="width:400px">
-					    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
-					    <div class="card-body">
-					      <h4 class="card-title">John Doe</h4>
-					      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-					      <a href="#" class="btn btn-primary">See Profile</a>
+	        	       <div class="card " style="width:400px; display: block; ">
+					   	<div style=" position: relative; ">
+						    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
+						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
 					    </div>
-					  </div>
+					    <div class="card-body">
+					      <ul style="list-style: none;">
+					      	<li>
+					      		<i class="far fa-envelope"></i>
+					      		<span>${sessionScope.loginuser.email}</span>
+					      	</li>
+					      	<li>
+					      		<i class="fas fa-mobile-alt"></i>
+					      		<span>${sessionScope.loginuser.phone}</span>
+					      	</li>
+					      	
+					      </ul>
+					    </div>
+					    
+					    <div class="btn-probottom"></div>
+					    	<button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer;">
+					        	채팅
+					        	<i class="far fa-comments"></i>
+					        </button>
+					        <button class="btn-modi js-btn-modi btn-bottom" style=" cursor: pointer;" >
+					       		정보수정
+					            <i class="far fa-address-card"></i>
+					        </button>
+					  </div> 
+					  
+					 <%--  <div class="card img-fluid" style="width:400px">
+					     <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
+					     <div class="bottom-left">Bottom Left</div>
+					     <div class="card-img-overlay">
+					      <h4 class="card-title" style="bottom:0">${sessionScope.loginuser.name}</h4>
+					      <p class="card-text">${sessionScope.loginuser.fk_deptnum}</p>
+					      <a href="#" class="btn btn-primary">See Profile</a>
+					     </div>
+					  </div> --%>
         	    	</div>
+        	    	
+					  
         	    
 				    <%-- <div class="modal-dialog"  >
 				      <div class="modal-content">
