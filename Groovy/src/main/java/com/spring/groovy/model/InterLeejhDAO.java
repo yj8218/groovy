@@ -18,14 +18,11 @@ public interface InterLeejhDAO {
 	// === 새비밀번호 업데이트 메서드(update) === //
 	int newPwdUpdate(Map<String, String> paraMap);
 
-	// === 부서정보을 가져오기 위함 === 
-	List<DepartmentVO> getDepts();
 
-	// === 직위정보을 가져오기 위함 ===
-	List<SpotVO> getSpots();
+	// === 직원정보을 가져오기 ===
+	List<EmployeeVO> empList();
 
-	// === 직원정보을 가져오기 위함 ===
-	List<EmployeeVO> getEmpList(Map<String, String> paraMap);
+	List<String> deptList();
 	
 
 }//end of public interface InterLeejhDAO
