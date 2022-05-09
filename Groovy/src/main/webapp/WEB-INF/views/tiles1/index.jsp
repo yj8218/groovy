@@ -185,7 +185,7 @@
 			else {
 				$.ajax({
 					url:"<%= ctxPath %>/searchEmp.groovy",
-					type:"GET",
+					type:"POST",
 					data:{"searchType":"name",
 						  "searchWord":$("input#searchEmp").val()},
 					dataType:"JSON",
@@ -237,6 +237,7 @@
 			
 			$.ajax({
 				url:"<%= ctxPath %>/showEmpByDept.groovy",
+				type:"POST",
 				data:{"pk_deptnum":pk_deptnum},
 				dataType:"JSON",
 				success:function(json) {

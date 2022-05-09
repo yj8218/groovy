@@ -66,7 +66,7 @@ public class LimshController {
 	
 	// 검색한 프로젝트 참여자 목록 보여주기
 	@ResponseBody
-	@RequestMapping(value="/searchEmp.groovy", method={RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/searchEmp.groovy", method={RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 	public String searchEmp(HttpServletRequest request) {
 		
 		String searchType = request.getParameter("searchType");
@@ -158,7 +158,7 @@ public class LimshController {
 	
 	// 부서별 직원 목록 보여주기(ajax)
 	@ResponseBody
-	@RequestMapping(value="/showEmpByDept.groovy", method={RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/showEmpByDept.groovy", method={RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 	public String showEmpByDept(HttpServletRequest request) {
 		
 		String pk_deptnum = request.getParameter("pk_deptnum");
