@@ -6,4 +6,45 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="limsh">
 
+	<!-- 직원 목록 가져오기(select) -->
+	<select id="showEmployeeList" resultType="com.spring.groovy.model.EmployeeVO">
+      select pk_empnum, name, phone, email, emppicturename, emppicturefilename
+      from tbl_employee
+      where resignationstatus = 0
+      and not name like '%'||'관리'||'%'
+      order by fk_deptnum asc, fk_spotnum desc
+   	</select>
+
+	<!-- 검색한 프로젝트 참여자 목록 보여주기(select) -->
+	<select id="searchEmp" parameterType="HashMap" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, ${searchType}, phone, email, emppicturename, emppicturefilename
+		from tbl_employee 
+		where RESIGNATIONSTATUS = 0
+		and not name like '%'||'관리'||'%'
+		and lower(${searchType}) like '%'||lower(#{searchWord})||'%'
+		order by ${searchType} asc
+	</select>
+	
+	<!-- 사용자 프로필 보여주기(ajax) : 사진, 이름, 이메일, 전화번호 -->
+	<select id="showEmpProfile" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		select name, email, phone, emppicturename, emppicturefilename
+		from tbl_employee
+		where pk_empnum = #{pk_empnum}
+	</select>
+	
+	<!-- 부서 목록 가져오기(select) -->
+	<select id="getDeptvoList" resultType="com.spring.groovy.model.DepartmentVO">
+		select pk_deptnum, deptnameeng, deptnamekor
+		from tbl_department
+		order by pk_deptnum asc
+	</select>
+	
+	<!-- 부서별 직원 목록 가져오기(select) -->
+	<select id="getEmpListByDept" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, name, phone, email, emppicturename, emppicturefilename
+		from tbl_employee
+		where fk_deptnum = #{pk_deptnum}
+		order by fk_spotnum desc
+	</select>
+	
 </mapper>

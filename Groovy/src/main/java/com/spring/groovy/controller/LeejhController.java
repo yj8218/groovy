@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -123,6 +124,16 @@ public class LeejhController {
 						mav.addObject("empList", empList);
 						mav.addObject("deptList", deptList);
 						*/
+						
+						// === 부서정보을 가져오기 위함 === 
+						List<DepartmentVO> departList = service.getDepts();
+						
+						// === 직위정보을 가져오기 위함 === 
+						List<SpotVO> spotList = service.getSpots();
+								
+						mav.addObject("departList", departList);
+						mav.addObject("spotList", spotList);
+						
 						mav.setViewName("redirect:/index.groovy"); //시작페이지로 이동
 						
 					}
@@ -335,5 +346,154 @@ public class LeejhController {
 		return json;
 	}
 		
+	// === 직원목록 가져오기(ajax) === //
+/*	@ResponseBody
+	@RequestMapping(value = "/empList.groovy", method = {RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+	public String empList(HttpServletRequest request) {
+		List<Map<String, String>> emp = null;
+		
+		String searchEmp = request.getParameter("searchEmp");
+		
+		if(searchEmp == null || "".equals(searchEmp) || searchEmp.trim().isEmpty() ) {
+			searchEmp = "";
+	    }
+		
+		if(!"".equals(searchEmp)) {
+
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("searchEmp", searchEmp);
+		}
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("searchEmp", searchEmp);
+		
+		List<EmployeeVO> empList = service.getEmpList(paraMap);
+		
+		JSONArray jsonArr = new JSONArray();	// []
+		
+		if(empList != null) {
+			for(EmployeeVO employee : empList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("fk_deptnum", employee.getFk_deptnum());
+				jsonObj.put("fk_spotnum", employee.getFk_spotnum());
+				jsonObj.put("fk_vstatus", employee.getFk_vstatus());
+				jsonObj.put("deptnamekor", employee.getDeptnamekor());
+				jsonObj.put("email", employee.getEmail());
+				jsonObj.put("emppicturename", employee.getEmppicturename());
+				jsonObj.put("name", employee.getName());
+				jsonObj.put("phone", employee.getPhone());
+				jsonObj.put("spotnamekor", employee.getSpotnamekor());
+			
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
+	}	
+*/	
+	/*
+	// 사원정보 조회 페이지
+	@RequestMapping(value ="/empList.groovy")
+	public ModelAndView empList(ModelAndView mav, HttpServletRequest request) {
+		
+		// 부서정보을 가져오기 위함
+	//	List<DepartmentVO> departList = service.getDepts();
+		
+		// 직위정보을 가져오기 위함
+	//	List<SpotVO> spotList = service.getSpots();
+		
+		Map<String, String> paraMap = new HashMap<>();
+		
+	//	String dept = request.getParameter("dept");
+	//	String spot = request.getParameter("spot");
+	
+	
+	
+	//	paraMap.put("dept", dept);
+	//	paraMap.put("spot", spot);
+	
+		
+	//	System.out.println("확인용 => dept :" + dept);
+	//	System.out.println("확인용 => spot :" + spot);
+	
+		
+		// 직원정보를 가져오기 위함(부서, 직위 join)
+		List<EmployeeVO> empList = service.getEmpList(paraMap);
+		
+				
+		mav.addObject("deptnamekor", deptnamekor);
+		mav.addObject("spots", spots);
+		mav.addObject("emps", emps);
+		
+		// 뷰단에 값을 고정시키기 위함
+		mav.addObject("dept", dept);
+		mav.addObject("spot", spot);
+		mav.addObject("date_start", date_start);
+		mav.addObject("date_end", date_end);
+		mav.addObject("resign_status", resign_status);
+		mav.addObject("search_item", search_item);
+		mav.addObject("search_value", search_value);
+		
+		mav.setViewName("employee/viewEmp.tiles1");
+		
+		return mav;//  /WEB-INF/views/tiles1/employee/viewEmp.jsp 페이지 만들어야 한다.
+		
+	}//end of public ModelAndView viewEmp(ModelAndView mav)	
+	*/
+	
+	// === 부서목록 가져오기(ajax) === //
+	@ResponseBody
+	@RequestMapping(value = "/getDepartmentName.groovy", method = {RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+	public String getDepartmentName(HttpServletRequest request) {
+		
+		// === 부서목록 가져오기(select) === //
+	//	List<DepartmentVO> departList = service.getDepartmentName();
+		List<DepartmentVO> departList = service.getDepts();
+		
+		JSONArray jsonArr = new JSONArray();	// []
+		
+		if(departList != null) {
+			for(DepartmentVO department : departList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("pk_deptnum", department.getPk_deptnum());
+				jsonObj.put("deptnameeng", department.getDeptnameeng());
+				jsonObj.put("deptnamekor", department.getDeptnamekor());
+				
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
+	}
+	
+	
+	// === 직급 목록 가져오기(ajax) === //
+	@ResponseBody
+	@RequestMapping(value = "/getSpotName.groovy", method = {RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
+	public String getSpotName(HttpServletRequest request) {
+		
+		// === 직급 목록 가져오기(select) === //
+		
+//		List<SpotVO> positionList = service.getPosition();
+		List<SpotVO> spotList = service.getSpots();
+		
+		JSONArray jsonArr = new JSONArray();
+		
+		if(spotList != null) {
+			for(SpotVO spot : spotList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("pk_spotnum", spot.getPk_spotnum());
+				jsonObj.put("spotnameeng", spot.getSpotnameeng());
+				jsonObj.put("spotnamekor", spot.getSpotnamekor());
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		
+		return jsonArr.toString();
+	}
+	
 	
 }//end of public class LeejhController

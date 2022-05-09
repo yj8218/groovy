@@ -43,3 +43,33 @@ SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 			  fk_deptnum,  fk_spotnum,  emppicturename,  salary
 		from tbl_employee
 		where pk_empnum = '001-01' and pwd= 'qwer1234$';
+
+
+
+
+
+
+		select  pk_empnum, name, address, detailaddress, postcode, 
+		        phone, email, birthday, gender, registerday, 
+		        startday, resignationstatus,  
+		        resignationday,  fk_vstatus,     
+		        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+		        spotnamekor, deptnamekor, pk_spotnum
+		from
+		(
+			SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+			        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+			        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+			        E.resignationday,  E.fk_vstatus,     
+			        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+			        s.spotnamekor, s.pk_spotnum,
+			        d.deptnamekor, d.pk_deptnum
+			from tbl_employee E
+			JOIN TBL_SPOT S 
+			ON E.fk_spotnum = S.pk_spotnum
+			JOIN TBL_DEPARTMENT D 
+			ON E.fk_deptnum = D.pk_deptnum
+		) V
+		where 1=1
+        	and pk_deptnum = 1 
+        order by pk_deptnum , pk_spotnum desc;
