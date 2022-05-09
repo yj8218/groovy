@@ -840,12 +840,10 @@ button.btn-bottom{
 </div>
 <!-- 상단 네비게이션 끝 -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
 <script src="<%= ctxPath%>/resources/jstree/dist/jstree.min.js"></script>
 <script>
 
- 
- 
  $(function() {
 		
 		//console.log("테스트2:");
