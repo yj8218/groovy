@@ -56,26 +56,23 @@ public class LeejhDAO implements InterLeejhDAO {
 		return n;
 	}
 
-	// === 부서정보을 가져오기 위함 ===
-	@Override
-	public List<DepartmentVO> getDepts() {
-		List<DepartmentVO> departList = sqlsession.selectList("leejh.getDepts");
-		return departList;
-	}
-	
-	// === 직위정보을 가져오기 위함 ===
-	@Override
-	public List<SpotVO> getSpots() {
-		 List<SpotVO> spotList = sqlsession.selectList("leejh.getSpots");
-		return spotList;
-	}
 
-	// === 직원정보을 가져오기 위함 ===
+	// === 직원정보을 가져오기  ===
+
+
 	@Override
-	public List<EmployeeVO> getEmpList(Map<String, String> paraMap) {
-		List<EmployeeVO> empList = sqlsession.selectList("leejh.getEmpList");
+	public List<EmployeeVO> empList() {
+		List<EmployeeVO> empList = sqlsession.selectList("leejh.empList");
 		return empList;
 	}
+
+	@Override
+	public List<String> deptList() {
+		
+		 List<String> deptList = sqlsession.selectList("leejh.deptList");
+		return deptList;
+	}
+
 
 
 }//end of public class LeejhDAO implements InterLeejhDAO

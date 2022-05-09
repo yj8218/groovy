@@ -47,28 +47,21 @@ public class LeejhService implements InterLeejhService {
 		int n = dao.newPwdUpdate(paraMap);
 		return n;
 	}
+	
 
-	// === 부서정보을 가져오기 위함 ===
+	//직원정보
 	@Override
-	public List<DepartmentVO> getDepts() {
-		List<DepartmentVO> departList = dao.getDepts();
-		return departList;
-	}
-
-	// === 직위정보을 가져오기 위함 ===
-	@Override
-	public List<SpotVO> getSpots() {
-		List<SpotVO> spotList = dao.getSpots();
-		return spotList;
-	}
-
-	// === 직원정보를 가져오기 위함 === 
-	@Override
-	public List<EmployeeVO> getEmpList(Map<String, String> paraMap) {
-		List<EmployeeVO> empList = dao.getEmpList(paraMap);
+	public List<EmployeeVO> empList() {
+		List<EmployeeVO> empList = dao.empList();
 		return empList;
 	}
 
+	@Override
+	public List<String> deptList() {
+		List<String> deptList = dao.deptList();
+		//System.out.println(deptList);
+		return deptList;
+	}
 
 
 

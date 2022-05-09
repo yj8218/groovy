@@ -33,22 +33,8 @@
 		where pk_empnum = #{pk_empnum} and  email = #{email} 
 	</update>
 
-
-	<!-- === 부서명 가져오기  === -->
-	<select id="getDepts" resultType="com.spring.groovy.model.DepartmentVO">
-		select PK_DEPTNUM, DEPTNAMEKOR
-		from TBL_DEPARTMENT
-		order by pk_deptnum
-	</select>
-	
-	<!-- === 직위명을 가져오기 위함  === -->
-	<select id="getSpots" resultType="com.spring.groovy.model.SpotVO">
-		select PK_SPOTNUM, SPOTNAMEKOR
-		from TBL_SPOT
-		order by PK_SPOTNUM
-	</select>
-	
-	<select id="getEmpList" resultType="com.spring.groovy.model.EmployeeVO">
+	<!-- === 직원정보 가져오기 === -->
+	<select id="empList" resultType="com.spring.groovy.model.EmployeeVO">
 				select  pk_empnum, name, address, detailaddress, postcode, 
 				        phone, email, birthday, gender, registerday, 
 				        startday, resignationstatus,  
@@ -70,11 +56,14 @@
 					JOIN TBL_DEPARTMENT D 
 					ON E.fk_deptnum = D.pk_deptnum
 				) V
-				where 1=1
-					and name = #{searchEmp}
-		        	<!-- and pk_deptnum = #{pk_deptnum} -->
-		        order by pk_deptnum , pk_spotnum desc;
+		        order by pk_deptnum , pk_spotnum desc
 	
 	</select>
+	
+  <!-- 부서 불러오기 -->
+   <select id="deptList" resultType="String">
+      select deptnamekor
+      from tbl_department
+   </select>
 	
 </mapper>

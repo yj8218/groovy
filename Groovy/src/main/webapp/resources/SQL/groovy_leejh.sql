@@ -29,7 +29,10 @@ salary            not null number(20)
 
 SELECT pk_empnum 
 from tbl_employee
-        
+   
+   
+SELECT * 
+from tbl_department     
         
 insert into tbl_employee( pk_empnum, pwd, name,  address,  detailaddress,
 			 extraaddress, postcode, phone,  email,  birthday, gender,
@@ -70,6 +73,11 @@ SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 			JOIN TBL_DEPARTMENT D 
 			ON E.fk_deptnum = D.pk_deptnum
 		) V
-		where 1=1
-        	and pk_deptnum = 1 
+		--where 1=1
+        	--and pk_deptnum = 1 
         order by pk_deptnum , pk_spotnum desc;
+        
+        
+        
+        select deptnamekor
+      from tbl_department

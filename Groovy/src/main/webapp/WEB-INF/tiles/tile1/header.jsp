@@ -29,7 +29,8 @@
  // System.out.println("serverName : " + serverName);
  // serverName : http://211.238.142.72:9090 
 %>
-
+<!-- 조직도 -->
+<link rel="stylesheet" href="<%= ctxPath%>/resources/jstree/dist/themes/default/style.min.css" />
 <style type="text/css">
 {box-sizing: border-box;}
 
@@ -258,7 +259,7 @@ button#btnChat{
     position: absolute;
     top: 50px;
     right: 30px;
-    z-index: 13;
+/*     z-index: 13; */
     background: #fff;
     border: 1px solid #777;
     -webkit-border-radius: 8px;
@@ -280,7 +281,7 @@ button#btnChat{
 
 /* Add some hover effects to buttons */
 .myinfo-container {
-  opacity: 1;
+  opacity: 1; 
 }
 
 .myprofile-photo{
@@ -296,7 +297,7 @@ button#btnChat{
 }
 
 .myprofile-photo2{
-	z-index: 1;
+	/* z-index: 1; */
     position: absolute;
     top: 0;
     right: 0;
@@ -331,21 +332,23 @@ li.infoList:hover{
 }
 
 div#myModal{
-position: absolute;
+
     overflow-y: auto;
 /*     -ms-overflow-y: hidden; */
-    position: fixed;
-    
+/*     position: fixed; */
+/*     z-index:1050; */
     right: 0;
     top:150px;
     left: 0;
+     height: 100%;
    
 }
 
-div#myModal div.modal-dialog{
+div#myModal div.modal-dialogs{
 	margin: 0 auto;
     padding-bottom: 15px;
-    
+  /*   z-index:1050;  */
+
     -webkit-border-radius: 10px;
     border-radius: 10px;
     background: #fff;
@@ -509,43 +512,6 @@ button.btn-bottom{
   		document.getElementById("myForm4").style.display = "none";
 	}
 	
-	  // === 직원목록읽어오기  === //
-	function goReadEmp() {
-		  const queryString = $("form[name=readEmpFrm]").serialize();
-		  $("form[name=readEmpFrm]").ajax({
-			  url:"<%= request.getContextPath()%>/empList.groovy",
-			  data: queryString,
-			  dataType:"JSON",
-			  success:function(json){
-				  // [{"name":"엄정화","regDate":"2022-04-25 10:23:51","content":"두번째 댓글 입니다."},{"name":"엄정화","regDate":"2022-04-25 10:13:47","content":"첫번째 댓글 입니다."}] 
-				  // 또는
-				  // [] 
-				  
-				  let html = "";
-				  if(json.length > 0) {
-					  $.each(json, function(index, item){
-						  html += "<tr>";
-						  html += "<td class='comment'>"+(index+1)+"</td>";
-						  html += "<td>"+item.content+"</td>";
-						  html += "<td class='comment'>"+item.name+"</td>";
-						  html += "<td class='comment'>"+item.age+"</td>";
-						  html += "</tr>";
-					  });
-				  }
-				  else {
-					  html += "<tr>";
-					  html += "<td colspan='4' class='comment'>댓글이 없습니다</td>";
-					  html += "</tr>";
-				  }
-				  
-				  $("tbody#commentDisplay").html(html);
-			  },
-			  error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			  }
-		  });
-		  
-	  }// end of function goReadEmp(){}--------------------------
 	
 	
 	
@@ -600,93 +566,10 @@ button.btn-bottom{
 							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name" required>
 							
 						</div>
-						<div> re</div>
-						<!-- <div    style= "padding: 7px 20px 20px 20px;"><span data-toggle="collapse" data-target="#accounting" style="cursor:pointer " class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">회계부</span> -->
-							<!-- <ul  class="pjtList"  style=" list-style:none;" >
-								
-								<li id="accounting" class="department-item collase "  >
-						           	ㅎㅎ
-						        </li>
-						        <li id="accounting" class="department-item collase "  >
-						           	이재희
-						        </li>
-						        
-							</ul>
-							<ul class="pjtList " >
-								<span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">영업부</span>
-							
-							</ul> -->
-							
-						<!-- 	<div id="displayList" style="position:absolute; z-index:2; background-color: white;  border: solid 1px #bfbfbf; width: 336px; height: 150px; margin-left: 8px; margin-top: 58px; border-top:0px; padding-left: 9px; border-radius: 10px;"></div>
-							  <div class="table-responsive" style="z-index: 1; height: 315px;"> -->
-							  <div>
-							  	<form name="readEmpFrm" id="readEmpFrm">
-							  		<ul>
-										<c:forEach var="empvo" items="${requestScope.empList}">
-											<c:if test="${empvo.spotnamekor == '사장'}">
-												<li>${empvo.name}&nbsp;${empvo.spotnamekor}ㅎㅎ</li>
-											</c:if>
-											
-											<c:if test="${empvo.spotnamekor == '이사'}">
-												<li>${empvo.name}&nbsp;${empvo.spotnamekor}</li>
-											</c:if>
-										</c:forEach>
-										<li>
-										
-										</li>
-									
-									
-									</ul>
-								
-								<c:if test="${not empty requestScope.emps }">
-									<c:forEach var="emp" items="${requestScope.emps }" varStatus="status">
-										<tr class="">
-										
-											<td>${status.count }</td>
-											<td>${emp.pk_empnum }</td>
-											<td>${emp.name }</td>
-											<td>${emp.deptnamekor }</td>
-											<td>${emp.spotnamekor }</td>
-											<c:if test="${emp.resignationstatus == 0 }">
-												<td>재직</td>
-											</c:if>
-											<c:if test="${emp.resignationstatus != 0 }">
-												<td>퇴사</td>
-											</c:if>
-											<td>${emp.startday }</td>
-											<td>${emp.phone }</td>
-											<td>${emp.email }</td>
-											
-										</tr>
-									</c:forEach>
-									
-									
-								</c:if>
-								
-							  	</form>
-							  </div>
-									
-								
-								  <%--   <c:if test="${not empty requestScope.empList}">
-								    	<c:forEach var="map" items="${requestScope.empList}">
-								    		<ul class="empTr">
-										        <li class="name">${map.name}</li>
-										        <li class="deptnamekor">${map.deptnamekor}</li>
-										        <li class="departmentname">${map.departmentname}</li>
-										        <li class="spotnamekor">${map.spotnamekor}</li>
-										        <li class="email">${map.email}</li>
-										        <li class="mobile"><span>${map.mobile.substring(0, 3)}-${map.mobile.substring(3, 7)}-${map.mobile.substring(7)}</span></li>
-										    </ul>
-								    	</c:forEach>
-								    </c:if> --%>
-					<!-- 		  </div>
-							
-							
-						</div>
-						 -->
 						
-	   
-					<!-- </div> -->
+						<!-- 조직도리스트 넣기 -->
+						<!-- 3 setup a container element -->
+						<div id="jstree" style="color:blue;">
 				    
 				  </article>
 				</div>
@@ -847,8 +730,8 @@ button.btn-bottom{
         					</div>
         					
         				</li>
-        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</li>
-        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</li>
+        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</a></li>
+        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</a></li>
         				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
         				
         			</ul>
@@ -859,8 +742,16 @@ button.btn-bottom{
         		
         		
         		
-        	    <div class="modal" id="myModal" >
-        	       <div class="modal-dialog"  >
+
+        		
+        	</div>
+        	
+	</nav>
+</div>
+
+
+ <div class="modal" id="myModal"  >
+        	       <div class="modal-dialogs"  >
 	        	       <div class="card " style="width:400px; display: block; ">
 					   	<div style=" position: relative; ">
 						    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
@@ -881,11 +772,11 @@ button.btn-bottom{
 					    </div>
 					    
 					    <div class="btn-probottom"></div>
-					    	<button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer;">
+					    	<button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer !important; pointer-">
 					        	채팅
 					        	<i class="far fa-comments"></i>
 					        </button>
-					        <button class="btn-modi js-btn-modi btn-bottom" style=" cursor: pointer;" >
+					        <button class="btn-modi js-btn-modi btn-bottom"  data-toggle="modal" data-target="#myModal2" style=" cursor: pointer;" >
 					       		정보수정
 					            <i class="far fa-address-card"></i>
 					        </button>
@@ -925,14 +816,71 @@ button.btn-bottom{
 				      </div>
 				    </div> --%>
 				  </div>
-        		
-        		
-        	</div>
-        	
-	</nav>
+				  
+<!-- 회원정보수정 -->
+<div class="modal" id="myModal2">
+ <div class="modal-content">
+				      
+     Modal Header
+     <div class="modal-header">
+     	
+     </div>
+     
+     Modal body
+     <div class="modal-body">
+       Modal body..
+     </div>
+     
+     Modal footer
+     <div class="modal-footer">
+       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+     </div>
+     
+   </div>
 </div>
 <!-- 상단 네비게이션 끝 -->
 
-   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<script src="<%= ctxPath%>/resources/jstree/dist/jstree.min.js"></script>
+<script>
+
+ 
+ 
+ $(function() {
+		
+		//console.log("테스트2:");
+		
+		
+		    $.ajax({
+		       
+		        type: "GET",
+		        url: "<%= ctxPath%>/getOrganization.groovy",
+		        dataType: "json",
+		        success: function (json) {
+		        	// console.log("테스트트4");
+		        	createJSTree(json);
+		            //console.log("테스트트");
+		            //console.log("테스트트 :"+ json);
+		          
+		        },
+
+		        error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		      }
+		    });            
+		
+		//console.log("테스트3");
+		
+	function createJSTree(jsondata) {  
+		 
+		$('#jstree').jstree({ 'core' : {
+			    'data' :  jsondata
+			    
+			} });
+		 
+	} 
+ }); 
+
+</script>
 
   
