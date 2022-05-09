@@ -17,8 +17,18 @@ public interface InterYuhrDAO {
 	// 사원테이블에 사원정보 insert
 	int addEmp(EmployeeVO empVo);
 
-	// 직원정보를 가져오기 위함
+	// 직원정보를 가져오기 위함 
 	List<EmployeeVO> getEmps(Map<String, String> paraMap);
+
+	// 조회한 조건에 따른 총 사원의 수
+	int getTotalCount(Map<String, String> paraMap);
+
+	// 한명의 사원 상세정보 가져오기
+	EmployeeVO getOneEmp(String pk_empnum);
+
+	// 근태정보 가져오기
+	List<CommuteStatusVO> getCommStatus();
+
 
 
 }//end of public interface InterYuhrDAO
