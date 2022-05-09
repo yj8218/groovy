@@ -28,9 +28,14 @@
   top: 0;
   left: 0;  
   background-color: #111;
-  overflow-x: hidden;
+  overflow: scroll;
+  -ms-overflow-style: none;
   padding-top: 45px;
   color: white;
+}
+.sidenav::-webkit-scrollbar { 
+    display: none;
+    width: 0 !important;
 }
 
 .btn_newpjt{

@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.*;
+import com.spring.groovy.model.CommuteStatusVO;
 import com.spring.groovy.model.DepartmentVO;
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.model.SpotVO;
@@ -209,6 +210,7 @@ public class YuhrController {
 		String resign_status = request.getParameter("resign_status");
 		String search_item = request.getParameter("search_item");
 		String search_value = request.getParameter("search_value");
+		String select_order = request.getParameter("select_order");
 		
 		// null 일때 "" 주는 메소드
 		dept = makeNotNull(dept);
@@ -218,6 +220,9 @@ public class YuhrController {
 		resign_status = makeNotNull(resign_status);
 		search_item = makeNotNull(search_item);
 		search_value = makeNotNull(search_value);
+		if(select_order == null) {
+			select_order = "pk_empnum desc";
+		}
 		
 		paraMap.put("dept", dept);
 		paraMap.put("spot", spot);
@@ -226,6 +231,7 @@ public class YuhrController {
 		paraMap.put("resign_status", resign_status);
 		paraMap.put("search_item", search_item);
 		paraMap.put("search_value", search_value);
+		paraMap.put("select_order", select_order);
 		/*
 		System.out.println("확인용 => dept :" + dept);
 		System.out.println("확인용 => spot :" + spot);
@@ -235,11 +241,90 @@ public class YuhrController {
 		System.out.println("확인용 => search_item :" + search_item);
 		System.out.println("확인용 => search_value :" + search_value);
 		*/
-		///////// 검색 조건에 따른 사원정보 보여주기 시작 ////////////////////////
+		System.out.println("확인용 => select_order :" + select_order);
+		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+		int totalCount = 0; 		// 총 게시물 개수
+		int sizePerPage = 10; 		// 한 페이지당 보여줄 게시물 개수
+		int currentShowPageNo = 0; 	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 한다.
+		int totalPage = 0; 			// 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+		
+		int startRno = 0; 	// 시작행 번호
+		int endRno = 0; 	// 끝행 번호
+		
+		// 조회한 조건에 따른 총 사원의 수
+		totalCount = service.getTotalCount(paraMap);
+		totalPage = (int) Math.ceil((double)totalCount/sizePerPage);
+				
+		if(str_currentShowPageNo == null) {
+			// 게시판에 보여지는 초기화면
+			currentShowPageNo = 1;
+		}
+		else {
+			try {
+				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+				
+				if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+					currentShowPageNo = 1;
+				}
+				
+			} catch (NumberFormatException e) {
+				currentShowPageNo = 1;
+			}
+			
+		}
+		
+		// 공식
+		startRno = ((currentShowPageNo -1) * sizePerPage) + 1;
+		endRno = startRno + sizePerPage -1;
+		
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
 		
 		
 		
-		///////// 검색 조건에 따른 사원정보 보여주기 끝 ////////////////////////
+		///////// 검색 조건에 따른 페이지바 보여주기 시작 ////////////////////////
+		int blockSize = 5; 
+		int loop = 1;
+		
+		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+	      
+		String pageBar = "<ul style='list-style: none;'>";
+		String url = "viewEmp.groovy";
+		
+		// === [맨처음][이전] 만들기 === // 
+		if(pageNo != 1) {
+			pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo=1'>[맨처음]</a></li>";
+			pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+		}
+		
+		
+		while( !(loop > blockSize || pageNo > totalPage) ) {
+			
+			if(pageNo == currentShowPageNo) {
+				pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; font-weight: bold; padding: 2px 4px;'>"+pageNo+"</li>";
+			}
+			else {
+				pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+			}
+			
+			loop++;
+			pageNo++;
+		}// end of while ----------
+		
+		
+		
+		// === [다음][마지막] 만들기 === // 
+		
+		if(pageNo <= totalPage) {
+			pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo)+"'>[다음]</a></li>";
+			pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+		}
+		
+		pageBar += "</ul>";
+		mav.addObject("pageBar", pageBar);
+		
+		
+		///////// 검색 조건에 따른 페이지바 보여주기 끝 ////////////////////////
 		
 		
 		
@@ -256,6 +341,7 @@ public class YuhrController {
 		mav.addObject("departments", departments);
 		mav.addObject("spots", spots);
 		mav.addObject("emps", emps);
+		mav.addObject("currentShowPageNo", currentShowPageNo);
 		
 		// 뷰단에 값을 고정시키기 위함
 		mav.addObject("dept", dept);
@@ -265,12 +351,52 @@ public class YuhrController {
 		mav.addObject("resign_status", resign_status);
 		mav.addObject("search_item", search_item);
 		mav.addObject("search_value", search_value);
+		mav.addObject("select_order", select_order);
 		
 		mav.setViewName("employee/viewEmp.tiles1");
 		
 		return mav;//  /WEB-INF/views/tiles1/employee/viewEmp.jsp 페이지 만들어야 한다.
 		
 	}//end of public ModelAndView viewEmp(ModelAndView mav)	
+	
+	
+	@ResponseBody
+	@RequestMapping(value ="/getOneEmpInfo.groovy", produces="text/plain;charset=UTF-8")
+	public String getOneEmpInfo(HttpServletRequest request ) {
+		
+		String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
+
+		// 한명의 사원 상세정보 가져오기
+		EmployeeVO oneEmp = service.getOneEmp(pk_empnum);
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("pk_empnum", oneEmp.getPk_empnum());
+		jsonObj.put("name", oneEmp.getName());
+		jsonObj.put("birthday", oneEmp.getBirthday());
+		jsonObj.put("gender", oneEmp.getGender());
+		jsonObj.put("age", oneEmp.getAge());
+
+		jsonObj.put("postcode", oneEmp.getPostcode());
+		jsonObj.put("address", oneEmp.getAddress());
+		jsonObj.put("detailaddress", oneEmp.getDetailaddress());
+		
+		jsonObj.put("phone", oneEmp.getPhone());
+		jsonObj.put("email", oneEmp.getEmail());
+		
+		jsonObj.put("deptnamekor", oneEmp.getDeptnamekor());
+		jsonObj.put("spotnamekor", oneEmp.getSpotnamekor());
+		
+		jsonObj.put("startday", oneEmp.getStartday());
+		jsonObj.put("resignationstatus", oneEmp.getResignationstatus());
+		jsonObj.put("resignationday", oneEmp.getResignationday());
+		jsonObj.put("fk_vstatus", oneEmp.getFk_vstatus());
+		jsonObj.put("salary", oneEmp.getSalary());
+		
+		jsonObj.put("emppicturename", oneEmp.getEmppicturename());
+		return jsonObj.toString();
+	}
+	
 	
 	
 	// 근태관리 페이지(사원용 및 관리자용)
@@ -280,11 +406,11 @@ public class YuhrController {
 		// 부서정보을 가져오기 위함
 		List<DepartmentVO> departments = service.getDepts();
 		
-		// 직위정보을 가져오기 위함
-		List<SpotVO> spots = service.getSpots();
+		// 근태정보을 가져오기 위함
+		List<CommuteStatusVO> commStatusList = service.getCommStatus();
 		
 		mav.addObject("departments", departments);
-		mav.addObject("spots", spots);
+		mav.addObject("commStatusList", commStatusList);
 		
 		mav.setViewName("employee/worktime.tiles1");
 		
@@ -293,6 +419,24 @@ public class YuhrController {
 	}//end of public ModelAndView viewEmp(ModelAndView mav)	
 	
 	
+	// 출근 버튼만 있는 페이지(임시)
+	@RequestMapping(value ="/commutebutton.groovy")
+	public ModelAndView requiredLogin_commutebutton(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		// 부서정보을 가져오기 위함
+		List<DepartmentVO> departments = service.getDepts();
+		
+		// 근태정보을 가져오기 위함
+		List<CommuteStatusVO> commStatusList = service.getCommStatus();
+		
+		mav.addObject("departments", departments);
+		mav.addObject("commStatusList", commStatusList);
+		
+		mav.setViewName("employee/commutebutton.tiles1");
+		
+		return mav;//  /WEB-INF/views/tiles1/employee/worktime.jsp 페이지 만들어야 한다.
+		
+	}//end of public ModelAndView viewEmp(ModelAndView mav)	
 	
 	
 	

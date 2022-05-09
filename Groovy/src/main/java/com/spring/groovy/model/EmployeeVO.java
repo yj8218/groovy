@@ -1,5 +1,7 @@
 package com.spring.groovy.model;
 
+import java.util.Calendar;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class EmployeeVO {
@@ -264,7 +266,18 @@ public class EmployeeVO {
 	}
 	
 	
-	
+	public int getAge() {
+		int age = 0;
+		Calendar currentDate = Calendar.getInstance(); 
+	    // 현재날짜와 시간을 얻어온다.
+		
+		int currentYear = currentDate.get(Calendar.YEAR);
+		
+		age = currentYear - Integer.parseInt(birthday.substring(0,4)) + 1;
+		
+		return age;
+	}
+
 	
 }
 

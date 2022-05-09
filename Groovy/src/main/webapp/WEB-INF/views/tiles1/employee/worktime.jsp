@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
@@ -252,45 +251,33 @@ VTYPE		휴가종류
 			<th class="colsize2">근무일수</th>
 			<th class="colsize2">근무시간</th>
 		</tr>
-		<tr class="">
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-			<td>10</td>
-			<td>11</td>
-		</tr>
-		<tr class="">
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-			<td>10</td>
-			<td>11</td>
-		</tr>
-		<tr class="">
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-			<td>10</td>
-			<td>11</td>
-		</tr>
+		
+		<!--  ++ 관리자로 로그인 했을때만 볼수있게 처리 -->
+		<c:if test="${empty requestScope.commStatusList }">
+			<tr class="" >
+				<td colspan="12">근무통계 조회결과가 없습니다.</td>
+			</tr>
+		</c:if>
+		
+		<c:if test="${not empty requestScope.commStatusList }">
+			<c:forEach var="commStatus" items="${requestScope.commStatusList }" varStatus="status">
+		
+			<tr class="">
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>${commStatus.late }</td>
+				<td>${commStatus.early_endcheck }</td>
+				<td>${commStatus.no_endcheck }</td>
+				<td>${commStatus.no_workday }</td>
+				<td>${commStatus.total_workingday }</td>
+				<td>${commStatus.total_workingtime }</td>
+			</tr>
+		
+			</c:forEach>
+		</c:if>
 	</table>
 	
         
