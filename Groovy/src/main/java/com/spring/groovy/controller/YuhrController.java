@@ -6,6 +6,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,12 @@ public class YuhrController {
 	@Autowired     // Type에 따라 알아서 Bean 을 주입해준다.
     private FileManager fileManager;
 	
+	public String makeNotNull(String input) {
+		if(input == null || "".equals(input)) {
+			input = "";
+		}
+		return input;
+	}
 	
 	//=== 로그인 또는 로그아웃을 했을때 현재 보이던 그 페이지로 그대로 돌아가기 위한 메소드 생성
 	public void getCurrentURL(HttpServletRequest request) {
@@ -60,27 +67,28 @@ public class YuhrController {
 	}//end of public ModelAndView register()
 	
 	
-	// 사원번호 입력칸 유효성검사(중복검사, ajax 로 처리)
+	// 사원 정보 중복검사(ajax 로 처리, 이메일, 휴대폰번호, 사원번호)
 	@ResponseBody
-	@RequestMapping(value="/empnumCheck.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/empDuplicatedCheck.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	public String empnumCheck(HttpServletRequest request ) {
 		
-		String pk_empnum = request.getParameter("pk_empnum");
-	//	System.out.println("fk_deptnum =>>"+fk_deptnum);
+		String checkColumn = request.getParameter("checkColumn");
+		String checkValue = request.getParameter("checkValue");
 		
 		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("checkColumn", checkColumn);
+		paraMap.put("checkValue", checkValue);
 		
-		String s_usingPk_empnum = service.empnumCheck(paraMap);
+		String s_using_infoVal = service.empDuplicatedCheck(paraMap);
 		
-		boolean isEmpnumDuplicated = false; // true 면 중복된거고, false 면 중복안된것
+		boolean isDuplicatedInfoVal = false; // true 면 중복된거고, false 면 중복안된것
 		
-		if(s_usingPk_empnum != null ) {
-			isEmpnumDuplicated = true; // 중복이면 true 로 전환됨
+		if(s_using_infoVal != null ) {
+			isDuplicatedInfoVal = true; // 중복이면 true 로 전환됨
 		}
 		
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("isEmpnumDuplicated", isEmpnumDuplicated);
+		jsonObj.put("isDuplicatedInfoVal", isDuplicatedInfoVal);
 		
 		return jsonObj.toString();
 	}
@@ -182,18 +190,81 @@ public class YuhrController {
 	}
 
 	
-	// 조직도 및 사원정보 조회 페이지
+	// 사원정보 조회 페이지
 	@RequestMapping(value ="/viewEmp.groovy")
-	public ModelAndView viewEmp(ModelAndView mav) {
+	public ModelAndView viewEmp(ModelAndView mav, HttpServletRequest request) {
 		
 		// 부서정보을 가져오기 위함
 		List<DepartmentVO> departments = service.getDepts();
 		
 		// 직위정보을 가져오기 위함
 		List<SpotVO> spots = service.getSpots();
+		
+		Map<String, String> paraMap = new HashMap<>();
+		
+		String dept = request.getParameter("dept");
+		String spot = request.getParameter("spot");
+		String date_start = request.getParameter("date_start");
+		String date_end = request.getParameter("date_end");
+		String resign_status = request.getParameter("resign_status");
+		String search_item = request.getParameter("search_item");
+		String search_value = request.getParameter("search_value");
+		
+		// null 일때 "" 주는 메소드
+		dept = makeNotNull(dept);
+		spot = makeNotNull(spot);
+		date_start = makeNotNull(date_start);
+		date_end = makeNotNull(date_end);
+		resign_status = makeNotNull(resign_status);
+		search_item = makeNotNull(search_item);
+		search_value = makeNotNull(search_value);
+		
+		paraMap.put("dept", dept);
+		paraMap.put("spot", spot);
+		paraMap.put("date_start", date_start);
+		paraMap.put("date_end", date_end);
+		paraMap.put("resign_status", resign_status);
+		paraMap.put("search_item", search_item);
+		paraMap.put("search_value", search_value);
+		/*
+		System.out.println("확인용 => dept :" + dept);
+		System.out.println("확인용 => spot :" + spot);
+		System.out.println("확인용 => date_start :" + date_start);
+		System.out.println("확인용 => date_end :" + date_end);
+		System.out.println("확인용 => resign_status :" + resign_status);
+		System.out.println("확인용 => search_item :" + search_item);
+		System.out.println("확인용 => search_value :" + search_value);
+		*/
+		///////// 검색 조건에 따른 사원정보 보여주기 시작 ////////////////////////
+		
+		
+		
+		///////// 검색 조건에 따른 사원정보 보여주기 끝 ////////////////////////
+		
+		
+		
+		
+		
+		//////////////////////////////////
+		
+		
+		
+		// 직원정보를 가져오기 위함(부서, 직위 join)
+		List<EmployeeVO> emps = service.getEmps(paraMap);
+		
 				
 		mav.addObject("departments", departments);
 		mav.addObject("spots", spots);
+		mav.addObject("emps", emps);
+		
+		// 뷰단에 값을 고정시키기 위함
+		mav.addObject("dept", dept);
+		mav.addObject("spot", spot);
+		mav.addObject("date_start", date_start);
+		mav.addObject("date_end", date_end);
+		mav.addObject("resign_status", resign_status);
+		mav.addObject("search_item", search_item);
+		mav.addObject("search_value", search_value);
 		
 		mav.setViewName("employee/viewEmp.tiles1");
 		

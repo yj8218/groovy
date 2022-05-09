@@ -23,7 +23,7 @@
 	<select id="empnumCheck" parameterType="HashMap" resultType="String">
 		select pk_empnum
 		from tbl_employee
-		where pk_empnum = #{pk_empnum}
+		where ${checkColumn} = #{checkValue}
 	</select>
 	
 	<insert id="addEmp" parameterType="com.spring.groovy.model.EmployeeVO">
@@ -37,7 +37,49 @@
 			   sysdate, #{emppicturefilename}    )
 	</insert>
 	
-	
+	<select id="getEmps" parameterType="HashMap" resultType="com.spring.groovy.model.EmployeeVO">
+		select  pk_empnum, name, address, detailaddress, postcode, 
+		        phone, email, birthday, gender, registerday, 
+		        startday, resignationstatus,  
+		        resignationday,  fk_vstatus,     
+		        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+		        spotnamekor, deptnamekor
+		from
+		(
+			SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+			        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+			        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+			        E.resignationday,  E.fk_vstatus,     
+			        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+			        s.spotnamekor, s.pk_spotnum,
+			        d.deptnamekor, d.pk_deptnum
+			from tbl_employee E
+			JOIN TBL_SPOT S 
+			ON E.fk_spotnum = S.pk_spotnum
+			JOIN TBL_DEPARTMENT D 
+			ON E.fk_deptnum = D.pk_deptnum
+		) V
+		where 1=1
+		<if test="dept != ''">
+			and pk_deptnum = #{dept} 
+		</if>
+		<if test="spot != ''">
+			and pk_spotnum = #{spot}
+		</if>
+		<if test="date_start != ''">
+			and startday between #{date_start} and #{date_end}
+		</if>
+		<if test="resign_status != ''">
+			and resignationstatus = #{resign_status}
+		</if>
+		<if test="search_item == 'name'">
+			and ${search_item} like '%'||#{search_value}||'%'
+		</if>
+		<if test="search_item == 'pk_empnum'">
+			and ${search_item} = #{search_value}
+		</if>
+		
+	</select>
 	
 	
 	

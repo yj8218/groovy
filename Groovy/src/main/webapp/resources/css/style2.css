@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
-body {font-family: Arial, Helvetica, sans-serif, 돋움; }
-
+/* body {font-family: Arial, Helvetica, sans-serif, 돋움; }*/
 /* #mycontainer   { padding:20px; }
 #myheader      { display: flex; position: relative; }
 #mycontent      { position: relative; top:45px; padding-left:230px; }
@@ -11,7 +10,10 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
-.notosanskr * { 
+
+
+
+* {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -22,13 +24,13 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 		
 	}
 	
-	form[name="loginFrm"] {
+	form[name="loginFrm"] ,form[name="findPwdFrm"] {
 		text-align: center;
 		width: 500px;
 		margin: 0 auto;
 	}
 	
-	input.LOGIN {
+	input.LOGIN ,input.FINDPWD {
 		width: 486px;
 	    height: 52px;
 	    background: #fff;
@@ -63,7 +65,7 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 	    vertical-align: baseline;
 	}
 	
-	button#goLogin {
+	button#goLogin , button#goFindPwd {
 		display: block;
 	    color: #fff;
 	    text-align: center;
@@ -78,7 +80,7 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
 	    font-size: 16px;
 	}	
 	
-	button#goLogin:hover {
+	button#goLogin:hover , button#goFindPwd:hover {
 		font-weight: bold;
 		filter: brightness(90%);
 		cursor: pointer;

@@ -165,7 +165,11 @@ input.searchInput{
     
 }
 
-ul.pjtList:hover{
+ul.pjtList{
+	padding:5px 20px;
+}
+
+ul.pjtList li:hover{
     background-color: #efebff;
     cursor: pointer;
     color: #6449fc;
@@ -290,6 +294,18 @@ button#btnChat{
     background-size: cover;
 
 }
+
+.myprofile-photo2{
+	z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 320px;
+    width: 100%;
+    background: linear-gradient(180deg,rgba(102,102,102,0) 45.31%,rgba(51,51,51,.6) 100%);
+}
 strong.user-name{
 	display: block;
     line-height: 21px;
@@ -314,17 +330,84 @@ li.infoList:hover{
 	 font-weight: bold;
 }
 
+div#myModal{
+position: absolute;
+    overflow-y: auto;
+/*     -ms-overflow-y: hidden; */
+    position: fixed;
+    
+    right: 0;
+    top:150px;
+    left: 0;
+   
+}
+
+div#myModal div.modal-dialog{
+	margin: 0 auto;
+    padding-bottom: 15px;
+    
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #fff;
+    height: 320px;
+    width: 350px;
+
+}
+
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+div.card-body ul{
+	margin:0;
+	padding:0;
+}
+
+div.card-body ul li i {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+div.card-body ul li span {
+    width: 280px;
+    padding: 0 0 0 10px;
+    display: inline-block;
+    border-bottom: 1px solid #eee;
+}
+div.btn-probottom {
+	display: inline-block;
+	justify-content: center;
+	width:100%;
+}
+
+
+button.btn-bottom{
+    width: 140px;
+    height: 50px;
+    padding: 0 20px;
+    margin: 0 5px;
+    position: relative;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+    line-height: 50px;
+    cursor: pointer;
+}
 
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myModal').appendTo("body"); 
-	  	
+	  	/* 
 	  	$('ul.pjtList').click(function(){
 	  		$( 'ul.pjtList' ).addClass( 'active' );
 	  		
-	  	});
+	  	}); */
 	  	
 	  	
 	});
@@ -426,7 +509,43 @@ li.infoList:hover{
   		document.getElementById("myForm4").style.display = "none";
 	}
 	
-	
+	  // === 직원목록읽어오기  === //
+	function goReadEmp() {
+		  const queryString = $("form[name=readEmpFrm]").serialize();
+		  $("form[name=readEmpFrm]").ajax({
+			  url:"<%= request.getContextPath()%>/empList.groovy",
+			  data: queryString,
+			  dataType:"JSON",
+			  success:function(json){
+				  // [{"name":"엄정화","regDate":"2022-04-25 10:23:51","content":"두번째 댓글 입니다."},{"name":"엄정화","regDate":"2022-04-25 10:13:47","content":"첫번째 댓글 입니다."}] 
+				  // 또는
+				  // [] 
+				  
+				  let html = "";
+				  if(json.length > 0) {
+					  $.each(json, function(index, item){
+						  html += "<tr>";
+						  html += "<td class='comment'>"+(index+1)+"</td>";
+						  html += "<td>"+item.content+"</td>";
+						  html += "<td class='comment'>"+item.name+"</td>";
+						  html += "<td class='comment'>"+item.age+"</td>";
+						  html += "</tr>";
+					  });
+				  }
+				  else {
+					  html += "<tr>";
+					  html += "<td colspan='4' class='comment'>댓글이 없습니다</td>";
+					  html += "</tr>";
+				  }
+				  
+				  $("tbody#commentDisplay").html(html);
+			  },
+			  error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			  }
+		  });
+		  
+	  }// end of function goReadEmp(){}--------------------------
 	
 	
 	
@@ -481,18 +600,93 @@ li.infoList:hover{
 							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name" required>
 							
 						</div>
-						<div    style= "padding: 7px 20px 20px 20px;">
-							<ul  class="pjtList" style="   padding:5px 20px; ">
-								<li class="department-item " dvsn-cd="1" depth="0" hgrn-dvsn-cd="" dvsn-nm="프로젝트 관리" empl_cnt="" >
-						          
-						            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">프로젝트 관리</span>
+						<div> re</div>
+						<!-- <div    style= "padding: 7px 20px 20px 20px;"><span data-toggle="collapse" data-target="#accounting" style="cursor:pointer " class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">회계부</span> -->
+							<!-- <ul  class="pjtList"  style=" list-style:none;" >
+								
+								<li id="accounting" class="department-item collase "  >
+						           	ㅎㅎ
 						        </li>
+						        <li id="accounting" class="department-item collase "  >
+						           	이재희
+						        </li>
+						        
 							</ul>
+							<ul class="pjtList " >
+								<span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">영업부</span>
+							
+							</ul> -->
+							
+						<!-- 	<div id="displayList" style="position:absolute; z-index:2; background-color: white;  border: solid 1px #bfbfbf; width: 336px; height: 150px; margin-left: 8px; margin-top: 58px; border-top:0px; padding-left: 9px; border-radius: 10px;"></div>
+							  <div class="table-responsive" style="z-index: 1; height: 315px;"> -->
+							  <div>
+							  	<form name="readEmpFrm" id="readEmpFrm">
+							  		<ul>
+										<c:forEach var="empvo" items="${requestScope.empList}">
+											<c:if test="${empvo.spotnamekor == '사장'}">
+												<li>${empvo.name}&nbsp;${empvo.spotnamekor}ㅎㅎ</li>
+											</c:if>
+											
+											<c:if test="${empvo.spotnamekor == '이사'}">
+												<li>${empvo.name}&nbsp;${empvo.spotnamekor}</li>
+											</c:if>
+										</c:forEach>
+										<li>
+										
+										</li>
+									
+									
+									</ul>
+								
+								<c:if test="${not empty requestScope.emps }">
+									<c:forEach var="emp" items="${requestScope.emps }" varStatus="status">
+										<tr class="">
+										
+											<td>${status.count }</td>
+											<td>${emp.pk_empnum }</td>
+											<td>${emp.name }</td>
+											<td>${emp.deptnamekor }</td>
+											<td>${emp.spotnamekor }</td>
+											<c:if test="${emp.resignationstatus == 0 }">
+												<td>재직</td>
+											</c:if>
+											<c:if test="${emp.resignationstatus != 0 }">
+												<td>퇴사</td>
+											</c:if>
+											<td>${emp.startday }</td>
+											<td>${emp.phone }</td>
+											<td>${emp.email }</td>
+											
+										</tr>
+									</c:forEach>
+									
+									
+								</c:if>
+								
+							  	</form>
+							  </div>
+									
+								
+								  <%--   <c:if test="${not empty requestScope.empList}">
+								    	<c:forEach var="map" items="${requestScope.empList}">
+								    		<ul class="empTr">
+										        <li class="name">${map.name}</li>
+										        <li class="deptnamekor">${map.deptnamekor}</li>
+										        <li class="departmentname">${map.departmentname}</li>
+										        <li class="spotnamekor">${map.spotnamekor}</li>
+										        <li class="email">${map.email}</li>
+										        <li class="mobile"><span>${map.mobile.substring(0, 3)}-${map.mobile.substring(3, 7)}-${map.mobile.substring(7)}</span></li>
+										    </ul>
+								    	</c:forEach>
+								    </c:if> --%>
+					<!-- 		  </div>
+							
+							
 						</div>
-						
+						 -->
 						
 	   
-					</div>
+					<!-- </div> -->
 				    
 				  </article>
 				</div>
@@ -597,7 +791,7 @@ li.infoList:hover{
 							
 							<div id="allAlarm" class="tabcontent">
 							  <div    style= "padding: 7px 20px 20px 20px;">
-								<ul  class="pjtList" style="   padding:5px 20px; ">
+								<ul  class="pjtList" style="   padding:5px 20px; list-style:none;">
 									<li class="department-item "  >
 							          
 							            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">전체알림목록</span>
@@ -612,19 +806,8 @@ li.infoList:hover{
 				</div>
             	
        <!-- 유저정보 -->
-            	 <!-- <a onclick="OpenMyinfoForm()" type="button" id="MyinfoTopButton" >
-	                <i class="fas fa-user-circle">
-            	</a> -->
-            	<!-- 
-            	<div class="myinfo-popup" id="myForm4">
-                	<article action="" class="myinfo-container">
-					    내정보
-					</article>
-                
-				</div> -->
             	 
-            	 
-            	<a onclick="OpenMyinfoForm()" data-toggle="modal" data-target="#myModal" type="button" ><i class="fas fa-user-circle"></i></a>
+            	<a onclick="OpenMyinfoForm()"  type="button" ><i class="fas fa-user-circle"></i></a>
         		
         		<div class="myinfo-popup layer_pop" id="myForm4">
         		
@@ -632,15 +815,39 @@ li.infoList:hover{
         			
         			<ul style="list-style: none; margin:0;">
         				<li style="    display: flex;">
-        					<img class="myprofile-photo" src="<%= ctxPath%>/resources/images/common/profile-default.png"  alt="icon-myprofile"  />
+        					<%-- <img class="myprofile-photo" src="<%= ctxPath%>/resources/images/common/profile-default.png"  alt="icon-myprofile"  /> --%>
+        					<img class="myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
         					<div style="display: inline-block; box-sizing: border-box;">
         						<strong class="user-name" >${sessionScope.loginuser.name}</strong>
-        						<span class="dept">부서명</span>
-        						<span class="spot">직책명</span>
+        						<span class="dept">
+        							<c:choose>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '0'}">임원진</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '1'}">회계부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '2'}">영업부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '3'}">인사부</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_deptnum eq '4'}">총무부</c:when>
+        							
+        							<c:otherwise></c:otherwise>
+        							</c:choose>
+        						</span>
+        						<span class="spot">
+        						<c:choose>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '0'}">관리자</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '1'}">인턴</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '2'}">사원</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '3'}">대리</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '4'}">과장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '5'}">차장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '6'}">부장</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '7'}">이사</c:when>
+        							<c:when test="${sessionScope.loginuser.fk_spotnum eq '8'}">사장</c:when>
+        							<c:otherwise></c:otherwise>
+        							</c:choose>
+        						</span>
         					</div>
         					
         				</li>
-        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="far fa-user"></i> 내 프로필</li>
+        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</li>
         				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</li>
         				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
         				
@@ -650,17 +857,59 @@ li.infoList:hover{
         			
         		</div>
         		
-        		<!--
         		
-        		The Modal
-				  <div class="modal" id="myModal" >
-				    <div class="modal-dialog"  >
+        		
+        	    <div class="modal" id="myModal" >
+        	       <div class="modal-dialog"  >
+	        	       <div class="card " style="width:400px; display: block; ">
+					   	<div style=" position: relative; ">
+						    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
+						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
+					    </div>
+					    <div class="card-body">
+					      <ul style="list-style: none;">
+					      	<li>
+					      		<i class="far fa-envelope"></i>
+					      		<span>${sessionScope.loginuser.email}</span>
+					      	</li>
+					      	<li>
+					      		<i class="fas fa-mobile-alt"></i>
+					      		<span>${sessionScope.loginuser.phone}</span>
+					      	</li>
+					      	
+					      </ul>
+					    </div>
+					    
+					    <div class="btn-probottom"></div>
+					    	<button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer;">
+					        	채팅
+					        	<i class="far fa-comments"></i>
+					        </button>
+					        <button class="btn-modi js-btn-modi btn-bottom" style=" cursor: pointer;" >
+					       		정보수정
+					            <i class="far fa-address-card"></i>
+					        </button>
+					  </div> 
+					  
+					 <%--  <div class="card img-fluid" style="width:400px">
+					     <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
+					     <div class="bottom-left">Bottom Left</div>
+					     <div class="card-img-overlay">
+					      <h4 class="card-title" style="bottom:0">${sessionScope.loginuser.name}</h4>
+					      <p class="card-text">${sessionScope.loginuser.fk_deptnum}</p>
+					      <a href="#" class="btn btn-primary">See Profile</a>
+					     </div>
+					  </div> --%>
+        	    	</div>
+        	    	
+					  
+        	    
+				    <%-- <div class="modal-dialog"  >
 				      <div class="modal-content">
 				      
 				        Modal Header
 				        <div class="modal-header">
-				          <h4 class="modal-title">Modal Heading</h4>
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        	<img class="myprofile-photo2" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
 				        </div>
 				        
 				        Modal body
@@ -674,12 +923,12 @@ li.infoList:hover{
 				        </div>
 				        
 				      </div>
-				    </div>
+				    </div> --%>
 				  </div>
         		
         		
         	</div>
-        	 -->
+        	
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 -->
