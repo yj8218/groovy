@@ -25,7 +25,10 @@ public interface InterYuhrService {
 	// 조회한 조건에 따른 총 사원의 수
 	int getTotalCount(Map<String, String> paraMap);
 
-	// 한 사원만 조회해오기
-	EmployeeVO getOneEmpInfo(String pk_empnum);
+	// 한명의 사원 상세정보 가져오기
+	EmployeeVO getOneEmp(String pk_empnum);
+
+	// 근태정보 가져오기
+	List<CommuteStatusVO> getCommStatus();
 
 }//end of public interface InterYuhrService

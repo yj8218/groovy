@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.*;
+import com.spring.groovy.model.CommuteStatusVO;
 import com.spring.groovy.model.DepartmentVO;
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.model.SpotVO;
@@ -219,6 +220,9 @@ public class YuhrController {
 		resign_status = makeNotNull(resign_status);
 		search_item = makeNotNull(search_item);
 		search_value = makeNotNull(search_value);
+		if(select_order == null) {
+			select_order = "pk_empnum desc";
+		}
 		
 		paraMap.put("dept", dept);
 		paraMap.put("spot", spot);
@@ -357,15 +361,39 @@ public class YuhrController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value ="/getOneEmpInfo.groovy")
+	@RequestMapping(value ="/getOneEmpInfo.groovy", produces="text/plain;charset=UTF-8")
 	public String getOneEmpInfo(HttpServletRequest request ) {
 		
-		String pk_empnum = request.getParameter("pk_empnum");
+		String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
+
+		// 한명의 사원 상세정보 가져오기
+		EmployeeVO oneEmp = service.getOneEmp(pk_empnum);
 		
-		EmployeeVO oneEmp = service.getOneEmpInfo(pk_empnum);
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("oneEmp", oneEmp);
 		
+		jsonObj.put("pk_empnum", oneEmp.getPk_empnum());
+		jsonObj.put("name", oneEmp.getName());
+		jsonObj.put("birthday", oneEmp.getBirthday());
+		jsonObj.put("gender", oneEmp.getGender());
+		jsonObj.put("age", oneEmp.getAge());
+
+		jsonObj.put("postcode", oneEmp.getPostcode());
+		jsonObj.put("address", oneEmp.getAddress());
+		jsonObj.put("detailaddress", oneEmp.getDetailaddress());
+		
+		jsonObj.put("phone", oneEmp.getPhone());
+		jsonObj.put("email", oneEmp.getEmail());
+		
+		jsonObj.put("deptnamekor", oneEmp.getDeptnamekor());
+		jsonObj.put("spotnamekor", oneEmp.getSpotnamekor());
+		
+		jsonObj.put("startday", oneEmp.getStartday());
+		jsonObj.put("resignationstatus", oneEmp.getResignationstatus());
+		jsonObj.put("resignationday", oneEmp.getResignationday());
+		jsonObj.put("fk_vstatus", oneEmp.getFk_vstatus());
+		jsonObj.put("salary", oneEmp.getSalary());
+		
+		jsonObj.put("emppicturename", oneEmp.getEmppicturename());
 		return jsonObj.toString();
 	}
 	
@@ -378,11 +406,11 @@ public class YuhrController {
 		// 부서정보을 가져오기 위함
 		List<DepartmentVO> departments = service.getDepts();
 		
-		// 직위정보을 가져오기 위함
-		List<SpotVO> spots = service.getSpots();
+		// 근태정보을 가져오기 위함
+		List<CommuteStatusVO> commStatusList = service.getCommStatus();
 		
 		mav.addObject("departments", departments);
-		mav.addObject("spots", spots);
+		mav.addObject("commStatusList", commStatusList);
 		
 		mav.setViewName("employee/worktime.tiles1");
 		
@@ -391,6 +419,24 @@ public class YuhrController {
 	}//end of public ModelAndView viewEmp(ModelAndView mav)	
 	
 	
+	// 출근 버튼만 있는 페이지(임시)
+	@RequestMapping(value ="/commutebutton.groovy")
+	public ModelAndView requiredLogin_commutebutton(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		// 부서정보을 가져오기 위함
+		List<DepartmentVO> departments = service.getDepts();
+		
+		// 근태정보을 가져오기 위함
+		List<CommuteStatusVO> commStatusList = service.getCommStatus();
+		
+		mav.addObject("departments", departments);
+		mav.addObject("commStatusList", commStatusList);
+		
+		mav.setViewName("employee/commutebutton.tiles1");
+		
+		return mav;//  /WEB-INF/views/tiles1/employee/worktime.jsp 페이지 만들어야 한다.
+		
+	}//end of public ModelAndView viewEmp(ModelAndView mav)	
 	
 	
 	

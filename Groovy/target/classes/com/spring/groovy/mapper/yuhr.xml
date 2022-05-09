@@ -70,22 +70,24 @@
 				ON E.fk_deptnum = D.pk_deptnum
 			) V
 			where 1=1
-			<if test="dept != ''">
+			
+			
+			<if test="dept != '' ">
 				and pk_deptnum = #{dept} 
 			</if>
-			<if test="spot != ''">
+			<if test="spot != '' ">
 				and pk_spotnum = #{spot}
 			</if>
-			<if test="date_start != ''">
+			<if test="date_start != '' ">
 				and startday between #{date_start} and #{date_end}
 			</if>
-			<if test="resign_status != ''">
+			<if test="resign_status != '' ">
 				and resignationstatus = #{resign_status}
 			</if>
-			<if test="search_item == 'name'">
+			<if test="search_item == 'name' ">
 				and ${search_item} like '%'||#{search_value}||'%'
 			</if>
-			<if test="search_item == 'pk_empnum'">
+			<if test="search_item == 'pk_empnum' ">
 				and ${search_item} = #{search_value}
 			</if>
 			
@@ -111,8 +113,6 @@
 	<select id="getTotalCount" parameterType="HashMap" resultType="int">
 		
 		select  count(*)
-		
-			               
 			from
 			(
 				SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
@@ -149,10 +149,28 @@
 			</if>
 	</select>
 	
-	<select id="getOneEmpInfo" parameterType="String">
-		select 
+	<select id="getOneEmp" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+		        E.phone, E.email, to_char(E.birthday, 'yyyy-mm-dd') as birthday, E.gender, E.registerday, 
+		        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+		        E.resignationday,  E.fk_vstatus,     
+		        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+		        s.spotnamekor, s.pk_spotnum,
+		        d.deptnamekor, d.pk_deptnum
+		from tbl_employee E
+		JOIN TBL_SPOT S 
+		ON E.fk_spotnum = S.pk_spotnum
+		JOIN TBL_DEPARTMENT D 
+		ON E.fk_deptnum = D.pk_deptnum
+		
+		where pk_empnum = #{pk_empnum}
 	</select>
 	
+	<select id="getCommStatus" resultType="com.spring.groovy.model.CommuteStatusVO">
+		select pk_commute_statusnum, fk_empnum, total_workingday, total_workingtime,
+			   late, early_endcheck, no_endcheck, no_workday
+		from tbl_commute_status
+	</select>
 	
 	
 </mapper>

@@ -121,11 +121,18 @@ public class YuhrDAO implements InterYuhrDAO {
 		return totalCount;
 	}
 
-	// 한 사원만 조회해오기
+	// 한명의 사원 상세정보 가져오기
 	@Override
-	public EmployeeVO getOneEmpInfo(String pk_empnum) {
-		EmployeeVO oneEmp = sqlsession.selectOne("yuhr.getOneEmpInfo", pk_empnum);
+	public EmployeeVO getOneEmp(String pk_empnum) {
+		EmployeeVO oneEmp = sqlsession.selectOne("yuhr.getOneEmp", pk_empnum);
 		return oneEmp;
+	}
+
+	// 근태정보 가져오기
+	@Override
+	public List<CommuteStatusVO> getCommStatus() {
+		List<CommuteStatusVO> commStatusList = sqlsession.selectList("yuhr.getCommStatus");
+		return commStatusList;
 	}
 
 
