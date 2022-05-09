@@ -102,7 +102,7 @@ div.approvalEdit:hover {
 		// 휴가 신청
 		$("a#5").click(function () {
 			alert("휴가 신청");
-			location.href="<%= ctxPath%>/holidayEdit.groovy";
+			location.href="<%= ctxPath%>/vacationEdit.groovy";
 		})
 		
 		// 휴직 신청

@@ -103,6 +103,13 @@ public class JodnService implements InterJodnService {
 		return n;
 	}
 
+	// 휴가신청 셀렉트값 가져오기
+	@Override
+	public List<String> vacationType() {
+		List<String> vacationType = dao.vacationType();
+		return vacationType;
+	}
+
 
 
 

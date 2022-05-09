@@ -187,6 +187,24 @@ SELECT '20220507032317', '20210302-01', sysdate, '1' FROM DUAL
 delete from TBL_APPROVALPERSON
 
 
+---- 휴가신청
+
+select *
+from TBL_VACATION
+
+select *
+from TBL_VACATIONLIST
+
+
+
+commit
+
+INSERT INTO TBL_VACATION (PK_VSTATUS, VTYPE)
+VALUES ( 4, '공가' )
+
+   
+
+
 
 
 

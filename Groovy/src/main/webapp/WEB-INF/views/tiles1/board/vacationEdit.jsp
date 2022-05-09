@@ -180,22 +180,7 @@ $(document).ready(function(){
 });
 	
 	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
 
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
-	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-	
-}	
 	
 	
 </script>
@@ -215,12 +200,11 @@ function approvePerson() {
 		<form name="equipmentEdit">
 			<div class="box">
 				<label>휴가 종류 선택</label><br>
-				<select name="holidayCatagory">
-					<option>연차휴가</option>
-					<option>보상휴가</option>
-					<option>병가</option>
-					<option>공가</option>
-					<option>기타</option>
+				
+				<select name="fk_vstatus">
+					<c:forEach var="vList" items="vacationType" varStatus="i">
+						<option value= "${i.index}" >${vList.vtype}</option>
+					</c:forEach>
 				</select>
 			</div>
 	
@@ -239,12 +223,12 @@ function approvePerson() {
 			
 			<div class="box">
 				<label>휴가사유</label><br>
-				<input type="text" name="holidayInfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="vInfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
 			<div class="box">
 				<label>비고</label><br>
-				<input type="text" name="holidayETC" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="vetc" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
 			<div id="btn" class="box">
@@ -256,11 +240,6 @@ function approvePerson() {
 	
 </div>
 		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
-	<div id="employeeList"></div>
-</div> 
 
 </body>
 </html>

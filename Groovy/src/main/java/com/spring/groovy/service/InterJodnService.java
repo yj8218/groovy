@@ -41,5 +41,8 @@ public interface InterJodnService {
 
 	// 신청하기 버튼 클릭 시 참조자 넣기
 	int referenceList(Map<String, Object> paraMap);
+
+	// 휴가신청 셀렉트값 가져오기
+	List<String> vacationType();
 	
 }//end of public interface InterJodnService

@@ -150,6 +150,16 @@
 	
 	<!-- 비품신청 끝 -->
 	
+	<!-- 휴가신청 시작 -->
+	
+	<select id="vacationType" resultType="String">
+		select nvl(vtype,'휴가 종류 선택') as vtype 
+		from TBL_VACATION   
+	</select>
+	<!--  nvl(vtype,'휴가 종류 선택') as vtype -->
+	
+	<!-- 휴가신청 끝 -->
+	
 	
 	
 

@@ -130,6 +130,8 @@ public class JodnController {
 
 	////////////////////////// 비품 신청 테스트 끝
 	
+
+	
 	// 경조비 신청
 	@RequestMapping(value="/expensesEdit.groovy")
 	public ModelAndView expensesEdit(ModelAndView mav) {
@@ -161,13 +163,27 @@ public class JodnController {
 	
 	
 	// 휴가 신청
-	@RequestMapping(value="/holidayEdit.groovy")
-	public ModelAndView holidayEdit(ModelAndView mav) {
-		mav.setViewName("board/holidayEdit.tiles1");
+	@RequestMapping(value="/vacationEdit.groovy")
+	public ModelAndView vacationEdit(ModelAndView mav) {
+		
+		List<String> vacationType = service.vacationType();
+		
+		System.out.println(vacationType.toString());
+		
+		mav.addObject("vacationType", vacationType);
+		
+		mav.setViewName("board/vacationEdit.tiles1");
 		// /WEB-INF/views/tiles1/board/expensesEdit.jsp
 		
 		return mav;
 	}
+
+
+	/////////////////////////// 휴가신청 시작
+	
+	
+	
+	/////////////////////////// 휴가신청 끝
 	
 	
 	// 휴직 신청
@@ -346,7 +362,7 @@ public class JodnController {
 				
 				mav.setViewName("redirect:/approvalView.groovy");
 			} else {
-				String message = "비품신청에 실패했습니다.";
+				String message = "결재신청에 실패했습니다.";
 				String loc = "javascript:history.back()";
 				
 				mav.addObject("message",message);

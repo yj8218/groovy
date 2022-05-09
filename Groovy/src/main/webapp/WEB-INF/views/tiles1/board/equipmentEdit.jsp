@@ -138,37 +138,6 @@ $(document).ready(function(){
 }); // $(document).ready(function()
 	
 	
-function add_textbox() {
-    const box = document.getElementById("box");
-    const newP = document.createElement('p');
-    newP.innerHTML = "<input type='text'> <input type='button' value='삭제' onclick='remove(this)'>";
-    box.appendChild(newP);
-}
-
-function remove(obj) {
-    document.getElementById('box').removeChild(obj.parentNode);
-}
-	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
-	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	if(localStorage.getItem("approver") != null){
-		localStorage.removeItem('approver'); 
-	}
-	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-}	
-	
-	
 function cancel() {
 	if(localStorage.getItem("approver") != null){
 		localStorage.removeItem('approver'); 
@@ -248,16 +217,5 @@ function goEpuipment() {
 	
 </div>
 
-<!-- 		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
-	<div id="employeeList"></div>
-
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
-	
-</div> 
- -->
- </body>
+</body>
 </html>
