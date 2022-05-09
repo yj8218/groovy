@@ -9,13 +9,35 @@
 	<!-- === 로그인 처리하기 === -->
 	
 	<select id="getLoginEmployee" resultType="com.spring.groovy.model.EmployeeVO" parameterType="HashMap">
+		select  pk_empnum, pwd, name, address, detailaddress, postcode, 
+				        phone, email, birthday, gender, registerday, 
+				        startday, resignationstatus,  
+				        resignationday,  fk_vstatus,     
+				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+				        spotnamekor, deptnamekor, pk_spotnum
+				from
+				(
+					SELECT  E.pk_empnum, E.pwd, E.name, E.address, E.detailaddress, E.postcode, 
+					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+					        E.resignationday,  E.fk_vstatus,     
+					        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+					        s.spotnamekor, s.pk_spotnum,
+					        d.deptnamekor, d.pk_deptnum
+					from tbl_employee E
+					JOIN TBL_SPOT S 
+					ON E.fk_spotnum = S.pk_spotnum
+					JOIN TBL_DEPARTMENT D 
+					ON E.fk_deptnum = D.pk_deptnum
+				) V
+		where pk_empnum = #{pk_empnum} and pwd= #{pwd}
 
-		SELECT  pk_empnum, pwd, name,  address,  detailaddress,
+		<!-- SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 			 extraaddress, postcode, phone,  email,  birthday, gender,
 			 registerday, startday, resignationstatus,  nvl(resignationday,'2099-12-31'),  fk_vstatus,
 			  fk_deptnum,  fk_spotnum,  emppicturename,  salary,  lastpwdchangedate
 		from tbl_employee
-		where pk_empnum = #{pk_empnum} and pwd= #{pwd}
+		where pk_empnum = #{pk_empnum} and pwd= #{pwd} -->
 	</select>
 	
 	<!-- << 로그인 기록 카운트 >> -->
@@ -40,7 +62,7 @@
 				        startday, resignationstatus,  
 				        resignationday,  fk_vstatus,     
 				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
-				        spotnamekor, deptnamekor, pk_spotnum
+				        spotnamekor, deptnamekor, pk_spotnum, pk_deptnum
 				from
 				(
 					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
@@ -64,6 +86,7 @@
    <select id="deptList" resultType="String">
       select deptnamekor
       from tbl_department
+      order by  pk_deptnum
    </select>
 	
 </mapper>

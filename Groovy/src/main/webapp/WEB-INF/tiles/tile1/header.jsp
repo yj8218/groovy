@@ -35,12 +35,58 @@
 {box-sizing: border-box;}
 
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
   position: fixed;
-  top: 45px;
+  top: 60px; 
   right: 0;
   /* border: 1px solid #f1f1f1; */
   z-index: 9;
@@ -81,7 +127,7 @@
 }
 
 
-div.nav_right > a{
+ a.iconbar{
 	color:white ;  
 }
 
@@ -119,6 +165,15 @@ form.main-search{
     color:white;
 }
 
+/* #organizationInput::before{
+   font-family: "Font Awesome 5 Free"; 
+    font-weight: 600;
+    display: inline-block;
+    content: "\f002";
+    margin: 0 11px 0 0;
+    vertical-align: middle;
+} */
+
 .main-search input {
     padding-right: 10px;
     color: #fff; 
@@ -129,6 +184,7 @@ form.main-search{
     cursor: pointer;
     border: 0;
     font-weight: bold;
+    height: 40px;
 }
 
 .searchBtn {
@@ -338,7 +394,9 @@ div#myModal{
 /*     position: fixed; */
 /*     z-index:1050; */
     right: 0;
-    top:150px;
+    
+    top:10%;
+   
     left: 0;
      height: 100%;
    
@@ -354,6 +412,7 @@ div#myModal div.modal-dialogs{
     background: #fff;
     height: 320px;
     width: 350px;
+    
 
 }
 
@@ -401,6 +460,21 @@ button.btn-bottom{
     cursor: pointer;
 }
 
+
+li.adjust{
+    min-height: 51px;
+    position: relative;
+    
+}
+li.adjust div.list1 , li.adjust div.list2{
+	display: inline-block;
+}
+
+li.adjust div.list1 {
+width: 100px;
+
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -413,6 +487,7 @@ button.btn-bottom{
 	  	}); */
 	  	
 	  	
+	  
 	});
 	
 	
@@ -519,7 +594,7 @@ button.btn-bottom{
  
  <!-- 상단 네비게이션 시작 -->
 <div class="header">
-	<nav class=" navbar  d-flex justify-content-between navbar-expand-lg navbar-dark fixed-top" style="height: 45px; background-color:#2c2a34;">
+	<nav class=" navbar  d-flex justify-content-between navbar-expand-lg navbar-dark fixed-top" style="height: 60px; background-color:#2c2a34;">
  			<div  ></div>
  			<div  style="display:flex;    position: relative;">
 			<!-- 
@@ -545,7 +620,7 @@ button.btn-bottom{
 				</div>
         	</div>
         	<div class="nav_right"> 
-        		<a onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " data-toggle="tooltip" data-placement="bottom" title="조직도" style="display: inline-block; ">
+        		<a class="iconbar" onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " data-toggle="tooltip" data-placement="bottom" title="조직도" style="display: inline-block; ">
                     <i class="fas fa-sitemap"></i>
                 </a>
                 <!-- 조직도 팝업 -->
@@ -563,18 +638,18 @@ button.btn-bottom{
 						<!-- <i class="fas fa-search icon-search"></i> -->
 						<div style="display:flex; padding: 0 20px; margin: 10px 0;">
 							<!-- <i class="fas fa-search icon-search"></i>  -->
-							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name" required>
+							<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name phone deptnamekor" required>
 							
 						</div>
 						
 						<!-- 조직도리스트 넣기 -->
 						<!-- 3 setup a container element -->
-						<div id="jstree" style="color:blue;">
+						<div id="jstree" style="color:blue !important;">
 				    
 				  </article>
 				</div>
       <!-- 채팅 --> 
-                <a onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a>
+                <a class="iconbar" onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a>
                 
                 <div class="form-popup" id="myForm2" >
                 	<article action="" class="form-container">
@@ -631,7 +706,7 @@ button.btn-bottom{
 				</div>
 				
 	<!-- 알림 -->
-                <a onclick="OpenAlarmForm()" type="button" id="alarmTopButton" data-toggle="tooltip" data-placement="bottom" title="알림">
+                <a class="iconbar" onclick="OpenAlarmForm()" type="button" id="alarmTopButton" data-toggle="tooltip" data-placement="bottom" title="알림">
 	                <i class="fas fa-bell"></i>
 	               
             	</a>
@@ -690,7 +765,7 @@ button.btn-bottom{
             	
        <!-- 유저정보 -->
             	 
-            	<a onclick="OpenMyinfoForm()"  type="button" ><i class="fas fa-user-circle"></i></a>
+            	<a class="iconbar" onclick="OpenMyinfoForm()"  type="button" ><i class="fas fa-user-circle"></i></a>
         		
         		<div class="myinfo-popup layer_pop" id="myForm4">
         		
@@ -750,7 +825,7 @@ button.btn-bottom{
 </div>
 
 
- <div class="modal" id="myModal"  >
+ 				<div class="modal" id="myModal"  >
         	       <div class="modal-dialogs"  >
 	        	       <div class="card " style="width:400px; display: block; ">
 					   	<div style=" position: relative; ">
@@ -781,60 +856,109 @@ button.btn-bottom{
 					            <i class="far fa-address-card"></i>
 					        </button>
 					  </div> 
-					  
-					 <%--  <div class="card img-fluid" style="width:400px">
-					     <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
-					     <div class="bottom-left">Bottom Left</div>
-					     <div class="card-img-overlay">
-					      <h4 class="card-title" style="bottom:0">${sessionScope.loginuser.name}</h4>
-					      <p class="card-text">${sessionScope.loginuser.fk_deptnum}</p>
-					      <a href="#" class="btn btn-primary">See Profile</a>
-					     </div>
-					  </div> --%>
         	    	</div>
-        	    	
-					  
-        	    
-				    <%-- <div class="modal-dialog"  >
-				      <div class="modal-content">
-				      
-				        Modal Header
-				        <div class="modal-header">
-				        	<img class="myprofile-photo2" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
-				        </div>
-				        
-				        Modal body
-				        <div class="modal-body">
-				          Modal body..
-				        </div>
-				        
-				        Modal footer
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				        </div>
-				        
-				      </div>
-				    </div> --%>
 				  </div>
 				  
 <!-- 회원정보수정 -->
-<div class="modal" id="myModal2">
- <div class="modal-content">
+<div class="modal" id="myModal2" style="position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.6);" >
+ <div class="modal-content " style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; border: 1px solid #777; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
 				      
-     Modal Header
+    
      <div class="modal-header">
-     	
+     	 환경설정
+     	 
+	       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	  
      </div>
      
-     Modal body
-     <div class="modal-body">
-       Modal body..
+
+     <div class="modal-body "  >
+        <form action="<%=ctxPath%>/MyInfoEdit.groovy">
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="pk_empnum">아이디</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="pk_empnum" name="pk_empnum" value="${sessionScope.loginuser.pk_empnum}" disabled="disabled">
+		      </div>
+		    </div>
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="name">이름</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="name" name="name" value="${sessionScope.loginuser.name}">
+		      </div>
+		    </div>
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="lname">부서</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="lname" name="lastname" value="${sessionScope.loginuser.deptnamekor}">
+		      </div>
+		    </div>
+		    
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="lname">직책</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="lname" name="lastname" placeholder="Your last name.." value="${sessionScope.loginuser.spotnamekor}">
+		      </div>
+		    </div>
+		    
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="lname">휴대폰 번호</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="lname" name="lastname" placeholder="Your last name.."  value="${sessionScope.loginuser.phone}">
+		      </div>
+		    </div>
+		    
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="lname">이메일</label>
+		      </div>
+		      <div class="col-70">
+		        <input type="text" id="email" name="email" placeholder="Your email"  value="${sessionScope.loginuser.email}">
+		      </div>
+		    </div>
+		    
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="country">부서</label>
+		      </div>
+		      <div class="col-70">
+		       	 <select class="requiredInfo" id="fk_deptnum" name="fk_deptnum" required style="width: 130px; padding: 8px;">
+		         	<option value ="">부서선택</option>
+		         	<c:forEach var="departments" items="${requestScope.departments}">
+		         		<option value ="${departments.pk_deptnum}">${departments.deptnamekor}</option>
+		         	</c:forEach>
+			     </select>
+		      </div>
+		    </div>
+		    <div class="row">
+		      <div class="col-20">
+		        <label for="subject">Subject</label>
+		      </div>
+		      <div class="col-70">
+		        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+		      </div>
+		    </div>
+		    <div class="row">
+		      <input type="submit" value="Submit">
+		    </div>
+		 </form>
      </div>
+ 
      
-     Modal footer
-     <div class="modal-footer">
-       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-     </div>
      
    </div>
 </div>
@@ -871,10 +995,22 @@ button.btn-bottom{
 		
 	function createJSTree(jsondata) {  
 		 
-		$('#jstree').jstree({ 'core' : {
+		$('#jstree').jstree({ 
+			"themes" : {
+	            "theme" : "default",
+	            "dots" : false,
+	            "icons" : false
+			},
+
+			'core' : {
 			    'data' :  jsondata
+			
 			    
-			} });
+			},
+			'plugins' : ["search"]
+		});
+		var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
+
 		 
 	} 
  }); 

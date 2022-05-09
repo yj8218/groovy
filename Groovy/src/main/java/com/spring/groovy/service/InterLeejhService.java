@@ -29,6 +29,9 @@ public interface InterLeejhService {
 
 	List<String> deptList();
 
+	/*
+	 * //직원 한명값 얻어오기 EmployeeVO getViewOneEmp(Map<String, String> paraMap);
+	 */
 	
 	
 }//end of public interface InterLeejhService

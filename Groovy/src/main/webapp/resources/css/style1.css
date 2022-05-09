@@ -4,7 +4,7 @@
 
 #mycontainer   { padding:20px; }
 #myheader      { display: flex; position: relative; }
-#mycontent      { position: relative; top:45px; padding-left:230px; }
+#mycontent      { position: relative; top:60px; padding-left:230px; }
 #myfooter      { display: flex; min-height:120px; position: relative; top:60px; background-color:#555555; margin-bottom: 70px;}
    
 #myheader a {text-decoration:none;}
@@ -30,7 +30,7 @@
   background-color: #111;
   overflow: scroll;
   -ms-overflow-style: none;
-  padding-top: 45px;
+  padding-top: 60px;
   color: white;
 }
 .sidenav::-webkit-scrollbar { 
@@ -167,3 +167,69 @@ div.nav_right a  i{
 }
 
 /* ========== header, sidebar css 끝  ==============*/
+
+
+
+/* === 정보수정  modal css 시작=== */
+div.modal-body input[type=text], div.modal-body select, div.modal-body textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+div.modal-body label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+div.modal-body input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+div.modal-body input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div.modal-body {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-20 {
+  float: left;
+  width: 20%;
+  margin-top: 6px;
+}
+
+.col-70 {
+  float: left;
+  width: 70%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+div.modal-body .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-20, .col-70, div.modal-body input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+    text-align: center;
+  }
+}
+
+/* === 정보수정  modal css 끝 === */

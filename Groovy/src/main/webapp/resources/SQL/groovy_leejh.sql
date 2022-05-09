@@ -29,7 +29,10 @@ salary            not null number(20)
 
 SELECT pk_empnum 
 from tbl_employee
-   
+
+
+SELECT * 
+from tbl_employee
    
 SELECT * 
 from tbl_department     
@@ -79,5 +82,62 @@ SELECT  pk_empnum, pwd, name,  address,  detailaddress,
         
         
         
-        select deptnamekor
+        select *
       from tbl_department
+      
+      
+      
+select  pk_empnum, pwd, name, address, detailaddress, postcode, 
+		        phone, email, birthday, gender, registerday, 
+		        startday, resignationstatus,  
+		        resignationday,  fk_vstatus,     
+		        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+		        spotnamekor, deptnamekor, pk_spotnum
+		from
+		(
+			SELECT  E.pk_empnum, E.pwd, E.name, E.address, E.detailaddress, E.postcode, 
+			        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+			        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+			        E.resignationday,  E.fk_vstatus,     
+			        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+			        s.spotnamekor, s.pk_spotnum,
+			        d.deptnamekor, d.pk_deptnum
+			from tbl_employee E
+			JOIN TBL_SPOT S 
+			ON E.fk_spotnum = S.pk_spotnum
+			JOIN TBL_DEPARTMENT D 
+			ON E.fk_deptnum = D.pk_deptnum
+		) V
+		where pk_empnum = '20160225-03' and pwd= '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
+        
+        
+        
+        				select  pk_empnum, name, address, detailaddress, postcode, 
+				        phone, email, birthday, gender, registerday, 
+				        startday, resignationstatus,  
+				        resignationday,  fk_vstatus,     
+				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+				        spotnamekor, deptnamekor, pk_spotnum, pk_deptnum
+				from
+				(
+					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+					        E.resignationday,  E.fk_vstatus,     
+					        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+					        s.spotnamekor, s.pk_spotnum,
+					        d.deptnamekor, d.pk_deptnum
+					from tbl_employee E
+					JOIN TBL_SPOT S 
+					ON E.fk_spotnum = S.pk_spotnum
+					JOIN TBL_DEPARTMENT D 
+					ON E.fk_deptnum = D.pk_deptnum
+				) V
+		        order by pk_deptnum , pk_spotnum desc
+                
+                
+                
+                
+    select deptnamekor
+      from tbl_department
+      order by  pk_deptnum

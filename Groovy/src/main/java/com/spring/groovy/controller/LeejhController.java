@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.Sha256;
+
 import com.spring.groovy.common.GoogleMail;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.*;
@@ -391,7 +392,38 @@ public class LeejhController {
 	}// end of public String getDepartment(HttpServletRequest request, HttpServletResponse response) {}
 
 	
-	
+	// === #71. 회원정보 수정페이지 요청 === //
+/*	@RequestMapping(value="/MyInfoEdit.groovy")
+	public ModelAndView requiredLogin_edit(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		// 수정해야할 나 
+		String pk_empnum = request.getParameter("pk_empnum");
+		
+		// 글 수정해야할 글1개 내용 가져오기 
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		
+		///////////////////////////////
+		/*
+		 * paraMap.put("searchType", ""); paraMap.put("searchWord", "");
+		 */
+        ///////////////////////////////
+
+		/* EmployeeVO employeevo = service.getViewOneEmp(paraMap); */
+	/*	
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		
+		
+			// 자신의 글을 수정할 경우
+			// 가져온 1개글을 글수정할 폼이 있는 view 단으로 보내준다.
+			mav.addObject("boardvo", boardvo);
+			mav.setViewName("board/edit.tiles1");
+		
+		
+		return mav;
+	}
+	*/	
 	
 	
 }//end of public class LeejhController
