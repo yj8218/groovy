@@ -166,11 +166,11 @@ public class JodnController {
 	@RequestMapping(value="/vacationEdit.groovy")
 	public ModelAndView vacationEdit(ModelAndView mav) {
 		
-		List<String> vacationType = service.vacationType();
+		List<String> vacationTypeList = service.vacationType();
 		
-		System.out.println(vacationType.toString());
+	//	System.out.println(vacationType.toString());
 		
-		mav.addObject("vacationType", vacationType);
+		mav.addObject("vacationTypeList", vacationTypeList);
 		
 		mav.setViewName("board/vacationEdit.tiles1");
 		// /WEB-INF/views/tiles1/board/expensesEdit.jsp

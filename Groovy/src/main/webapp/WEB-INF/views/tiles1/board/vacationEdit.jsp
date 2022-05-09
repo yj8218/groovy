@@ -202,8 +202,8 @@ $(document).ready(function(){
 				<label>휴가 종류 선택</label><br>
 				
 				<select name="fk_vstatus">
-					<c:forEach var="vList" items="vacationType" varStatus="i">
-						<option value= "${i.index}" >${vList.vtype}</option>
+					<c:forEach var="vacationType" items="${requestScope.vacationTypeList}" varStatus="i">
+						<option value= "${i.index}" >${vacationType}</option>
 					</c:forEach>
 				</select>
 			</div>
