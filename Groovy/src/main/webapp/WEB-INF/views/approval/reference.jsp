@@ -14,8 +14,8 @@
 <style type="text/css">
 
 	div#container {
-		width: 100%;
-		margin: 0 auto;
+		width: 60%;
+		/* margin: 0 auto; */
 	}
 
 	div#title {
@@ -137,6 +137,8 @@
 a.employee {
 	display: block;
 	color: black;
+	margin-left: 20px;
+	margin-top: 10px;
 }
 
 a.employee:hover {
@@ -148,10 +150,22 @@ div#add_approver {
 	margin-bottom: 20px;
 }
 
-div#approver, div#reference {
-	border: solid 1px grey;
+div#approver {
+	/* border: solid 1px grey; */
 	padding: 10px;
 	border-radius: 7px;
+	
+}
+
+div.sort {
+	margin: 5px;
+}
+
+input.chk_cancel {
+	border: none;
+	background-color: #6449FC;
+	border-radius: 3px;
+	color: white;
 	
 }
 
@@ -186,6 +200,9 @@ div#approver, div#reference {
 
 <script type="text/javascript">
 
+let html = "";
+let parent_submit = "";
+
 $(document).ready(function(){
 	
 	// 회원목록 불러오는 아코디언
@@ -207,13 +224,34 @@ $(document).ready(function(){
 	
 	
 	
-	let html = "";
+	
+	/*
+	  <div id='id0'>"+$(this).html()+"<input type='button' class='chk_cancel' value='삭제' onclick=\"$('div#id"+id+"').remove()\"/></div><br>
+	  
+	  <div id='id1'>"+$(this).html()+"<input type='button' class='chk_cancel' value='삭제' onclick=\"$('div#id"+id+"').remove()\"/></div><br>
+	  101
+	  
+	  <div id='id2'>"+$(this).html()+"<input type='button' class='chk_cancel' value='삭제' onclick=\"$('div#id"+id+"').remove()\"/></div><br>
+	  201
+	  
+	    문자열.indexOf("찾고자하는문자열")
+	  endIndex = html.indexOf("<div id='id1'>")  
+	  101
+	  
+	 
+	  
+	  html = html.substring(startIndex, 101) + html.substring(201);
+   */
+	
+    
+	
+	
 	let id = 0;
 	$("a.employee").click(function () {
 		
 		if(!($("div#approver").text()).includes($(this).text()) ) {
-		
-			html +=	"<div id='id"+id+"'>"+$(this).html()+"<input type='button' class='chk_cancel' value='삭제' onclick=\"$('div#id"+id+"').remove()\"/></div><br>";
+			html +=	"<div id='id"+id+"' class='sort'>"+$(this).html()+"<input type='button' class='chk_cancel' value='삭제' onclick=\"func_del("+id+")\"/><br></div>";
+			parent_submit += "<div id='id"+id+"' class='sort'>"+$(this).html()+"<br></div>";
 			id++;
 			
 			$("div#approver").html(html);
@@ -221,19 +259,48 @@ $(document).ready(function(){
 			alert("중복하여 등록할 수 없습니다.");		
 		}
 		
-	})
+	});
 
 	$("div#approver").html(html);
 	
 	
 }); // end of $(document).ready(function()
 
-function remove() {
-	const div = document.getElementById('my_div');
-	div.remove();
+function func_del(id) {
+	
+	$("div#id"+id).remove();
+	
+	let startIndex = 0;
+	let endIndex = 0;
+	
+	startIndex = html.indexOf("<div id='id"+(id-1)+"' class='sort'>"); 
+	middleIndex = html.indexOf("<div id='id"+id+"' class='sort'>"); 
+	endIndex = html.indexOf("<div id='id"+(id+1)+"' class='sort'>"); 
+	
+	startIndex2 = parent_submit.indexOf("<div id='id"+(id-1)+"' class='sort'>"); 
+	middleIndex2 = parent_submit.indexOf("<div id='id"+id+"' class='sort'>"); 
+	endIndex2 = parent_submit.indexOf("<div id='id"+(id+1)+"' class='sort'>"); 
+	
+	if(id == 0 && endIndex == -1) {
+		html = "";
+	} else if(id > 0 && endIndex == -1) {
+		html = html.substring(0, middleIndex);
+	} else {
+		html = html.substring(0, middleIndex) + html.substring(endIndex);
+	}
+	
+	if(id == 0 && endIndex2 == -1) {
+		parent_submit = "";
+	} else if(id > 0 && endIndex2 == -1) {
+		parent_submit = parent_submit.substring(0, middleIndex2);
+	} else {
+		parent_submit = parent_submit.substring(0, middleIndex2) + parent_submit.substring(endIndex2);
+	}
+	
+	
 }		
 		
-		
+/* 		
 function add_approver() {
     const box = document.getElementById("add_approver");
     const newP = document.createElement('p');
@@ -255,8 +322,28 @@ function remove_approver(obj) {
 function remove_reference(obj) {
     document.getElementById("add_reference").removeChild(obj.parentNode);
 }
+ */
 
-
+ function goApprover() {
+	 
+/* 	 alert("클릭");
+	 const frm = document.approverFrm;
+		frm.action = "approverRegister.groovy";
+		frm.method = "post";
+		frm.submit();
+		
+		window.close() */
+			
+	const approver = parent_submit;
+	
+		alert(html);
+	
+	localStorage.setItem('approver',parent_submit);
+		
+	self.close(); // 팝업창을 닫는 것이다.	
+	 
+ }
+ 
 </script>
 
 </head>
@@ -267,7 +354,6 @@ function remove_reference(obj) {
 	<div id="title">승인 ·참조 대상 설정</div>
 	<div id="searchEmployeeList">
 		<select class="search">
-			<option>부서명</option>
 			<option>이름</option>
 		</select>
 		<input type="text" name="search" >
@@ -286,7 +372,7 @@ function remove_reference(obj) {
 							<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
 							<span>${empvo.name }</span>
 							<span>(${empvo.pk_empnum })</span>
-							<input type="hidden" id="${empvo.pk_empnum }" value="${empvo.pk_empnum }"/>
+							<input type="hidden" name="approver" value="${empvo.pk_empnum }"/>
 						</a>
 					</c:forEach>	
 				</dd>
@@ -300,7 +386,7 @@ function remove_reference(obj) {
 							<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
 							<span>${empvo.name }</span>
 							<span>(${empvo.pk_empnum })</span>
-							<input type="hidden" id="${empvo.pk_empnum }" value="${empvo.pk_empnum }"/>
+							<input type="hidden" name="approver" value="${empvo.pk_empnum }"/>
 						</a>
 					</c:forEach>
 				</dd>
@@ -314,7 +400,7 @@ function remove_reference(obj) {
 							<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
 							<span>${empvo.name }</span>
 							<span>(${empvo.pk_empnum })</span>
-							<input type="hidden" id="${empvo.pk_empnum }" value="${empvo.pk_empnum }"/>
+							<input type="hidden" name="approver" value="${empvo.pk_empnum }"/>
 						</a>
 					</c:forEach>	
 				</dd>
@@ -328,48 +414,23 @@ function remove_reference(obj) {
 							<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
 							<span>${empvo.name }</span>
 							<span>(${empvo.pk_empnum })</span>
-							<input type="hidden" id="${empvo.pk_empnum }" value="${empvo.pk_empnum }"/>
+							<input type="hidden" name="approver" value="${empvo.pk_empnum }"/>
 						</a>
 					</c:forEach>	
 				</dd>
 			</dl>		
 			
 		</div>
-	
-		<!-- <div id="inputEmployee">
-			<div>승인자(아래로 승인가능)</div>
-			<div id="approver">
-			    <form>
-			        <div id="add_approver" class="box">
-			            <input type="text" class="my-3 add_approver"> <input class="btn_add my-3" type="button" value="추가" onclick="add_approver()">
-			        </div>
-			    </form>
+			<div id="inputEmployee">
+				<form name="approverFrm">
+					<label for="approver_chk">승인자</label>
+					<div id="approver"></div>
+				</form>
 			</div>
-			
-			<div>참조자</div>
-			<div id="reference">
-				<form>
-			        <div id="add_reference" class="box">
-			            <input type="text" class="my-3"> <input class="btn_add my-3" type="button" value="추가" onclick="add_reference()">
-			        </div>
-			    </form>
-			</div>
-		</div>
-	</div> -->
-	
-	
-		<div id="inputEmployee">
-			<label for="approver_chk">승인자</label>
-			<div id="approver"></div>
-			
-			<label for="reference_chk">참조자</label>
-			<div id="reference"></div>
-		</div>
-		
 	</div>
 		
 	<div id="btn">
-		<button type="button"  class="btn_person">신청하기</button>
+		<button type="button"  class="btn_person" onclick="goApprover();">신청하기</button>
 		<button type="button"  class="btn_person" onclick="javascript:window.close()">취소</button>
 	</div>
 

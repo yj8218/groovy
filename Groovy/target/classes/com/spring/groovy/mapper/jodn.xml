@@ -62,5 +62,95 @@
 		where pk_deptnum = 4
 		order by fk_spotnum desc
 	</select>
+	
+	
+	<!-- 비품신청 시작  -->
+	<!-- 비품문서 작성하기  -->
+	<insert id="equipmentDocumentEdit" parameterType="HashMap">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '1', #{fk_empnum}, sysdate, '0')
+	</insert>
+	
+	<!-- 비품신청 상세정보 등록  -->
+	<insert id="goEpuipmentEdit" parameterType="HashMap">
+		insert into tbl_app_equip(pk_documentnum, productName, productlink, productcnt, productcost, productmoney, productinfo)
+		values(#{pk_documentnum}, #{productName}, #{productLink}, #{productCnt}, #{productCost}, #{productMoney}, #{productInfo})
+	</insert>
+	
+	
+	<!-- 승인자 불러오기 -->
+	<resultMap type="HashMap" id="empMap">
+      <result property="pk_empnum"    	column="pk_empnum"      javaType="String" />
+      <result property="deptnamekor"    column="deptnamekor"    javaType="String" />
+      <result property="name"       	column="name"      		javaType="String" />
+    </resultMap>
+	<select id="appEmpList" parameterType="HashMap" resultMap="empMap">
+		select pk_empnum, deptnamekor, name
+		from tbl_employee A
+		join tbl_department B
+		on A.fk_deptnum = B.pk_deptnum
+		where 1=1
+		<if test="arr_approver != null">
+          and pk_empnum in
+          <foreach collection="arr_approver" index="i" open="(" separator="," close=")">
+             '${arr_approver[i]}'
+          </foreach>
+      	</if>
+      	<if test="arr_approver == null">
+      		and 1=2
+		</if>
+	</select>
+	
+	<!-- 취소버튼 클릭 시 데이터 삭제하기 -->
+	<delete id="delDocumentnum" parameterType="String">
+		DELETE FROM TBL_APP_EQUIP
+		where pk_documentnum = #{pk_documentnum}
+	</delete>
+	<delete id="delDocumnet" parameterType="String">
+		DELETE FROM tbl_approvaldocument
+		WHERE pk_documentnum = #{pk_documentnum}
+	</delete>
+	
+	<!-- 신청하기버튼 클릭 시 승인자 데이터 집어 넣기 -->
+	<insert id="approverList" parameterType="HashMap">
+		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, writeday, app_status)
+		<if test="arr_approver_chk.length == 1">
+			<foreach collection="arr_approver_chk" index="i" >
+          		SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', sysdate, '1' FROM DUAL
+          	</foreach>	
+      	</if>
+		<if test="arr_approver_chk.length > 1">
+          <foreach collection="arr_approver_chk" index="i" >
+         	  SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', sysdate, '1' FROM DUAL
+         	  <if test="arr_approver_chk.length-1 != i">
+         	  	UNION ALL
+         	  </if>	
+          </foreach>
+      	</if>
+	</insert>
+	
+	<!-- 신청하기버튼 클릭 시 참조자 데이터 집어 넣기 -->
+	<insert id="referenceList" parameterType="HashMap">
+		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, writeday, app_status)
+		<if test="arr_reference_chk.length == 1">
+			<foreach collection="arr_reference_chk" index="i" >
+          		SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', sysdate, '0' FROM DUAL
+          	</foreach>	
+      	</if>
+		<if test="arr_reference_chk.length > 1">
+          <foreach collection="arr_reference_chk" index="i" >
+         	  SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', sysdate, '0' FROM DUAL
+         	  <if test="arr_reference_chk.length-1 != i">
+         	  	UNION ALL
+         	  </if>	
+          </foreach>
+      	</if>
+	</insert>
+	
+	
+	<!-- 비품신청 끝 -->
+	
+	
+	
 
 </mapper>

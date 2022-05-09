@@ -110,25 +110,81 @@ join tbl_spot B
 on B.pk_spotNum = A.fk_spotnum
 join tbl_department C
 on C.PK_deptnum = A.FK_deptnum
-order by pk_deptnum desc
-where PK_DEPTNUM = 
+where pk_deptnum = 1
+order by fk_spotnum desc
 
+select pk_empnum, deptnamekor ,name, fk_spotnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_deptnum = 1
+		order by fk_spotnum desc
 
 
 select *
 from tbl_department
 
+select *
+from tbl_employee
+
+select pk_empnum, deptnamekor, name
+from tbl_employee A
+join TBL_DEPARTMENT B
+on A.fK_DEPTNUM = B.PK_DEPTNUM
+where 1=1
+and pk_empnum in( '0-20150502', '20200902-01', '20210302-01');
+order by A.FK_SPOTNUM
+
+
+select *
+from tbl_approvaldocument;
+
+select *
+from TBL_APP_EQUIP;
+
+select *
+from TBL_APPROVALPERSON
+order by fk_documentnum, app_status desc
 
 
 
+DELETE FROM tbl_approvaldocument
+WHERE pk_documentnum = '20220507024415'
+
+DELETE FROM TBL_APP_EQUIP
+WHERE pk_documentnum = '20220507024415'
+
+delete from TBL_APPROVALPERSON
+
+commit;
 
 
 
+insert into tbl_approvaldocument(PK_DOCUMENTNUM, FK_APL_NO, FK_EMPNUM, WRITEDAY, STATUS)
+		values(to_char(sysdate, 'yyyymmddhh24miss'), '1', '001-01', sysdate, '0')
+
+rollback;
 
 
+-- 승인자 집어 넣기 
+select *
+from TBL_APPROVALPERSON
 
+-- 20220507181500  예시
+INSERT ALL
+into TBL_APPROVALPERSON(FK_DOCUMENTNUM, FK_EMPNUM, WRITEDAY, APP_STATUS)
+values('20220507181500', '20200902-01', sysdate, '1')
+      ,('20220507032317', '20210302-01', sysdate, '1')
 
+-- 실험
+INSERT INTO TBL_APPROVALPERSON(FK_DOCUMENTNUM, FK_EMPNUM, WRITEDAY, APP_STATUS)
+SELECT '20220507181500', '20200902-01', sysdate, '1' FROM DUAL
+UNION ALL
+SELECT '20220507032317', '20210302-01', sysdate, '1' FROM DUAL
 
+delete from TBL_APPROVALPERSON
 
 
 

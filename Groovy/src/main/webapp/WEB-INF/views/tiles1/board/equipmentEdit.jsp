@@ -122,7 +122,6 @@ $(document).ready(function(){
 	  type:"POST",
 	  dataType:"JSON",
 	  success:function(json){
-		  alert(json.approver);
 		  $('div#employeeList').html(json.approver);
 	  },
 	  error: function(request, status, error){
@@ -177,6 +176,15 @@ function cancel() {
 	location.href='<%= ctxPath%>/approvalView.groovy';
 }
 	
+function goEpuipment() {
+	
+	const frm = document.equipmentEditFrm;
+	frm.action = "goEpuipment.groovy";
+	frm.method = "post";
+	frm.submit();
+	
+}	
+	
 </script>
 
 </head>
@@ -191,7 +199,7 @@ function cancel() {
 
 		<div class="title">일하는데 필요한 물품을 신청해주세요 !</div>
 		
-		<form name="equipmentEdit">
+		<form name="equipmentEditFrm">
 			<div class="box">
 				<label>품명</label><br>
 				<input type="text" name="productName" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
@@ -230,7 +238,7 @@ function cancel() {
 			</div>
 			 -->
 			<div id="btn" class="box">
-				<button type="button"  class="btn">신청하기</button>
+				<button type="button"  class="btn" onclick="goEpuipment()">신청하기</button>
 				<button type="button"  class="btn" onclick="cancel()">취소</button>
 				<!-- history.back(); -->
 			</div>
@@ -239,7 +247,8 @@ function cancel() {
 		</form>
 	
 </div>
-		
+
+<!-- 		
 <div id="approvePerson" style="margin: 70px;">
 	<span id="title">승인, 참조대상</span><br>
 
@@ -249,6 +258,6 @@ function cancel() {
 	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
 	
 </div> 
-
-</body>
+ -->
+ </body>
 </html>

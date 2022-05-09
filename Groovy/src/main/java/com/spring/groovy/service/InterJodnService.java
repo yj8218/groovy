@@ -1,6 +1,7 @@
 package com.spring.groovy.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.groovy.model.ApprovalVO;
 import com.spring.groovy.model.EmployeeVO;
@@ -21,5 +22,24 @@ public interface InterJodnService {
 
 	// 총무부서 직원 불러오기
 	List<EmployeeVO> getManagerEmployee();
+
+	// 비품신청 파일 생성
+	int goEpuipment(Map<String, String> paraMap);
+
+	// 비품신청 상세정보 입력
+	void goEpuipmentEdit(Map<String, String> paraMap);
+
+	// 선택된 승인자 불러오기
+	List<Map<String, String>> appEmpList(Map<String, Object> paraMap);
+
+	// 취소버튼클릭시 데이터 삭제하기
+	int delDocumentnum(String pk_documentnum);
+	int delDocumnet(String pk_documentnum);
+
+	// 신청하기 버튼 클릭 시 승인자 넣기
+	int approverList(Map<String, Object> paraMap);
+
+	// 신청하기 버튼 클릭 시 참조자 넣기
+	int referenceList(Map<String, Object> paraMap);
 	
 }//end of public interface InterJodnService
