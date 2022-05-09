@@ -114,6 +114,27 @@ public class YuhrDAO implements InterYuhrDAO {
 		return emps;
 	}
 
+	// 조회한 조건에 따른 총 사원의 수
+	@Override
+	public int getTotalCount(Map<String, String> paraMap) {
+		int totalCount = sqlsession.selectOne("yuhr.getTotalCount", paraMap);
+		return totalCount;
+	}
+
+	// 한명의 사원 상세정보 가져오기
+	@Override
+	public EmployeeVO getOneEmp(String pk_empnum) {
+		EmployeeVO oneEmp = sqlsession.selectOne("yuhr.getOneEmp", pk_empnum);
+		return oneEmp;
+	}
+
+	// 근태정보 가져오기
+	@Override
+	public List<CommuteStatusVO> getCommStatus() {
+		List<CommuteStatusVO> commStatusList = sqlsession.selectList("yuhr.getCommStatus");
+		return commStatusList;
+	}
+
 
 
 
