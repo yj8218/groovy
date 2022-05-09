@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-body {font-family: Arial, Helvetica, sans-serif, 돋움; }
+/* body {font-family: Arial, Helvetica, sans-serif, 돋움; } */
 
 #mycontainer   { padding:20px; }
 #myheader      { display: flex; position: relative; }
@@ -28,9 +28,14 @@ body {font-family: Arial, Helvetica, sans-serif, 돋움; }
   top: 0;
   left: 0;  
   background-color: #111;
-  overflow-x: hidden;
+  overflow: scroll;
+  -ms-overflow-style: none;
   padding-top: 45px;
   color: white;
+}
+.sidenav::-webkit-scrollbar { 
+    display: none;
+    width: 0 !important;
 }
 
 .btn_newpjt{

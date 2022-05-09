@@ -1,627 +1,341 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
- 	String ctxPath = request.getContextPath();
-	//     /board
+	String ctxPath = request.getContextPath();
 %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href='<%=ctxPath %>/resources/fullcalendar_5.10.1/main.min.css' rel='stylesheet' />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<style type="text/css">
-
-div#wrapper1{
-	float: left; display: inline-block; width: 20%; margin-top:250px; font-size: 13pt;
-}
-
-div#wrapper2{
-	display: inline-block; width: 100%; padding-left: 20px;
-}
-
-/* ========== full calendar css 시작 ========== */
-.fc-header-toolbar {
-	height: 30px;
-}
-
-a, a:hover, .fc-daygrid {
-    color: #000;
-    text-decoration: none;
-    background-color: transparent;
-    cursor: pointer;
-} 
-
-.fc-sat { color: #0000FF; }    /* 토요일 */
-.fc-sun { color: #FF0000; }    /* 일요일 */
-/* ========== full calendar css 끝 ========== */
-
-ul{
-	list-style: none;
-}
-
-button.btn_normal{
-	background-color: #990000;
-	border: none;
-	color: white;
-	width: 50px;
-	height: 30px;
-	font-size: 12pt;
-	padding: 3px 0px;
-	border-radius: 10%;
-}
-
-button.btn_edit{
-	border: none;
-	background-color: #fff;
-}
-
-
-
-
-
-.fc table {
-   	border-collapse: separate !important;
-	border-spacing: 6px 6px !important;
-	caption-side: top;
-	empty-cells: show;
-	table-layout: auto;
-}
-
-.fc table ::-webkit-scrollbar {
-  display: none;
-}
-
-.fc .fc-scrollgrid-section>* {
-    border-top-width: 0;
-    border-left-width: 0;
-    border-right-width: 0;
-}
-
-.fc .fc-scrollgrid {
-    border-collapse: separate;
-   /*  border-right-width: 0;  *//* 제거 */
-}
-.fc .fc-scrollgrid, .fc .fc-scrollgrid-section-footer>*, .fc .fc-scrollgrid-section-header>* {
-    /*  border-bottom-width: 0; */ /* 제거 */
-}
-
-
-
-.fc .fc-scrollgrid-section>* {
-    border-top-width: 0;
-    border-left-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-}
-td.fc-daygrid-day{
-	/* Color & Background */
-	background-attachment: scroll;
-	background-color: rgba(0, 0, 0, 0);
-	background-image: none;
-	background-position: 0% 0%;
-	background-repeat: repeat;
-	color: rgb(51, 51, 51);
-
-
-	border: 1px solid rgb(221, 221, 221);
-	border-top: 1px solid rgb(221, 221, 221);
-	border-right: 1px solid rgb(221, 221, 221);
-	border-bottom: 1px solid rgb(221, 221, 221);
-	border-left: 1px solid rgb(221, 221, 221);
-	margin: 0px;
-	padding: 0px;
-	max-height: none;
-	min-height: 0px;
-	max-width: none;
-	min-width: 0px;
-	
-	transform: none;
-	transition: all 0s ease 0s;
-	outline-offset: 0px;
-	box-sizing: content-box;
-	resize: none;
-	text-shadow: none;
-	text-overflow: clip;
-	word-wrap: normal;
-	box-shadow: none;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px; 
-	
-	
-	/* Font & Text */
-	font-family: "Noto Sans KR", Roboto, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
-	font-size: 13px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	letter-spacing: normal;
-	line-height: normal;
-	text-decoration: none solid rgb(51, 51, 51);
-	text-align: left;
-	text-indent: 0px;
-	text-transform: none;
-	vertical-align: top;
-	white-space: normal;
-	word-spacing: 0px;
-	
-
-
-}
-
-td.fc-daygrid-day a{
-	margin-top: 14px;
-margin-left: 10px;
-margin-bottom: 2px;
-
-
-	/* Font & Text */
-	font-family: "Noto Sans KR", Roboto, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
-	font-size: 13px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	letter-spacing: normal;
-	line-height: normal;
-	
-	text-align: left;
-	text-indent: 0px;
-	text-transform: none;
-	vertical-align: baseline;
-	white-space: normal;
-	word-spacing: 0px;
-	color: #555;
-
-
-}
-
-td.fc-day-sun {
-
-	/* Color & Background */
-	background-attachment: scroll;
-	background-color: #fff8f8;
-	background-image: none;
-	background-position: 0% 0%;
-	background-repeat: repeat;
-}
-
-td.fc-day-sun a {
-color: #ff6b6b !important;
-
-
-}
-
-
-td.fc-day-sat {
-
-	/* Color & Background */
-	background-attachment: scroll;
-	background-color: #f6faff;
-	background-image: none;
-	background-position: 0% 0%;
-	background-repeat: repeat;
-}
-
-td.fc-day-sat a {
-color: #06f !important;
-}
-
-
-td.fc-day-today {
-	background: #f8f7ff;
-    border-color: #6449fc;
-}
-th.fc-day-sun a{
-color: #ff6b6b !important;
-}
-
-th.fc-day-sat a{
-color: #06f !important;
-}
-
-
-th.fc-col-header-cell{
-	/* Font & Text */
-	font-family: "Noto Sans KR", Roboto, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
-	font-size: 15px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	letter-spacing: normal;
-	line-height: 36px;
-	text-decoration: none solid rgb(51, 51, 51);
-	text-align: center;
-	text-indent: 0px;
-	text-transform: none;
-	vertical-align: top;
-	white-space: normal;
-	word-spacing: 0px;
-
-}
-
-th.fc-col-header-cell a{
-
-	
-	    color: #333;
-    font-size: 15px;
-    font-weight: 400;
-}
-
-
-h2.fc-toolbar-title{
-display: inline-block;
-    margin: 0 15px; 
-    font-size: 22px;
-    vertical-align: middle;
-    line-height: normal;
-    color: #555;
-}
-button.fc-prev-button, button.fc-next-button {
-    width: 30px;
-    height: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    font-size: 13px;
-    color: #555;
- 	-webkit-box-direction: normal;
-    border-radius: 4px;
-    
-    margin: 0;
-    
-    padding: 0 0.6em;
-    white-space: nowrap;
-    cursor: pointer;
-    text-shadow: 0 1px 1px rgb(255 255 255 / 75%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 1px 2px rgb(0 0 0 / 5%);
-    font-family: inherit;
-    line-height: normal;
-    
-}
-.fc-icon-chevron-right {
-left: -0.15em;
-}
-.fc-icon-chevron-left{
-left: -0.2em;
-}
-
-
-.fc-today-button{
-	width: 94px;
-    height: 30px;
-    float: initial;
-   /*  position: absolute;
-    right: 0; */
-    line-height: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    color: #333;
-}
-
-.fc-today-button:before {
-    width: 8px;
-    height: 8px;
-    display: inline-block;
-    content: "";
-     position: relative; 
-     right: 10px;
-    background: #ff5caa;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-}
-
-
-
-/* ////////////////// */
-
-div.fc-title * {
-box-sizing: border-box; 
-}
-
-div.fc-title {
- position: relative;
-  width: 130px;
-  height: 30px;
-  display: inline-block;
-  margin: 0 15px;
-  font-size: 22px;
-  vertical-align: middle;
-  line-height: normal;
-  color: #555;
-  cursor: pointer;
-  font-weight:500;
-  vertical-align: middle;
-}
-
-div.fc-title .monthsBtn {
-  width: inherit;
-  height: inherit;
-  border: 0 none;
-  outline: 0 none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 22px;
-  line-height: normal;
-  color: #555;
-  font-weight:500;
-  padding: 0; 
-  
-  
-}
-
-div.fc-title .monthsList {
-  position: absolute; 
-  top: 28px;
-  left: 0;
-  width: 100%;
-  background: transparent;
-  color: #555;
-  list-style-type: none;
-  padding: 0;
-  overflow: hidden;
-  max-height: 0;
-  transition: .3s ease-in;
-  z-index: 100;
-  text-align: center;
-  
-}
-
- div.fc-title.active .monthsList {
-  max-height: 500px;
-}
-
-div.fc-title .months {
-  /* margin-top: 4px; */
-  padding-top: 4px;
-  transition: .1s;
-  border-left: 1px solid #6449fc;
-  border-right: 1px solid #6449fc;
-  background-color: rgba( 255, 255, 255, 0.5 );
-  
-}
-
-div.fc-title .months:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-}
-
-div.fc-title .months:last-child {
-  border-bottom: 1px solid #6449fc;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-div.fc-title.active .monthsBtn {
-border-top: 1px solid #6449fc !important;
-  border-left: 1px solid #6449fc !important;;
-  border-right: 1px solid #6449fc !important;;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-  background-color: rgba( 255, 255, 255, 0.5 );
-
- transition: .7s ease-in;
-
-}
-
-/* ////////////////// */
-
-div.month-week-day * {
-box-sizing: border-box; 
-}
-
-div.month-week-day {
- position: relative;
-  height: 30px;
-  display: inline-block;
-  margin: 0 15px;
-  vertical-align: middle;
-  cursor: pointer;
-  vertical-align: middle;
-    
-  width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background: #fff;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    color: #333;
-  
-  
-}
-
-div.month-week-day .mwdBtn {
-  width: inherit;
-  height: inherit;
-  border: 1px solid #ddd;
-  background: #fff;
-  cursor: pointer;
-  /* padding: 0; */
-  font-size: 13px;
-  color: #333; 
-  line-height: 30px;
-   border-radius: 4px;
-       padding: 1px 6px;
-  
-  
-}
-
-div.month-week-day .mwdList {
-  position: absolute; 
-  top: 28px;
-  left: 0;
-  width: 30px;
- background: #fff;
-  color: #333; 
-  list-style-type: none;
-  padding: 0;
-  overflow: hidden;
-  max-height: 0;
-  z-index: 100;
-  text-align: center;
-  
-}
-
- div.month-week-day.active .mwdList {
-  max-height: 500px;
-}
-
-div.month-week-day .mwd {
-  padding-top: 2px;
-   padding-left: 1px;
-   padding-right: 1px;
-  border-left: 1px solid #6449fc;
-  border-right: 1px solid #6449fc;
-}
-
-div.month-week-day .mwd:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-}
-
-div.month-week-day .mwd:last-child {
-  border-bottom: 1px solid #6449fc;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-div.month-week-day.active .mwdBtn {
-border-top: 1px solid #6449fc !important;
-  border-left: 1px solid #6449fc !important;;
-  border-right: 1px solid #6449fc !important;;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-}
-
-/* ////////////////// */
-
-input#searchWord{
-	/* width: 100%; */
-    width: 220px;
-    height: 30px;
-    padding: 0 30px 0 10px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    text-align: left;
-    font-size: 13px;
-    font-weight: 700;
-    color: #6449fc;
-    line-height: normal;
-    margin: 0;
-    display:inline-block;
-    vertical-align: middle;
-}
-
-input#searchWord:focus, input#searchWord:hover {
-    border: 1px solid #777;
-    -webkit-box-shadow: 2px 2px 6px rgb(0 0 0 / 15%);
-    box-shadow: 2px 2px 6px rgb(0 0 0 / 15%);
-    outline: 0;
-    
-}
-
-.fa-search{
-
-  position: absolute;
-  top: 8px; 
-
-  left: 190px;
-  color: #555;
-   cursor: pointer;
-}
-
-
-button#option{
-display:inline-block;
-width: 50px;
-    height: 30px;
-    float: initial;
-    line-height: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    color: #333;
-    vertical-align: middle;
-    margin: 0 15px;
-}
-
-button#option:hover {
-    border-color: #6449fc;
-}
-
-input#fromDate, input#toDate {
-display:inline-block;
-width: 85px;
-    height: 30px;
-    float: initial;
-    line-height: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    color: #333;
-    vertical-align: middle;
-    align-content: center;
-}
-
-select#searchType {
-display:inline-block;
-width: 85px;
-    height: 30px;
-    float: initial;
-    line-height: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size: 13px;
-    color: #333;
-    vertical-align: middle;
-    align-content: center;
-}
-</style>
-
-
 <!-- full calendar에 관련된 script -->
 <script src='<%=ctxPath %>/resources/fullcalendar_5.10.1/main.min.js'></script>
 <script src='<%=ctxPath %>/resources/fullcalendar_5.10.1/ko.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
-<script type="text/javascript">
+<style type="text/css">
 
+div.sideCalList {
+  height: 100%;
+  width: 230px;
+  padding-right: 0;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;  
+  background-color: #eee;
+  border-right: 1px solid #555;
+  overflow-x: hidden;
+  padding-top: 45px;
+  color: #333;
+  
+}
+
+div.sideCalList > ul {
+padding: 0;
+}
+
+div.sideCalList > ul > li {
+  border-bottom: 1px solid #ddd;
+}
+
+
+div.sideCalList div.mainlogo{
+ border-bottom: solid 0.8px #595959; 
+ 
+ border-top: solid 0.8px #eee;
+}
+
+
+
+div.comCalTitle, div.myCalTitle, div.shareCalTitle {
+
+  
+	position: relative;
+   padding: 11px 20px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+div.comCalTitle i.ico-arrow, div.myCalTitle i.ico-arrow, div.shareCalTitle i.ico-arrow {
+ position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-180deg);
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased; 
+}
+
+
+div.comCalTitle.active .ico-arrow, div.myCalTitle.active i.ico-arrow, div.shareCalTitle.active i.ico-arrow  {
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
+div.comCalList {
+margin: 0 0 12px 0;
+overflow: inherit;
+
+}
+
+div.comCalList ul {
+	display: inline-block;
+    width: 100%;
+    margin: 0;
+    color: #333;
+    padding-left: 0;
+}
+
+div.comCalList ul li:first-child {
+	margin-top: 0px;
+}
+
+div.comCalList ul li {
+	margin-top: 6px;
+	line-height: 20px;
+    padding: 0 20px;
+}
+
+div.comCalList ul li div {
+	height: auto;
+    margin: 0;
+}
+
+div.comCalList ul li div span {
+	 margin-left: 0;
+	  font-size: 13px;
+	  color: #333;
+	  margin-bottom: 0;
+}
+
+
+
+div.comCalList p, div.myCalList p, div.shareCalList p {
+margin: 0;
+}
+
+
+
+
+div.myCalList {
+margin: 0 0 12px 0;
+overflow: inherit;
+
+}
+
+div.myCalList ul {
+	display: inline-block;
+    width: 100%;
+    margin: 0;
+    color: #333;
+    padding-left: 0;
+}
+
+div.myCalList ul li:first-child {
+	margin-top: 0px;
+}
+
+div.myCalList ul li {
+	margin-top: 6px;
+	line-height: 20px;
+    padding: 0 20px;
+}
+
+div.myCalList ul li div {
+	height: auto;
+    margin: 0;
+}
+
+div.myCalList ul li div span {
+	 margin-left: 0;
+	  font-size: 13px;
+	  color: #333;
+	   margin-bottom: 0;
+}
+
+
+
+
+
+
+div.shareCalList {
+margin: 0 0 12px 0;
+overflow: inherit;
+
+}
+
+div.shareCalList ul {
+	display: inline-block;
+    width: 100%;
+    margin: 0;
+    color: #333;
+    padding-left: 0;
+}
+
+div.shareCalList ul li:first-child {
+	margin-top: 0px;
+}
+
+div.shareCalList ul li {
+	margin-top: 6px;
+	line-height: 20px;
+    padding: 0 20px;
+}
+
+div.shareCalList ul li div {
+	height: auto;
+    margin: 0;
+}
+
+div.shareCalList ul li div span {
+	 margin-left: 0;
+	  font-size: 13px;
+	  color: #333;
+	   margin-bottom: 0;
+}
+
+
+
+a.sideBtn{
+    position: fixed;
+    top: 45%;
+    left: 214px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #555;
+    border-radius:4px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 200;
+	background: #fff;
+    border: 1px solid #555;
+    color: #555;
+    
+   
+}
+
+
+a.sideBtn.open{
+	background: #fff;
+    border: 1px solid #555;
+    color: #595959;
+    
+    
+}
+
+
+a.sideBtn:after{
+   position: relative;
+   bottom: 4px;
+    font-size: 24px;
+    content: "\e900";
+    font-family: fcicons!important;
+   
+}
+
+
+
+a.sideBtn.open:after{
+ 	content: "\e901";
+}
+
+a.sideBtn:hover, a.sideBtn:hover+div.sideCalList {
+	 border-color: #6449fc; 
+}
+
+
+
+
+
+div.sideCalList input[type=checkbox] {
+    display:none;
+}
+div.sideCalList input[type=checkbox] + label { 
+    cursor: pointer; 
+    padding-left: 23px; 
+    background-repeat: no-repeat;
+    
+    position: relative;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    
+    margin-bottom:0;
+    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
+    
+
+       
+}
+
+div.sideCalList input[type=checkbox]:checked + label {
+    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-on.svg');
+}
+div.sideCalList input[type=checkbox]:disabled + label {
+    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
+}
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+<script type="text/javascript">
 var calendar;
 $(document).ready(function(){
+	
+	//sideCalList 시작//
 
 	// === 사내 캘린더에 사내캘린더 소분류 보여주기 ===
-	//showCompanyCal();
+	showCompanyCal();
 
 	// === 내 캘린더에 내캘린더 소분류 보여주기 ===
-	//showmyCal();
+	showmyCal();
 
 	// === 사내캘린더 체크박스 전체 선택/전체 해제 === //
 	$("input:checkbox[id=allComCal]").click(function(){
 		var bool = $(this).prop("checked");
 		$("input:checkbox[name=com_smcatgono]").prop("checked", bool);
-	});// end of $("input:checkbox[id=allComCal]").click(function(){})-------
+	});// end of $("input:checkbox[id=allComCal]").click(function(){})
 	
 	
 	// === 내캘린더 체크박스 전체 선택/전체 해제 === //
 	$("input:checkbox[id=allMyCal]").click(function(){		
 		var bool = $(this).prop("checked");
 		$("input:checkbox[name=my_smcatgono]").prop("checked", bool);
-	});// end of $("input:checkbox[id=allMyCal]").click(function(){})-------
+	});// end of $("input:checkbox[id=allMyCal]").click(function(){})
 			
+	
+	
+	$("div.comCalTitle").click(function() {
+		$("div.comCalList").toggle();
+		$("div.comCalTitle").toggleClass("active");
+	});//end of $("div.comCalTitle").click(function() 
+		
+	$("div.myCalTitle").click(function() {
+		$("div.myCalList").toggle();
+		$("div.myCalTitle").toggleClass("active");
+	});//end of $("div.myCalTitle").click(function()
+	
+	$("div.shareCalTitle").click(function() {
+		$("div.shareCalList").toggle();
+		$("div.shareCalTitle").toggleClass("active");
+	});//end of $("div.shareCalTitle").click(function()
+	
 	
 	// === 사내캘린더 에 속한 특정 체크박스를 클릭할 경우 === 
 	$(document).on("click","input:checkbox[name=com_smcatgono]",function(){	
@@ -638,7 +352,7 @@ $(document).ready(function(){
 					flag=true;     // flag 를 true 로 변경
 					return false;  // 반복을 빠져 나옴.
 				}
-			}); // end of $("input:checkbox[name=com_smcatgono]").each(function(index, item){})---------
+			}); // end of $("input:checkbox[name=com_smcatgono]").each(function(index, item){})
 
 			if(!flag){ // 사내캘린더 에 속한 서브캘린더의 체크박스가 모두 체크가 되어진 경우라면 			
                 $("input#allComCal").prop("checked",true); // 사내캘린더 체크박스에 체크를 한다.
@@ -651,7 +365,7 @@ $(document).ready(function(){
 		         //	 console.log(item);
 		        	 calendar.refetchEvents();  // 모든 소스의 이벤트를 다시 가져와 화면에 다시 표시합니다.
 		         });
-		    });// end of com_smcatgonoArr.forEach(function(item) {})---------------------
+		    });// end of com_smcatgonoArr.forEach(function(item) {})
 
 		}
 		
@@ -659,7 +373,7 @@ $(document).ready(function(){
 			   $("input#allComCal").prop("checked",false);
 		}
 		
-	});// end of $(document).on("click","input:checkbox[name=com_smcatgono]",function(){})--------
+	});// end of $(document).on("click","input:checkbox[name=com_smcatgono]",function(){})
 	
 	
 	// === 내캘린더 에 속한 특정 체크박스를 클릭할 경우 === 
@@ -677,7 +391,7 @@ $(document).ready(function(){
 					flag=true;    // flag 를 true 로 변경
 					return false; // 반복을 빠져 나옴.
 				}
-			}); // end of $("input:checkbox[name=my_smcatgono]").each(function(index, item){})---------
+			}); // end of $("input:checkbox[name=my_smcatgono]").each(function(index, item){})
 
 			if(!flag){	// 내캘린더 에 속한 서브캘린더의 체크박스가 모두 체크가 되어진 경우라면 	
                 $("input#allMyCal").prop("checked",true); // 내캘린더 체크박스에 체크를 한다.
@@ -690,7 +404,7 @@ $(document).ready(function(){
 				 // console.log(item); 
 					calendar.refetchEvents();  // 모든 소스의 이벤트를 다시 가져와 화면에 다시 표시합니다.
 		        });
-		    });// end of my_smcatgonoArr.forEach(function(item) {})---------------------
+		    });// end of my_smcatgonoArr.forEach(function(item) {})
 
 		}
 		
@@ -698,7 +412,7 @@ $(document).ready(function(){
 			   $("input#allMyCal").prop("checked",false);
 		}
 		
-	});// end of $(document).on("click","input:checkbox[name=my_smcatgono]",function(){})--------
+	});// end of $(document).on("click","input:checkbox[name=my_smcatgono]",function(){})
 	
 
 	// 검색할 때 필요한 datepicker
@@ -738,7 +452,7 @@ $(document).ready(function(){
 	    editable: false,
 	    headerToolbar: {
 	    	  left: 'prev next',
-	          /* center: 'title', dayGridMonth dayGridWeek dayGridDay */
+	          /* center: 'title', dayGridMonth dayGridWeek dayGridDay 'prev next' */
 	          right: 'today'
 	    },
 	    dayMaxEventRows: true, // for all non-TimeGrid views
@@ -748,17 +462,19 @@ $(document).ready(function(){
 	      }
 	    },
 	    
+
+	    <%--
 	    // ===================== DB 와 연동하는 법 시작 ===================== //
     	events:function(info, successCallback, failureCallback) {
 	
 	    	 $.ajax({
-                 url: '<%= ctxPath%>/schedule/selectSchedule.action',
-                 data:{"fk_userid":$('input#fk_userid').val()},
+                 url: '<%= ctxPath%>/schedule/selectSchedule.groovy',
+                 data:{"fk_empnum":$('input#fk_empnum').val()},
                  dataType: "json",
                  success:function(json) {
                 	 /*
                 	    json 의 값 예
-                	    [{"enddate":"2021-11-26 18:00:00.0","fk_lgcatgono":"2","color":"#009900","scheduleno":"1","fk_smcatgono":"4","subject":"파이널 프로젝트 코딩","startdate":"2021-11-08 09:00:00.0","fk_userid":"seoyh"},{"enddate":"2021-11-29 13:50:00.0","fk_lgcatgono":"1","color":"#990008","scheduleno":"2","fk_smcatgono":"7","subject":"팀원들 점심식사","joinuser":"leess,eomjh","startdate":"2021-11-29 12:50:00.0","fk_userid":"seoyh"},{"enddate":"2021-12-02 20:00:00.0","fk_lgcatgono":"1","color":"#300bea","scheduleno":"3","fk_smcatgono":"11","subject":"팀원들 뒤풀이 여행","joinuser":"leess,eomjh","startdate":"2021-12-01 09:00:00.0","fk_userid":"seoyh"}]
+                	    [{"enddate":"2021-11-26 18:00:00.0","fk_lgcatgono":"2","color":"#009900","pk_scheduleno":"1","fk_smcatgono":"4","subject":"파이널 프로젝트 코딩","startdate":"2021-11-08 09:00:00.0","fk_empnum":"seoyh"},{"enddate":"2021-11-29 13:50:00.0","fk_lgcatgono":"1","color":"#990008","pk_scheduleno":"2","fk_smcatgono":"7","subject":"팀원들 점심식사","joinuser":"leess,eomjh","startdate":"2021-11-29 12:50:00.0","fk_empnum":"seoyh"},{"enddate":"2021-12-02 20:00:00.0","fk_lgcatgono":"1","color":"#300bea","pk_scheduleno":"3","fk_smcatgono":"11","subject":"팀원들 뒤풀이 여행","joinuser":"leess,eomjh","startdate":"2021-12-01 09:00:00.0","fk_empnum":"seoyh"}]
                 	 */
                 	 var events = [];
                      if(json.length > 0){
@@ -777,19 +493,19 @@ $(document).ready(function(){
 	                                		   if($("input:checkbox[name=com_smcatgono]:checked").eq(i).val() == item.fk_smcatgono){
 	   			                               //  alert("캘린더 소분류 번호 : " + $("input:checkbox[name=com_smcatgono]:checked").eq(i).val());
 	                                			   events.push({
-	   			                                	            id: item.scheduleno,
+	   			                                	            id: item.pk_scheduleno,
 	   			                                                title: item.subject,
 	   			                                                start: startdate,
 	   			                                                end: enddate,
-	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.action?scheduleno="+item.scheduleno,
+	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.groovy?pk_scheduleno="+item.pk_scheduleno,
 	   			                                                color: item.color,
 	   			                                                cid: item.fk_smcatgono  // 사내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
-	   			                                   }); // end of events.push({})---------
+	   			                                   }); // end of events.push({})
 	   		                                   }
 	                                	   
-	                                   }// end of for-------------------------------------
+	                                   }// end of for
 	                                 
-                                   }// end of if-------------------------------------------
+                                   }// end of if
                                     
                                   
                                   // 내 캘린더로 등록된 일정을 풀캘린더 달력에 보여주기
@@ -798,39 +514,39 @@ $(document).ready(function(){
 	                                   
 	                                   for(var i=0; i<$("input:checkbox[name=my_smcatgono]:checked").length; i++){
 	                                	  
-	                                		   if($("input:checkbox[name=my_smcatgono]:checked").eq(i).val() == item.fk_smcatgono && item.fk_userid == "${sessionScope.loginuser.userid}" ){
+	                                		   if($("input:checkbox[name=my_smcatgono]:checked").eq(i).val() == item.fk_smcatgono && item.fk_empnum == "${sessionScope.loginuser.pk_empnum}" ){
 	   			                               //  alert("캘린더 소분류 번호 : " + $("input:checkbox[name=my_smcatgono]:checked").eq(i).val());
 	                                			   events.push({
-	   			                                	            id: item.scheduleno,
+	   			                                	            id: item.pk_scheduleno,
 	   			                                                title: item.subject,
 	   			                                                start: startdate,
 	   			                                                end: enddate,
-	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.action?scheduleno="+item.scheduleno,
+	   			                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.groovy?pk_scheduleno="+item.pk_scheduleno,
 	   			                                                color: item.color,
 	   			                                                cid: item.fk_smcatgono  // 내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
-	   			                                   }); // end of events.push({})---------
+	   			                                   }); // end of events.push({})
 	   	                                    }
-	                                   }// end of for-------------------------------------
+	                                   }// end of for
                                    
-                                   }// end of if-------------------------------------------
+                                   }// end of if
 
                                  
                                   // 공유받은 캘린더(다른 사용자가 내캘린더로 만든 것을 공유받은 경우임)
-                                  if (item.fk_lgcatgono==1 && item.fk_userid != "${sessionScope.loginuser.userid}" && (item.joinuser).indexOf("${sessionScope.loginuser.userid}") != -1 ){  
+                                  if (item.fk_lgcatgono==1 && item.fk_empnum != "${sessionScope.loginuser.pk_empnum}" && (item.joinuser).indexOf("${sessionScope.loginuser.pk_empnum}") != -1 ){  
                                         
   	                                   events.push({
   	                                	   			id: "0",  // "0" 인 이유는  배열 events 에 push 할때 id는 고유해야 하는데 위의 사내캘린더 및 내캘린더에서 push 할때 id값으로 item.scheduleno 을 사용하였다. item.scheduleno 값은 DB에서 1 부터 시작하는 시퀀스로 사용된 값이므로 0 값은 위의 사내캘린더나 내캘린더에서 사용되지 않으므로 여기서 고유한 값을 사용하기 위해 0 값을 준 것이다. 
   	                                                title: item.subject,
   	                                                start: startdate,
   	                                                end: enddate,
-  	                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.action?scheduleno="+item.scheduleno,
+  	                                        	    url: "<%= ctxPath%>/schedule/detailSchedule.groovy?pk_scheduleno="+item.pk_scheduleno,
   	                                                color: item.color,
   	                                                cid: "0"  // "0" 인 이유는  공유받은캘린더 에서의 체크박스의 value 를 "0" 으로 주었기 때문이다.
-  	                                   }); // end of events.push({})--------- 
+  	                                   }); // end of events.push({})
   	                                   
-  	                           		}// end of if------------------------- 
+  	                           		}// end of if
                                 
-                             }); // end of $.each(json, function(index, item) {})-----------------------
+                             }); // end of $.each(json, function(index, item) {})
                          }                             
                          
                       // console.log(events);                       
@@ -840,21 +556,22 @@ $(document).ready(function(){
 			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			      }	
                                             
-          }); // end of $.ajax()--------------------------------
+          }); // end of $.ajax()
         
-        }, // end of events:function(info, successCallback, failureCallback) {}---------
+        }, // end of events:function(info, successCallback, failureCallback) {}
+        --%>
         // ===================== DB 와 연동하는 법 끝 ===================== //
         
 		// 풀캘린더에서 날짜 클릭할 때 발생하는 이벤트(일정 등록창으로 넘어간다)
         dateClick: function(info) {
       	 // alert('클릭한 Date: ' + info.dateStr); // 클릭한 Date: 2021-11-20
-      	    $(".fc-day").css('background','none'); // 현재 날짜 배경색 없애기
-      	    info.dayEl.style.backgroundColor = '#b1b8cd'; // 클릭한 날짜의 배경색 지정하기
+      	   /*  $(".fc-day").css('background','none'); // 현재 날짜 배경색 없애기
+      	    info.dayEl.style.backgroundColor = '#b1b8cd'; // 클릭한 날짜의 배경색 지정하기 */
       	    $("form > input[name=chooseDate]").val(info.dateStr);
       	    
       	    var frm = document.dateFrm;
       	    frm.method="POST";
-      	    frm.action="<%= ctxPath%>/schedule/insertSchedule.action";
+      	    frm.action="<%= ctxPath%>/schedule/insertSchedule.groovy";
       	   /*  frm.submit(); */
       	  },
       	  
@@ -885,13 +602,12 @@ $(document).ready(function(){
 		            		arg.el.style.display = "none"; // 풀캘린더에서 일정을  숨긴다.
 		                }
 		              }
-	            });// end of arr_calendar_checkbox.forEach(function(item) {})------------
+	            });// end of arr_calendar_checkbox.forEach(function(item) {})
 	      }
-  });
+	});
     
 	calendar.render();  // 풀캘린더 보여주기
   
- 
   	var arr_calendar_checkbox = document.querySelectorAll("input.calendar_checkbox"); 
   	// 사내캘린더, 내캘린더, 공유받은캘린더 에서의 체크박스임
   
@@ -1006,8 +722,8 @@ $(document).ready(function(){
 	 	
 	// 라벨을 클릭시 옵션 목록이 열림/닫힘
 	mwdBtn.addEventListener('click', function() {
-	  if(mwdBtn.parentNode.classList.contains('active')) {
-		  mwdBtn.parentNode.classList.remove('active');
+	  if(mwdBtn.parentNode.classList.contains('active')) {		 
+		mwdBtn.parentNode.classList.remove('active'); 
 	  } else {
 		  mwdBtn.parentNode.classList.add('active');
 	  }
@@ -1031,7 +747,6 @@ $(document).ready(function(){
 	
 	
 	$("button#option").click(function() {
-		//$("div#optionList").show();
 		$("div#optionList").toggle();
 	});//end of $("li.mwd").click(function()
 	
@@ -1039,7 +754,19 @@ $(document).ready(function(){
 		goSearch();		
 	});//end of $("li.mwd").click(function()
 		
-}); // end of $(document).ready(function(){})==============================
+			
+	$("a.sideBtn").click(function() {
+			$("div.sideCalList").toggle();
+			$("a.sideBtn").toggleClass("open");
+			/* $("a.sideBtn").html("열기"); */
+	});//end of $("a.sideBtn").click(function()
+			
+			
+			
+			
+			
+			
+}); // end of $(document).ready(function(){})
 
 //~~~~~~~ Function Declartion ~~~~~~~
 
@@ -1049,7 +776,7 @@ function buildMonthList() {
 	//$("ul.monthsList").empty();
 	var month = calendar.getDate();
 	var initial = moment(month).format("YYYY-MM");
-	initial = moment(month).add(-6, "month").format("YYYY-MM");
+	initial = moment(month).add(-2, "month").format("YYYY-MM");
 	
 	var button = document.createElement("button");
 	button.className = "monthsBtn";
@@ -1061,7 +788,8 @@ function buildMonthList() {
 	var ul = document.createElement("ul");
 	ul.className = "monthsList";
 	$("div.fc-title").append(ul);
-	for(var i = 0; i < 13; i++) {
+	
+	for(var i = 0; i < 5; i++) {
 		var li = document.createElement("li");
 		li.id = (moment(initial).format("YYYY-MM"));
 		li.className = "months";
@@ -1117,22 +845,20 @@ function buildMWD() {
 // === 사내 캘린더 소분류 추가를 위해 +아이콘 클릭시 ===
 function addComCalendar(){
 	$('#modal_addComCal').modal('show'); // 모달창 보여주기	
-}// end of function addComCalendar(){}--------------------
+}// end of function addComCalendar(){}
 		
 // === 사내 캘린더 추가 모달창에서 추가 버튼 클릭시 ===
 function goAddComCal(){
-	
 	if($("input.add_com_smcatgoname").val().trim() == ""){
  		  alert("추가할 사내캘린더 소분류명을 입력하세요!!");
  		  return;
  	}
-	
  	else {
  		 $.ajax({
- 			 url: "<%= ctxPath%>/schedule/addComCalendar.action",
+ 			 url: "<%= ctxPath%>/schedule/addComCalendar.groovy",
  			 type: "post",
  			 data: {"com_smcatgoname": $("input.add_com_smcatgoname").val(), 
- 				    "fk_userid": "${sessionScope.loginuser.userid}"},
+ 				    "fk_empnum": "${sessionScope.loginuser.pk_empnum}"},
  			 dataType: "json",
  			 success:function(json){
  				 if(json.n != 1){
@@ -1153,52 +879,55 @@ function goAddComCal(){
  		 });
  	  }
 	
-}// end of function goAddComCal(){}------------------------------------
+}// end of function goAddComCal(){}
 
 // === 사내 캘린더에서 사내캘린더 소분류  보여주기  === //
 function showCompanyCal(){
 	$.ajax({
-		 url:"<%= ctxPath%>/schedule/showCompanyCalendar.action",
+		 url:"<%= ctxPath%>/schedule/showCompanyCalendar.groovy",
 		 type:"get",
 		 dataType:"json",
 		 success:function(json){
 				 var html = "";
-				 
 				 if(json.length > 0){
-					 html += "<table style='width:80%;'>";
+					 html += "<li>";
 					 
 					 $.each(json, function(index, item){
-						 html += "<tr style='font-size: 11pt;'>";
-						 html += "<td style='width:60%; padding: 3px 0px;'><input type='checkbox' name='com_smcatgono' class='calendar_checkbox com_smcatgono' style='margin-right: 3px;' value='"+item.smcatgono+"' checked id='com_smcatgono_"+index+"'/><label for='com_smcatgono_"+index+"'>"+item.smcatgoname+"</label></td>";  
-						 
+						 html += "<div>";
+						 html += "<p>";
+						 html += "<input type='checkbox' name='com_smcatgono' class='calendar_checkbox com_smcatgono' value='"+item.pk_smcatgono+"' checked id='com_smcatgono_"+index+"'/>";
+						 html += "<label for='com_smcatgono_"+index+"'></label><span>"+item.smcatgoname+"</span>";
+						
+						
+					
 						 <%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다. 
 						 if("${sessionScope.loginuser.fk_pcode}" =='3' && "${sessionScope.loginuser.fk_dcode}" == '4') { --%>
-						 if("${sessionScope.loginuser.gradelevel}" =='10') {
-							 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
-							 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit delCal' onclick='delCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
-						 }
+						 <%-- if("${sessionScope.loginuser.gradelevel}" =='10') {--%>
+							 html += "<button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
+							 html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
+						<%-- }--%>
 						 
-						 html += "</tr>";
+						 html += "</p>";
+						 html += "</div>";	 
 					 });
 				 	 
-					 html += "</table>";
+					 html += "</li>";	
 				 }
-			 
-				 $("div#companyCal").html(html);
+				 $("div.comCalList > ul").append(html);
 		},
 		error: function(request, status, error){
 	           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
         }	 	
 	});
 
-}// end of function showCompanyCal()------------------	
+}// end of function showCompanyCal()
 
 // === 사내 캘린더내의 서브캘린더 수정 모달창 나타나기 === 
-function editComCalendar(smcatgono, smcatgoname){
+function editComCalendar(pk_smcatgono, smcatgoname){
 	$('#modal_editComCal').modal('show'); // 모달 보이기
-	$("input.edit_com_smcatgono").val(smcatgono);
+	$("input.edit_com_smcatgono").val(pk_smcatgono);
 	$("input.edit_com_smcatgoname").val(smcatgoname);
-}// end of function editComCalendar(smcatgono, smcatgoname){}----------------------
+}// end of function editComCalendar(pk_smcatgono, smcatgoname){}
 		
 // === 사내 캘린더내의 서브캘린더 수정 모달창에서 수정하기 클릭 === 
 function goEditComCal(){
@@ -1209,11 +938,11 @@ function goEditComCal(){
   	}
   	else{
 		$.ajax({
-			url:"<%= ctxPath%>/schedule/editCalendar.action",
+			url:"<%= ctxPath%>/schedule/editCalendar.groovy",
 			type: "post",
-			data:{"smcatgono":$("input.edit_com_smcatgono").val(), 
+			data:{"pk_smcatgono":$("input.edit_com_smcatgono").val(), 
 				  "smcatgoname": $("input.edit_com_smcatgoname").val(), 
-				  "userid":"${sessionScope.loginuser.userid}",
+				  "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
 				  "caltype":"2"  // 사내캘린더
 			     },
 			dataType:"json",
@@ -1234,14 +963,14 @@ function goEditComCal(){
 		});
   	  }
 	
-}// end of function goEditComCal(){}--------------------------------
+}// end of function goEditComCal(){}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //	
 
 // === 내 캘린더 소분류 추가를 위해 +아이콘 클릭시 ===
 function addMyCalendar(){
 	$('#modal_addMyCal').modal('show');	
-}// end of function addMyCalendar(){}-----------------
+}// end of function addMyCalendar(){}
 	
 
 // === 내 캘린더 추가 모달창에서 추가 버튼 클릭시 === 
@@ -1251,13 +980,12 @@ function goAddMyCal(){
  		  alert("추가할 내캘린더 소분류명을 입력하세요!!");
  		  return;
  	}
- 	
 	else {
  		  $.ajax({
- 			 url: "<%= ctxPath%>/schedule/addMyCalendar.action",
+ 			 url: "<%= ctxPath%>/schedule/addMyCalendar.groovy",
  			 type: "post",
  			 data: {"my_smcatgoname": $("input.add_my_smcatgoname").val(), 
- 				    "fk_userid": "${sessionScope.loginuser.userid}"},
+ 				    "fk_empnum": "${sessionScope.loginuser.pk_empnum}"},
  			 dataType: "json",
  			 success:function(json){
  				 
@@ -1279,46 +1007,52 @@ function goAddMyCal(){
  		 });
  	  }
 	
-}// end of function goAddMyCal(){}-----------------------
+}// end of function goAddMyCal(){}
 
 // === 내 캘린더에서 내캘린더 소분류 보여주기  === //
 function showmyCal(){
 	$.ajax({
-		 url:"<%= ctxPath%>/schedule/showMyCalendar.action",
+		 url:"<%= ctxPath%>/schedule/showMyCalendar.groovy",
 		 type:"get",
-		 data:{"fk_userid":"${sessionScope.loginuser.userid}"},
+		 data:{"fk_empnum":"${sessionScope.loginuser.pk_empnum}"},
 		 dataType:"json",
 		 success:function(json){
 			 var html = "";
+
 			 if(json.length > 0){
-				 html += "<table style='width:80%;'>";	 
+				 html += "<li>";
 				 
 				 $.each(json, function(index, item){
-					 html += "<tr style='font-size: 11pt;'>";
-					 html += "<td style='width:60%; padding: 3px 0px;'><input type='checkbox' name='my_smcatgono' class='calendar_checkbox my_smcatgono' style='margin-right: 3px;' value='"+item.smcatgono+"' checked id='my_smcatgono_"+index+"' checked/><label for='my_smcatgono_"+index+"'>"+item.smcatgoname+"</label></td>";   
-					 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit editCal' data-target='editCal' onclick='editMyCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>"; 
-					 html += "<td style='width:20%; padding: 3px 0px;'><button class='btn_edit delCal' onclick='delCalendar("+item.smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
-				     html += "</tr>";
-				 });
-				 
-				 html += "</table>";
+					 html += "<div>";
+					 html += "<p>";
+					 html += "<input type='checkbox' name='my_smcatgono' class='calendar_checkbox my_smcatgono' value='"+item.pk_smcatgono+"' checked id='my_smcatgono_"+index+"'/>";
+					 html += "<label for='my_smcatgono_"+index+"'></label><span>"+item.smcatgoname+"</span>";
+					
+					 html += "<button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
+					 html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
+			
+					 html += "</p>";
+					 html += "</div>";	 
+				});
+			 	 
+				 html += "</li>";	
 			 }
-			 
-			 $("div#myCal").html(html);
+			 $("div.myCalList > ul").append(html);
+				 	 
 		 },
 		 error: function(request, status, error){
 	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 	     }	 	
 	});
 
-}// end of function showmyCal()---------------------	
+}// end of function showmyCal()
 
 // === 내 캘린더내의 서브캘린더 수정 모달창 나타나기 === 
-function editMyCalendar(smcatgono, smcatgoname){
+function editMyCalendar(pk_smcatgono, smcatgoname){
 	$('#modal_editMyCal').modal('show');  // 모달 보이기
-	$("input.edit_my_smcatgono").val(smcatgono);
+	$("input.edit_my_smcatgono").val(pk_smcatgono);
 	$("input.edit_my_smcatgoname").val(smcatgoname);
-}// end of function editMyCalendar(smcatgono, smcatgoname){}-----------------------
+}// end of function editMyCalendar(pk_smcatgono, smcatgoname){}
 	
 // === 내 캘린더내의 서브캘린더 수정 모달창에서 수정 클릭 === 
 function goEditMyCal(){
@@ -1329,11 +1063,11 @@ function goEditMyCal(){
 	}
   	else{
 		 $.ajax({
-			url:"<%= ctxPath%>/schedule/editCalendar.action",
+			url:"<%= ctxPath%>/schedule/editCalendar.groovy",
 			type: "post",
-			data:{"smcatgono":$("input.edit_my_smcatgono").val(), 
+			data:{"pk_smcatgono":$("input.edit_my_smcatgono").val(), 
 				  "smcatgoname": $("input.edit_my_smcatgoname").val(), 
-				  "userid":"${sessionScope.loginuser.userid}",
+				  "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
 				  "caltype":"1"  // 내캘린더
 				  },
 			dataType:"json",
@@ -1354,21 +1088,21 @@ function goEditMyCal(){
 		});
   	  }
 	
-}// end of function goEditMyCal(){}-------------------------------------
+}// end of function goEditMyCal(){}
 	
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//		
 
 // === (사내캘린더 또는 내캘린더)속의 소분류 카테고리 삭제하기 === 
-function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분류 번호, smcatgoname => 캘린더 소분류 명
+function delCalendar(pk_smcatgono, smcatgoname){ // pk_smcatgono => 캘린더 소분류 번호, smcatgoname => 캘린더 소분류 명
 	
 	var bool = confirm(smcatgoname + " 캘린더를 삭제 하시겠습니까?");
 	
 	if(bool){
 		$.ajax({
-			url:"<%= ctxPath%>/schedule/deleteSubCalendar.action",
+			url:"<%= ctxPath%>/schedule/deleteSubCalendar.groovy",
 			type: "post",
-			data:{"smcatgono":smcatgono},
+			data:{"pk_smcatgono":pk_smcatgono},
 			dataType:"json",
 			success:function(json){
 				if(json.n==1){
@@ -1382,7 +1116,7 @@ function delCalendar(smcatgono, smcatgoname){ // smcatgono => 캘린더 소분�
 		});
 	}
 	
-}// end of function delCalendar(smcatgono, smcatgoname){}------------------------
+}// end of function delCalendar(pk_smcatgono, smcatgoname){}
 
 // === 검색 기능 === //
 function goSearch(){
@@ -1404,65 +1138,154 @@ function goSearch(){
 	
    	var frm = document.searchScheduleFrm;
     frm.method="get";
-    frm.action="<%= ctxPath%>/schedule/searchSchedule.action";
+    frm.action="<%= ctxPath%>/schedule/searchSchedule.groovy";
     frm.submit();
 	
-}// end of function goSearch(){}--------------------------
+}// end of function goSearch(){}
 
 </script>
 
-<div style="margin-left: 80px; width: 88%;">
-	
-	 <h3>일정 관리</h3>
-	<!--
-	<div id="wrapper1">
-		<input type="hidden" value="${sessionScope.loginuser.userid}" id="fk_userid"/>
-		
-		<input type="checkbox" id="allComCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allComCal">사내 캘린더</label>
-	
-	<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
-	     <c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
-	     <c:if test="${sessionScope.loginuser.gradelevel =='10'}"> 
-		 	<button class="btn_edit" style="float: right;" onclick="addComCalendar()"><i class='fas'>&#xf055;</i></button>
-		 </c:if> 
-	<%-- </c:if>	--%> 
-	    
-	    <%-- 사내 캘린더를 보여주는 곳 --%>
-	 	<div id="companyCal" style="margin-left: 50px; margin-bottom: 10px;"></div>
-		
-		
-		<input type="checkbox" id="allMyCal" class="calendar_checkbox" checked/>&nbsp;&nbsp;<label for="allMyCal">내 캘린더</label>
-		<button class="btn_edit" style="float: right;" onclick="addMyCalendar()"><i class='fas'>&#xf055;</i></button>
-		
-		<%-- 내 캘린더를 보여주는 곳 --%>
-		<div id="myCal" style="margin-left: 50px; margin-bottom: 10px;"></div>
 
-		<input type="checkbox" id="sharedCal" class="calendar_checkbox" value="0" checked/>&nbsp;&nbsp;<label for="sharedCal">공유받은 캘린더</label> 
+
+
+<a href="#" id="sideBtn" class="sideBtn"></a>
+
+<!-- 사이드바 시작 -->
+
+<div class="sideCalList">
+
+	<div  align="center" class="mainlogo">
+		<a href="<%=ctxPath%>/index.groovy"><img src="<%= ctxPath%>/resources/images/common/로고그루비.png"  alt="로고"  /></a>
 	</div>
-	 -->
+	
+	<ul>
+    	<li>
+			<div class="comCalTitle">
+				<input type="hidden" value="${sessionScope.loginuser.pk_empnum}" id="fk_empnum"/>
+				<span>사내 캘린더</span>
+				<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.  	
+	     		<c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
+	     		<%--<c:if test="${sessionScope.loginuser.gradelevel =='10'}"> --%> 
+		 			<button class="btn_edit" onclick="addComCalendar()">
+		 				<i class='fas'>&#xf055;</i>
+		 			</button>
+		 		<%--</c:if>--%> 
+			<%--</c:if>	--%> 
+				<i class="ico-arrow active fas">&#xf078;</i>
+			</div>
+			
+			<div class="comCalList">
+ 				<ul>
+					<li>
+						<div>
+							<p>
+								<input type="checkbox" checked id="allComCal" class="calendar_checkbox"/><label for="allComCal"></label><span>전체</span>
+								
+							</p>
+						</div>
+					</li>
+		        </ul>
+		    </div>
+		</li>
+		
+		<li>
+			<div class="myCalTitle">
+				<span>내 캘린더</span>
+				<button class="btn_edit" onclick="addMyCalendar()">
+					<i class='fas'>&#xf055;</i>
+				</button>
+				<i class="ico-arrow active fas">&#xf078;</i>
+			</div>
+			
+			<div class="myCalList">
+		        <ul>
+		            <li>
+		                <div>
+		                    <p>
+		                    	<input type="checkbox" checked id="allMyCal" class="calendar_checkbox"/><label for="allMyCal"></label><span>전체</span>
+		                    </p>
+		                </div>
+		            </li>
+		        </ul>
+			 </div>
+		</li>
+		
+		<li>
+			<div class="shareCalTitle">
+				<span>공유받은 캘린더</span>
+				<i class="ico-arrow active fas">&#xf078;</i>
+			</div>
+			
+			<div class="shareCalList">
+		        <ul>
+		            <li>
+		                <div>
+		                    <p>
+		                    	<input type="checkbox" checked id="sharedCal" class="calendar_checkbox" value="0"/><label for="sharedCal"></label><span>전체</span>
+		                    </p>
+		                </div>
+		            </li>
+		        </ul>
+			 </div>
+		</li>
+		      
+    </ul>	
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div>
+	
+	<!-- <h3>일정 관리</h3> -->
+
+
+
+
+
 	<div id="wrapper2">
 		<div id="searchPart" style="float: left;">
 			<form name="searchScheduleFrm">
-				<div style="position: relative; align-items: center;">
+				<div style=" position: relative; align-items: center;">
 				
 					<i class="fas fa-search"></i>
 					<input type="text" id="searchWord" value="" name="searchWord"/>
-					
 					<button type="button" id="option">옵션</button>
 					
-				<div id="optionList" style="display: inline-block;">
-				<input type="text" id="fromDate" name="startdate" readonly="readonly">
-				&nbsp;&nbsp;-&nbsp;&nbsp;
-	            <input type="text" id="toDate" name="enddate" readonly="readonly">&nbsp;&nbsp;
-					<select id="searchType"name="searchType">
-						<option value="">검색선택</option>
-						<option value="subject">제목</option>
-						<option value="content">내용</option>
-						<option value="joinuser">공유자</option>
-					</select>&nbsp;&nbsp;	
-					
-					
-				</div>	
+					<div id="optionList" style="display: inline-block;">
+						<input type="text" id="fromDate" name="startdate" readonly="readonly">
+	            		<input type="text" id="toDate" name="enddate" readonly="readonly">
+						<select id="searchType"name="searchType">
+							<option value="">검색선택</option>
+							<option value="subject">제목</option>
+							<option value="content">내용</option>
+							<option value="joinuser">공유자</option>
+						</select>		
+					</div>	
 					<!-- 	
 					<select id="sizePerPage" name="sizePerPage" style="height: 30px;">
 						<option value="">보여줄개수</option>
@@ -1471,167 +1294,169 @@ function goSearch(){
 						<option value="20">20</option>
 					</select>
 					 -->
-					&nbsp;&nbsp;
-					<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}"/>
-					
-					
+					<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}"/>
 					<!-- <button type="button" class="btn_normal" style="display: inline-block;" onclick="goSearch()">검색</button>  -->
 				</div>
 			</form>
-		</div>
-					
+		</div>			
 	    <%-- 풀캘린더가 보여지는 엘리먼트  --%>
-		<div id="calendar" style="margin: 100px 0 50px 0;" ></div>
+		<div id="calendar" style="margin: 50px 0 50px 0;" ></div>
 	</div>
 		
 </div> 
 
+
+
 <%-- === 사내 캘린더 추가 Modal === --%>
 <div class="modal fade" id="modal_addComCal" role="dialog" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
+	<div class="modal-dialog">
+    	<div class="modal-content">
     
-      <!-- Modal header -->
-      <div class="modal-header">
-        <h4 class="modal-title">사내 캘린더 추가</h4>
-        <button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
-      </div>
+      		<!-- Modal header -->
+      		<div class="modal-header">
+        		<h4 class="modal-title">사내 캘린더 추가</h4>
+        		<button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
+      		</div>
       
-      <!-- Modal body -->
-      <div class="modal-body">
-       	<form name="modal_frm">
-       	<table style="width: 100%;" class="table table-bordered">
-     			<tr>
-     				<td style="text-align: left; ">소분류명</td>
-     				<td><input type="text" class="add_com_smcatgoname"/></td>
-     			</tr>
-     			<tr>
-     				<td style="text-align: left;">만든이</td>
-     				<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
-     			</tr>
-     		</table>
-       	</form>	
-      </div>
+      		<!-- Modal body -->
+      		<div class="modal-body">
+       			<form name="modal_frm">
+       				<table style="width: 100%;" class="table table-bordered">
+		     			<tr>
+		     				<td style="text-align: left; ">소분류명</td>
+		     				<td><input type="text" class="add_com_smcatgoname"/></td>
+		     			</tr>
+		     			<tr>
+		     				<td style="text-align: left;">만든이</td>
+		     				<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
+		     			</tr>
+     				</table>
+       			</form>	
+      		</div>
       
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      	<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goAddComCal()">추가</button>
-          <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
-      </div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goAddComCal()">추가</button>
+			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+			</div>
       
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
+
+
 
 <%-- === 사내 캘린더 수정 Modal === --%>
 <div class="modal fade" id="modal_editComCal" role="dialog" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
+	<div class="modal-dialog">
+    	<div class="modal-content">
     
-      <!-- Modal header -->
-      <div class="modal-header">
-        <h4 class="modal-title">사내 캘린더 수정</h4>
-        <button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
-      </div>
+			<!-- Modal header -->
+			<div class="modal-header">
+		  		<h4 class="modal-title">사내 캘린더 수정</h4>
+			  	<button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
+			</div>
       
-      <!-- Modal body -->
-      <div class="modal-body">
-       	<form name="modal_frm">
-       	<table style="width: 100%;" class="table table-bordered">
-     			<tr>
-     				<td style="text-align: left; ">소분류명</td>
-     				<td><input type="text" class="edit_com_smcatgoname"/><input type="hidden" value="" class="edit_com_smcatgono"></td>
-     			</tr>
-     			<tr>
-     				<td style="text-align: left;">만든이</td>
-     				<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
-     			</tr>
-     		</table>
-       	</form>	
-      </div>
+			<!-- Modal body -->
+			<div class="modal-body">
+			 	<form name="modal_frm">
+			 		<table style="width: 100%;" class="table table-bordered">
+						<tr>
+							<td style="text-align: left; ">소분류명</td>
+							<td><input type="text" class="edit_com_smcatgoname"/><input type="hidden" value="" class="edit_com_smcatgono"></td>
+						</tr>
+						<tr>
+							<td style="text-align: left;">만든이</td>
+							<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
+						</tr>
+					</table>
+			 	</form>	
+			</div>
       
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      	<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditComCal()">수정</button>
-          <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
-      </div>
-      
-    </div>
-  </div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditComCal()">수정</button>
+			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+			</div>
+
+    	</div>	
+	</div>
 </div>
+	
+
+
 
 <%-- === 내 캘린더 추가 Modal === --%>
 <div class="modal fade" id="modal_addMyCal" role="dialog" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
+	<div class="modal-dialog">
+    	<div class="modal-content">
       
-      <!-- Modal header -->
-      <div class="modal-header">
-        <h4 class="modal-title">내 캘린더 추가</h4>
-        <button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
-      </div>
+			<!-- Modal header -->
+			<div class="modal-header">
+				<h4 class="modal-title">내 캘린더 추가</h4>
+				<button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
+			</div>
       
-      <!-- Modal body -->
-      <div class="modal-body">
-          <form name="modal_frm">
-       	<table style="width: 100%;" class="table table-bordered">
-     			<tr>
-     				<td style="text-align: left; ">소분류명</td>
-     				<td><input type="text" class="add_my_smcatgoname" /></td>
-     			</tr>
-     			<tr>
-     				<td style="text-align: left;">만든이</td>
-     				<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td> 
-     			</tr>
-     		</table>
-     		</form>
-      </div>
+			<!-- Modal body -->
+			<div class="modal-body">
+			    <form name="modal_frm">
+			 		<table style="width: 100%;" class="table table-bordered">
+						<tr>
+							<td style="text-align: left; ">소분류명</td>
+							<td><input type="text" class="add_my_smcatgoname" /></td>
+						</tr>
+						<tr>
+							<td style="text-align: left;">만든이</td>
+							<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td> 
+						</tr>
+					</table>
+				</form>
+			</div>
       
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      	<button type="button" id="addMy" class="btn btn-success btn-sm" onclick="goAddMyCal()">추가</button>
-          <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
-      </div>
-      
-    </div>
-  </div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" id="addMy" class="btn btn-success btn-sm" onclick="goAddMyCal()">추가</button>
+			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+			</div>
+    	</div>
+  	</div>
 </div>
 
 <%-- === 내 캘린더 수정 Modal === --%>
 <div class="modal fade" id="modal_editMyCal" role="dialog" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
+	<div class="modal-dialog">
+		<div class="modal-content">
     
-      <!-- Modal header -->
-      <div class="modal-header">
-        <h4 class="modal-title">내 캘린더 수정</h4>
-        <button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
-      </div>
+			<!-- Modal header -->
+			<div class="modal-header">
+				<h4 class="modal-title">내 캘린더 수정</h4>
+				<button type="button" class="close modal_close" data-dismiss="modal">&times;</button>
+			</div>
+	      
+			<!-- Modal body -->
+			<div class="modal-body">
+				<form name="modal_frm">
+			 		<table style="width: 100%;" class="table table-bordered">
+						<tr>
+							<td style="text-align: left; ">소분류명</td>
+							<td><input type="text" class="edit_my_smcatgoname"/><input type="hidden" value="" class="edit_my_smcatgono"></td>
+						</tr>
+						<tr>
+							<td style="text-align: left;">만든이</td>
+							<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
+						</tr>
+					</table>
+			 	</form>
+			</div>
       
-      <!-- Modal body -->
-      <div class="modal-body">
-      	<form name="modal_frm">
-       	<table style="width: 100%;" class="table table-bordered">
-     			<tr>
-     				<td style="text-align: left; ">소분류명</td>
-     				<td><input type="text" class="edit_my_smcatgoname"/><input type="hidden" value="" class="edit_my_smcatgono"></td>
-     			</tr>
-     			<tr>
-     				<td style="text-align: left;">만든이</td>
-     				<td style="text-align: left; padding-left: 5px;">${sessionScope.loginuser.name}</td>
-     			</tr>
-     		</table>
-       	</form>
-      </div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditMyCal()">수정</button>
+			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+			</div>
       
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      	<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditMyCal()">수정</button>
-          <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
-      </div>
-      
-    </div>
-  </div>
+    	</div>
+  	</div>
 </div>
 
 <%-- === 마우스로 클릭한 날짜의 일정 등록을 위한 폼 === --%>     

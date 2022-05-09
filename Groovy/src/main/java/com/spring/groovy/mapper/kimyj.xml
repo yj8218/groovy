@@ -6,9 +6,288 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="kimyj">
 
-	<insert id="test_insert">
-		insert into spring_test(no, name, writeday)
-		values(101, '서영학', default)
+	<!-- 사내 캘린더에 캘린더 소분류 명 조회 -->
+	<select id="existComCalendar" parameterType="String" resultType="int">
+		select count(*)
+		from tbl_calendar_small_category
+		where fk_lgcatgono = 2 and smcatgoname = #{com_smcatgoname}  
+	</select>
+
+
+    <!-- 사내 캘린더에 캘린더 소분류 추가하기 --> 
+	<insert id="addComCalendar" parameterType="HashMap">
+		insert into tbl_calendar_small_category(pk_smcatgono, fk_lgcatgono, smcatgoname, fk_empnum)
+		values(seq_smcatgono.nextval, 2, #{com_smcatgoname}, #{fk_empnum})
 	</insert>
+	
+	
+	<!-- 내 캘린더에 캘린더 소분류 명 조회 -->
+	<select id="existMyCalendar" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_calendar_small_category
+		where fk_lgcatgono = 1 and fk_empnum = #{fk_empnum} and smcatgoname = #{my_smcatgoname}  
+	</select>
+
+
+    <!-- 내 캘린더에 캘린더 소분류 추가하기 --> 
+	<insert id="addMyCalendar" parameterType="HashMap">
+		insert into tbl_calendar_small_category(pk_smcatgono, fk_lgcatgono, smcatgoname, fk_empnum)
+		values(seq_smcatgono.nextval, 1, #{my_smcatgoname}, #{fk_empnum})
+	</insert>	
+	
+	
+	<!-- 사내 캘린더에서 사내캘린더 소분류  보여주기 -->
+	<select id="showCompanyCalendar" resultType="com.spring.groovy.model.Calendar_small_category_VO">
+		select pk_smcatgono, fk_lgcatgono, smcatgoname
+		from tbl_calendar_small_category
+		where fk_lgcatgono = 2
+		order by pk_smcatgono asc
+	</select>
+	
+	
+	<!-- 내 캘린더에서 내캘린더 소분류  보여주기 -->
+	<select id="showMyCalendar" resultType="com.spring.groovy.model.Calendar_small_category_VO">
+		select pk_smcatgono, fk_lgcatgono, smcatgoname
+		from tbl_calendar_small_category
+		where fk_lgcatgono = 1
+		and fk_empnum = #{fk_empnum} 
+		order by pk_smcatgono asc
+	</select>
+
+
+    <!-- 일정 등록시 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아오기 -->
+    <select id="selectSmallCategory" parameterType="HashMap" resultType="com.spring.groovy.model.Calendar_small_category_VO">
+    	select pk_smcatgono, fk_lgcatgono, smcatgoname
+		from tbl_calendar_small_category
+		where fk_lgcatgono = #{fk_lgcatgono} and fk_empnum= #{fk_empnum}
+		order by pk_smcatgono asc
+    </select>
+    
+    
+    <!-- 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 -->
+    <select id="searchJoinUserList" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+    	select pk_empnum, name
+		from tbl_employee
+		where lower(name) like '%'|| lower(#{joinUserName}) ||'%'
+    </select>
+    
+    
+    <!-- 일정 등록하기 -->
+    <insert id="registerSchedule_end" parameterType="HashMap">
+    	insert into tbl_calendar_schedule(pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum) 
+    	values(seq_scheduleno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{subject}, #{color}, #{place}, #{joinuser}, #{content}, #{fk_smcatgono}, #{fk_lgcatgono}, #{fk_empnum})  
+    </insert>
+
+
+    <!-- 등록된 일정에 대한 정보(달력에 표시됨)-->
+	<select id="selectSchedule" resultType="com.spring.groovy.model.Calendar_schedule_VO" parameterType="String">
+		select pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum 
+		from tbl_calendar_schedule
+		where fk_empnum = #{fk_empnum} OR
+		fk_lgcatgono = 2 OR
+		(fk_lgcatgono != 2 AND lower(joinuser) like '%'|| lower(#{fk_empnum}) ||'%')
+		order by pk_scheduleno asc
+	</select>
+	
+	
+	<!-- 일정 상세 보기 -->
+	<resultMap type="HashMap" id="detailSchedule_Map">
+		<result property="PK_SCHEDULENO" 	column="pk_scheduleno" 	javaType="String" />
+		<result property="STARTDATE" 	column="startdate" 		javaType="String" />
+		<result property="ENDDATE" 		column="enddate" 		javaType="String" />
+		<result property="SUBJECT" 		column="subject" 		javaType="String" />
+		<result property="COLOR" 		column="color" 			javaType="String" />
+		<result property="PLACE" 		column="place" 			javaType="String" />
+		<result property="JOINUSER" 	column="joinuser" 		javaType="String" />
+		<result property="CONTENT" 		column="content" 		javaType="String" />
+		<result property="FK_SMCATGONO" column="fk_smcatgono" 	javaType="String" />
+		<result property="FK_LGCATGONO" column="fk_lgcatgono" 	javaType="String" />
+		<result property="FK_EMPNUM" 	column="fk_empnum" 		javaType="String" />
+		<result property="NAME" 		column="name" 			javaType="String" />
+		<result property="SMCATGONAME" 	column="smcatgoname" 	javaType="String" />
+	</resultMap>
+	<select id="detailSchedule" parameterType="String" resultMap="detailSchedule_Map">
+		select SD.pk_scheduleno
+		     , to_char(SD.startdate,'yyyy-mm-dd hh24:mi') as startdate
+		     , to_char(SD.enddate,'yyyy-mm-dd hh24:mi') as enddate  
+		     , SD.subject
+		     , SD.color
+		     , nvl(SD.place,'-') as place
+		     , nvl(SD.joinuser,'공유자가 없습니다.') as joinuser
+		     , nvl(SD.content,'') as content
+		     , SD.fk_smcatgono
+		     , SD.fk_lgcatgono
+		     , SD.fk_empnum
+		     , M.name
+		     , SC.smcatgoname
+		from tbl_calendar_schedule SD 
+		JOIN tbl_employee M
+		ON SD.fk_empnum = M.pk_empnum
+		JOIN tbl_calendar_small_category SC
+		ON SD.fk_smcatgono = SC.pk_smcatgono
+		where SD.pk_scheduleno = #{pk_scheduleno}
+	</select>
+	
+	
+	<!-- 일정삭제하기 -->
+	<delete id="deleteSchedule" parameterType="String">
+		delete from tbl_calendar_schedule 
+		where pk_scheduleno = #{pk_scheduleno} 
+	</delete>
+	
+	
+	<!-- 일정수정하가 -->
+	<update id="editSchedule_end" parameterType="com.spring.groovy.model.Calendar_schedule_VO">
+		update tbl_calendar_schedule set startdate = to_date(#{startdate}, 'yyyymmddhh24miss')
+		                               , enddate = to_date(#{enddate}, 'yyyymmddhh24miss')
+		                               , subject = #{subject}
+		                               , fk_lgcatgono = #{fk_lgcatgono}
+		                               , fk_smcatgono = #{fk_smcatgono}
+		                               , color = #{color}
+		                               , place = #{place}
+		                               , joinuser = #{joinuser}
+		                               , content = #{content}
+		where pk_scheduleno = #{pk_scheduleno} 
+	</update>
+	
+	
+	<!-- (사내캘린더 또는 내캘린더)속의  소분류 카테고리인 서브캘린더 삭제하기   -->
+	<delete id="deleteSubCalendar" parameterType="String">
+		delete from tbl_calendar_small_category
+		where pk_smcatgono = #{pk_smcatgono}
+	</delete>
+	
+	
+	<!-- 수정된 (사내캘린더 또는 내캘린더)속의 소분류 카테고리명이 이미 해당 사용자가 만든 소분류 카테고리명으로 존재하는지 유무 알아오기 -->
+	<select id="existsCalendar" parameterType="HashMap" resultType="int">
+	    select count(*)
+		from tbl_calendar_small_category
+		where fk_lgcatgono = #{caltype} 
+		and fk_empnum = #{fk_empnum} 
+		and smcatgoname = #{smcatgoname}
+	</select>
+	
+	
+	<!-- (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기    -->
+	<update id="editCalendar" parameterType="HashMap">
+		update tbl_calendar_small_category set smcatgoname = #{smcatgoname}
+		where pk_smcatgono = #{pk_smcatgono}
+	</update>
+	
+	
+	<!-- 총 일정 검색 건수(totalCount) -->
+	<select id="getTotalCount" parameterType="HashMap" resultType="int">
+		select count(*) 
+		from tbl_calendar_schedule
+		where ( to_char(startdate,'YYYY-MM-DD') between #{startdate} and #{enddate} )
+		and   ( to_char(enddate,'YYYY-MM-DD') between #{startdate} and #{enddate} ) 
+		
+		<if test='fk_lgcatgono == "" and searchWord == "" and searchType == "" '>  <!-- 모든캘린더이고 검색대상이 없을 경우 -->
+		    and ( fk_lgcatgono = 2 OR fk_empnum = #{fk_empnum} OR 
+		          ( fk_empnum != #{fk_empnum} and lower(joinuser) like '%'||lower(#{fk_empnum})||'%' ) ) <!-- 사내캘린더 와 자신이 작성한 내캘린더 와 공유받은 캘린더만 조회되도록 한다. -->
+		</if>
+		
+		<if test='fk_lgcatgono == "2" and searchWord == "" and searchType == "" '>  <!-- 사내캘린더이고 검색대상이 없을 경우 -->
+		    and ( fk_lgcatgono = 2 )                                                <!-- 사내캘린더만 조회되도록 한다. -->
+		</if>
+		
+		<if test='fk_lgcatgono == "1" and searchWord == "" and searchType eq "" '>  <!-- 내캘린더이고 검색대상이 없을 경우 -->
+		    and ( fk_lgcatgono = 1 AND fk_empnum = #{fk_empnum} )                                        <!-- 내캘린더만 조회되도록 한다. -->
+		</if>
+			
+		<if test='searchWord != "" and searchType eq "joinuser" '>  <!-- 검색대상을 공유자로 검색할 경우 -->
+			and fk_lgcatgono = 1                                    <!-- 내캘린더 -->
+			and fk_empnum = #{fk_empnum}                            <!-- 로그인한 사용자가 작성한 것을 다른 사용자에게 공유 한것 -->
+			and lower(joinuser) like '%'||lower(#{searchWord})||'%' <!-- 검색대상 및 검색어 -->
+		</if>
+		
+		<if test='searchWord != "" and searchType neq "" and searchType neq "joinuser" '>  <!-- 검색대상을 공유자가 아닌 다른 것으로 검색할 경우 -->
+			and lower(${searchType}) like '%'||lower(#{searchWord})||'%' <!-- 검색대상 및 검색어 -->
+			<choose>
+				<when test='fk_lgcatgono == "1" '>                       <!-- 내캘린더내에서만 검색할 경우  -->
+					and fk_lgcatgono = 1 
+					and fk_empnum = #{fk_empnum}                         <!-- 로그인한 사용자가 작성한 것 -->
+				</when>
+				
+				<when test='fk_lgcatgono == "2" '>                       <!-- 사내캘린더내에서만 검색할 경우  -->
+					and fk_lgcatgono = 2 
+				</when>
+			</choose>			
+		</if>
+	</select>
+	
+	
+	<!-- 페이징 처리한 캘린더 가져오기(검색어가 없다라도 날짜범위 검색은 항시 포함된 것임) -->
+	<resultMap type="HashMap" id="scheduleListSearchWithPaging_Map">
+		<result property="PK_SCHEDULENO" column="pk_scheduleno" 	javaType="String" />
+		<result property="STARTDATE" 	column="startdate" 		javaType="String" />
+		<result property="ENDDATE" 		column="enddate" 		javaType="String" />
+		<result property="SMCATGONAME" 	column="smcatgoname" 	javaType="String" />
+		<result property="LGCATGONAME" 	column="lgcatgoname" 	javaType="String" />
+		<result property="NAME" 		column="name" 			javaType="String" />
+		<result property="SUBJECT" 		column="subject" 		javaType="String" />
+		<result property="CONTENT" 		column="content" 		javaType="String" />
+	</resultMap>
+	<select id="scheduleListSearchWithPaging" parameterType="HashMap" resultMap="scheduleListSearchWithPaging_Map">  
+		select pk_scheduleno 
+		     , startdate, enddate
+		     , smcatgoname, lgcatgoname, name
+		     , subject, content 
+		from 
+		(
+			select  row_number() over(order by SD.pk_scheduleno desc) as rno 
+			      , SD.pk_scheduleno
+			      , to_char(SD.startdate, 'yyyy-mm-dd hh24:mi') as startdate
+			      , to_char(SD.enddate, 'yyyy-mm-dd hh24:mi') as enddate
+			      , SC.smcatgoname, LC.lgcatgoname, M.name 
+			      , SD.subject, SD.content 
+			from tbl_calendar_schedule SD 
+			JOIN tbl_employee M 
+			ON SD.fk_empnum = M.pk_empnum
+			JOIN tbl_calendar_small_category SC 
+			ON SD.fk_smcatgono = SC.pk_smcatgono
+			JOIN tbl_calendar_large_category LC 
+			ON SD.fk_lgcatgono = LC.pk_lgcatgono 
+			
+			where ( to_char(SD.startdate,'YYYY-MM-DD') between #{startdate} and #{enddate} )
+			AND   ( to_char(SD.enddate,'YYYY-MM-DD') between #{startdate} and #{enddate} ) 
+			
+			<if test='fk_lgcatgono == "" and searchWord == "" and searchType == "" '>  <!-- 모든캘린더이고 검색대상이 없을 경우 -->
+			    and ( SD.fk_lgcatgono = 2 OR SD.fk_empnum = #{fk_empnum} OR
+			          ( SD.fk_empnum != #{fk_empnum} and lower(SD.joinuser) like '%'||lower(#{fk_empnum})||'%' ) )  <!-- 사내캘린더 와 자신이 작성한 내캘린더 와 공유받은 캘린더만 조회되도록 한다. -->
+			</if>
+			
+			<if test='fk_lgcatgono == "2" and searchWord == "" and searchType == "" '>  <!-- 사내캘린더이고 검색대상이 없을 경우 -->
+			    and ( SD.fk_lgcatgono = 2 )                                             <!-- 사내캘린더만 조회되도록 한다. -->
+			</if>
+			
+			<if test='fk_lgcatgono == "1" and searchWord == "" and searchType eq "" '>  <!-- 내캘린더이고 검색대상이 없을 경우 -->
+			    and ( SD.fk_lgcatgono = 1 AND SD.fk_empnum = #{fk_empnum} )                                     <!-- 내캘린더만 조회되도록 한다. -->
+			</if>
+			
+			<if test='searchWord != "" and searchType eq "joinuser" '>     <!-- 검색대상을 공유자로 검색할 경우 -->
+				and SD.fk_lgcatgono = 1                                    <!-- 내캘린더 -->
+				and SD.fk_empnum = #{fk_empnum}                            <!-- 로그인한 사용자가 작성한 것을 다른 사용자에게 공유 한것 -->
+				and lower(SD.joinuser) like '%'||lower(#{searchWord})||'%' <!-- 검색대상 및 검색어 -->
+			</if>
+			
+			<if test='searchWord != "" and searchType neq "" and searchType neq "joinuser" '>   <!-- 검색대상을 공유자가 아닌 다른 것으로 검색할 경우 -->
+				and lower(${searchType}) like '%'||lower(#{searchWord})||'%' <!-- 검색대상 및 검색어 -->
+				<choose>
+					<when test='fk_lgcatgono == "1" '>                       <!-- 내캘린더내에서만 검색할 경우  -->
+						and SD.fk_lgcatgono = 1 
+						and SD.fk_empnum = #{fk_empnum}                      <!-- 로그인한 사용자가 작성한 것 -->
+					</when>
+					
+					<when test='fk_lgcatgono == "2" '>                       <!-- 사내캘린더내에서만 검색할 경우  -->
+						and SD.fk_lgcatgono = 2 
+					</when>
+				</choose>			
+			</if>
+		) V 
+		where V.rno between #{startRno} and #{endRno}
+	</select>
+	
+	
 
 </mapper>
