@@ -82,16 +82,16 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
-select[name="holidayCatagory"] {
+input.date {
 	height: 38px;
-	width: 100%;
+	width: 20%;
 	border-radius: 5px;
 	border: solid 1px grey;
 }
 
-input.date {
+select[name='fk_vstatus'] {
 	height: 38px;
-	width: 20%;
+	width: 100%;
 	border-radius: 5px;
 	border: solid 1px grey;
 }
@@ -181,7 +181,18 @@ $(document).ready(function(){
 	
 	
 
+function cancel() {
+	location.href='<%= ctxPath%>/approvalView.groovy';
+}
 	
+function goVacation() {
+	
+	const frm = document.vacationEditFrm;
+	frm.action = "goVacation.groovy";
+	frm.method = "post";
+	frm.submit();
+	
+}		
 	
 </script>
 
@@ -197,7 +208,7 @@ $(document).ready(function(){
 
 		<div class="title">아래 양식에 맞추어 신청해주세요.</div>
 		
-		<form name="equipmentEdit">
+		<form name="vacationEditFrm">
 			<div class="box">
 				<label>휴가 종류 선택</label><br>
 				
@@ -212,18 +223,18 @@ $(document).ready(function(){
 			<div class="box">
 				<label>휴가 시작일</label><br>
 				<input type="text" id="fromDate" name="holidayStartDate" size="50" class="date"  />
-				<input type="text" class="timepicker date"/>
+				<input type="text" class="timepicker date" name="holidayStartHour"/>
 			</div>
 	
 			<div class="box">
 				<label>휴가 종료일</label><br>
 				<input type="text" id="toDate" name="holidayEndDate" size="50" class="date" />
-				<input type="text" class="timepicker date" />
+				<input type="text" class="timepicker date" name="holidayEndHour" />
 			</div>
 			
 			<div class="box">
 				<label>휴가사유</label><br>
-				<input type="text" name="vInfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="vinfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
 			<div class="box">
@@ -232,8 +243,8 @@ $(document).ready(function(){
 			</div>
 			
 			<div id="btn" class="box">
-				<button type="button"  class="btn">신청하기</button>
-				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
+				<button type="button"  class="btn" onclick="goVacation()">신청하기</button>
+				<button type="button"  class="btn" onclick="cancel()">취소</button>
 			</div>
 			
 		</form>

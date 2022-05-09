@@ -178,8 +178,78 @@ public class JodnController {
 		return mav;
 	}
 
+	@RequestMapping(value="goVacation.groovy")
+	public ModelAndView requiredLogin_goVacation(HttpServletRequest request, HttpServletResponse response, ModelAndView mav, HttpSession session ) {
+		
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		
+		Date today = new Date();
+		SimpleDateFormat fmt = new SimpleDateFormat ( "yyyyMMddHHmmss");
+		
+		String pk_documentnum = fmt.format(today);
+	//	System.out.println("확인용 pk_documentnum =>"+pk_documentnum);
 
-	/////////////////////////// 휴가신청 시작
+		String fk_empnum = loginuser.getPk_empnum();
+		
+		String fk_vstatus = request.getParameter("fk_vstatus");
+		String holidayStartDate = request.getParameter("holidayStartDate");
+		String holidayStartHour = request.getParameter("holidayStartHour");
+		String holidayEndDate = request.getParameter("holidayEndDate");
+		String holidayEndHour = request.getParameter("holidayEndHour");
+		String vinfo = request.getParameter("vinfo");
+		String vetc = request.getParameter("vetc");
+		
+		String vstartdate = holidayStartDate +" "+holidayStartHour;
+		String venddate = holidayEndDate +" "+ holidayEndHour;
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("pk_documentnum", pk_documentnum);
+		
+		paraMap.put("fk_vstatus", fk_vstatus);
+		paraMap.put("vstartdate", vstartdate);
+		paraMap.put("venddate", venddate);
+		paraMap.put("vinfo", vinfo);
+		paraMap.put("vetc", vetc);
+
+		int n = service.goVacation(paraMap);
+
+		if(n==1) {
+			service.goVacationEdit(paraMap);
+			
+			// 회계부서
+			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
+			// 영업부서
+			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
+			// 인사부서
+			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
+			// 총무부서
+			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
+			
+			mav.addObject("pk_documentnum", pk_documentnum);
+			
+			mav.addObject("accountEmployeeList", accountEmployeeList);
+			mav.addObject("salesEmployeeList", salesEmployeeList);
+			mav.addObject("personnelEmployeeList", personnelEmployeeList);
+			mav.addObject("managerEmployeeList", managerEmployeeList);
+			
+			mav.setViewName("board/approver.tiles1");
+			// /WEB-INF/views/approval/approvalEdit.jsp
+			
+		} else {
+			
+			String message = "휴가신청에 실패했습니다.";
+			String loc = "javascript:history.back()";
+			
+			mav.addObject("message",message);
+			mav.addObject("loc",loc);
+			
+			mav.setViewName("msg");
+		
+		}
+		
+		return mav;
+	}
 	
 	
 	

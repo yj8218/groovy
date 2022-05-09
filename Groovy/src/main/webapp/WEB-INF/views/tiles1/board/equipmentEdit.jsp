@@ -139,9 +139,6 @@ $(document).ready(function(){
 	
 	
 function cancel() {
-	if(localStorage.getItem("approver") != null){
-		localStorage.removeItem('approver'); 
-	}
 	location.href='<%= ctxPath%>/approvalView.groovy';
 }
 	

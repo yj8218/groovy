@@ -158,6 +158,19 @@
 	</select>
 	<!--  nvl(vtype,'휴가 종류 선택') as vtype -->
 	
+	<!-- 비품문서 작성하기  -->
+	<insert id="vacationDocumentEdit" parameterType="HashMap">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '1', #{fk_empnum}, sysdate, '0')
+	</insert>
+	
+	<!-- 비품신청 상세정보 등록  -->
+	<insert id="goVacationEdit" parameterType="HashMap">
+		insert into tbl_vacationlist(pk_documentnum, fk_empnum, fk_vstatus, vstartdate, venddate, vinfo, vetc)
+		values(#{pk_documentnum}, #{fk_empnum}, #{fk_vstatus}, #{vstartdate}, #{venddate}, #{vinfo}, #{vetc})
+	</insert>
+	
+	
 	<!-- 휴가신청 끝 -->
 	
 	

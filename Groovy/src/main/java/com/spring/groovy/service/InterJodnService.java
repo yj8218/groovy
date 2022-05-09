@@ -44,5 +44,11 @@ public interface InterJodnService {
 
 	// 휴가신청 셀렉트값 가져오기
 	List<String> vacationType();
+
+	// 휴가 신청 파일생성
+	int goVacation(Map<String, String> paraMap);
+
+	// 휴가신청 상세정보 입력
+	void goVacationEdit(Map<String, String> paraMap);
 	
 }//end of public interface InterJodnService

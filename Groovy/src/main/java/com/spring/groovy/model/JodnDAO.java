@@ -108,5 +108,17 @@ public class JodnDAO implements InterJodnDAO {
 		return vacationType;
 	}
 
+	@Override
+	public int goVacation(Map<String, String> paraMap) {
+		int n =	sqlsession.insert("jodn.vacationDocumentEdit", paraMap);
+		return n;
+	}
+	
+
+	@Override
+	public void goVacationEdit(Map<String, String> paraMap) {
+		sqlsession.insert("jodn.goVacationEdit", paraMap);		
+	}
+
 
 }//end of public class JodnDAO implements InterJodnDAO

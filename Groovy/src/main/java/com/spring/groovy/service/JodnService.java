@@ -110,6 +110,19 @@ public class JodnService implements InterJodnService {
 		return vacationType;
 	}
 
+	// 휴가 신청 파일생성
+	@Override
+	public int goVacation(Map<String, String> paraMap) {
+		int n = dao.goVacation(paraMap);
+		return n;
+	}
+
+	// 휴가신청 상세정보 입력
+	@Override
+	public void goVacationEdit(Map<String, String> paraMap) {
+		dao.goVacationEdit(paraMap);
+	}
+
 
 
 

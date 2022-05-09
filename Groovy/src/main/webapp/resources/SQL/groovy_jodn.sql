@@ -202,7 +202,8 @@ commit
 INSERT INTO TBL_VACATION (PK_VSTATUS, VTYPE)
 VALUES ( 4, '공가' )
 
-   
+select nvl(vtype,'휴가 종류 선택') as vtype
+from TBL_VACATION  
 
 
 
