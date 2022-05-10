@@ -34,153 +34,24 @@
 
 
 
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  top: 45px;
-  right: 0;
-  /* border: 1px solid #f1f1f1; */
-  z-index: 9;
-  width: 400px;
-  bottom:auto;
-  height: 100%;
-  background-color: white;
-  -webkit-box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
-  box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
-}
-
-/* Add styles to the form container */
-.form-container {
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  padding: 0; 
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  float:right;
-}
 
 
 
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
 
 
-div.nav_right  a{
-	color:white !important;
-}
 
-.icons-search:before {
-    position: absolute;
-    top: 50%;
-    left: 14px;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    color: #555;
-    font-size: 16px;
-}
-div.searchBox{
-	cursor: pointer;
-	position:relative;
-	background-color: #3f3c49;
-	border: 1px solid #555;
-	border-radius: 900px;
-    color: #eee;
-    font-size: 12px;
-    margin: 0 auto;
-}
-form.main-search{
-	padding: 0 20px 0 10px;
-	
-}
 
-.main-search-box::before {
-   font-family: "Font Awesome 5 Free"; 
-    font-weight: 600;
-    display: inline-block;
-    content: "\f002";
-   /*  width: 14px;
-    height: 14px; */
-    margin: 0 11px 0 0;
-    /* background: url(/flow-renewal/assets/images/icon-search-dark.png); */
-    vertical-align: middle;
-    color:white;
-}
 
-.main-search input {
-    padding-right: 10px;
-    color: #fff; 
-    font-size: 14px;
-    background: 0 0;
-    vertical-align: middle;
-    max-width: 200px;
-    cursor: pointer;
-    border: 0;
-    font-weight: bold;
-}
 
-.searchBtn {
-    float: right;
-    font-size: 12px;
-    color: #ddd;
-    background-color: transparent;
-    border: 0;
-}
 
-.searchBtn::before {
-    display: inline-block;
-    content: "";
-    width: 1px;
-    height: 14px;
-    margin: 0 14px 0 0;
-    background: #555;
-    vertical-align: middle;
-}
+
+
 
 </style>
 <script type="text/javascript">
-	$(document).ready(function(){
-	  	$('[data-toggle="tooltip"]').tooltip();   
-	  	$('#myModal').appendTo("body"); 
-	});
-	
-		
-		
-	
-	
-	
-	function OpenOrganizationForm() {
-  		document.getElementById("myForm").style.display = "block";
-	}
 
-	function closeForm() {
-  		document.getElementById("myForm").style.display = "none";
-	}
-	
-	function OpenChatForm(){
-		document.getElementById("myForm2").style.display = "block"; 
-	}
-	function closeForm2() {
-  		document.getElementById("myForm2").style.display = "none";
-	}
-	
-	function OpenMyMenu(){
-		document.getElementById("myForm").style.display = "block"; 
 		
-	}
+		
 	
 </script>
  

@@ -78,11 +78,11 @@
   opacity: 1;
 }
 
-
+/* 
 div.nav_right  a{
 	color:white ;
 }
-
+ */
 .icons-search:before {
     position: absolute;
     top: 50%;
