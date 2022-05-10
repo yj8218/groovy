@@ -219,7 +219,7 @@
 								
 								<div id="chatting" class="tabcontent" >
 									<div  style= "padding: 7px 20px 20px 20px;">
-										<ul  class="pjtList" style="   padding:5px 20px; ">
+										<ul  class="pjtList scroll" style="   padding:5px 20px; ">
 											<li class="department-item " >
 									            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">채팅채팅</span>
 									        </li>

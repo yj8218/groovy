@@ -116,7 +116,7 @@ public class LeejhController {
 			            // "먼저 로그인을 하세요!!" 라는 메시지를 받고서 사용자가 로그인을 성공했다라면
 			            // 화면에 보여주는 페이지는 시작페이지로 가는 것이 아니라
 			            // 조금전 사용자가 시도하였던 로그인을 해야만 접근할 수 있는 페이지로 가기 위한 것이다.
-						
+						/*
 						//조직도 불러오기
 						List<EmployeeVO> empList = service.empList();
 						//부서 불러오기
@@ -124,7 +124,7 @@ public class LeejhController {
 						
 						mav.addObject("empList", empList);
 						mav.addObject("deptList", deptList);
-						
+						*/
 						mav.setViewName("redirect:/index.groovy"); //시작페이지로 이동
 						
 					}
