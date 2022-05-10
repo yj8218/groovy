@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.Sha256;
+
 import com.spring.groovy.common.GoogleMail;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.*;
@@ -115,7 +116,7 @@ public class LeejhController {
 			            // "먼저 로그인을 하세요!!" 라는 메시지를 받고서 사용자가 로그인을 성공했다라면
 			            // 화면에 보여주는 페이지는 시작페이지로 가는 것이 아니라
 			            // 조금전 사용자가 시도하였던 로그인을 해야만 접근할 수 있는 페이지로 가기 위한 것이다.
-						
+						/*
 						//조직도 불러오기
 						List<EmployeeVO> empList = service.empList();
 						//부서 불러오기
@@ -123,7 +124,7 @@ public class LeejhController {
 						
 						mav.addObject("empList", empList);
 						mav.addObject("deptList", deptList);
-						
+						*/
 						mav.setViewName("redirect:/index.groovy"); //시작페이지로 이동
 						
 					}
@@ -391,7 +392,38 @@ public class LeejhController {
 	}// end of public String getDepartment(HttpServletRequest request, HttpServletResponse response) {}
 
 	
-	
+	// === #71. 회원정보 수정페이지 요청 === //
+/*	@RequestMapping(value="/MyInfoEdit.groovy")
+	public ModelAndView requiredLogin_edit(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+		// 수정해야할 나 
+		String pk_empnum = request.getParameter("pk_empnum");
+		
+		// 글 수정해야할 글1개 내용 가져오기 
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		
+		///////////////////////////////
+		/*
+		 * paraMap.put("searchType", ""); paraMap.put("searchWord", "");
+		 */
+        ///////////////////////////////
+
+		/* EmployeeVO employeevo = service.getViewOneEmp(paraMap); */
+	/*	
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		
+		
+			// 자신의 글을 수정할 경우
+			// 가져온 1개글을 글수정할 폼이 있는 view 단으로 보내준다.
+			mav.addObject("boardvo", boardvo);
+			mav.setViewName("board/edit.tiles1");
+		
+		
+		return mav;
+	}
+	*/	
 	
 	
 }//end of public class LeejhController

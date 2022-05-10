@@ -188,7 +188,7 @@
 }
 .vakata-context .vakata-contextmenu-disabled a,
 .vakata-context .vakata-contextmenu-disabled a:hover {
-  color: silver;
+  color: red;
   background-color: transparent;
   border: 0;
   box-shadow: 0 0 0;
@@ -221,7 +221,7 @@
 }
 .vakata-context .vakata-contextmenu-shortcut {
   font-size: 0.8em;
-  color: silver;
+  color: blue;
   opacity: 0.5;
   display: none;
 }
