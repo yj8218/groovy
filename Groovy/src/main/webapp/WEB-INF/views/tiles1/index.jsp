@@ -73,6 +73,26 @@
 	
 	button#groupchat {border: none; width: 100%; height: 100%; background-color: transparent;}
 	
+	a#dept {
+		display: block; 
+		width: 100%; 
+		padding: 10px; 
+		margin-bottom: 10px; 
+		text-decoration: none;
+		font-weight: bold;
+		background-color: #f7f7f7;
+		border-radius: 10px;
+	}
+	
+	.scrollover { -ms-overflow-style: none; } 
+	.scrollover::-webkit-scrollbar { display:none; }
+	
+	.empProfile > img {
+		width: 45px;
+		height: 45px;
+		overflow: hidden;
+	}
+	
 </style>
 
 <script type="text/javascript">
@@ -121,56 +141,6 @@
 			}
 		});
 		
-		// 개인 채팅방 개설
-		$("table#tblEmpList i").click(function() {
-			const name = $(this).parent().prev().find('span.name').text();
-			const pk_empnum = $(this).parent().prev().find("input#pk_empnum").val();
-			
-			$.ajax({
-				url:"<%= ctxPath %>/openPersonalChat.groovy",
-				type:"GET",
-				data:{"pk_empnum":pk_empnum},
-				dataType:"JSON",
-				success:function(json) {
-					var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
-		            var popup_name = "openChat";
-		            var option = "width = 450, height = 650, top = 300, left = 600";
-					
-					window.open(url, popup_name, option);
-				},
-				error: function(request, status, error) {
-	            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	            }
-			}); // $.ajax({})
-		});
-		
-		// 프로젝트 참여자 프로필 보기
-		$("td.empProfile").click(function() {
-			
-			const name = $(this).find('span.name').text();
-			const pk_empnum = $(this).find('input#pk_empnum').val();
-			
-			$.ajax({
-				url:"<%= ctxPath %>/showEmpProfile.groovy",
-				type:"GET",
-				data:{"pk_empnum":pk_empnum},
-				dataType:"JSON",
-				success:function(json) {
-					$('div#showEmpProfileModal').modal();
-					
-					$("div#showEmpProfileModal .modal-header").css({'background-image':'url("<%= ctxPath %>/resources/images/common/profile-default.png")',
-																	'background-repeat':'no-repeat',
-																	'background-size':'100%'});
-					$("div#empName").html(json.name);
-					$("td#email").html(json.email);
-					$("td#phone").html(json.phone);
-				},
-				error: function(request, status, error) {
-	            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	            }
-			}); // $.ajax({})
-		});
-		
 		// 프로젝트 참여자명 검색 시 검색 목록 보여주기
 		$("div#searchEmpList").hide();
 		
@@ -195,17 +165,17 @@
 						if(json.length > 0) { // 검색된 데이터가 있는 경우
 							$.each(json, function(index, item) {
 								html += "<tr style='border-bottom: solid 1px #eeeeee;'>";
-								html += "	<td class='empProfile' style='cursor: pointer;'>";
-								html += "		<img class='my-2 mr-2' src='<%= ctxPath %>/resources/images/common/profile-default.png' style='width: 40px; border-radius: 15px;'>";
+								html += "	<td class='empProfile' style='cursor: pointer;' onclick='javascript:showEmpProfile(\""+item.pk_empnum+"\")'>";
+								html += "		<img class='my-2 mr-2' src='<%= ctxPath %>/resources/images/프로필사진/"+ item.emppicturename +"' style='border-radius: 15px;'>";
 								html += "		<span class='name font-weight-bold'>" + item.name + "</span>";
 								html += "		<input type='hidden' id='pk_empnum' value='" + item.pk_empnum + "'/>"	
 								html += "	</td>";
 								html += "	<td align='right'>";
-								html += "		<span style='background-color: #6449fc; border-radius: 20px; color: white; padding: 5px 10px; font-size: 10pt;'>{직책}</span>";
+								html += "		<span style='background-color: #6449fc; border-radius: 20px; color: white; padding: 5px 10px; font-size: 10pt;'>" + item.spotnamekor + "</span>";
 								html += "		<i class='fas fa-ellipsis-v ml-2' data-toggle='dropdown'></i>";
 								html += "		<div class='dropdown-menu prjSetting my-0 py-0'>";
 								html += "			<a class='dropdown-item' href=''>내보내기</a>";
-								html += "			<a class='dropdown-item' href=''>{직책}해제</a>";
+								html += "			<a class='dropdown-item' href=''>" + item.spotnamekor + "해제</a>";
 								html += "		</div>";
 								html += "	</td>";
 								html += "</tr>";
@@ -229,6 +199,8 @@
 			
 		}); // end of $("input#searchWord").keyup(function() {})
 		
+		
+		// 부서별 직원 목록 보여주기
 		$("a#dept").click(function() {
 			
 			const $target = $(event.target);
@@ -237,7 +209,7 @@
 			
 			$.ajax({
 				url:"<%= ctxPath %>/showEmpByDept.groovy",
-				type:"POST",
+				type:"GET",
 				data:{"pk_deptnum":pk_deptnum},
 				dataType:"JSON",
 				success:function(json) {
@@ -246,18 +218,18 @@
 					
 					$.each(json, function(index, item) {
 						html += "<tr style='border-bottom: solid 1px #eee;'>";
-						html += "	<td class='empProfile' style='cursor: pointer;'>";
-						html += "		<img class='my-2 mr-2' src='<%= ctxPath %>/resources/images/common/profile-default.png' style='width: 40px; border-radius: 15px;'";
+						html += "	<td class='empProfile' style='cursor: pointer;' onclick='javascript:showEmpProfile(\""+item.pk_empnum+"\")'>";
+						html += "		<img class='my-2 mr-2' src='<%= ctxPath %>/resources/images/프로필사진/"+ item.emppicturename +"' style='border-radius: 15px;'";
 						html += "		<span class='name font-weight-bold'>" + item.name + "</span>";
 						html += "		<input type='hidden' id='pk_empnum' value='" + item.pk_empnum + "'/>";
 						html += "	</td>";
 						html += "	<td align='right'>";
-						html += "		<i class='far fa-comment-dots fa-lg'></i>";
+						html += "		<i class='far fa-comment-dots fa-lg' onclick='javascript:openPersonalChat(\""+item.pk_empnum+"\")'></i>";
 						html += "	</td>";
 						html += "</tr>";
 					});
 				
-					html += "</table>"
+					html += "</table>";
 					
 					$("div#"+deptnameeng).html(html);
 				},
@@ -273,6 +245,54 @@
 	function showEmpByDept() {
 		
 		const length = ${requestScope.empvoList.size()};
+	}
+	
+	// 프로필을 보여주는 메소드
+	function showEmpProfile(pk_empnum) {
+		
+		$.ajax({
+			url:"<%= ctxPath %>/showEmpProfile.groovy",
+			data:{"pk_empnum":pk_empnum},
+			dataType:"JSON",
+			success:function(json) {
+				$('div#showAllEmpModal').modal('hide');
+				$('div#showEmpProfileModal').modal();
+				
+				$("div#showEmpProfileModal .modal-header").css({'background-image':'url("<%= ctxPath %>/resources/images/프로필사진/'+json.emppicturename+'")',
+																'background-repeat':'no-repeat',
+																'background-size':'100%'});
+				$("div#empName").html(json.name);
+				$("td#email").html(json.email);
+				$("td#phone").html(json.phone);
+				$("button#goChat").attr("onClick", "openPersonalChat('" + pk_empnum + "');");
+			},
+			error: function(request, status, error) {
+            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+		}); // $.ajax({})
+	}
+	
+	// 개인 채팅을 활성화하는 메소드
+	function openPersonalChat(pk_empnum) {
+		
+		$.ajax({
+			url:"<%= ctxPath %>/openPersonalChat.groovy",
+			type:"GET",
+			data:{"pk_empnum":pk_empnum},
+			dataType:"JSON",
+			success:function(json) {
+				$('div#showEmpProfileModal').modal('hide');
+				
+				var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+	            var popup_name = "openChat";
+	            var option = "width = 450, height = 650, top = 300, left = 600";
+				
+				window.open(url, popup_name, option);
+			},
+			error: function(request, status, error) {
+            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+		}); // $.ajax({})
 	}
 	
 </script>
@@ -403,34 +423,14 @@
 					<div class="col-lg-6" align="right"><a id="showAllEmployee" data-toggle="modal" data-target="#showAllEmpModal">전체보기</a></div>
 				</div>
 				<div class="card mb-3">
-					<div class="card-body" style="padding-bottom: 0; height: 550px; overflow: auto; overflow-x: hidden;">
-				    <%-- <table class="tblEmpList" id="tblEmpList" style="width: 100%;">
-				    		<tr>
-				    			<th>프로젝트관리자(직책)</th>
-				    		</tr>
-				    		반복
-				    		<c:forEach var="empvo" items="${requestScope.empvoList}" end="8">
-				    		<tr style="border-bottom: solid 1px #eeeeee;">
-				    			<td class="empProfile" style="cursor: pointer;">
-				    				<img class="my-2 mr-2" src="<%= ctxPath %>/resources/images/common/profile-default.png" style="width: 40px; border-radius: 15px;">
-				    				<span class="name font-weight-bold">${empvo.name}</span>
-				    				<input type="hidden" id="pk_empnum" value="${empvo.pk_empnum}"/>
-				    			</td>
-				    			<td align="right">
-				    				<i class="far fa-comment-dots fa-lg"></i>
-				    			</td>
-				    		</tr>
-				    		</c:forEach> 
-				    	</table> --%>
+					<div class="card-body scrollover" style="padding-bottom: 0; height: 550px; overflow: auto; overflow-x: hidden;">
 				    	<c:forEach var="deptvo" items="${requestScope.deptvoList}" varStatus="status">
 				    	<div>
-				    		<a id="dept" data-toggle="collapse" href="#${deptvo.deptnameeng.replaceAll(' ', '')}" aria-expanded="false" aria-controls="${deptvo.deptnameeng.replaceAll(' ', '')}">${deptvo.deptnamekor}</a>
+				    		<a id="dept" class="text-muted" data-toggle="collapse" href="#${deptvo.deptnameeng.replaceAll(' ', '')}" aria-expanded="false" aria-controls="${deptvo.deptnameeng.replaceAll(' ', '')}">${deptvo.deptnamekor}</a>
 				    		<input type="hidden" id="pk_detpnum" value="${deptvo.pk_deptnum}" />
 				    		<input type="hidden" id="deptnameeng" value="${deptvo.deptnameeng.replaceAll(' ', '')}" />
 				    	</div>
-				    	<div class="collapse dept" id="${deptvo.deptnameeng.replaceAll(' ', '')}">
-				    		부서별
-				    	</div>
+				    	<div class="collapse dept" id="${deptvo.deptnameeng.replaceAll(' ', '')}"></div>
 				    	</c:forEach>
 				  	</div>
 				  	<div class="card-footer" align="center" style="padding: 0; height: 50px;">
@@ -495,19 +495,19 @@
 							<table class="tblEmpList" style="width: 100%;">
 					    		<c:forEach var="empvo" items="${requestScope.empvoList}">
 					    		<tr style="border-bottom: solid 1px #eeeeee;">
-					    			<td class="empProfile" style="cursor: pointer;">
-					    				<img class="my-2 mr-2" src="<%= ctxPath %>/resources/images/common/profile-default.png" style="width: 40px; border-radius: 15px;">
+					    			<td class="empProfile" style="cursor: pointer;" onclick="javascript:showEmpProfile('${empvo.pk_empnum}')">
+					    				<img class="my-2 mr-2" src="<%= ctxPath %>/resources/images/프로필사진/${empvo.emppicturename}" style="width: 40px; border-radius: 15px;">
 					    				<span class="name font-weight-bold">${empvo.name}</span>
 					    				<input type="hidden" id="pk_empnum" value="${empvo.pk_empnum}"/>
 					    			</td>
 					    			<td align="right">
-					    				<span style="background-color: #6449fc; border-radius: 20px; color: white; padding: 5px 10px; font-size: 10pt;">{직책}</span>
+					    				<span style="background-color: #6449fc; border-radius: 20px; color: white; padding: 5px 10px; font-size: 10pt;">${empvo.spotnamekor}</span>
 					    				<i class="fas fa-ellipsis-v ml-2" data-toggle="dropdown"></i>
 					    				<div class="dropdown-menu prjSetting my-0 py-0">
 					    				<!-- c:if로 로그인 유저 이름과 목록 상의 이름이 동일한 경우에는 내보내기가 아니라 나가기로 보여주어야 함. -->
 					    				<!-- name은 c:set으로 설정해두기 -->
 									      	<a class="dropdown-item" href="">내보내기</a>
-									      	<a class="dropdown-item" href="">{직책}해제</a>
+									      	<a class="dropdown-item" href="">${empvo.spotnamekor}해제</a>
 									    </div>
 					    			</td>
 					    		</tr>
@@ -548,7 +548,7 @@
 					</div>
 					<!-- Modal footer -->
 					<div class="modal-footer" style="border: none; text-align: center;">
-						<button type="button" class="btn btn-light" data-dismiss="modal" style="border: solid 1px #eee; width: 40%;">채팅</button>
+						<button type="button" id="goChat" class="btn btn-light" style="border: solid 1px #eee; width: 40%;">채팅</button>
 						<button type="button" class="btn btn-light" style="border: solid 1px #eee; width: 40%;">정보수정</button>
 					</div>
 		    	</div>

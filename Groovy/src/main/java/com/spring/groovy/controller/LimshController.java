@@ -91,6 +91,7 @@ public class LimshController {
 				jsonObj.put("email", empvo.getEmail());
 				jsonObj.put("emppicturename", empvo.getEmppicturename());
 				jsonObj.put("emppicturefilename", empvo.getEmppicturefilename());
+				jsonObj.put("spotnamekor", empvo.getSpotnamekor());
 				
 				jsonArr.put(jsonObj);
 			}
@@ -158,7 +159,7 @@ public class LimshController {
 	
 	// 부서별 직원 목록 보여주기(ajax)
 	@ResponseBody
-	@RequestMapping(value="/showEmpByDept.groovy", method={RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/showEmpByDept.groovy", method={RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	public String showEmpByDept(HttpServletRequest request) {
 		
 		String pk_deptnum = request.getParameter("pk_deptnum");
