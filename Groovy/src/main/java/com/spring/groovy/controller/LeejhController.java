@@ -393,12 +393,12 @@ public class LeejhController {
 
 	
 	// === #71. 회원정보 수정페이지 요청 === //
-/*	@RequestMapping(value="/MyInfoEdit.groovy")
+	@RequestMapping(value="/MyInfoEdit.groovy")
 	public ModelAndView requiredLogin_edit(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 		// 수정해야할 나 
 		String pk_empnum = request.getParameter("pk_empnum");
-		
+		List<String> deptList = service.deptList();
 		// 글 수정해야할 글1개 내용 가져오기 
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
@@ -410,20 +410,123 @@ public class LeejhController {
         ///////////////////////////////
 
 		/* EmployeeVO employeevo = service.getViewOneEmp(paraMap); */
-	/*	
+		
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 		
 		
 			// 자신의 글을 수정할 경우
 			// 가져온 1개글을 글수정할 폼이 있는 view 단으로 보내준다.
-			mav.addObject("boardvo", boardvo);
-			mav.setViewName("board/edit.tiles1");
+			mav.addObject("paraMap", paraMap);
+			mav.setViewName("board/edit.tiles1"); 
 		
 		
 		return mav;
 	}
-	*/	
 	
+	//로그인한 유저 정보 얻어오기 
+	@ResponseBody
+	@RequestMapping(value ="/getUserInfo.groovy", produces="text/plain;charset=UTF-8")
+	public String getUserInfo(HttpServletRequest request ) {
+		
+		String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
+
+		// 한명의 사원 상세정보 가져오기
+		EmployeeVO user = service.getUserInfo(pk_empnum);
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("pk_empnum", user.getPk_empnum());
+		jsonObj.put("name", user.getName());
+		jsonObj.put("birthday", user.getBirthday());
+		jsonObj.put("gender", user.getGender());
+		jsonObj.put("age", user.getAge());
+
+		jsonObj.put("postcode", user.getPostcode());
+		jsonObj.put("address", user.getAddress());
+		jsonObj.put("detailaddress", user.getDetailaddress());
+		
+		jsonObj.put("phone", user.getPhone());
+		jsonObj.put("email", user.getEmail());
+		
+		jsonObj.put("deptnamekor", user.getDeptnamekor());
+		jsonObj.put("spotnamekor", user.getSpotnamekor());
+		
+		jsonObj.put("startday", user.getStartday());
+		jsonObj.put("resignationstatus", user.getResignationstatus());
+		jsonObj.put("resignationday", user.getResignationday());
+		jsonObj.put("fk_vstatus", user.getFk_vstatus());
+		jsonObj.put("salary", user.getSalary());
+		
+		jsonObj.put("emppicturename", user.getEmppicturename());
+		return jsonObj.toString();
+	}
+	
+	
+	// 연락처 수정
+	@ResponseBody
+	@RequestMapping(value="/myPhoneEditEnd.groovy")
+	public String requiredLogin_myPhoneEditEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+		String pk_empnum = request.getParameter("pk_empnum");
+		String myphone = request.getParameter("myphone");
+		System.out.println("myphone:"+myphone);
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("myphone", myphone);
+		
+		int n = service.myPhoneUpdate(paraMap);
+		
+		boolean isSuccess = false;
+		JSONObject jsonObj = new JSONObject(); // {}
+		
+		if(n == 1) {
+			isSuccess = true;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		else {
+			isSuccess = false;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		
+		String json = jsonObj.toString();
+		
+		return json;
+		
+	}
+	
+	// 이메일 수정
+	@ResponseBody
+	@RequestMapping(value="/myEmailEditEnd.groovy")
+	public String requiredLogin_myEmailEditEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+		String pk_empnum = request.getParameter("pk_empnum");
+		String myemail = request.getParameter("myemail");
+		System.out.println("myemail:"+myemail);
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("myemail", myemail);
+		
+		int n = service.myEmailUpdate(paraMap);
+		
+		boolean isSuccess = false;
+		JSONObject jsonObj = new JSONObject(); // {}
+		
+		if(n == 1) {
+			isSuccess = true;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		else {
+			isSuccess = false;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		
+		String json = jsonObj.toString();
+		
+		return json;
+		
+	}
 	
 }//end of public class LeejhController

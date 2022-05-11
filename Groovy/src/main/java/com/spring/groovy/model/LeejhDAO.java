@@ -72,6 +72,29 @@ public class LeejhDAO implements InterLeejhDAO {
 		 List<String> deptList = sqlsession.selectList("leejh.deptList");
 		return deptList;
 	}
+	
+	
+	// === 연락처 수정 메서드 === 
+	@Override
+	public int myPhoneUpdate(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.myPhoneUpdate", paraMap);
+		System.out.println("test");
+		return n;
+	}
+
+	//유저 정보 얻어오기
+	@Override
+	public EmployeeVO getUserInfo(String pk_empnum) {
+		EmployeeVO loginuser = sqlsession.selectOne("leejh.getUserInfo", pk_empnum);
+		
+		return loginuser;
+	}
+	// === 이메일 수정 메서드 ===
+	@Override
+	public int myEmailUpdate(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.myEmailUpdate", paraMap);
+		return n;
+	}
 
 
 

@@ -84,9 +84,41 @@
 	
   <!-- 부서 불러오기 -->
    <select id="deptList" resultType="String">
-      select deptnamekor
+      select deptnamekor 
       from tbl_department
       order by  pk_deptnum
    </select>
+   
+   
+   	<select id="getUserInfo" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+		        E.phone, E.email, to_char(E.birthday, 'yyyy-mm-dd') as birthday, E.gender, E.registerday, 
+		        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+		        E.resignationday,  E.fk_vstatus,     
+		        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+		        s.spotnamekor, s.pk_spotnum,
+		        d.deptnamekor, d.pk_deptnum
+		from tbl_employee E
+		JOIN TBL_SPOT S 
+		ON E.fk_spotnum = S.pk_spotnum
+		JOIN TBL_DEPARTMENT D 
+		ON E.fk_deptnum = D.pk_deptnum
+		
+		where pk_empnum = #{pk_empnum}
+	</select>
+   
+   	<!-- === 연락처 수정(update) === -->
+	<update id="myPhoneUpdate" parameterType="HashMap">
+		update tbl_employee set phone = #{myphone}
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
+	<!-- === 이메일 수정(update) === -->
+	<update id="myEmailUpdate" parameterType="HashMap">
+		update tbl_employee set email = #{myemail}
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
+	
 	
 </mapper>

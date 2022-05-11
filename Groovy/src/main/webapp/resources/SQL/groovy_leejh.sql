@@ -141,3 +141,14 @@ select  pk_empnum, pwd, name, address, detailaddress, postcode,
     select deptnamekor
       from tbl_department
       order by  pk_deptnum
+      
+      
+      update tbl_employee set phone = '010-1988-0823'
+		where pk_empnum = '20160225-03'
+        
+        select *
+        from tbl_employee
+        where pk_empnum = '20160225-03'
+        
+        
+        se

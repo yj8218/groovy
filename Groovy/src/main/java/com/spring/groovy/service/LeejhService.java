@@ -62,6 +62,27 @@ public class LeejhService implements InterLeejhService {
 		//System.out.println(deptList);
 		return deptList;
 	}
+	
+	// 로그인유저 정보얻어오기
+	@Override
+	public EmployeeVO getUserInfo(String pk_empnum) {
+		EmployeeVO loginuser  = dao.getUserInfo(pk_empnum);
+		return loginuser;
+	}
+		
+	// === 연락처 수정 메서드 === 
+	@Override
+	public int myPhoneUpdate(Map<String, String> paraMap) {
+		int n = dao.myPhoneUpdate(paraMap);
+		return n;
+	}
+	
+	// === 이메일 수정 메서드 === 
+	@Override
+	public int myEmailUpdate(Map<String, String> paraMap) {
+		int n = dao.myEmailUpdate(paraMap);
+		return n;
+	}
 
 
 
