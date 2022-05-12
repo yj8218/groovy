@@ -36,10 +36,13 @@
 <style type="text/css">
 
 </style>
+
+<script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 카카오 주소 api -->
 <script type="text/javascript">
 	$(document).ready(function(){
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myModal').appendTo("body"); 
+	  	
 	  	
 	  
 	});
@@ -159,9 +162,7 @@
 				<%-- const imgUrl = "<%=ctxPath %>/resources/images/프로필사진/"+json.emppicturename; --%>
 		//		$("#empImg").attr("src", imgUrl);
 
-				alert("나와"+json.pk_empnum);
-				span_pk_empnum
-			//	$("span#span_pk_empnum").html(json.pk_empnum);
+			//	alert("나와"+json.pk_empnum);
 				$("td#td_pk_empnum").html(json.pk_empnum);
 				$("td#td_name").html(json.name);
 				$("td#td_birthday").html(json.birthday);
@@ -172,13 +173,16 @@
 					$("td#td_gender").html("여자");
 				}
 				
-				//$("td#td_age").html(json.age);
+				//	$("td#td_address").html("("+json.postcode+") "+json.address+"&nbsp;"+json.detailaddress);
+				$("span#my_postcode").html(json.postcode);
+				$("span#my_address").html(json.address)
+				$("span#my_detailAddress").html(json.detailaddress);
+				$("span#my_extraAddress").html(json.extraaddress);
 				
-				//$("td#td_postcode").html(json.postcode);
-				$("td#td_address").html("("+json.postcode+") "+json.address+"&nbsp;"+json.detailaddress);
-				//$("td#td_detailaddress").html(json.detailaddress);
-				
+				$("span#span_phone").html(json.phone); 
 				$("td#td_phone").html(json.phone);
+				
+				$("span#span_email").html(json.email);
 				$("td#td_email").html(json.email);
 				
 				// 부서 직위
@@ -187,22 +191,7 @@
 				
 				$("span#m_startday").html(json.startday);
 				
-				
-				if(json.resignationstatus == 0){
-					$("span#m_resignationstatus").html("재직");
-				}else{
-					$("span#m_resignationstatus").html("퇴직");
-				}
-				
-				$("span#m_resignationday").html(json.resignationday);
-				
-				if(json.fk_vstatus == 0){
-					$("span#m_fk_vstatus").html("근무중");
-				}else{
-					$("span#m_resignationstatus").html("휴가중");
-				}
-				
-				
+			
 				$("span#m_salary").html(json.salary.toLocaleString('en'));
 			*/	
 				
@@ -212,6 +201,7 @@
 	          }
 		});// end of $.ajax 
 	 }	
+	 
 	// 연락처 수정
     function mobileEdit(pk_empnum){
     	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
@@ -224,7 +214,7 @@
  	      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
  	      $('input[name=myphone]').attr('value',myphone);
  	      // "후기수정" 을 위한 엘리먼트 만들기 
- 	      let html = "<input id='edit_textarea' type='text' val='' name='myphone' style='height: 25px; width: 200px'/>";
+ 	      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
  	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
  	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
  	          
@@ -253,12 +243,14 @@
  	            success:function(json) { // {"n":1} 또는 {"n":0}
  	               if(json.isSuccess) {
  	            	  alert("변경되었습니다.")
- 	            	  $("#td_phone").html(new_phone); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	            	  $("#td_phone").html(new_phone); 
+ 	            	  $("span#span_phone").html(new_phone); 
  	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
  	               }
  	               else {
  	                  alert("수정이 실패되었습니다.");
- 	                  $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	                  $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기
+ 	                  $("span#span_phone").html(origin_myphone); 
 	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
  	               }
  	            },
@@ -272,9 +264,9 @@
     }//end of function updateMyReview(index, review_seq){}---------------------- 
 	
     
-    //이메일 수정
-    
+    // ◆이메일 수정 ◆
     function emailEdit(pk_empnum){
+    	
     	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
     	
     	const origin_myemail = $("#td_email").html();
@@ -285,9 +277,9 @@
  	      $("a#btn_emailEdit").hide(); // "후기수정" 글자 감추기
  	      $('input[name=myemail]').attr('value',myemail);
  	      // "후기수정" 을 위한 엘리먼트 만들기 
- 	      let html = "<input id='edit_textarea' type='email' val='' name='myemail' style='height: 25px; width: 200px'/>";
- 	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_OK'><span>확인</span></button></div>";
- 	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_NO'><span>취소</span></button></div>";  
+ 	      let html = "<input id='edit_textarea' type='email' val='' name='myemail'  required placeholder='이메일' style='height: 25px; width: 200px'/>";
+ 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_OK'><span>확인</span></button></div>";
+ 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_NO'><span>취소</span></button></div>";  
  	          
  	      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
  	     
@@ -304,6 +296,29 @@
  	         alert(pk_empnum); // 수정할 사원 번호 
  	         alert($('input[name=myemail]').val()); // 수정할 제품후기 내용
  	         const new_email = $('input[name=myemail]').val();
+ 	         
+ 	         
+	 	     // *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
+	 	    	let flagBool = false;
+	 	    	
+	 	    	$("input[name=myemail]").each( (index, item)=>{
+	 	    		const data = $(item).val().trim();
+	 	    		if(data == "") {
+	 	    			flagBool = true;
+	 	    			return false;
+	 	    			/*
+	 	    			   for문에서의 continue; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return true; 이고,
+	 	    			   for문에서의 break; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return false; 이다.
+	 	    			*/
+	 	    		}
+	 	    	});
+	 	    	
+	 	    	if(flagBool) {
+	 	    		alert("필수입력란은 모두 입력하셔야 합니다.");
+	 	    		return; // 종료
+	 	    	}
  	         
  	         $.ajax({
  	            url:"<%= ctxPath%>/myEmailEditEnd.groovy",
@@ -330,7 +345,169 @@
  	         
  	      });
     	
-    }//end of function picEdit(pk_empnum){}------------------------
+    }//end of function emailEdit(pk_empnum){}------------------
+    
+    
+    
+ // ◆주소 수정 ◆ 
+    function addressEdit(pk_empnum){
+    
+    	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
+    	const origin_addr =  $("#td_address").html();
+    	//alert("testorigin:"+ origin_addr);
+    	const origin_mypostcode = $("span#my_postcode").html();
+    	const origin_myaddress = $("span#my_address").html();
+    	const origin_myetailAddress = $("span#my_detailAddress").html();
+    	const origin_myextraAddress = $("span#my_extraAddress").html();
+    	//alert("testorigin:"+ origin_myaddress);
+		
+    	const mypostcode = $("span#my_postcode").text();
+    	const myaddress = $("span#my_address").text();
+    	const mydetailAddress = $("span#my_detailAddress").text();
+    	const myextraAddress = $("span#my_extraAddress").text();
+		//alert("mypostcode:"+mypostcode);
+			
+			$("a#btn_addressEdit").hide(); // "후기수정" 글자 감추기
+			
+			// "후기수정" 을 위한 엘리먼트 만들기 
+			let html = "<input id='edit_postcode'      class='addr'   type='text' val='' name='mypostcode' size='6' maxlength='5' required placeholder='우편번호' style='height: 25px; width: 200px'/><img id='zipcodeSearch' src='<%=ctxPath %>/resources/images/common/b_zipcode.gif' style='vertical-align: middle;' />"+
+			 			 "<input id='edit_address'       class='addr'   type='text' val='' name='myaddress'  maxlength='20' size='40' required placeholder='주소' style='height: 25px; width: 200px'/>"+
+			 			 "<input id='edit_detailAddress' class='addr'   type='text' val='' name='mydetailAddress'  size='40' required placeholder='상세주소'  style='height: 25px; width: 200px'/>"+
+			 			 "<input id='edit_extraAddress'                 type='text' val='' name='myextraAddress'  size='40' required placeholder='추가주소' style='height: 25px; width: 200px'/>";
+			     html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_OK'><span>확인</span></button></div>";
+			     html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_NO'><span>취소</span></button></div>";  
+			     
+			 // 수정 버튼 누르면 뜰 input 태그들에 값 넣어주기
+			$("#td_address").html(html); 
+			$('input[name=mypostcode]').attr('value',mypostcode);
+			$('input[name=myaddress]').attr('value',myaddress);
+			$('input[name=mydetailAddress]').attr('value',mydetailAddress);
+			$('input[name=myextraAddress]').attr('value',myextraAddress);
+	      
+			//우편 번호 찾기 선택 시 
+			$("img#zipcodeSearch").click(function() {
+				      new daum.Postcode({
+			           oncomplete: function(data) {
+			               // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+			
+			               // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+			               // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			               let addr = ''; // 주소 변수
+			               let extraAddr = ''; // 참고항목 변수
+			
+			               //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+			               if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+			                   addr = data.roadAddress;
+			               } else { // 사용자가 지번 주소를 선택했을 경우(J)
+			                   addr = data.jibunAddress;
+			               }
+			               // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+			               if(data.userSelectedType === 'R'){
+			                   // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+			                   // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+			                   if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+			                       extraAddr += data.bname;
+			                   }
+			                   // 건물명이 있고, 공동주택일 경우 추가한다.
+			                   if(data.buildingName !== '' && data.apartment === 'Y'){
+			                       extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+			                   }
+			                   // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+			                   if(extraAddr !== ''){
+			                       extraAddr = ' (' + extraAddr + ')';
+			                   }
+			                   // 조합된 참고항목을 해당 필드에 넣는다.
+			                   document.getElementById("edit_extraAddress").value = extraAddr;
+			               
+			               } else {
+			                   document.getElementById("edit_extraAddress").value = '';
+			               }
+			
+			               // 우편번호와 주소 정보를 해당 필드에 넣는다.
+			               document.getElementById('edit_postcode').value = data.zonecode;
+			               document.getElementById("edit_address").value = addr;
+			               // 커서를 상세주소 필드로 이동한다.
+			               document.getElementById("edit_detailAddress").focus();
+			           }
+			       }).open();
+						
+			});
+ 	   
+ 	   
+ 	      // 수정취소 버튼 클릭시 
+ 	      $("button#btnAddrUpdate_NO").click(function(){
+ 	         $("#td_address").html(origin_addr); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	         $("a#btn_addressEdit").show(); // "후기수정" 글자 보여주기 
+ 	      });
+ 	      
+ 	      // 수정완료 버튼 클릭시 
+ 	      $("button#btnAddrUpdate_OK").click(function(){
+ 	         //alert(pk_empnum); // 수정할 사원 번호 
+ 	         //alert($('input[name=mypostcode]').val()); // 수정할 제품후기 내용
+ 	         const new_postcode = $('input[name=mypostcode]').val();
+ 	         const new_address = $('input[name=myaddress]').val();
+ 	      	 const new_detailAddress = $('input[name=mydetailAddress]').val();
+ 	      	 const new_extraAddress = $('input[name=myextraAddress]').val();
+ 	         
+ 	         
+	 	     // *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
+	 	    	let flagBool = false;
+	 	    	
+	 	    	$("input.addr").each( (index, item)=>{
+	 	    		const data = $(item).val().trim();
+	 	    		if(data == "") {
+	 	    			flagBool = true;
+	 	    			return false;
+	 	    			/*
+	 	    			   for문에서의 continue; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return true; 이고,
+	 	    			   for문에서의 break; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return false; 이다.
+	 	    			*/
+	 	    		}
+	 	    	});
+	 	    	
+	 	    	if(flagBool) {
+	 	    		alert("필수입력란은 모두 입력하셔야 합니다.");
+	 	    		return; // 종료
+	 	    	}
+	 	    	
+ 	         $.ajax({
+ 	            url:"<%= ctxPath%>/myAddressEditEnd.groovy",
+ 	            type:"POST",
+ 	            data:{"pk_empnum":pk_empnum
+ 	                ,"mypostcode":$('input[name=mypostcode]').val()
+ 	             	,"myaddress":$('input[name=myaddress]').val()
+ 	              	,"mydetailAddress":$('input[name=mydetailAddress]').val()
+ 	               	,"myextraAddress":$('input[name=myextraAddress]').val()
+ 	            },
+ 	            dataType:"JSON",
+ 	            success:function(json) { // {"n":1} 또는 {"n":0}
+ 	               if(json.isSuccess) {
+ 	            	  alert("변경되었습니다.")
+ 	            	  $("#td_address").html(origin_addr);
+ 	            	  $("span#my_postcode").html(new_postcode); // 수정된 엘리먼트 넣기
+ 	            	  $("span#my_address").html(new_address); 
+ 	            	  $("span#my_detailAddress").html(new_detailAddress); 
+ 	            	  $("span#my_extraAddress").html(new_extraAddress); 
+ 	         		  $("a#btn_addressEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	               else {
+ 	                  alert("수정이 실패되었습니다.");
+ 	                  $("#td_address").html(origin_addr); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	                  $("a#btn_addressEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	            },
+ 	            error: function(request, status, error){
+ 	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 	            }   
+ 	         });
+ 	         
+ 	      });
+    	
+    }//end of function addressEdit(pk_empnum){}------------------------
+    
+
 
 </script>
  
@@ -516,7 +693,7 @@
 	        					</div>
 	        					
 	        				</li>
-	        				<li class="infoList"><a style="color: #555 !important ;"   href="" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</a></li>
+	        				<li class="infoList"><a style="color: #555 !important ;"    onclick="getUserInfo()" href="" data-toggle="modal" data-target="#myModal"><i class="far fa-user"></i> 내 프로필</a></li>
 	        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</a></li>
 	        				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
 	        				
@@ -530,7 +707,7 @@
 	</nav>
 </div>
 
-
+<!-- 유저 프로필카드  -->
  				<div class="modal" id="myModal"  >
         	       <div class="modal-dialogs"  >
 	        	       <div class="card " style="display: block; ">
@@ -542,11 +719,11 @@
 					      <ul style="list-style: none;">
 					      	<li>
 					      		<i class="far fa-envelope"></i>
-					      		<span>${sessionScope.loginuser.email}</span>
+					      		<span id="span_email"></span>
 					      	</li>
 					      	<li>
 					      		<i class="fas fa-mobile-alt"></i>
-					      		<span>${sessionScope.loginuser.phone}</span>
+					      		<span id="span_phone"></span>
 					      	</li>
 					      	
 					      </ul>
@@ -557,7 +734,7 @@
 					        	채팅
 					        	<i class="far fa-comments"></i>
 					        </button>
-					        <button class="btn-modi js-btn-modi btn-bottom"  onclick="getUserInfo()" data-toggle="modal" data-target="#myModal2" style=" cursor: pointer;" >
+					        <button class="btn-modi js-btn-modi btn-bottom" data-toggle="modal" data-target="#myModal2" style=" cursor: pointer;" >
 					       		정보수정
 					            <i class="far fa-address-card"></i>
 					        </button>
@@ -578,9 +755,7 @@
     
      <div class="modal-header">
      	 환경설정
-     	 
 	       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-	  
      </div>
      
 
@@ -594,8 +769,8 @@
         <div>
 	        <table id="tbl_myInfo table">
 	        	
-			      <tr>
-			        <th>사원번호</th>
+			      <tr >
+			        <th style="width: 100px;">사원번호</th>
 			        <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
 			        
 			      </tr>
@@ -613,8 +788,8 @@
 			      </tr>
 			      <tr>
 			        <th>주소</th>
-			        <td id="td_address"></td>
-			        <td><a onclick="picEdit(pk_empnum)"  type="button" ><i class="far fa-edit"></i></a></td>
+			        <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
+			        <td><a onclick="addressEdit(pk_empnum)" id ="btn_addressEdit" type="button" ><i class="far fa-edit"></i></a></td>
 			      </tr>
 			      <tr class="myphone">
 			        <th>연락처</th>
@@ -630,7 +805,7 @@
 			        <th>비밀번호</th>
 			        <td><strong>비밀번호 재설정이 가능합니다.</strong>
 						<span>비밀번호 입력 (8~20자 영문, 숫자, 특수문자 조합)</span>
-						<button>비밀번호 재설정</button> 
+						<button onclick="pwdEdit(pk_empnum,)">비밀번호 재설정</button> 
 					</td>
 			      </tr>
 			      <tr>
@@ -663,8 +838,15 @@
 
 <script src="<%= ctxPath%>/resources/jstree/dist/jstree.min.js"></script>
 <script>
+
 // jstree로  조직도 나타내기
+
 $(function() {
+	
+	
+	
+	
+	
 		    $.ajax({
 		       
 		        type: "GET",
@@ -678,11 +860,7 @@ $(function() {
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		      }
 		    });            
-			
-		    
-		    
-	
- }); 
+ }); //end of $(function() {})---------------
 
 function createJSTree(jsondata) {  
 	 
@@ -721,7 +899,7 @@ function createJSTree(jsondata) {
 	
 	 var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
 	 
-} 
+} //end of function createJSTree(jsondata) { }--------------
 </script>
 
   

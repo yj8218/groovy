@@ -24,14 +24,15 @@ public interface InterLeejhDAO {
 
 	List<String> deptList();
 
-	// === 연락처 수정 메서드 === 
-	int myPhoneUpdate(Map<String, String> paraMap);
-
 	// 유저 정보 얻어오기
 	EmployeeVO getUserInfo(String pk_empnum);
-
+		
+	// === 연락처 수정 메서드 === 
+	int myPhoneUpdate(Map<String, String> paraMap);
 	// === 이메일 수정 메서드 ===
 	int myEmailUpdate(Map<String, String> paraMap);
+	// === 주소 수정 메서드 
+	int myAddressUpdate(Map<String, String> paraMap);
 	
 
 }//end of public interface InterLeejhDAO

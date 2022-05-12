@@ -1,5 +1,7 @@
 package com.spring.groovy.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.Sha256;
-
+import com.spring.groovy.common.AES256;
 import com.spring.groovy.common.GoogleMail;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.*;
@@ -27,6 +30,9 @@ public class LeejhController {
 	
 	@Autowired //Type에 따라 알아서 Bean을 주입해준다.
 	private InterLeejhService service;
+	@Autowired
+	private AES256 aes;
+	
 	
 	//=== 로그인 또는 로그아웃을 했을때 현재 보이던 그 페이지로 그대로 돌아가기 위한 메소드 생성
 	public void getCurrentURL(HttpServletRequest request) {
@@ -159,28 +165,7 @@ public class LeejhController {
 		return mav;
 	
 	}
-	
-	
-	
-	
-	// 메인홈
-/*	
-	@RequestMapping(value="/index.groovy")
-	public ModelAndView main(ModelAndView mav, HttpServletRequest request, HttpServletResponse response) {
-		/*
-		HttpSession session = request.getSession();
-		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		
-		String pk_empnum = String.valueOf(loginuser.getPk_empnum());
-		
-		request.setAttribute("pk_empnum", pk_empnum);
-		*/
-	/*			mav.setViewName("index.tiles1");
-		
-		return mav;
-	}
-	
-*/	
+
 	
 	// === 비밀번호 찾기 화면 메서드 === //
 	@RequestMapping(value = "findpwd.groovy")
@@ -399,17 +384,9 @@ public class LeejhController {
 		// 수정해야할 나 
 		String pk_empnum = request.getParameter("pk_empnum");
 		List<String> deptList = service.deptList();
-		// 글 수정해야할 글1개 내용 가져오기 
+		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
-		
-		///////////////////////////////
-		/*
-		 * paraMap.put("searchType", ""); paraMap.put("searchWord", "");
-		 */
-        ///////////////////////////////
-
-		/* EmployeeVO employeevo = service.getViewOneEmp(paraMap); */
 		
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
@@ -447,7 +424,12 @@ public class LeejhController {
 		jsonObj.put("detailaddress", user.getDetailaddress());
 		
 		jsonObj.put("phone", user.getPhone());
-		jsonObj.put("email", user.getEmail());
+		
+		try {
+			jsonObj.put("email", aes.decrypt(user.getEmail()));
+		} catch (JSONException | UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
 		
 		jsonObj.put("deptnamekor", user.getDeptnamekor());
 		jsonObj.put("spotnamekor", user.getSpotnamekor());
@@ -510,6 +492,45 @@ public class LeejhController {
 		paraMap.put("myemail", myemail);
 		
 		int n = service.myEmailUpdate(paraMap);
+		
+		boolean isSuccess = false;
+		JSONObject jsonObj = new JSONObject(); // {}
+		
+		if(n == 1) {
+			isSuccess = true;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		else {
+			isSuccess = false;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		
+		String json = jsonObj.toString();
+		
+		return json;
+		
+	}
+	
+	// 주소 수정
+	@ResponseBody
+	@RequestMapping(value="/myAddressEditEnd.groovy")
+	public String requiredLogin_myAddressEditEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+		String pk_empnum = request.getParameter("pk_empnum");
+		String mypostcode = request.getParameter("mypostcode");
+		String myaddress = request.getParameter("myaddress");
+		String mydetailAddress = request.getParameter("mydetailAddress");
+		String myextraAddress = request.getParameter("myextraAddress");
+		System.out.println("my:"+mypostcode);
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("mypostcode", mypostcode);
+		paraMap.put("myaddress", myaddress);
+		paraMap.put("mydetailAddress", mydetailAddress);
+		paraMap.put("myextraAddress", myextraAddress);
+		
+		int n = service.myAddressUpdate(paraMap);
 		
 		boolean isSuccess = false;
 		JSONObject jsonObj = new JSONObject(); // {}

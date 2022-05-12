@@ -83,6 +83,12 @@ public class LeejhService implements InterLeejhService {
 		int n = dao.myEmailUpdate(paraMap);
 		return n;
 	}
+	// === 주소 수정 메서드 
+	@Override
+	public int myAddressUpdate(Map<String, String> paraMap) {
+		int n = dao.myAddressUpdate(paraMap);
+		return n;
+	}
 
 
 

@@ -1,18 +1,24 @@
 package com.spring.groovy.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.spring.groovy.common.AES256;
 import com.spring.groovy.model.EmployeeVO;
 
 @Repository
 public class LeejhDAO implements InterLeejhDAO {
-
+	@Autowired
+	private AES256 aes;
+	
 	@Resource
 	private SqlSessionTemplate sqlsession;
 	////////////////////////////////////////////////////////////
@@ -92,7 +98,22 @@ public class LeejhDAO implements InterLeejhDAO {
 	// === 이메일 수정 메서드 ===
 	@Override
 	public int myEmailUpdate(Map<String, String> paraMap) {
+		String myemail = paraMap.get("myemail");
+		
+		try {
+			paraMap.put("myemail", aes.encrypt(myemail) );
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+		
 		int n = sqlsession.update("leejh.myEmailUpdate", paraMap);
+		return n;
+	}
+	
+	// === 주소 수정 메서드 ===
+	@Override
+	public int myAddressUpdate(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.myAddressUpdate", paraMap);
 		return n;
 	}
 

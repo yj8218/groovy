@@ -119,6 +119,15 @@
 		where pk_empnum = #{pk_empnum} 
 	</update>
 	
+	<!-- === 주소 수정(update) === -->
+	<update id="myAddressUpdate" parameterType="HashMap">
+		update tbl_employee set postcode = #{mypostcode} , address = #{myaddress} , detailaddress = #{mydetailAddress} 
+		<if test='myextraAddress.equals("")'>
+		, extraaddress = #{myextraAddress}
+		</if>
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
 	
 	
 </mapper>
