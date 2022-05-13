@@ -29,6 +29,26 @@ public interface InterYuhrDAO {
 	// 근태정보 가져오기
 	List<CommuteStatusVO> getCommStatus();
 
+	// tbl_commute 에 오늘의 출근 insert
+	int startWork(String pk_empnum);
+
+	// tbl_commute_status 에 지각 1 입력
+	void status_late(String pk_empnum);
+
+	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
+	int isClickedStartBtn(String pk_empnum);
+
+	// tbl_commute 오늘의 자기 행에 퇴근 update
+	int endWork(String pk_empnum);
+
+	// tbl_commute_status 에 조기퇴근 1 update
+	void status_early_endcheck(String pk_empnum);
+
+	// tbl_commute_status 에 퇴근미체크 1 update
+	void status_no_endcheck(String pk_empnum);
+
+	// tbl_commute_status 에 결근 1 update
+	void status_no_workday(String pk_empnum);
 
 
 }//end of public interface InterYuhrDAO

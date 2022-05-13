@@ -1,6 +1,10 @@
 package com.spring.groovy.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.groovy.common.*;
 import com.spring.groovy.model.CommuteStatusVO;
+import com.spring.groovy.model.CommuteVO;
 import com.spring.groovy.model.DepartmentVO;
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.model.SpotVO;
@@ -409,6 +414,8 @@ public class YuhrController {
 		// 근태정보을 가져오기 위함
 		List<CommuteStatusVO> commStatusList = service.getCommStatus();
 		
+		// 이제 통근, 근태, 사원정보를 몽땅 가져온다.
+		
 		mav.addObject("departments", departments);
 		mav.addObject("commStatusList", commStatusList);
 		
@@ -422,15 +429,19 @@ public class YuhrController {
 	// 출근 버튼만 있는 페이지(임시)
 	@RequestMapping(value ="/commutebutton.groovy")
 	public ModelAndView requiredLogin_commutebutton(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		// 포인트컷 작동 확인할것
 		
-		// 부서정보을 가져오기 위함
-		List<DepartmentVO> departments = service.getDepts();
+		getCurrentURL(request);
 		
-		// 근태정보을 가져오기 위함
-		List<CommuteStatusVO> commStatusList = service.getCommStatus();
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+//		System.out.println("~~ commutebutton 확인용 loginuser => " + loginuser);
+		String pk_empnum ="";
+		if(loginuser != null) {
+			pk_empnum = loginuser.getPk_empnum();
+		}
 		
-		mav.addObject("departments", departments);
-		mav.addObject("commStatusList", commStatusList);
+		mav.addObject("pk_empnum", pk_empnum);
 		
 		mav.setViewName("employee/commutebutton.tiles1");
 		
@@ -439,5 +450,161 @@ public class YuhrController {
 	}//end of public ModelAndView viewEmp(ModelAndView mav)	
 	
 	
+	// 출근 버튼 클릭(insert)
+	@ResponseBody
+	@RequestMapping(value ="/startWork.groovy", method = {RequestMethod.POST})
+	public String startWork(HttpServletRequest request) {
+		
+		
+		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+//		System.out.println("~~ startWork 확인용 loginuser => " + loginuser);
+		
+		String pk_empnum = loginuser.getPk_empnum();
+		
+		// TBL_COMMUTE 에 오늘의 출근 insert
+		int n = service.startWork(pk_empnum);
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("n", n);
+		
+		return jsonObj.toString();
+	}
+
+	
+	// 출근 찍고 나서 근태 처리 해주는 메소드
+	@ResponseBody
+	@RequestMapping(value ="/checkStartCommuteStatus.groovy", method = {RequestMethod.POST})
+	public String checkCommuteStatus(HttpServletRequest request ) {
+		
+		
+		HttpSession session = request.getSession();
+		
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		System.out.println("~~ checkCommuteStatus 확인용 loginuser => " + loginuser);
+		
+		String pk_empnum = loginuser.getPk_empnum();
+		
+		// 출근을 버튼을 클릭한 시각으로 지각인지 아닌지 판별하는 것이다
+		LocalTime now = LocalTime.now();
+		
+		// 정상 출근시각 9시
+		LocalTime fixedStartWTime = LocalTime.of(9, 20, 00);
+		
+		// 지각한 경우 
+		if(!now.isBefore(fixedStartWTime)) {
+			System.out.println("지각");
+			// tbl_commute_status 에 지각 1 입력
+			service.status_late(pk_empnum);
+		}
+		else {
+			System.out.println("정상출근");
+			// tbl_commute_status 에 등록할 근태상황은 없다.
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		
+//		jsonObj.put("startedWork", startedWork); 
+		
+		return jsonObj.toString();
+	}
+		
+		
+	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
+	@ResponseBody
+	@RequestMapping(value ="/isClickedStartBtn.groovy", method = {RequestMethod.POST})
+	public String isClickedStartBtn(HttpServletRequest request ) {
+		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		String pk_empnum = loginuser.getPk_empnum(); //
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		int n = service.isClickedStartBtn(pk_empnum);
+		
+		if(n==1) { // 출근 찍음
+			jsonObj.put("isClickedStartBtn", true); 
+		}
+		
+		return jsonObj.toString();
+	}
+	
+	
+	// 퇴근 버튼 클릭(update)
+	@ResponseBody
+	@RequestMapping(value ="/endWork.groovy", method = {RequestMethod.POST})
+	public String endWork(HttpServletRequest request ) {
+		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		String pk_empnum = loginuser.getPk_empnum();
+		
+		JSONObject jsonObj = new JSONObject();
+		
+		// tbl_commute 테이블 오늘의 자기 행에 퇴근 update
+		int n = service.endWork(pk_empnum);
+		
+		// 퇴근 버튼을 클릭한 시각으로 조기퇴근인지, 퇴근미체크인지, 결근인지 판별하는 것이다
+		LocalTime now = LocalTime.now();
+		
+		// 정상 퇴근시각 18시
+		LocalTime fixedStartWTime = LocalTime.of(18, 00, 00);
+		
+		// 조기퇴근인 경우
+		if(n == 1 && now.isBefore(fixedStartWTime)) {
+			System.out.println("조기퇴근");
+			// tbl_commute_status 에 조기퇴근 1 update
+			service.status_early_endcheck(pk_empnum);
+		}
+		else {// 정상퇴근인경우
+			System.out.println("정상퇴근");
+			// tbl_commute_status 에 등록할 근태상황은 없다.
+		}
+
+		
+		return jsonObj.toString();
+	}
+	
+	
+	// Spring Scheduler 를 사용하여 자정에 퇴근 근태 체크하기(퇴근미체크인지, 결근) === //
+	@RequestMapping(value="/checkEndCommuteStatus.groovy")
+	public ModelAndView checkEndCommuteStatus(ModelAndView mav, HttpServletRequest request) {
+		
+		Calendar currentDate = Calendar.getInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+		String currentTime = dateFormat.format(currentDate.getTime());
+		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		String pk_empnum = loginuser.getPk_empnum();
+		
+		// 출근 기록이 있는지 조회
+		int n = service.isClickedStartBtn(pk_empnum);
+		
+		// 퇴근미체크인 경우
+		if(n == 1) {
+			System.out.println("퇴근미체크");
+			// tbl_commute_status 에 퇴근미체크 1 update
+			service.status_no_endcheck(pk_empnum);
+		}
+		else {// 결근인 경우
+			System.out.println("결근");
+			// tbl_commute_status 에 결근 1 update
+			service.status_no_workday(pk_empnum);
+		}
+		
+		String message = currentTime+", 오늘의 근태가 등록되었습니다.";
+		String loc = request.getContextPath()+"/index.groovy";
+		
+		mav.addObject("message", message);
+		mav.addObject("loc", loc);
+		
+		mav.setViewName("msg");
+		return mav;
+	}
+		
 	
 }//end of public class YuhrController

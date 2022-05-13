@@ -1,8 +1,14 @@
 package com.spring.groovy.model;
 
 
+import java.awt.Desktop;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +16,7 @@ import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import com.spring.groovy.common.AES256;
@@ -135,7 +142,51 @@ public class YuhrDAO implements InterYuhrDAO {
 		return commStatusList;
 	}
 
+	// TBL_COMMUTE 에 오늘의 출근 insert
+	@Override
+	public int startWork(String pk_empnum) {
+		int n = sqlsession.insert("yuhr.startWork",pk_empnum);
+		return n;
+	}
 
+	// tbl_commute_status 에 지각 1 입력
+	@Override
+	public void status_late(String pk_empnum) {
+		sqlsession.insert("yuhr.status_late",pk_empnum);
+	}
+
+	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
+	@Override
+	public int isClickedStartBtn(String pk_empnum) {
+		int n = sqlsession.selectOne("yuhr.isClickedStartBtn",pk_empnum);
+		return n;
+	}
+
+	// tbl_commute 오늘의 자기 행에 퇴근 update
+	@Override
+	public int endWork(String pk_empnum) {
+		int n = sqlsession.update("yuhr.endWork",pk_empnum);
+		return n;
+	}
+
+	// tbl_commute_status 에 조기퇴근 1 update
+	@Override
+	public void status_early_endcheck(String pk_empnum) {
+		sqlsession.update("yuhr.status_early_endcheck",pk_empnum);
+		
+	}
+
+	// tbl_commute_status 에 퇴근미체크 1 update
+	@Override
+	public void status_no_endcheck(String pk_empnum) {
+		sqlsession.update("yuhr.status_no_endcheck",pk_empnum);		
+	}
+
+	// tbl_commute_status 에 결근 1 update
+	@Override
+	public void status_no_workday(String pk_empnum) {
+		sqlsession.insert("yuhr.status_no_workday",pk_empnum);		
+	}
 
 
 }//end of public class YuhrDAO implements InterYuhrDAO
