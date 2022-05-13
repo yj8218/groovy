@@ -89,7 +89,12 @@ public class LeejhService implements InterLeejhService {
 		int n = dao.myAddressUpdate(paraMap);
 		return n;
 	}
-
+	// === 비밀번호 수정
+	@Override
+	public int myPwdUpdate(Map<String, String> paraMap) {
+		int n = dao.myPwdUpdate(paraMap);
+		return n;
+	}
 
 
 }//end of public class LeejhService implements InterLeejhService

@@ -29,6 +29,8 @@ public class LeejhDAO implements InterLeejhDAO {
 	public EmployeeVO getLoginEmployee(Map<String, String> paraMap) {
 		EmployeeVO loginuser = sqlsession.selectOne("leejh.getLoginEmployee", paraMap);
 		
+		
+		
 		return loginuser;
 	}
 	
@@ -114,6 +116,12 @@ public class LeejhDAO implements InterLeejhDAO {
 	@Override
 	public int myAddressUpdate(Map<String, String> paraMap) {
 		int n = sqlsession.update("leejh.myAddressUpdate", paraMap);
+		return n;
+	}
+	// === 비밀번호 수정 메서드 === 
+	@Override
+	public int myPwdUpdate(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.myPwdUpdate", paraMap);
 		return n;
 	}
 

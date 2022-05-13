@@ -33,6 +33,8 @@ public interface InterLeejhDAO {
 	int myEmailUpdate(Map<String, String> paraMap);
 	// === 주소 수정 메서드 
 	int myAddressUpdate(Map<String, String> paraMap);
+	// === 비밀번호 수정 메서드
+	int myPwdUpdate(Map<String, String> paraMap);
 	
 
 }//end of public interface InterLeejhDAO

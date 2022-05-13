@@ -82,10 +82,11 @@ SELECT  pk_empnum, pwd, name,  address,  detailaddress,
         
         
         
-        select *
-      from tbl_department
+select *
+from tbl_department
       
-      
+select *
+from TBL_LOGINHISTORY
       
 select  pk_empnum, pwd, name, address, detailaddress, postcode, 
 		        phone, email, birthday, gender, registerday, 
@@ -148,7 +149,7 @@ select  pk_empnum, pwd, name, address, detailaddress, postcode,
         
         select *
         from tbl_employee
-        where pk_empnum = '20160225-03'
+        where pk_empnum = '20160225-02'
         
         
         se

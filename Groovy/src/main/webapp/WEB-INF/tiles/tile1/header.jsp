@@ -35,6 +35,10 @@
 										  
 <style type="text/css">
 
+	div.modal-body input{color: #6449fc; font-weight: bold;}
+	table#tbl_myInfo >tbody  >tr> th{border-style: none;}
+	#tbl_myInfo > tbody > tr > td:nth-child(3) {text-align: right;}
+	
 </style>
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 카카오 주소 api -->
@@ -43,8 +47,7 @@
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myModal').appendTo("body"); 
 	  	
-	  	
-	  
+ 	   
 	});
 	
 	
@@ -151,6 +154,10 @@
 		
 		var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
 		//alert("나와봐"+pk_empnum);
+		
+		
+		
+		
 		
 		$.ajax({
 			url:"<%=ctxPath%>/getUserInfo.groovy",
@@ -507,7 +514,180 @@
     	
     }//end of function addressEdit(pk_empnum){}------------------------
     
+    
+    
+    
+    // ◆비밀번호 수정 ◆
+    function pwdEdit(pk_empnum){
+    	
+    	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
+    	var loginpwd = "${sessionScope.loginuser.pwd}";
+    	alert(loginpwd);
+    	const origin_mypwd = $("#td_pwd").html();
+    	alert("testorigin:"+ origin_mypwd);
+		
+    	//const myemail = $("#td_email").text();
+		//alert("test1:"+myphone); 
+		
+ 	      $("a#btn_pwdEdit").hide(); // "비밀번호 수정" 글자 감추기
+ 	     
+ 	      // "비번수정" 을 위한 엘리먼트 만들기 
+ 	      let html = "<table><tr class=''>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</tr><tr>";
+			  html += "<th><label for='originpwd'>현재 비밀번호&nbsp;<span id='star'>*</span></label></th>";
+		   	  html += "<td><input type='password' class='requiredInfo' id='originpwd' name='originpwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error'  style='color: red;'>암호가 올바르지 않습니다.</span></td>";
+		   	  html += "</tr>";
+ 	          html += "<th><label for='mypwd'>비밀번호&nbsp;<span id='star'>*</span></label></th>";
+ 	    	  html += "<td><input type='password' class='requiredInfo' id='mypwd' name='mypwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error' style='color: red;'>암호가 올바르지 않습니다.</span></td>";
+ 	    	  html += "</tr>";
+ 	    	  html += "<tr>";
+ 	    	  html += "<th><label class='title' for='pwdcheck'>비밀번호확인&nbsp;<span id='star'>*</span></label></th>";
+ 	    	  html += "<td><input type='password' class='requiredInfo' id='pwdCheck' size='20' maxlength='20' required placeholder='비밀번호를 다시 입력해주세요'  /><span class='error' style='color: red;' >암호가 일치하지 않습니다.</span></td>";
+ 	    	  html += "</tr></table>";
+ 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPwdUpdate_OK'><span>확인</span></button></div>";
+ 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPwdUpdate_NO'><span>취소</span></button></div>";  
+ 	          
+ 	      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
+ 	     
+ 	      $("#td_pwd").html(html); 
+ 	      
+ 	      $("span.error").hide();
+ 	      /*
+ 	     // 아이디가 originpwd 제약 조건 
+	    	$("input#originpwd").blur(() => {
+	 	   		const $target = $(event.target);
+	 	   		
+	 	   		const originpwd = $target.val();
+	 	   		
+	 	   		
+	 	   		
+	 	 	  	if(originpwd != loginpwd){ // 기존암호 확인값이 다른 경우
+	 	   			$target.prop("disabled",false);
+	 	   			$("input#originpwd").prop("disabled",false);
+	 	   			
+	 	   		//	$target.next().show();
+	 	   		// 	또는
+	 	   			$target.parent().find(".error").show();
+	 	   			
+	 	   		} else {
+	 	   			// 암호와 암호확인값이 같은 경우
+	 	   			//	$target.next().hide();
+	 	   			// 	또는
+	 	   			$target.parent().find(".error").hide();
+	 	   		}
+	 	   	}); 
+ 	      */
+ 	      
+  	     // 아이디가 pwd 제약 조건 
+ 	    	$("input#mypwd").blur(() => {
+ 	 	   		const $target = $(event.target);
+ 	 	   		
+ 	 	   		const regExp = new RegExp(/^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
+ 	 	   		// 영어대/소문자 , 숫자, 특수기호를 모두 사용한 8글자 이상 16자 이하로 구성된 정규표현식
+ 	 	   		
+ 	 	   		const bool = regExp.test($target.val());  
+ 	 	   		
+ 	 	   		if(!bool){ // !bool == false 암호가 정규표현식에 위배된 경우
+ 	 	   			// 입력하지 않거나 공백만 입력했을 경우
+ 	 	   			$target.prop("disabled",false);
+ 	 	   		//	$target.next().show();
+ 	 	   		// 	또는
+ 	 	   			$target.parent().find(".error").show();
+ 	 	   			
+ 	 	   		} else {
+ 	 	   			// bool == true 암호가 정규표현식에 맞는 경우
+ 	 	   			$target.parent().find(".error").hide();
+ 	 	   		}
+ 	 	   	 
+ 	 	   	}); 
+ 	    	
+ 	 	    // 아이디가 pwdcheck 제약 조건 패스워드 확인 검사
+ 	 	   	$("input#pwdCheck").blur(() => {
+ 	 	   		const $target = $(event.target);
+ 	 	   		const mypwd = $("input#mypwd").val();
+ 	 	   		const pwdcheck = $target.val();
+ 	 	   		
+ 	 	   		if(pwdcheck != mypwd){ // 암호와 암호확인값이 다른 경우 
+ 	 	   			$target.prop("disabled",false);
+ 	 	   			$("input#mypwd").prop("disabled",false);
+ 	 	   			
+ 	 	   		//	$target.next().show();
+ 	 	   		// 	또는
+ 	 	   			$target.parent().find(".error").show();
+ 	 	   			
+ 	 	   		} else {
+ 	 	   			// 암호와 암호확인값이 같은 경우
+ 	 	   			//	$target.next().hide();
+ 	 	   			// 	또는
+ 	 	   			$target.parent().find(".error").hide();
+ 	 	   		}
+ 	 	   	}); 
 
+ 	     // $('input[name=myemail]').attr('value',myemail);
+ 	      // 수정취소 버튼 클릭시 
+ 	      $("button#btnPwdUpdate_NO").click(function(){
+ 	         $("#td_pwd").html(origin_mypwd); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	         $("a#btn_pwdEdit").show(); // "후기수정" 글자 보여주기 
+ 	      });
+ 	      
+ 	      // 수정완료 버튼 클릭시 
+ 	      $("button#btnPwdUpdate_OK").click(function(){
+ 	         alert(pk_empnum); // 수정할 사원 번호 
+ 	         alert($('input[name=mypwd]').val()); // 수정할 제품후기 내용
+ 	         const new_pwd = $('input[name=mypwd]').val();
+ 	         
+ 	 	    
+
+	 	     // *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
+	 	    	let flagBool = false;
+	 	    	
+	 	    	$("input.requiredInfo").each( (index, item)=>{
+	 	    		const data = $(item).val().trim();
+	 	    		if(data == "") {
+	 	    			flagBool = true;
+	 	    			return false;
+	 	    			/*
+	 	    			   for문에서의 continue; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return true; 이고,
+	 	    			   for문에서의 break; 와 동일한 기능을 하는것이 
+	 	    			   each(); 내에서는 return false; 이다.
+	 	    			*/
+	 	    		}
+	 	    	});
+	 	    	
+	 	    	if(flagBool) {
+	 	    		alert("필수입력란은 모두 입력하셔야 합니다.");
+	 	    		return; // 종료
+	 	    	}
+	 	    	
+	 	   		
+ 	         
+ 	         $.ajax({
+ 	            url:"<%= ctxPath%>/myPwdEditEnd.groovy",
+ 	            type:"POST",
+ 	            data:{"pk_empnum":pk_empnum
+ 	            	,"originpwd":$('[name=originpwd]').val()
+ 	                ,"mypwd":$('[name=mypwd]').val()},
+ 	            dataType:"JSON",
+ 	            success:function(json) { // {"n":1} 또는 {"n":0}
+ 	               if(json.isSuccess) {
+ 	            	  alert("변경되었습니다.")
+ 	            	  $("#td_pwd").html(origin_mypwd);  // 원래의 제품후기 엘리먼트로 복원하기  
+ 	         		  $("a#btn_pwdEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	               else {
+ 	                  alert("수정이 실패되었습니다.");
+ 	                  $("#td_pwd").html(origin_mypwd);  // 원래의 제품후기 엘리먼트로 복원하기  
+	         		  $("a#btn_pwdEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	            },
+ 	            error: function(request, status, error){
+ 	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 	            }   
+ 	         });
+ 	         
+ 	      });
+    	
+    }//end of function pwdEdit(pk_empnum){}------------------
 
 </script>
  
@@ -708,7 +888,7 @@
 </div>
 
 <!-- 유저 프로필카드  -->
- 				<div class="modal" id="myModal"  >
+ 				<div class="modal animate" id="myModal"  >
         	       <div class="modal-dialogs"  >
 	        	       <div class="card " style="display: block; ">
 					   	<div style=" position: relative; ">
@@ -750,29 +930,31 @@
     bottom: 0;
     left: 0;
     background: rgba(0,0,0,.6);" >
- <div class="modal-content " style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; border: 1px solid #777; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
+ <div class="modal-content animate" style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
 				      
     
-     <div class="modal-header">
-     	 환경설정
-	       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+     <div class="modal-header" style="background-color: #6449fc;">
+     	   <span style="color: white; font-weight: bold; font-size: 15pt;"><i class="fas fa-id-card-alt"></i>내 정보수정</span>
+	       <button type="button" class="btn  btn-dark" data-dismiss="modal">Close</button>
      </div>
      
 
      <div class="modal-body scroll" style="width: 100%; overflow:auto;  ">
-        <form action="<%=ctxPath%>/MyInfo.groovy"> 
-        <div>
-         	<img class="rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  style="width:100px; height: 100px; overflow: hidden;" />
-         	<a onclick="picEdit()"  type="button" ><i class="far fa-edit"></i></a>
-        </div>
+        <form action="<%=ctxPath%>/MyInfoEdit.groovy"> 
+        
         <!-- <form name="InfoFrm"> -->
         <div>
-	        <table id="tbl_myInfo table">
+	        <table id="tbl_myInfo" class="table">
 	        	
 			      <tr >
 			        <th style="width: 100px;">사원번호</th>
 			        <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
-			        
+			        <td rowspan="4" style="border-left: 1px solid #dee2e6;">
+			        	<div style="vertical-align: middle;">
+				         	<img class="rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  style="width:150px; height:auto; overflow: hidden;" />
+				         	<a onclick="picEdit()"  type="button" ><i class="far fa-edit"></i></a>
+				        </div>
+				    </td>
 			      </tr>
 			 	  <tr>
 			        <th>이름</th>
@@ -803,10 +985,11 @@
 			      </tr>
 			      <tr>
 			        <th>비밀번호</th>
-			        <td><strong>비밀번호 재설정이 가능합니다.</strong>
-						<span>비밀번호 입력 (8~20자 영문, 숫자, 특수문자 조합)</span>
-						<button onclick="pwdEdit(pk_empnum,)">비밀번호 재설정</button> 
+			        <td id="td_pwd">
+			        	<table><tr class=''><strong>비밀번호 재설정이 가능합니다.</strong></tr><br/>
+			        	<tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</span></tr></table>
 					</td>
+					<td><a id ="btn_pwdEdit" onclick="pwdEdit(pk_empnum)"  type="button" ><i class="far fa-edit"></i></a></td>
 			      </tr>
 			      <tr>
 			        <th>부서</th>

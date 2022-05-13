@@ -39,9 +39,15 @@
 		from tbl_employee
 		where pk_empnum = #{pk_empnum} and pwd= #{pwd} -->
 	</select>
-	
+	<insert id="">
+		insert into tbl_loginhistory(LOGINDATE, CLIENTIP) "
+	    values(sysdate, )
+    </insert>
 	<!-- << 로그인 기록 카운트 >> -->
-	
+	<insert id="">
+		insert into tbl_loginhistory(fk_userid, clientip)
+    	values(?, ?)
+	</insert>
 	<!-- === 해당하는 이메일과 사원번호에 존재하는 사원 정보 찾기(select) === -->
 	<select id="sendCodeEmail" parameterType="HashMap" resultType="String">
 		select pk_empnum
@@ -55,9 +61,9 @@
 		where pk_empnum = #{pk_empnum} and  email = #{email} 
 	</update>
 
-	<!-- === 직원정보 가져오기 === -->
+	<!-- === 직원정보 가져오기 (조직도) === -->
 	<select id="empList" resultType="com.spring.groovy.model.EmployeeVO">
-				select  pk_empnum, name, address, detailaddress, postcode, 
+				select  pk_empnum, name, address, detailaddress, extraaddress, postcode, 
 				        phone, email, birthday, gender, registerday, 
 				        startday, resignationstatus,  
 				        resignationday,  fk_vstatus,     
@@ -65,7 +71,7 @@
 				        spotnamekor, deptnamekor, pk_spotnum, pk_deptnum
 				from
 				(
-					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.extraaddress, E.postcode, 
 					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
 					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
 					        E.resignationday,  E.fk_vstatus,     
@@ -81,7 +87,7 @@
 		        order by pk_deptnum , pk_spotnum desc
 	
 	</select>
-	
+
   <!-- 부서 불러오기 -->
    <select id="deptList" resultType="String">
       select deptnamekor 
@@ -127,7 +133,11 @@
 		</if>
 		where pk_empnum = #{pk_empnum} 
 	</update>
-	
+	<!--  === 비밀번호 수정 메서드 === -->
+	<update id="myPwdUpdate" parameterType="HashMap">
+		update tbl_employee set pwd = #{mypwd}
+		where pk_empnum = #{pk_empnum} and pwd = #{originpwd}
+	</update>
 	
 	
 </mapper>

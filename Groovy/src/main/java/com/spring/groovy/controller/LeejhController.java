@@ -103,8 +103,8 @@ public class LeejhController {
 					//첫 로그인인 경우
 					mav.setViewName("redirect:/pwdChange.groovy");
 				}
-				else {
-				*/	
+				else {*/
+				
 					if(loginuser.isRequirePwdChange() == true) { // 암호를 마지막으로 변경한 것이 3개월이 경과한 경우
 						
 						String message = "비밀번호를 변경하신지 3개월이 지났습니다.\n암호를 변경하시는 것을 추천합니다";
@@ -144,7 +144,7 @@ public class LeejhController {
 	}
 	
 	
-	// === #50. 로그아웃 처리하기 === //
+	// ===  로그아웃 처리하기 === //
 	
 	@RequestMapping(value="/logout.groovy")
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
@@ -549,5 +549,41 @@ public class LeejhController {
 		return json;
 		
 	}
+	
+	//비밀번호 수정 myPwdEditEnd.groovy
+	@ResponseBody
+	@RequestMapping(value="/myPwdEditEnd.groovy")
+	public String requiredLogin_myPwdEditEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+		String pk_empnum = request.getParameter("pk_empnum");
+		String originpwd = request.getParameter("originpwd");
+		String mypwd = request.getParameter("mypwd");
+		System.out.println("my:"+mypwd);
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("pk_empnum", pk_empnum);
+		paraMap.put("originpwd", Sha256.encrypt(originpwd));
+		paraMap.put("mypwd",Sha256.encrypt(mypwd));
+		
+		int n = service.myPwdUpdate(paraMap);
+		
+		boolean isSuccess = false;
+		JSONObject jsonObj = new JSONObject(); // {}
+		
+		if(n == 1) {
+			isSuccess = true;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		else {
+			isSuccess = false;
+			jsonObj.put("isSuccess", isSuccess);
+		}
+		
+		String json = jsonObj.toString();
+		
+		return json;
+		
+	}
+	
 	
 }//end of public class LeejhController
