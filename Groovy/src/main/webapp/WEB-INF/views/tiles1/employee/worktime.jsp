@@ -4,7 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/style1.css" />
@@ -272,8 +271,8 @@ VTYPE		휴가종류
 				<td>${commStatus.early_endcheck }</td>
 				<td>${commStatus.no_endcheck }</td>
 				<td>${commStatus.no_workday }</td>
-				<td>${commStatus.total_workingday }</td>
-				<td>${commStatus.total_workingtime }</td>
+				<td></td>
+				<td></td>
 			</tr>
 		
 			</c:forEach>

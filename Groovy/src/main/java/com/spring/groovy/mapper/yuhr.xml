@@ -167,10 +167,53 @@
 	</select>
 	
 	<select id="getCommStatus" resultType="com.spring.groovy.model.CommuteStatusVO">
-		select pk_commute_statusnum, fk_empnum, total_workingday, total_workingtime,
+		select pk_commute_statusnum, fk_empnum, todayworkedtime
 			   late, early_endcheck, no_endcheck, no_workday
 		from tbl_commute_status
 	</select>
+	
+	<insert id="startWork" parameterType="String">
+		insert into tbl_commute(pk_commutenum, fk_empnum, startwork)
+		values(commuteseq.nextval, #{pk_empnum}, sysdate)
+	</insert>
+	
+	<insert id="status_late" parameterType="String">
+		 insert into tbl_commute_status(pk_commute_statusnum, fk_empnum, late)
+		values(commute_statusseq.nextval, #{pk_empnum}, 1)
+	</insert>
+	
+	<select id="isClickedStartBtn" parameterType="String" resultType="int">
+		select count(*)
+	   	from tbl_commute
+	   	where fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	</select>
+	
+	<update id="endWork" parameterType="String" >
+		update TBL_COMMUTE set endwork = sysdate
+    	where fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	</update>
+	
+	<update id="status_early_endcheck" parameterType="String" >
+		update tbl_commute_status set EARLY_ENDCHECK = 1
+    	where fk_empnum = #{pk_empnum} and to_char(today, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	</update>
+	
+	<update id="status_no_endcheck" parameterType="String" >
+		update tbl_commute_status set NO_ENDCHECK = 1
+    	where fk_empnum = #{pk_empnum} and to_char(today, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	</update>
+	
+	<insert id="status_no_workday" parameterType="String" >
+		insert into tbl_commute_status(pk_commute_statusnum, fk_empnum, NO_WORKDAY)
+		values(commute_statusseq.nextval, #{pk_empnum}, 1)
+	</insert>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

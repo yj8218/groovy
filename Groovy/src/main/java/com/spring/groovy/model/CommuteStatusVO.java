@@ -2,9 +2,8 @@ package com.spring.groovy.model;
 
 public class CommuteStatusVO {
 	private int pk_commute_statusnum;
-	private String fk_empnum;                
-	private int total_workingday;         
-	private String total_workingtime;     
+	private String fk_empnum;  
+	private String todayworkedtime;
 	private int late;                    
 	private int early_endcheck;           
 	private int no_endcheck;              
@@ -12,13 +11,12 @@ public class CommuteStatusVO {
 	
 	public CommuteStatusVO() {}
 	
-	public CommuteStatusVO(int pk_commute_statusnum, String fk_empnum, int total_workingday, String total_workingtime,
+	public CommuteStatusVO(int pk_commute_statusnum, String fk_empnum,  String todayworkedtime,
 			int late, int early_endcheck, int no_endcheck, int no_workday) {
 		super();
 		this.pk_commute_statusnum = pk_commute_statusnum;
 		this.fk_empnum = fk_empnum;
-		this.total_workingday = total_workingday;
-		this.total_workingtime = total_workingtime;
+		this.todayworkedtime = todayworkedtime;
 		this.late = late;
 		this.early_endcheck = early_endcheck;
 		this.no_endcheck = no_endcheck;
@@ -43,20 +41,12 @@ public class CommuteStatusVO {
 		this.fk_empnum = fk_empnum;
 	}
 
-	public int getTotal_workingday() {
-		return total_workingday;
+	public String getTodayworkedtime() {
+		return todayworkedtime;
 	}
 
-	public void setTotal_workingday(int total_workingday) {
-		this.total_workingday = total_workingday;
-	}
-
-	public String getTotal_workingtime() {
-		return total_workingtime;
-	}
-
-	public void setTotal_workingtime(String total_workingtime) {
-		this.total_workingtime = total_workingtime;
+	public void setTodayworkedtime(String todayworkedtime) {
+		this.todayworkedtime = todayworkedtime;
 	}
 
 	public int getLate() {
