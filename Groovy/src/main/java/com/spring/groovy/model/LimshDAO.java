@@ -65,4 +65,14 @@ public class LimshDAO implements InterLimshDAO {
 	}
 
 
+	// 1:1 채팅 직원 정보 가져오기(select)
+	@Override
+	public EmployeeVO getEmp(String name) {
+
+		EmployeeVO empvo = sqlsession.selectOne("limsh.getEmp", name);
+		
+		return empvo;
+	}
+
+
 }//end of public class LimshDAO implements InterLimshDAO

@@ -147,9 +147,16 @@ public class LimshController {
 	@RequestMapping(value="/openPersonalChatEnd.groovy", method={RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 	public ModelAndView openPersonalChatEnd(HttpServletRequest request, ModelAndView mav) {
 		
-		String name = request.getParameter("name");
+		List<EmployeeVO> empvoList = new ArrayList<>();
 		
-		mav.addObject("name", name);
+		// 상대 직원 정보 알아오기
+		String name = request.getParameter("name");
+		EmployeeVO empvo = service.getEmp(name);
+		
+		// 로그인 중인 직원 정보 알아오기
+		
+		
+		mav.addObject("empvo", empvo);
 		
 		mav.setViewName("board/openChat.tiles2");
 		

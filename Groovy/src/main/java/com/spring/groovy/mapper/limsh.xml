@@ -51,4 +51,10 @@
 		order by fk_spotnum desc
 	</select>
 	
+	<!-- 1:1 채팅 직원 정보 가져오기(select) -->
+	<select id="getEmp" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, name, phone, email, emppicturename, emppicturefilename
+      	from tbl_employee
+      	where name = #{name}
+	</select>
 </mapper>

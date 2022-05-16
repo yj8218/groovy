@@ -144,6 +144,31 @@ public class LimshService implements InterLimshService {
 	}
 
 
+	// 1:1 채팅 직원 정보 가져오기(select)
+	@Override
+	public EmployeeVO getEmp(String name) {
+
+		EmployeeVO empvo = dao.getEmp(name);
+
+		if(empvo != null) {
+			String phone = "";
+			String email = "";
+			
+			try {
+				phone = aes.decrypt(empvo.getPhone());
+				email = aes.decrypt(empvo.getEmail());
+			} catch(UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+            
+			empvo.setPhone(phone);
+			empvo.setEmail(email);
+		}
+		
+		return empvo;
+	}
+
+
 
 
 }//end of public class LimshService implements InterLeejhService
