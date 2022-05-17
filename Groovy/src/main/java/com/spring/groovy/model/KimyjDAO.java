@@ -79,8 +79,8 @@ public class KimyjDAO implements InterKimyjDAO {
 	
 	// 일정 등록하기
 	@Override
-	public int registerSchedule_end(Map<String, String> paraMap) throws Throwable {
-		int n = sqlsession.insert("kimyj.registerSchedule_end", paraMap);
+	public int registerSchedule_end(Calendar_schedule_VO scheduleVO) throws Throwable {
+		int n = sqlsession.insert("kimyj.registerSchedule_end", scheduleVO);
 		return n;
 	}
 
@@ -154,6 +154,72 @@ public class KimyjDAO implements InterKimyjDAO {
 	public List<Map<String,String>> scheduleListSearchWithPaging(Map<String, String> paraMap) { 
 		List<Map<String,String>> scheduleList = sqlsession.selectList("kimyj.scheduleListSearchWithPaging", paraMap);
 		return scheduleList;
+	}
+
+	@Override
+	public int voteNoDelete(Map<String, String> paraMap) {
+		int n = sqlsession.delete("kimyj.voteNoDelete", paraMap);
+		return n;
+	}
+
+	@Override
+	public int voteUndefinedDelete(Map<String, String> paraMap) {
+		int n = sqlsession.delete("kimyj.voteUndefinedDelete", paraMap);
+		return n;
+	}
+
+	@Override
+	public int voteYesDelete(Map<String, String> paraMap) {
+		int n = sqlsession.insert("kimyj.voteYesDelete", paraMap);
+		return n;
+	}
+
+	@Override
+	public int voteYesAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("kimyj.voteYesAdd", paraMap);
+		return n;
+	}
+
+	@Override
+	public int voteNoAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("kimyj.voteNoAdd", paraMap);
+		return n;
+	}
+
+	@Override
+	public int voteUndefinedAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("kimyj.voteUndefinedAdd", paraMap);
+		return n;
+	}
+
+	@Override
+	public Map<String, String> voteTotalLoginCnt(Map<String, String> paraMap) {
+		Map<String,String> map = sqlsession.selectOne("kimyj.voteTotalLoginCnt", paraMap);
+		return map;
+	}
+
+	@Override
+	public Map<String, String> voteTotalCnt(Map<String, String> paraMap) {
+		Map<String,String> map = sqlsession.selectOne("kimyj.voteTotalCnt", paraMap);
+		return map;
+	}
+
+	@Override
+	public List<Map<String, String>> voteYesUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("kimyj.voteYesUser", paraMap);
+		return listMap;
+	}
+
+	@Override
+	public List<Map<String, String>> voteNoUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("kimyj.voteNoUser", paraMap);
+		return listMap;
+	}
+
+	@Override
+	public List<Map<String, String>> voteUndefinedUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("kimyj.voteUndefinedUser", paraMap);
+		return listMap;
 	}
 
 

@@ -174,12 +174,12 @@
 			</tr>
 		</table>
 	
-	<input type="hidden" value="${sessionScope.loginuser.userid}" />
+	<input type="hidden" value="${sessionScope.loginuser.pk_empnum}" />
 	<input type="hidden" value="${requestScope.map.FK_LGCATGONO}" />
 	
-	<c:set var="v_fk_userid" value="${requestScope.map.FK_USERID}" />
+	<c:set var="v_fk_userid" value="${requestScope.map.fk_empnum}" />
 	<c:set var="v_fk_lgcatgono" value="${requestScope.map.FK_LGCATGONO}"/>
-	<c:set var="v_loginuser_userid" value="${sessionScope.loginuser.userid}"/>
+	<c:set var="v_loginuser_userid" value="${sessionScope.loginuser.pk_empnum}"/>
 
 	<div style="float: right;">
 		<c:if test="${not empty requestScope.listgobackURL_schedule}">

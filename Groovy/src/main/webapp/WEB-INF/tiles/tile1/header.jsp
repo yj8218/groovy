@@ -362,17 +362,17 @@ div#myModal div.modal-dialogs{
   bottom: 8px;
   left: 16px;
 }
-div.card-body ul{
+#headerCard div.card-body ul{
 	margin:0;
 	padding:0;
 }
 
-div.card-body ul li i {
+#headerCard div. ul li i {
     width: 40px;
     height: 40px;
     text-align: center;
 }
-div.card-body ul li span {
+#headerCard div.card-body ul li span {
     width: 280px;
     padding: 0 0 0 10px;
     display: inline-block;
@@ -752,7 +752,7 @@ button.btn-bottom{
 
  <div class="modal" id="myModal"  >
         	       <div class="modal-dialogs"  >
-	        	       <div class="card " style="width:400px; display: block; ">
+	        	       <div class="card" id="headerCard" style="width:400px; display: block; ">
 					   	<div style=" position: relative; ">
 						    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;">
 						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>

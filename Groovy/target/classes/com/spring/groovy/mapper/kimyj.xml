@@ -68,15 +68,27 @@
     <select id="searchJoinUserList" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
     	select pk_empnum, name
 		from tbl_employee
-		where lower(name) like '%'|| lower(#{joinUserName}) ||'%'
+		where lower(name) like '%'|| lower(#{joinUserName}) ||'%' or lower(pk_empnum) like '%'|| lower(#{joinUserName}) ||'%'
     </select>
     
     
     <!-- 일정 등록하기 -->
-    <insert id="registerSchedule_end" parameterType="HashMap">
-    	insert into tbl_calendar_schedule(pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum) 
-    	values(seq_scheduleno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{subject}, #{color}, #{place}, #{joinuser}, #{content}, #{fk_smcatgono}, #{fk_lgcatgono}, #{fk_empnum})  
+    <insert id="registerSchedule_end" parameterType="com.spring.groovy.model.Calendar_schedule_VO">
+    	<if test="fileName == null">
+    	insert into tbl_calendar_schedule(pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum, vote, placename, addressname, placephone, roadaddressname, regdate, placeurl) 
+    	values(seq_scheduleno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{subject}, #{color}, #{place}, #{joinuser}, #{content}, #{fk_smcatgono}, #{fk_lgcatgono}, #{fk_empnum}, #{vote}, #{placeName}, #{addressName}, #{placePhone}, #{roadAddressName}, default, #{placeUrl})  
+    	</if>
+    	<!-- === 첨부파일이 있는 경우 -->
+		<if test="fileName != null">
+		insert into tbl_calendar_schedule(pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum, vote, placename, addressname, placephone, roadaddressname, regdate, placeurl, filename, orgfilename, filesize) 
+    	values(seq_scheduleno.nextval, to_date(#{startdate}, 'yyyymmddhh24miss'), to_date(#{enddate}, 'yyyymmddhh24miss'), #{subject}, #{color}, #{place}, #{joinuser}, #{content}, #{fk_smcatgono}, #{fk_lgcatgono}, #{fk_empnum}, #{vote}, #{placeName}, #{addressName}, #{placePhone}, #{roadAddressName}, default, #{placeUrl}, #{fileName}, #{orgFilename}, #{fileSize})  
+    	</if>
     </insert>
+    
+
+
+	
+    
 
 
     <!-- 등록된 일정에 대한 정보(달력에 표시됨)-->
@@ -92,19 +104,35 @@
 	
 	<!-- 일정 상세 보기 -->
 	<resultMap type="HashMap" id="detailSchedule_Map">
-		<result property="PK_SCHEDULENO" 	column="pk_scheduleno" 	javaType="String" />
-		<result property="STARTDATE" 	column="startdate" 		javaType="String" />
-		<result property="ENDDATE" 		column="enddate" 		javaType="String" />
-		<result property="SUBJECT" 		column="subject" 		javaType="String" />
-		<result property="COLOR" 		column="color" 			javaType="String" />
-		<result property="PLACE" 		column="place" 			javaType="String" />
-		<result property="JOINUSER" 	column="joinuser" 		javaType="String" />
-		<result property="CONTENT" 		column="content" 		javaType="String" />
-		<result property="FK_SMCATGONO" column="fk_smcatgono" 	javaType="String" />
-		<result property="FK_LGCATGONO" column="fk_lgcatgono" 	javaType="String" />
-		<result property="FK_EMPNUM" 	column="fk_empnum" 		javaType="String" />
-		<result property="NAME" 		column="name" 			javaType="String" />
-		<result property="SMCATGONAME" 	column="smcatgoname" 	javaType="String" />
+		<result property="PK_SCHEDULENO"   column="pk_scheduleno" 	javaType="String" />
+		<result property="STARTDATE" 	   column="startdate" 		javaType="String" />
+		<result property="ENDDATE" 		   column="enddate" 		javaType="String" />
+		<result property="SUBJECT" 		   column="subject" 		javaType="String" />
+		<result property="COLOR" 		   column="color" 			javaType="String" />
+		<result property="PLACE" 		   column="place" 			javaType="String" />
+		<result property="JOINUSER" 	   column="joinuser" 		javaType="String" />
+		<result property="CONTENT" 		   column="content" 		javaType="String" />
+		<result property="FK_SMCATGONO"    column="fk_smcatgono" 	javaType="String" />
+		<result property="FK_LGCATGONO"    column="fk_lgcatgono" 	javaType="String" />
+		<result property="FK_EMPNUM" 	   column="fk_empnum" 		javaType="String" />
+		<result property="NAME" 		   column="name" 			javaType="String" />
+		<result property="SMCATGONAME" 	   column="smcatgoname" 	javaType="String" />
+		<result property="LGCATGONAME" 	   column="lgcatgoname" 	javaType="String" />
+		
+		<result property="VOTE" 	       column="vote" 	        javaType="String" />
+		<result property="PLACENAME" 	   column="placename" 	    javaType="String" />
+		<result property="ADDRESSNAME" 	   column="addressname" 	javaType="String" />
+		<result property="PLACEPHONE" 	   column="placephone" 	    javaType="String" />
+		<result property="ROADADDRESSNAME" column="roadaddressname" javaType="String" />
+		<result property="REGDATE" 	       column="regdate" 	    javaType="String" />
+		<result property="ORGFILENAME" 	   column="orgfilename" 	javaType="String" />
+		<result property="EMPPICTURENAME"  column="emppicturename" 	javaType="String" />
+		<result property="SPOTNAMEKOR"     column="spotnamekor" 	javaType="String" />
+		<result property="DEPTNAMEKOR"     column="deptnamekor" 	javaType="String" />
+		<result property="PLACEURL"        column="placeurl" 	    javaType="String" />
+		<result property="FILENAME"        column="filename" 	    javaType="String" />
+		
+		
 	</resultMap>
 	<select id="detailSchedule" parameterType="String" resultMap="detailSchedule_Map">
 		select SD.pk_scheduleno
@@ -114,17 +142,37 @@
 		     , SD.color
 		     , nvl(SD.place,'-') as place
 		     , nvl(SD.joinuser,'공유자가 없습니다.') as joinuser
-		     , nvl(SD.content,'') as content
+		     , nvl(SD.content,'-') as content
 		     , SD.fk_smcatgono
 		     , SD.fk_lgcatgono
 		     , SD.fk_empnum
 		     , M.name
 		     , SC.smcatgoname
+		     , LC.lgcatgoname
+		     , SD.vote
+		     , nvl(SD.placename, '-') as placename
+		     , nvl(SD.addressname, '-') as addressname
+		     , nvl(SD.placephone, '-') as placephone
+		     , nvl(SD.roadaddressname, '-') as roadaddressname
+		     , SD.regdate
+		     , nvl(SD.orgfilename, '-') as orgfilename
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor
+		     , nvl(SD.placeurl, '-') as placeurl
+		     , nvl(SD.filename, '-') as filename
 		from tbl_calendar_schedule SD 
 		JOIN tbl_employee M
 		ON SD.fk_empnum = M.pk_empnum
 		JOIN tbl_calendar_small_category SC
 		ON SD.fk_smcatgono = SC.pk_smcatgono
+		JOIN tbl_calendar_large_category LC
+		ON SC.fk_lgcatgono = LC.pk_lgcatgono
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		
 		where SD.pk_scheduleno = #{pk_scheduleno}
 	</select>
 	
@@ -289,5 +337,95 @@
 	</select>
 	
 	
+	<delete id="voteNoDelete" parameterType="HashMap">
+		delete from tbl_vote_no where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum}
+	</delete>
+	
+	<delete id="voteUndefinedDelete" parameterType="HashMap">
+		delete from tbl_voteu_undefined where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum}
+	</delete>
+	
+	<delete id="voteYesDelete" parameterType="HashMap">
+		delete from tbl_vote_yes where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum}
+	</delete>
+	
+	<insert id="voteYesAdd" parameterType="HashMap">
+		insert into tbl_vote_yes(fk_scheduleno, fk_empnum) values(#{fk_scheduleno}, #{fk_empnum})
+	</insert>
+	
+	<insert id="voteNoAdd" parameterType="HashMap">
+		insert into tbl_vote_no(fk_scheduleno, fk_empnum) values(#{fk_scheduleno}, #{fk_empnum})
+	</insert>
+	
+	<insert id="voteUndefinedAdd" parameterType="HashMap">
+		insert into tbl_voteu_undefined(fk_scheduleno, fk_empnum) values(#{fk_scheduleno}, #{fk_empnum})
+	</insert>
 
+	<resultMap type="HashMap" id="voteTotalCnt_Map">
+		<result property="YESCNT"       column="yescnt" 	  javaType="String" />
+		<result property="NOCNT" 	    column="nocnt" 		  javaType="String" />
+		<result property="UNDEFINEDCNT" column="undefinedcnt" javaType="String" />
+	</resultMap>
+	
+	<select id="voteTotalCnt" parameterType="HashMap" resultMap="voteTotalCnt_Map" >
+		select 
+			(select count(*) from tbl_vote_yes where fk_scheduleno = #{fk_scheduleno} ) as yescnt , 
+			(select count(*) from tbl_vote_no where fk_scheduleno = #{fk_scheduleno} ) as nocnt,
+			(select count(*) from tbl_voteu_undefined where fk_scheduleno = #{fk_scheduleno} ) as undefinedcnt
+		from dual 
+	</select>
+	
+	<resultMap type="HashMap" id="voteTotalLoginCnt_Map">
+		<result property="USERYESCNT"       column="useryescnt" 	  javaType="String" />
+		<result property="USERNOCNT" 	    column="usernocnt" 		  javaType="String" />
+		<result property="USERUNDEFINEDCNT" column="userundefinedcnt" javaType="String" />
+	</resultMap>
+	
+	<select id="voteTotalLoginCnt" parameterType="HashMap" resultMap="voteTotalLoginCnt_Map" >
+		select 
+			(select count(*) from tbl_vote_yes where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum}  ) as useryescnt , 
+			(select count(*) from tbl_vote_no where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} ) as usernocnt,
+			(select count(*) from tbl_voteu_undefined where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} ) as userundefinedcnt
+		from dual 
+	</select>
+	
+	<resultMap type="HashMap" id="voteYesUser_Map">
+		<result property="FK_EMPNUM"       column="fk_empnum" 	  javaType="String" />
+		<result property="NAME" 	    column="name" 		  javaType="String" />
+	</resultMap>
+	
+	<select id="voteYesUser" parameterType="HashMap" resultMap="voteYesUser_Map" >
+		select Y.fk_empnum, M.name
+		from tbl_vote_yes Y
+		join tbl_employee M
+		on Y.fk_empnum = M.pk_empnum
+		where fk_scheduleno = #{fk_scheduleno}
+	</select>
+	
+	<resultMap type="HashMap" id="voteNoUser_Map">
+		<result property="FK_EMPNUM"       column="fk_empnum" 	  javaType="String" />
+		<result property="NAME" 	    column="name" 		  javaType="String" />
+	</resultMap>
+	
+	<select id="voteNoUser" parameterType="HashMap" resultMap="voteNoUser_Map" >
+		select N.fk_empnum, M.name
+		from tbl_vote_no N
+		join tbl_employee M
+		on N.fk_empnum = M.pk_empnum
+		where fk_scheduleno = #{fk_scheduleno}
+	</select>
+	
+	<resultMap type="HashMap" id="voteUndefinedUser_Map">
+		<result property="FK_EMPNUM"       column="fk_empnum" 	  javaType="String" />
+		<result property="NAME" 	    column="name" 		  javaType="String" />
+	</resultMap>
+	
+	<select id="voteUndefinedUser" parameterType="HashMap" resultMap="voteUndefinedUser_Map" >
+		select U.fk_empnum, M.name
+		from tbl_voteu_undefined U
+		join tbl_employee M
+		on U.fk_empnum = M.pk_empnum
+		where fk_scheduleno = #{fk_scheduleno}
+	</select>
+	
 </mapper>

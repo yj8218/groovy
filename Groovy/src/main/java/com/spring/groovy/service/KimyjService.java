@@ -5,6 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 
 //import com.spring.groovy.common.AES256;
 import com.spring.groovy.model.Calendar_schedule_VO;
@@ -90,8 +94,8 @@ public class KimyjService implements InterKimyjService {
 
 	// 일정 등록하기
 	@Override
-	public int registerSchedule_end(Map<String, String> paraMap) throws Throwable {
-		int n = dao.registerSchedule_end(paraMap);
+	public int registerSchedule_end(Calendar_schedule_VO scheduleVO) throws Throwable {
+		int n = dao.registerSchedule_end(scheduleVO);
 		return n;
 	}
 
@@ -165,6 +169,74 @@ public class KimyjService implements InterKimyjService {
 	public List<Map<String,String>> scheduleListSearchWithPaging(Map<String, String> paraMap) {
 		List<Map<String,String>> scheduleList = dao.scheduleListSearchWithPaging(paraMap);
 		return scheduleList;
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int voteYesAdd(Map<String, String> paraMap) throws Throwable {
+		int m = dao.voteNoDelete(paraMap);
+		
+		int n = dao.voteUndefinedDelete(paraMap);
+	
+		int result = dao.voteYesAdd(paraMap);
+	
+		return result;
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int voteNoAdd(Map<String, String> paraMap) throws Throwable {
+		int m = dao.voteYesDelete(paraMap);
+	
+		int n = dao.voteUndefinedDelete(paraMap);
+		
+		int result = dao.voteNoAdd(paraMap);
+		
+		return result;
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int voteUndefinedAdd(Map<String, String> paraMap) throws Throwable {
+		int m = dao.voteNoDelete(paraMap);
+		int n = dao.voteYesDelete(paraMap);
+		int result = dao.voteUndefinedAdd(paraMap);
+		return result;
+	}
+
+
+	@Override
+	public Map<String, String> voteTotalLoginCnt(Map<String, String> paraMap) {
+		Map<String,String> map = dao.voteTotalLoginCnt(paraMap);
+		return map;
+	}
+
+
+	@Override
+	public Map<String, String> voteTotalCnt(Map<String, String> paraMap) {
+		Map<String,String> map = dao.voteTotalCnt(paraMap);
+		return map;
+	}
+
+
+	@Override
+	public List<Map<String, String>> voteYesUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.voteYesUser(paraMap);
+		return listMap;
+	}
+
+
+	@Override
+	public List<Map<String, String>> voteNoUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.voteNoUser(paraMap);
+		return listMap;
+	}
+
+
+	@Override
+	public List<Map<String, String>> voteUndefinedUser(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.voteUndefinedUser(paraMap);
+		return listMap;
 	}
 	
 	
