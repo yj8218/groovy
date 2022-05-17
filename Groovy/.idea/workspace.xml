@@ -8,9 +8,14 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/JodnDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/JodnDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/InterJodnService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/InterJodnService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/JodnService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/JodnService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/approval/approver.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/approver.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/approval/reference.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/approval/reference.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/absenceEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/absenceEdit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/approvalView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/approvalView.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/businessCostEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/businessCostEdit.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/equipmentEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/equipmentEdit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/expensesEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/expensesEdit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/foodExpensesEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/foodExpensesEdit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/newProjectEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/newProjectEdit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/vacationEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/vacationEdit.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles2/board/writeBoardModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles2/board/writeBoardModal.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/spring/groovy/mapper/jodn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/spring/groovy/mapper/jodn.xml" afterDir="false" />
@@ -43,6 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1651914955057</updated>
       <workItem from="1651914959613" duration="366000" />
+      <workItem from="1652168605749" duration="1000" />
     </task>
     <servers />
   </component>

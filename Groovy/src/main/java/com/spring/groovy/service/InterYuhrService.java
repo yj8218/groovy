@@ -31,4 +31,37 @@ public interface InterYuhrService {
 	// 근태정보 가져오기
 	List<CommuteStatusVO> getCommStatus();
 
+	// TBL_COMMUTE 에 오늘의 출근 insert
+	int startWork(String pk_empnum);
+
+	// tbl_commute_status 에 지각 1 입력
+	void status_late(String pk_empnum);
+
+	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
+	int isClickedStartBtn(String pk_empnum);
+
+	// tbl_commute 오늘의 자기 행에 퇴근 update
+	int endWork(String pk_empnum);
+
+	// tbl_commute_status 에 조기퇴근 1 update
+	void status_early_endcheck(String pk_empnum);
+	
+	// Spring Scheduler 를 사용하여 자정에 퇴근 근태 체크하기(퇴근미체크인지, 결근)
+	void checkEndCommuteStatus();
+		
+	// tbl_commute_status 에 퇴근미체크 1 update
+	void status_no_endcheck(String pk_empnum);
+
+	// tbl_commute_status 에 결근 1 update
+	void status_no_workday(String pk_empnum);
+
+	// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+	List<Map<String, String>> getCommuteStatusInfo();
+
+	// 로그인한 사원의 오늘 근무한 시간을 초단위까지 db 에 update
+	int todayworkedtime(String pk_empnum);
+
+	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
+	List<Map<String, String>> showOneCommuteStatus(String pk_empnum);
+
 }//end of public interface InterYuhrService
