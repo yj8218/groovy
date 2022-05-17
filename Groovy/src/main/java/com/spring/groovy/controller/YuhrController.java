@@ -612,19 +612,23 @@ public class YuhrController {
 	}
 	
 	
-	// 한 사원의 근태기록을 보여주는 페이지
+	// 한 사원의 근태기록을 보여주는 페이지 - 관리자, 사원 모두 사용해야한다.
 	@RequestMapping(value="/showOneCommuteStatus.groovy")
 	public ModelAndView showOneCommuteStatus(ModelAndView mav, HttpServletRequest request) {
-		
+		/*
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		String pk_empnum = loginuser.getPk_empnum();
+		*/
 		String pk_empnum = request.getParameter("pk_empnum");
 		
 		// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
 		List<Map<String, String>> OneCommuteStatus = service.showOneCommuteStatus(pk_empnum);
 		
 		mav.addObject("OneCommuteStatus", OneCommuteStatus);
+		mav.addObject("pk_empnum", pk_empnum);
 		
-		mav.setViewName("board/approver.tiles1");
-		// /WEB-INF/views/approval/approvalEdit.jsp
+		mav.setViewName("employee/oneCommuteStatus.tiles1");
 		
 		return mav;
 	}

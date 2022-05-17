@@ -293,6 +293,35 @@
 	</update>
 	
 	
+	<resultMap type="HashMap" id="oneCommuteStatusMap">
+		<result property="fk_empnum" 		column="fk_empnum" 			javaType="String" />
+		<result property="startwork" 		column="startwork" 			javaType="String" />
+		<result property="endwork" 			column="endwork" 			javaType="String" />
+		<result property="TODAY" 			column="TODAY" 				javaType="String" />
+		<result property="TODAYWORKEDTIME" 	column="TODAYWORKEDTIME" 	javaType="String" />
+		<result property="LATE" 			column="LATE" 				javaType="String" />
+		<result property="EARLY_ENDCHECK" 	column="EARLY_ENDCHECK" 	javaType="String" />
+		<result property="NO_ENDCHECK" 		column="NO_ENDCHECK" 		javaType="String" />
+		<result property="NO_WORKDAY" 		column="NO_WORKDAY" 		javaType="String" />
+		<result property="totalworkedtime" 	column="totalworkedtime" 	javaType="String" />
+	</resultMap>
+	
+	
+	<select id="showOneCommuteStatus" parameterType="String" resultMap="oneCommuteStatusMap">
+		select c.fk_empnum
+		     , to_char(startwork, 'yyyy-mm-dd hh24:mi:ss') as startwork
+		     , to_char(endwork, 'yyyy-mm-dd hh24:mi:ss') as endwork
+		     , to_char(TODAY, 'yyyy-mm-dd') as today, TODAYWORKEDTIME, LATE, EARLY_ENDCHECK, NO_ENDCHECK, NO_WORKDAY
+		     , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
+		from tbl_commute C
+		join tbl_commute_status S
+		on c.fk_empnum = s.fk_empnum
+		left JOIN totalworkedtimecalc T
+		on c.fk_empnum = T.FK_EMPNUM
+		where C.fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(today, 'yyyy-mm-dd')
+		
+	
+	</select>
 	
 	
 	
