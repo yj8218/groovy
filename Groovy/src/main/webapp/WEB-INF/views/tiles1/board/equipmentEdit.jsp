@@ -30,10 +30,6 @@ span.title {
 	margin: 10px 5px;
 }
 
-form[name="equipmentEdit"]{
-	margin-top: 20px;
-}
-
 div.box {
 	margin-top: 20px;
 }
@@ -50,20 +46,23 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
+	
 }
 
-div#btn {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -108,71 +107,12 @@ button#approvePersonAdd {
 $(document).ready(function(){
 	
 	
-	if(localStorage.getItem("approver") != null){
-        var approver   = localStorage.getItem("approver");
-        
-	
-	////////////////////////////////// 실험
-	
-	}
-        
-    $.ajax({
-	  url:"<%= request.getContextPath()%>/addApprover.groovy",
-	  data:{"approver":approver},
-	  type:"POST",
-	  dataType:"JSON",
-	  success:function(json){
-		  $('div#employeeList').html(json.approver);
-	  },
-	  error: function(request, status, error){
-			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	  } 
-        
-    })
-    
-    
-      
-     
 	
 	
 }); // $(document).ready(function()
 	
 	
-function add_textbox() {
-    const box = document.getElementById("box");
-    const newP = document.createElement('p');
-    newP.innerHTML = "<input type='text'> <input type='button' value='삭제' onclick='remove(this)'>";
-    box.appendChild(newP);
-}
-
-function remove(obj) {
-    document.getElementById('box').removeChild(obj.parentNode);
-}
-	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
-	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	if(localStorage.getItem("approver") != null){
-		localStorage.removeItem('approver'); 
-	}
-	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-}	
-	
-	
 function cancel() {
-	if(localStorage.getItem("approver") != null){
-		localStorage.removeItem('approver'); 
-	}
 	location.href='<%= ctxPath%>/approvalView.groovy';
 }
 	
@@ -237,9 +177,9 @@ function goEpuipment() {
 				</div>
 			</div>
 			 -->
-			<div id="btn" class="box">
-				<button type="button"  class="btn" onclick="goEpuipment()">신청하기</button>
-				<button type="button"  class="btn" onclick="cancel()">취소</button>
+			<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goEpuipment()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
 				<!-- history.back(); -->
 			</div>
 
@@ -248,16 +188,5 @@ function goEpuipment() {
 	
 </div>
 
-<!-- 		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
-	<div id="employeeList"></div>
-
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson()">등록하기</button>
-	
-</div> 
- -->
- </body>
+</body>
 </html>

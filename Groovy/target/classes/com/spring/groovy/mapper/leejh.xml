@@ -9,17 +9,45 @@
 	<!-- === 로그인 처리하기 === -->
 	
 	<select id="getLoginEmployee" resultType="com.spring.groovy.model.EmployeeVO" parameterType="HashMap">
+		select  pk_empnum, pwd, name, address, detailaddress, postcode, 
+				        phone, email, birthday, gender, registerday, 
+				        startday, resignationstatus,  
+				        resignationday,  fk_vstatus,     
+				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
+				        spotnamekor, deptnamekor, pk_spotnum
+				from
+				(
+					SELECT  E.pk_empnum, E.pwd, E.name, E.address, E.detailaddress, E.postcode, 
+					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
+					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+					        E.resignationday,  E.fk_vstatus,     
+					        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+					        s.spotnamekor, s.pk_spotnum,
+					        d.deptnamekor, d.pk_deptnum
+					from tbl_employee E
+					JOIN TBL_SPOT S 
+					ON E.fk_spotnum = S.pk_spotnum
+					JOIN TBL_DEPARTMENT D 
+					ON E.fk_deptnum = D.pk_deptnum
+				) V
+		where pk_empnum = #{pk_empnum} and pwd= #{pwd}
 
-		SELECT  pk_empnum, pwd, name,  address,  detailaddress,
+		<!-- SELECT  pk_empnum, pwd, name,  address,  detailaddress,
 			 extraaddress, postcode, phone,  email,  birthday, gender,
 			 registerday, startday, resignationstatus,  nvl(resignationday,'2099-12-31'),  fk_vstatus,
 			  fk_deptnum,  fk_spotnum,  emppicturename,  salary,  lastpwdchangedate
 		from tbl_employee
-		where pk_empnum = #{pk_empnum} and pwd= #{pwd}
+		where pk_empnum = #{pk_empnum} and pwd= #{pwd} -->
 	</select>
-	
+<!-- 	<insert id="">
+		insert into tbl_loginhistory(LOGINDATE, CLIENTIP) "
+	    values(sysdate, )
+    </insert> -->
 	<!-- << 로그인 기록 카운트 >> -->
-	
+	<insert id="">
+		insert into tbl_loginhistory(fk_userid, clientip)
+    	values(?, ?)
+	</insert>
 	<!-- === 해당하는 이메일과 사원번호에 존재하는 사원 정보 찾기(select) === -->
 	<select id="sendCodeEmail" parameterType="HashMap" resultType="String">
 		select pk_empnum
@@ -33,17 +61,17 @@
 		where pk_empnum = #{pk_empnum} and  email = #{email} 
 	</update>
 
-	<!-- === 직원정보 가져오기 === -->
+	<!-- === 직원정보 가져오기 (조직도) === -->
 	<select id="empList" resultType="com.spring.groovy.model.EmployeeVO">
-				select  pk_empnum, name, address, detailaddress, postcode, 
+				select  pk_empnum, name, address, detailaddress, extraaddress, postcode, 
 				        phone, email, birthday, gender, registerday, 
 				        startday, resignationstatus,  
 				        resignationday,  fk_vstatus,     
 				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
-				        spotnamekor, deptnamekor, pk_spotnum
+				        spotnamekor, deptnamekor, pk_spotnum, pk_deptnum
 				from
 				(
-					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+					SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.extraaddress, E.postcode, 
 					        E.phone, E.email, E.birthday, E.gender, E.registerday, 
 					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
 					        E.resignationday,  E.fk_vstatus,     
@@ -59,11 +87,192 @@
 		        order by pk_deptnum , pk_spotnum desc
 	
 	</select>
-	
+
   <!-- 부서 불러오기 -->
    <select id="deptList" resultType="String">
-      select deptnamekor
+      select deptnamekor 
       from tbl_department
+      order by  pk_deptnum
    </select>
+   
+   
+   	<select id="getUserInfo" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		SELECT  E.pk_empnum, E.name, E.address, E.detailaddress, E.postcode, 
+		        E.phone, E.email, to_char(E.birthday, 'yyyy-mm-dd') as birthday, E.gender, E.registerday, 
+		        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
+		        E.resignationday,  E.fk_vstatus,     
+		        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
+		        s.spotnamekor, s.pk_spotnum,
+		        d.deptnamekor, d.pk_deptnum
+		from tbl_employee E
+		JOIN TBL_SPOT S 
+		ON E.fk_spotnum = S.pk_spotnum
+		JOIN TBL_DEPARTMENT D 
+		ON E.fk_deptnum = D.pk_deptnum
+		
+		where pk_empnum = #{pk_empnum}
+	</select>
+   
+   	<!-- === 연락처 수정(update) === -->
+	<update id="myPhoneUpdate" parameterType="HashMap">
+		update tbl_employee set phone = #{myphone}
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
+	<!-- === 이메일 수정(update) === -->
+	<update id="myEmailUpdate" parameterType="HashMap">
+		update tbl_employee set email = #{myemail}
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
+	<!-- === 주소 수정(update) === -->
+	<update id="myAddressUpdate" parameterType="HashMap">
+		update tbl_employee set postcode = #{mypostcode} , address = #{myaddress} , detailaddress = #{mydetailAddress} 
+		<if test='myextraAddress.equals("")'>
+		, extraaddress = #{myextraAddress}
+		</if>
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	<!--  === 비밀번호 수정 메서드 === -->
+	<update id="myPwdUpdate" parameterType="HashMap">
+		update tbl_employee set pwd = #{mypwd}
+		where pk_empnum = #{pk_empnum} and pwd = #{originpwd}
+	</update>
+	
+	<!--  === 사진파일 수정 메서드 === -->
+	<update id="editFile"  parameterType="com.spring.groovy.model.EmployeeVO">
+		update tbl_employee set emppicturename = #{emppicturename} , emppicturefilename = #{emppicturefilename}
+		where pk_empnum = #{pk_empnum} 
+	</update>
+	
+	
+	<!--  ==== #147. 원글쓰기 또는 답변글쓰기(파일첨부가 없는 글쓰기) ==== 
+	                     먼저  #57 을 주석처리한 후 아래처럼 해야 한다. -->
+	<insert id="add" parameterType="com.spring.groovy.model.BoardVO">
+	     <if test='fk_seq.equals("")'>
+		     insert into tbl_board(pk_board_seq, fk_empnum, b_subject, b_content, b_pw, b_readcount, b_regdate, b_status, groupno, fk_seq, depthno)
+		     values(boardseq.nextval, #{fk_empnum},  #{b_subject}, #{b_content}, #{b_pw}, default, default, default, #{groupno}, default, default)   
+	     </if>
+	     
+	     <if test='!fk_seq.equals("")'>
+		     insert into tbl_board(pk_board_seq, fk_empnum, b_subject, b_content, b_pw, b_readcount, b_regdate, b_status, groupno, fk_seq, depthno)
+		     values(boardseq.nextval, #{fk_empnum},  #{b_subject}, #{b_content}, #{b_pw}, default, default, default, #{groupno}, #{fk_seq}, #{depthno}+1)    
+	     </if>
+	</insert>
+	
+	    <!-- === #146. tbl_board 테이블에서 groupno 컬럼의 최대값 알아오기 === -->
+    <select id="getGroupnoMax" resultType="int">
+        select nvl(max(groupno), 0)
+		from tbl_board
+    </select>
+    
+    
+    <!-- === #159. 글쓰기(첨부파일이 있는 경우) === -->
+    <insert id="add_withFile" parameterType="com.spring.groovy.model.BoardVO">
+    	 <if test='fk_seq.equals("")'>
+		     insert into tbl_board(pk_board_seq, fk_empnum, b_subject, b_content, b_pw, b_readcount, b_regdate, b_status, groupno, fk_seq, depthno, b_filename, b_orgfilename, b_filesize)
+		     values(boardSeq.nextval, #{fk_empnum},  #{b_subject}, #{b_content}, #{b_pw}, default, default, default, #{groupno}, default, default, #{b_filename}, #{b_orgfilename}, #{b_filesize})    
+	     </if>
+	     
+	     <if test='!fk_seq.equals("")'>
+		     insert into tbl_board(pk_board_seq, fk_empnum, b_subject, b_content, b_pw, b_readcount, b_regdate, b_status, groupno, fk_seq, depthno, b_filename, b_orgfilename, b_filesize)
+		     values(boardSeq.nextval, #{fk_empnum},  #{b_subject}, #{b_content}, #{b_pw}, default, default, default, #{groupno}, #{fk_seq}, #{depthno}+1, #{b_filename}, #{b_orgfilename}, #{b_filesize})    
+	     </if>
+    </insert>
+    
+    
+    
+    <!-- employees테이블에서 성별 인원수 및 퍼센티지 가져오기 -->  <!-- 파라미터는 없고, 리턴타입은 hashMap 이기 때문에 resultMap -->
+	<resultMap type="HashMap" id="employeeChart_Map">
+		<result property="pk_empnum" 		column="pk_empnum" 			javaType="String" />
+		<result property="name"				column="name" 				javaType="String" />
+		<result property="deptnamekor" 		column="deptnamekor" 		javaType="String" />
+		<result property="spotnamekor" 		column="spotnamekor" 		javaType="String" />
+		<result property="pk_deptnum" 		column="pk_deptnum" 		javaType="String" />
+		<result property="pk_spotnum" 		column="pk_spotnum" 		javaType="String" />
+	</resultMap>
+	<select id="employeeChart"  resultMap="employeeChart_Map">
+		select pk_empnum , name , deptnamekor, spotnamekor, pk_spotnum , pk_deptnum
+		from
+				(
+					SELECT  E.pk_empnum,E.name,
+					         s.spotnamekor, s.pk_spotnum,
+					        d.deptnamekor, d.pk_deptnum
+					from tbl_employee E
+					JOIN TBL_SPOT S 
+					ON E.fk_spotnum = S.pk_spotnum
+					JOIN TBL_DEPARTMENT D 
+					ON E.fk_deptnum = D.pk_deptnum
+				) V
+ 		order by  pk_spotnum desc , pk_deptnum asc
+	</select>
+    
+	   <!-- ==== #161. (댓글 및 답변글쓰기 및 파일첨부가 있는 게시판에서) 글1개 조회하기 ==== 
+                         먼저 위의 #140 을 주석처리 한 다음에 아래와 같이 한다.
+    -->
+    <select id="getView" parameterType="HashMap" resultType="com.spring.groovy.model.BoardVO">
+		select 
+		      PK_BOARD_SEQ, FK_EMPNUM, name, B_SUBJECT, B_CONTENT, B_READCOUNT, B_REGDATE, B_PW 
+		     
+		     , groupno, fk_seq, depthno
+		     , B_FILENAME, B_ORGFILENAME, B_FILESIZE
+		from 
+		(
+		    select 
+                  B.PK_BOARD_SEQ, B.FK_EMPNUM, E.name, B.B_SUBJECT, B.B_CONTENT, B.B_READCOUNT
+                 ,to_char(B.B_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as  B_REGDATE
+                 , B.B_PW 
+		     
+                 , B.groupno, B.fk_seq, B.depthno
+                 , B.B_FILENAME, B.B_ORGFILENAME, B.B_FILESIZE
+		         
+		    from tbl_board B
+            JOIN tbl_employee E
+			ON B.FK_EMPNUM = E.PK_EMPNUM
+		    where b_status = 1
+            order by B.PK_BOARD_SEQ desc
+		    <!-- <if test='searchType != "" and searchWord != "" '>
+		    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+		    </if> -->
+		) V
+		where V.PK_BOARD_SEQ = #{pk_board_seq}
+    </select>
+    
+    
+    <!-- ==== #67. 글조회수 1증가 하기 ==== -->
+    <update id="setAddReadCount" parameterType="String">
+    	update tbl_board set b_readcount = b_readcount + 1
+    	where PK_BOARD_SEQ = #{pk_board_seq}
+    </update>
+    
+     <!-- ==== 글 list로 읽어오기 ==== -->
+    <select id="getBoardList" parameterType="String" resultType="com.spring.groovy.model.BoardVO"> 
+		select 
+		      PK_BOARD_SEQ, FK_EMPNUM, name, B_SUBJECT, B_CONTENT, B_READCOUNT, B_REGDATE, B_PW 
+		     
+		     , groupno, fk_seq, depthno
+		     , B_FILENAME, B_ORGFILENAME, B_FILESIZE
+		from 
+		(
+		    select 
+                  B.PK_BOARD_SEQ, B.FK_EMPNUM, E.name, B.B_SUBJECT, B.B_CONTENT, B.B_READCOUNT
+                 ,to_char(B.B_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as  B_REGDATE
+                 , B.B_PW 
+		     
+                 , B.groupno, B.fk_seq, B.depthno
+                 , B.B_FILENAME, B.B_ORGFILENAME, B.B_FILESIZE
+		         
+		    from tbl_board B
+            JOIN tbl_employee E
+			ON B.FK_EMPNUM = E.PK_EMPNUM
+		    where b_status = 1
+            order by B.PK_BOARD_SEQ desc
+		    <!-- <if test='searchType != "" and searchWord != "" '>
+		    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+		    </if> -->
+		) V
+    </select>
+    
+    
 	
 </mapper>

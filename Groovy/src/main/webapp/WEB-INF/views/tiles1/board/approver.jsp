@@ -265,7 +265,6 @@ $(document).ready(function(){
 						+'<span>('+appEmpList[i].pk_empnum+')</span>'
 						+'<input type="hidden" class="approver_chk" value="'+appEmpList[i].pk_empnum+'" />'
 						+'</div>'
-				  
 				  }
 
 				  
@@ -548,6 +547,7 @@ function goCancel() {
 	<div id="btn_goApprover">
 		<form name="documentnumFrm">
 			<input type="hidden" name="pk_documentnum" value="${requestScope.pk_documentnum }"/>
+			<input type="hidden" name="apl_no" value="${requestScope.apl_no }"/>
 			<button type="button"  class="btn_person" onclick="goApprover();">신청하기</button>
 			<button type="button"  class="btn_person" onclick="goCancel();">취소</button>
 		</form>

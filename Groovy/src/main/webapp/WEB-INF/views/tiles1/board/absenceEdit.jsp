@@ -50,7 +50,7 @@ label {
 	font-size: 12pt;
 }
 
-button.btn_abs {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
@@ -60,12 +60,12 @@ button.btn_abs {
 	border-radius: 7px;
 }
 
-div#btn_abs {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn_abs:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -144,27 +144,25 @@ $(document).ready(function(){
 	    
 	        $('input#fromDate').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	        //To의 초기값을 3일후로 설정
-	        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+	        $('input#toDate').datepicker('setDate', '+1Y'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	
 	});
 
 });
 	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
+
+function cancel() {
+	location.href='<%= ctxPath%>/approvalView.groovy';
+}
 	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
+function goAbsence() {
 	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-}	
+	const frm = document.absenceEditFrm;
+	frm.action = "goAbsence.groovy";
+	frm.method = "post";
+	frm.submit();
 	
+}		
 	
 </script>
 
@@ -179,41 +177,35 @@ function approvePerson() {
 
 	<div class="title">아래 양식에 맞추어 신청해주세요.</div>
 	
-	<form name="absenceEdit">
+	<form name="absenceEditFrm">
 		<div class="box">
 			<label>휴직 시작일</label><br>
-			<input type="text" id="fromDate" name="absenceStartDate" size="50" class="box" autocomplete="off" />
+			<input type="text" id="fromDate" name="absenceStartDate"  class="box" autocomplete="off" />
 		</div>
 		
 		<div class="box">
 			<label>휴직 종료일</label><br>
-			<input type="text" id="toDate" name="absenceEndDate" size="50" class="box" autocomplete="off" />
+			<input type="text" id="toDate" name="absenceEndDate"  class="box" autocomplete="off" />
 		</div>
 		
 		<div class="box">
 			<label>휴직 사유</label><br>
-			<input type="text" name="absenceInfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+			<input type="text" name="absenceInfo"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 		</div>
 		
 		<div class="box">
 			<label>비고</label><br>
-			<input type="text" name="absenceETC" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+			<input type="text" name="absenceETC"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 		</div>
 		
-		<div id="btn_abs" class="box">
-			<button type="button"  class="btn_abs">신청하기</button>
-			<button type="button"  class="btn_abs" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
-			<!-- history.back(); -->
+		<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goAbsence()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
+				<!-- history.back(); -->
 		</div>
 	</form>
 	
 </div>
 		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn_abs" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
-	<div id="employeeList"></div>
-</div> 
-
 </body>
 </html>

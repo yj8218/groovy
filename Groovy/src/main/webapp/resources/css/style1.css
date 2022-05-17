@@ -4,7 +4,7 @@
 
 #mycontainer   { padding:20px; }
 #myheader      { display: flex; position: relative; }
-#mycontent      { position: relative; top:45px; padding-left:230px; }
+#mycontent      { position: relative; top:60px; padding-left:230px; }
 #myfooter      { display: flex; min-height:120px; position: relative; top:60px; background-color:#555555; margin-bottom: 70px;}
    
 #myheader a {text-decoration:none;}
@@ -30,7 +30,7 @@
   background-color: #111;
   overflow: scroll;
   -ms-overflow-style: none;
-  padding-top: 45px;
+  padding-top: 60px;
   color: white;
 }
 .sidenav::-webkit-scrollbar { 
@@ -160,10 +160,528 @@ ul.scroll > li a{
 div.nav_right > a{
 	padding: 0 5px;
 	
+	
 }
 div.nav_right a  i{
-	width: 25px;
-	height: 25px;
+	width: 30px;
+	height: 30px;
 }
 
+
+
+
+
+
+
 /* ========== header, sidebar css 끝  ==============*/
+
+
+
+
+{box-sizing: border-box;}
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  top: 60px; 
+  right: 0;
+  /* border: 1px solid #f1f1f1; */
+  z-index: 9;
+  width: 400px;
+  bottom:auto;
+  height: 100%;
+  background-color: white;
+  -webkit-box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
+  box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
+}
+
+/* Add styles to the form container */
+.form-container {
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  padding: 0; 
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  float:right;
+}
+
+
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+
+ a.iconbar{
+	color:white ;  
+}
+
+.icons-search:before {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 16px;
+}
+div.searchBox{
+	cursor: pointer;
+	position:relative;
+	background-color: #3f3c49;
+	border: 1px solid #555;
+	border-radius: 900px;
+    color: #eee;
+    font-size: 12px;
+    margin: 0 auto;
+}
+form.main-search{
+	padding: 0 20px 0 10px;
+	
+}
+
+.main-search-box::before {
+   font-family: "Font Awesome 5 Free"; 
+    font-weight: 600;
+    display: inline-block;
+    content: "\f002";
+    margin: 0 11px 0 0;
+    vertical-align: middle;
+    color:white;
+}
+
+/* #organizationInput::before{
+   font-family: "Font Awesome 5 Free"; 
+    font-weight: 600;
+    display: inline-block;
+    content: "\f002";
+    margin: 0 11px 0 0;
+    vertical-align: middle;
+} */
+
+.main-search input {
+    padding-right: 10px;
+    color: #fff; 
+    font-size: 14px;
+    background: 0 0;
+    vertical-align: middle;
+    max-width: 200px;
+    cursor: pointer;
+    border: 0;
+    font-weight: bold;
+    height: 40px;
+}
+
+.searchBtn {
+    float: right;
+    font-size: 12px;
+    color: #ddd;
+    background-color: transparent;
+    border: 0;
+}
+
+.searchBtn::before {
+    display: inline-block;
+    content: "";
+    width: 1px;
+    height: 14px;
+    margin: 0 14px 0 0;
+    background: #555;
+    vertical-align: middle;
+}
+input#organizationInput::before{
+ 	font-family: "Font Awesome 5 Free";
+ 	content: "\f002";
+ 	color: black;
+ 	font-weight: 600;
+    display: inline-block;
+}
+input.searchInput{
+	color: #6449fc;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 70px 0 38px; 
+    border: 1px solid #ddd; 
+    height: 34px; 
+    border-radius: 4px;
+    
+}
+
+ul.pjtList{
+	padding:5px 20px;
+}
+
+ul.pjtList li:hover{
+    background-color: #efebff;
+    cursor: pointer;
+    color: #6449fc;
+    font-weight: 700;
+}
+ul.active{
+    background-color: #efebff;
+    cursor: pointer;
+    color: #6449fc;
+    font-weight: 700;
+}
+
+
+
+
+.topnav {
+  overflow: hidden;
+  /* background-color: #f1f1f1; */
+}
+
+
+/* .tab button:hover { 
+  border-bottom: 3px solid #111;
+} */
+
+.tab button.active {
+  border-bottom: 3px solid #111;
+  font-weight: 700;
+  color: black;
+}
+#expander{ width:100%; height:6px; background-color:#999;}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 13px;
+  width: 60px;
+  height:30px;
+  font-weight: 700;
+  color: gray;
+}
+
+/* Style the tab content */
+ .tabcontent{
+  display: none;
+  padding: 10px 20px;
+}
+
+button#btnChat{
+	
+    margin-left: 4px;
+    width: auto;
+    height: 30px;
+    background: #6449fc;
+    color: #fff;
+    border-color: #6449fc;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+.layer_pop {
+    display: none;
+  position: fixed;
+  	width: 220px;
+    min-width: 218px;
+    padding: 14px;
+    position: absolute;
+    top: 70px;
+    right: 30px;
+/*     z-index: 13; */
+    background: #fff;
+    border: 1px solid #777;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: left;
+    color: #555;
+	height: 190px;
+}
+
+/* Add styles to the form container */
+.myinfo-container {
+  padding: 5px; 
+  background-color: white;
+  
+}
+
+
+
+/* Add some hover effects to buttons */
+.myinfo-container {
+  opacity: 1; 
+}
+
+.myprofile-photo{
+	width: 40px;
+    height: 40px;
+    margin: 0 10px 0 0;
+    display: inline-block;
+    border: 1px solid #eee;
+    -webkit-border-radius: 16px;
+    border-radius: 16px;
+    background-size: cover;
+
+}
+
+.myprofile-photo2{
+	/* z-index: 1; */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 320px;
+    width: 100%;
+    background: linear-gradient(180deg,rgba(102,102,102,0) 45.31%,rgba(51,51,51,.6) 100%);
+}
+strong.user-name{
+	display: block;
+    line-height: 21px;
+    color: #555;
+    max-width: 140px;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+li.infoList {
+
+	position: relative;
+    min-height: 19px;
+    margin-top: 9px;
+    cursor: pointer;
+    font-size: 14px;
+}
+li.infoList:hover{
+	 font-weight: bold;
+}
+
+div#myModal{
+
+    overflow-y: auto;
+/*     -ms-overflow-y: hidden; */
+/*     position: fixed; */
+/*     z-index:1050; */
+    right: 0;
+    
+    top:10%;
+   
+    left: 0;
+     height: 100%;
+   
+}
+
+div#myModal div.modal-dialogs{
+	margin: 0 auto;
+    padding-bottom: 15px;
+  /*   z-index:1050;  */
+
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #fff;
+    height: 320px;
+    width: 350px;
+    
+
+}
+
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+div.card-body ul{
+	margin:0;
+	padding:0;
+}
+
+div.card-body ul li i {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+div.card-body ul li span {
+    width: 200px;
+    padding: 0 0 0 10px;
+    display: inline-block;
+    border-bottom: 1px solid #eee;
+}
+div.btn-probottom {
+	display: inline-block;
+	justify-content: center;
+	width:100%;
+}
+
+
+button.btn-bottom{
+    width: 140px;
+    height: 50px;
+    padding: 0 20px;
+    margin: 0 5px;
+    position: relative;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+
+li.adjust{
+    min-height: 51px;
+    position: relative;
+    
+}
+li.adjust div.list1 , li.adjust div.list2{
+	display: inline-block;
+}
+
+li.adjust div.list1 {
+width: 100px;
+
+}
+
+
+/* === 정보수정  modal css 시작=== */
+div.modal-body input[type=text], div.modal-body select, div.modal-body textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+div.modal-body label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+div.modal-body input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+div.modal-body input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div.modal-body {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-20 {
+  float: left;
+  width: 20%;
+  margin-top: 6px;
+}
+
+.col-70 {
+  float: left;
+  width: 70%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+div.modal-body .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-20, .col-70, div.modal-body input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+    text-align: center;
+  }
+}
+
+/* === 정보수정  modal css 끝 === */

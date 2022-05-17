@@ -146,21 +146,22 @@ from TBL_APP_EQUIP;
 
 select *
 from TBL_APPROVALPERSON
+where 
 order by fk_documentnum, app_status desc
 
 
 
 DELETE FROM tbl_approvaldocument
-WHERE pk_documentnum = '20220507024415'
+WHERE pk_documentnum = '20220512171146349'
 
 DELETE FROM TBL_APP_EQUIP
-WHERE pk_documentnum = '20220507024415'
+WHERE pk_documentnum = '20220515022148216'
 
 delete from TBL_APPROVALPERSON
-
+WHERE fk_documentnum = '20220512171146349'
 commit;
 
-
+rollback
 
 insert into tbl_approvaldocument(PK_DOCUMENTNUM, FK_APL_NO, FK_EMPNUM, WRITEDAY, STATUS)
 		values(to_char(sysdate, 'yyyymmddhh24miss'), '1', '001-01', sysdate, '0')
@@ -185,6 +186,392 @@ UNION ALL
 SELECT '20220507032317', '20210302-01', sysdate, '1' FROM DUAL
 
 delete from TBL_APPROVALPERSON
+
+
+---- 휴가신청
+
+select *
+from TBL_VACATION
+
+select *
+from TBL_VACATIONLIST
+
+
+DELETE FROM tbl_approvaldocument
+
+
+DELETE FROM TBL_VACATIONLIST
+
+
+delete from TBL_APPROVALPERSON
+
+
+commit
+
+INSERT INTO TBL_VACATION (PK_VSTATUS, VTYPE)
+VALUES ( 4, '공가' )
+
+select nvl(vtype,'휴가 종류 선택') as vtype
+from TBL_VACATION  
+
+select *
+from tbl_approvaldocument;
+select *
+from TBL_APP_BUSINESS
+
+DELETE FROM tbl_approvaldocument
+
+DELETE FROM TBL_APP_BUSINESS
+
+delete from TBL_APPROVALPERSON
+
+commit
+
+
+select *
+from TBL_APP_FOOD
+select *
+from tbl_approvaldocument
+select *
+from TBL_APPROVALPERSON
+
+DELETE FROM tbl_approvaldocument
+where pk_documentnum in(20220515015548415, 20220515020133521)
+DELETE FROM TBL_APP_FOOD
+where pk_documentnum in(20220515015548415, 20220515020133521)
+
+delete from TBL_APPROVALPERSON
+
+commit
+
+select *
+from TBL_APP_ABSENCE
+select *
+from tbl_approvaldocument
+select *
+from TBL_APPROVALPERSON
+
+DELETE FROM tbl_approvaldocument
+
+DELETE FROM TBL_APP_ABSENCE
+
+delete from TBL_APPROVALPERSON
+
+commit
+
+select *
+from TBL_APP_PROJECT
+
+select *
+from tbl_approvaldocument
+
+select *
+from TBL_APPROVALPERSON
+
+DELETE FROM tbl_approvaldocument
+
+DELETE FROM TBL_APP_PROJECT
+
+delete from TBL_APPROVALPERSON
+
+
+-- 내 전자결재 문서 조회하기 
+select rownum as rno, PK_DOCUMENTNUM, apl_no, FK_EMPNUM , to_char(WRITEDAY, 'yyyy-mm-dd') as WRITEDAY, STATUS, apl_name
+from tbl_approvaldocument A join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+where fk_empNum = '20200902-01'
+
+select *
+from TBL_APPROVAL
+
+UPDATE TBL_APPROVAL SET APL_CATEGORYNO = 5 WHERE apl_no = 7
+
+commit;
+
+select *
+from tbl_app_category
+
+rollback;
+--전자결재 문서 상세조회하기
+
+
+-- 비품상세정보
+select rownum as rno, A.pk_documentnum as pk_documentnum, A.fk_empnum as fk_empnum, A.status as status, 
+d.productname as productname, d.productlink as productlink,d.productcnt as productcnt,d.productcost as productcost,
+d.productmoney as productmoney,d.productinfo as productinfo
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join tbl_app_equip D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+
+-- 승인자 참조자
+select C.fK_empnum, app_status, F.pk_spotnum, E.name, F.spotnamekor, C.appyn, DEPTNAMEKOR
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join tbl_approvalperson C
+on A.PK_DOCUMENTNUM = C.fK_DOCUMENTNUM
+join tbl_employee E
+on C.fk_empnum = E.pk_empnum
+join TBL_SPOT F
+on E.fk_spotnum = F.pk_spotnum
+join TBL_DEPARTMENT G
+on G.PK_DEPTNUM = E.FK_DEPTNUM
+where A.PK_DOCUMENTNUM = '20220512173514892'
+order by DEPTNAMEKOR, fk_spotnum desc
+
+-- 출장비 상세정보
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+BUSINESSREGION, BUSINESSSTARTDATE, BUSINESSENDDATE, BUSINESSPURPOSE, BUSINESSMONEY, FILENAME, ORGFILENAME, FILESIZE
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join TBL_APP_BUSINESS D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+-- 식비 상세정보
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+FOODEXPENSESDATE, FOODEXPENSESCOST, FOODEXPENSESPERSONCNT, FOODEXPENSESETC, FILENAME, ORGFILENAME, FILESIZE
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join TBL_APP_FOOD D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+-- 휴가 상세정보
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+PK_VSTATUS, VTYPE, VSTARTDATE, VENDDATE, VINFO, VETC
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join TBL_VACATIONLIST D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+join TBL_VACATION E 
+on D.FK_VSTATUS = E.PK_VSTATUS
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+-- 휴직 상세정보
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+ABSENCESTARTDATE, ABSENCEENDDATE, ABSENCEINFO, ABSENCEETC
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join TBL_APP_ABSENCE D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+
+-- 새프로젝트신청 상세정보
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+PROJECTNAME, PROJECTSTARTDATE, PROJECTENDDATE, PROJECTPERSONCNT, PROJECTPERSONLIST, FILENAME, ORGFILENAME, FILESIZE
+from tbl_approvaldocument A 
+join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join TBL_APP_PROJECT D
+on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+where A.PK_DOCUMENTNUM = '20220511154713274'
+
+--  내 결제대기문서 조회
+select rownum as rno ,c.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, d.apl_name, c.fk_empnum, a.name, e.deptnamekor, spotnamekor, status
+from TBL_APPROVALPERSON B
+join TBL_APPROVALDOCUMENT C
+on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+join TBL_APPROVAL D
+on C.FK_APL_NO = D.apl_no
+join tbl_employee A
+on C.fk_empnum = A.pk_empnum
+join tbl_department E
+on A.fk_deptnum = E.PK_DEPTNUM
+join tbl_spot F
+on F.PK_SPOTNUM = A.fK_SPOTNUM
+where B.fk_empnum = '20160225-03' and B.app_status = '1' and APPYN = '0' 
+
+
+select *
+from TBL_APPROVALPERSON
+
+select *
+from TBL_APP_FOOD
+
+-- 결재승인하기 
+update TBL_APPROVALPERSON set writeday = sysdate , appyn='0', opinion='결제승인완료'
+where fk_documentnum = '20220512150611790' 
+and fk_empnum = '20160225-03' 
+
+rollback
+commit
+-- 결재 승인자 남은 인원 조회하기 
+select count(*)
+from TBL_APPROVALPERSON
+where fk_documentnum = '20220512150611790' 
+and app_status = '1' 
+and appyn='0'
+
+-- 남은결재자가 없는 경우 문서상태변경
+update TBL_APPROVALDOCUMENT set status = '2'
+where fk_documentnum = '20220512150611790' 
+ 
+
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		foodexpensesdate, foodexpensescost, foodexpensespersoncnt, foodexpensesetc, filename, orgfilename, filesize
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_APP_FOOD D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = '20220512150611790'
+
+
+
+
+
+
+
+
+
+
+-- 나의 결재 정보조회
+select rownum as rno, pk_documentnum, apl_no, fk_empnum , to_char(WRITEDAY, 'yyyy-mm-dd') as writeday
+, status, apl_name, DEPTNAMEKOR
+from tbl_approvaldocument A join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join tbl_employee C
+on A.fk_empnum = C.pk_empnum
+join tbl_department D
+on C.fk_deptnum = D.PK_DEPTNUM
+where fk_empNum = '20200902-01' 
+and status = '0'
+
+
+-- 내 결제정보 토탈 페이지
+select count(*)
+from tbl_approvaldocument A join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join tbl_employee C
+on A.fk_empnum = C.pk_empnum
+join tbl_department D
+on C.fk_deptnum = D.PK_DEPTNUM
+where fk_empNum = '20200902-01'
+
+--- 내결재정보 페이징처리
+select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, DEPTNAMEKOR
+from 
+(
+select rownum as rno, pk_documentnum, apl_no, fk_empnum , to_char(WRITEDAY, 'yyyy-mm-dd') as writeday
+, status, apl_name, DEPTNAMEKOR
+from tbl_approvaldocument A join TBL_APPROVAL B
+on A.FK_APL_NO = B.apl_no
+join tbl_employee C
+on A.fk_empnum = C.pk_empnum
+join tbl_department D
+on C.fk_deptnum = D.PK_DEPTNUM
+where fk_empNum = '20200902-01'
+) 
+where rno between 1 and 5
+
+
+select A.fk_empnum, fk_spotnum
+from TBL_APPROVALPERSON A
+join tbl_employee B
+on A.fk_empnum = B.pk_empnum
+where fk_documentnum = '20220512015430750'
+and app_status = '1'
+and appyn = '0'
+
+select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+		from TBL_APPROVALPERSON B
+		join TBL_APPROVALDOCUMENT C
+		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		where B.fk_empnum = '20170222-01' and APPYN in('1','2')
+
+
+select *
+from TBL_APPROVALPERSON
+
+
+
+select * FROM TBL_APPROVALPERSON
+WHERE fk_documentnum = '20220512173434223'
+
+
+
+
+
+select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+		from TBL_APPROVALPERSON B
+		join TBL_APPROVALDOCUMENT C
+		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		where B.fk_empnum = '20150502-04' and B.app_status = '1' and APPYN = '0'
+
+select filename, orgfilename, filesize
+from TBL_APP_FOOD 
+
+
+
+select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+from
+(	
+    select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+    from 
+    (
+        select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, status, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+        from TBL_APPROVALPERSON B
+        join TBL_APPROVALDOCUMENT C
+        on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+        join TBL_APPROVAL D
+        on C.FK_APL_NO = D.apl_no
+        join tbl_employee A
+        on C.fk_empnum = A.pk_empnum
+        join tbl_department E
+        on A.fk_deptnum = E.PK_DEPTNUM
+        join tbl_spot F
+        on F.PK_SPOTNUM = A.fK_SPOTNUM
+        where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0'
+        order by writeday desc
+    )
+)	 
+where rno between 1 and 5	
+
+
+select count(*)
+from TBL_APPROVALPERSON B
+join TBL_APPROVALDOCUMENT C
+on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+join TBL_APPROVAL D
+on C.FK_APL_NO = D.apl_no
+join tbl_employee A
+on C.fk_empnum = A.pk_empnum
+join tbl_department E
+on A.fk_deptnum = E.PK_DEPTNUM
+join tbl_spot F
+on F.PK_SPOTNUM = A.fK_SPOTNUM
+where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0'
+
+
+
+
+
 
 
 

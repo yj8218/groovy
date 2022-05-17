@@ -66,13 +66,13 @@
 	
 	<!-- 비품신청 시작  -->
 	<!-- 비품문서 작성하기  -->
-	<insert id="equipmentDocumentEdit" parameterType="HashMap">
+	<insert id="equipmentDocumentEdit" parameterType="com.spring.groovy.model.EquipmentVO">
 		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
 		values(#{pk_documentnum}, '1', #{fk_empnum}, sysdate, '0')
 	</insert>
 	
 	<!-- 비품신청 상세정보 등록  -->
-	<insert id="goEpuipmentEdit" parameterType="HashMap">
+	<insert id="goEpuipmentEdit" parameterType="com.spring.groovy.model.EquipmentVO">
 		insert into tbl_app_equip(pk_documentnum, productName, productlink, productcnt, productcost, productmoney, productinfo)
 		values(#{pk_documentnum}, #{productName}, #{productLink}, #{productCnt}, #{productCost}, #{productMoney}, #{productInfo})
 	</insert>
@@ -102,26 +102,53 @@
 	</select>
 	
 	<!-- 취소버튼 클릭 시 데이터 삭제하기 -->
-	<delete id="delDocumentnum" parameterType="String">
+	<delete id="delDocumentnum" parameterType="HashMap">
+		<if test="apl_no == 1">
 		DELETE FROM TBL_APP_EQUIP
 		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 3">
+		DELETE FROM TBL_APP_BUSINESS
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 4">
+		DELETE FROM TBL_APP_FOOD
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 5">
+		DELETE FROM TBL_VACATIONLIST
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 6">
+		DELETE FROM TBL_APP_ABSENCE
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 7">
+		DELETE FROM TBL_APP_PROJECT
+		where pk_documentnum = #{pk_documentnum}
+		</if>
 	</delete>
-	<delete id="delDocumnet" parameterType="String">
+	<delete id="delDocumnet" parameterType="HashMap">
 		DELETE FROM tbl_approvaldocument
 		WHERE pk_documentnum = #{pk_documentnum}
 	</delete>
+	<delete id="delApprover" parameterType="HashMap">
+		DELETE FROM TBL_APPROVALPERSON
+		WHERE fk_documentnum = #{pk_documentnum}
+	</delete>
+	
 	
 	<!-- 신청하기버튼 클릭 시 승인자 데이터 집어 넣기 -->
 	<insert id="approverList" parameterType="HashMap">
-		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, writeday, app_status)
+		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, app_status)
 		<if test="arr_approver_chk.length == 1">
 			<foreach collection="arr_approver_chk" index="i" >
-          		SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', sysdate, '1' FROM DUAL
+          		SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', '1' FROM DUAL
           	</foreach>	
       	</if>
 		<if test="arr_approver_chk.length > 1">
           <foreach collection="arr_approver_chk" index="i" >
-         	  SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', sysdate, '1' FROM DUAL
+         	  SELECT '${pk_documentnum}', '${arr_approver_chk[i]}', '1' FROM DUAL
          	  <if test="arr_approver_chk.length-1 != i">
          	  	UNION ALL
          	  </if>	
@@ -131,15 +158,15 @@
 	
 	<!-- 신청하기버튼 클릭 시 참조자 데이터 집어 넣기 -->
 	<insert id="referenceList" parameterType="HashMap">
-		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, writeday, app_status)
+		INSERT INTO tbl_approvalperson(fk_documentnum, fk_empnum, app_status)
 		<if test="arr_reference_chk.length == 1">
 			<foreach collection="arr_reference_chk" index="i" >
-          		SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', sysdate, '0' FROM DUAL
+          		SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', '0' FROM DUAL
           	</foreach>	
       	</if>
 		<if test="arr_reference_chk.length > 1">
           <foreach collection="arr_reference_chk" index="i" >
-         	  SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', sysdate, '0' FROM DUAL
+         	  SELECT '${pk_documentnum}', '${arr_reference_chk[i]}', '0' FROM DUAL
          	  <if test="arr_reference_chk.length-1 != i">
          	  	UNION ALL
          	  </if>	
@@ -150,6 +177,414 @@
 	
 	<!-- 비품신청 끝 -->
 	
+	<!-- 휴가신청 시작 -->
+	
+	<select id="vacationType" resultType="String">
+		select nvl(vtype,'휴가 종류 선택') as vtype 
+		from TBL_VACATION   
+	</select>
+	<!--  nvl(vtype,'휴가 종류 선택') as vtype -->
+	
+	<!-- 휴가문서 작성하기  -->
+	<insert id="vacationDocumentEdit" parameterType="HashMap">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '5', #{fk_empnum}, sysdate, '0')
+	</insert>
+	
+	<!-- 휴가신청 상세정보 등록  -->
+	<insert id="goVacationEdit" parameterType="HashMap">
+		insert into tbl_vacationlist(pk_documentnum, fk_empnum, fk_vstatus, vstartdate, venddate, vinfo, vetc)
+		values(#{pk_documentnum}, #{fk_empnum}, #{fk_vstatus}, #{vstartdate}, #{venddate}, #{vinfo}, #{vetc})
+	</insert>
+	
+	
+	<!-- 휴가신청 끝 -->
+	
+	<!-- 출장비 신청하기  -->
+	<insert id="BusinessCostDocumentEdit" parameterType="com.spring.groovy.model.BusinessCostVO">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '3', #{fk_empnum}, sysdate, '0')
+	</insert>
+	<!-- 출장비 신청하기 상세정보 등록 -->
+	<insert id="goBusinessCostEdit" parameterType="com.spring.groovy.model.BusinessCostVO">
+		insert into tbl_app_business(pk_documentnum, businessRegion, businessStartDate, businessEndDate, businessPurpose, businessMoney, filename, orgFilename, fileSize)
+		values(#{pk_documentnum}, #{businessRegion}, #{businessStartDate}, #{businessEndDate}, #{businessPurpose}, #{businessMoney}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+
+	
+	<!-- 식비 신청하기  -->
+	<insert id="FoodExpensesDocumentEdit" parameterType="com.spring.groovy.model.FoodExpensesVO">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '4', #{fk_empnum}, sysdate, '0')
+	</insert>
+	
+	<!-- 식비신청하기 상세정보 -->
+	<insert id="goFoodExpensesEdit" parameterType="com.spring.groovy.model.FoodExpensesVO">
+		insert into tbl_app_food(pk_documentnum, foodExpensesDate, foodExpensesCost, foodExpensesPersonCnt, foodExpensesETC, filename, orgFilename, fileSize)
+		values(#{pk_documentnum}, #{foodExpensesDate}, #{foodExpensesCost}, #{foodExpensesPersonCnt}, #{foodExpensesETC}, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+	
+	<!-- 휴직 신청하기 -->
+	<insert id="AbsenceDocumentEdit" parameterType="HashMap">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '6', #{fk_empnum}, sysdate, '0')
+	</insert>
+
+	<!-- 휴직신청 상세정보 -->
+	<insert id="goAbsenceEdit" parameterType="HashMap">
+		insert into tbl_app_absence(pk_documentnum, absenceStartDate, absenceEndDate, absenceInfo, absenceETC)
+		values(#{pk_documentnum}, #{absenceStartDate}, #{absenceEndDate}, #{absenceInfo}, #{absenceETC})
+	</insert>
+
+	<!-- 새프로젝트 신청하기  -->
+	<insert id="NewProjectDocumentEdit" parameterType="com.spring.groovy.model.NewProjectVO">
+		insert into tbl_approvaldocument(pk_documentnum, fk_apl_no, fk_empnum, writeday, status)
+		values(#{pk_documentnum}, '7', #{fk_empnum}, sysdate, '0')
+	</insert>
+	
+	<!-- 새프로젝트 상세정보 -->
+	<insert id="goNewProjectEdit" parameterType="com.spring.groovy.model.NewProjectVO">
+		insert into TBL_APP_PROJECT(pk_documentnum, projectName, projectStartDate, projectEndDate, projectPersonCnt, projectPersonList, filename, orgFilename, fileSize)
+		values(#{pk_documentnum}, #{projectName}, #{projectStartDate}, #{projectEndDate}, #{projectPersonCnt}, #{projectPersonList}, #{fileName}, #{orgFilename}, #{fileSize} )
+	</insert>
+	
+	
+	<!-- 내 전자결재 조회하기  -->
+	<select id="myApproval" parameterType="HashMap"  resultType="com.spring.groovy.model.ApprovalVO" >
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		from
+		(	
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			from 
+			(
+				select pk_documentnum, apl_no, fk_empnum , to_char(WRITEDAY, 'yyyy-mm-dd') as writeday
+				, status, apl_name, deptnamekor
+				from tbl_approvaldocument A join TBL_APPROVAL B
+				on A.FK_APL_NO = B.apl_no
+		        join tbl_employee C
+		        on A.fk_empnum = C.pk_empnum
+		        join tbl_department D
+		        on C.fk_deptnum = D.PK_DEPTNUM
+				where fk_empNum = #{fk_empnum}
+				<if test="searchValue != null and searchValue != '' ">
+					and status = #{searchValue}
+				</if>
+				order by writeday desc
+			)
+		)	 
+		where rno between #{startRno} and #{endRno}	
+	</select>
+	
+	<select id="getMyApprovalTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_approvaldocument A join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join tbl_employee C
+		on A.fk_empnum = C.pk_empnum
+		join tbl_department D
+		on C.fk_deptnum = D.PK_DEPTNUM
+		where fk_empNum = #{fk_empnum}
+		<if test="searchValue != null and searchValue != '' ">
+			and status = #{searchValue}
+		</if>
+	</select>
+	 
+	
+	<resultMap type="HashMap" id="selectEquipmentDocumentMap">
+		<result property="rno"   				column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   	column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   			column="fk_empnum"    			javaType="String" />
+		<result property="productname"       	column="productname"      		javaType="String" />	
+		<result property="productlink"       	column="productlink"      		javaType="String" />	
+		<result property="productcnt"       	column="productcnt"      		javaType="String" />	
+		<result property="productcost"       	column="productcost"      		javaType="String" />	
+		<result property="productmoney"       	column="productmoney"      		javaType="String" />	
+		<result property="productinfo"       	column="productinfo"      		javaType="String" />	
+	</resultMap>
+	
+	<!-- 내결재 상세정보(비품) -->
+	<select id="selectEquipmentDocument" parameterType="HashMap" resultMap="selectEquipmentDocumentMap">
+		select rownum as rno, A.pk_documentnum as pk_documentnum, A.fk_empnum as fk_empnum, A.status as status, 
+		d.productname as productname, d.productlink as productlink,d.productcnt as productcnt,d.productcost as productcost,
+		d.productmoney as productmoney,d.productinfo as productinfo
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join tbl_app_equip D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	<!-- 내결재 상세정보(출장비) -->
+	<resultMap type="HashMap" id="selectBusinessDocumentMap">
+		<result property="rno"   				column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   	column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   			column="fk_empnum"    			javaType="String" />
+		<result property="businessregion"       column="businessregion"      	javaType="String" />	
+		<result property="businessstartdate"    column="businessstartdate"   	javaType="String" />	
+		<result property="businessenddate"      column="businessenddate"      	javaType="String" />	
+		<result property="businesspurpose"      column="businesspurpose"      	javaType="String" />	
+		<result property="businessmoney"       	column="businessmoney"      	javaType="String" />	
+		<result property="filename"       		column="filename"      			javaType="String" />	
+		<result property="orgfilename"       	column="orgfilename"      		javaType="String" />	
+		<result property="filesize"       		column="filesize"      			javaType="String" />
+	</resultMap>
+	<select id="selectBusinessCostDocument" parameterType="HashMap" resultMap="selectBusinessDocumentMap">
+		select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		businessregion, businessstartdate, businessenddate, businesspurpose, businessmoney, filename, orgfilename, filesize
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_APP_BUSINESS D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	<!-- 내결재 상세정보(식비) -->
+	<resultMap type="HashMap" id="selectFoodExpensesDocumentMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   				column="fk_empnum"    			javaType="String" />
+		<result property="foodexpensesdate"       	column="foodexpensesdate"      	javaType="String" />	
+		<result property="foodexpensescost"       	column="foodexpensescost"      	javaType="String" />	
+		<result property="foodexpensespersoncnt"    column="foodexpensespersoncnt"  javaType="String" />	
+		<result property="foodexpensesetc"       	column="foodexpensesetc"      	javaType="String" />	
+		<result property="filename"       			column="filename"      			javaType="String" />	
+		<result property="orgfilename"       		column="orgfilename"      		javaType="String" />	
+		<result property="filesize"       			column="filesize"      			javaType="String" />	
+	</resultMap>
+	<select id="selectFoodExpensesDocument" parameterType="HashMap" resultMap="selectFoodExpensesDocumentMap">
+		select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		foodexpensesdate, foodexpensescost, foodexpensespersoncnt, foodexpensesetc, filename, orgfilename, filesize
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_APP_FOOD D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	<!-- 내결재 상세정보(휴가) -->
+	<resultMap type="HashMap" id="selectVacationDocumentMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   				column="fk_empnum"    			javaType="String" />
+		<result property="pk_vstatus"       		column="pk_vstatus"      		javaType="String" />	
+		<result property="vtype"       				column="vtype"      			javaType="String" />	
+		<result property="vstartdate"   			column="vstartdate"  			javaType="String" />	
+		<result property="venddate"       			column="venddate"      			javaType="String" />	
+		<result property="vinfo"       				column="vinfo"      			javaType="String" />	
+		<result property="vetc"       				column="vetc"      				javaType="String" />
+	</resultMap>
+	<select id="selectVacationDocument" parameterType="HashMap" resultMap="selectVacationDocumentMap">
+		select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		pk_vstatus, vtype, vstartdate, venddate, vinfo, vetc
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_VACATIONLIST D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		join TBL_VACATION E 
+		on D.FK_VSTATUS = E.PK_VSTATUS
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	<!-- 내결재 상세정보(휴직) -->
+	<resultMap type="HashMap" id="selectAbsenceDocumentMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   				column="fk_empnum"    			javaType="String" />
+		<result property="absencestartdate"       	column="absencestartdate"      	javaType="String" />	
+		<result property="absenceenddate"       	column="absenceenddate"      	javaType="String" />	
+		<result property="absenceinfo"   			column="absenceinfo"  			javaType="String" />	
+		<result property="absenceetc"       		column="absenceetc"      		javaType="String" />
+	</resultMap>
+	<select id="selectAbsenceDocument" parameterType="HashMap" resultMap="selectAbsenceDocumentMap">
+		select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		absencestartdate, absenceenddate, absenceinfo, absenceetc
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_APP_ABSENCE D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	<!-- 내결재 상세정보(신규프로젝트) -->
+	<resultMap type="HashMap" id="selectnewProjectDocumentMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="fk_empnum"   				column="fk_empnum"    			javaType="String" />
+		<result property="projectname"       		column="projectname"      		javaType="String" />	
+		<result property="projectstartdate"       	column="projectstartdate"      	javaType="String" />	
+		<result property="projectenddate"       	column="projectenddate"      	javaType="String" />	
+		<result property="projectpersoncnt"   		column="projectpersoncnt" 		javaType="String" />	
+		<result property="projectpersonlist"       	column="projectpersonlist"     	javaType="String" />	
+		<result property="filename"       			column="filename"      			javaType="String" />	
+		<result property="orgfilename"       		column="orgfilename"      		javaType="String" />	
+		<result property="filesize"       			column="filesize"      			javaType="String" />
+	</resultMap>
+	<select id="selectnewProjectDocument" parameterType="HashMap" resultMap="selectnewProjectDocumentMap">
+		select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		projectname, projectstartdate, projectenddate, projectpersoncnt, projectpersonlist, filename, orgfilename, filesize
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_APP_PROJECT D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+	</select>
+	
+	
+	<!-- 내결제문서 특정 문서 승인자 참조자 조회 -->
+	<select id="app_List" parameterType="String" resultType="com.spring.groovy.model.ApproverVO">
+		select C.fK_empnum, app_status, F.pk_spotnum, E.name, F.spotnamekor, C.appyn, deptnamekor, opinion
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join tbl_approvalperson C
+		on A.PK_DOCUMENTNUM = C.fK_DOCUMENTNUM
+		join tbl_employee E
+		on C.fk_empnum = E.pk_empnum
+		join TBL_SPOT F
+		on E.fk_spotnum = F.pk_spotnum
+		join TBL_DEPARTMENT G
+		on G.PK_DEPTNUM = E.FK_DEPTNUM
+		where A.PK_DOCUMENTNUM = #{pk_documentnum}
+		order by app_status, fk_spotnum desc
+	</select>
+	
+	
+	<!-- 나의 결재 대기 문서 조회 -->
+	<resultMap type="HashMap" id="waitApprovalMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="writeday"   				column="writeday"    			javaType="String" />
+		<result property="apl_name"       			column="apl_name"      			javaType="String" />	
+		<result property="fk_empnum"       			column="fk_empnum"      		javaType="String" />	
+		<result property="name"       				column="name"     			 	javaType="String" />	
+		<result property="deptnamekor"   			column="deptnamekor" 			javaType="String" />	
+		<result property="spotnamekor"       		column="spotnamekor"     		javaType="String" />	
+		<result property="apl_no"       			column="apl_no"     			javaType="String" />	
+		<result property="status"       			column="status"     			javaType="String" />	
+	</resultMap>	
+	<select id="waitApproval" parameterType="HashMap" resultMap="waitApprovalMap">
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		from
+		(	
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			from 
+			(
+				select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				from TBL_APPROVALPERSON B
+				join TBL_APPROVALDOCUMENT C
+				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0'
+				order by writeday desc
+			)
+		)	 
+		where rno between #{startRno} and #{endRno}	
+	</select>
+	<select id="geWaitApprovalTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from TBL_APPROVALPERSON B
+		join TBL_APPROVALDOCUMENT C
+		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0'
+	</select>
+	
+	
+	<!-- 결재승인하기 -->
+	<update id="app_success" parameterType="HashMap">
+		update TBL_APPROVALPERSON set writeday = sysdate , appyn='1', opinion=#{opinion}
+		where fk_documentnum = #{pk_documentnum}
+		and fk_empnum = #{fk_empnum}
+	</update>
+	
+	<!-- 결재 승인자 남은 인원 조회하기 -->
+	<select id="approverCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from TBL_APPROVALPERSON
+		where fk_documentnum = #{pk_documentnum}
+		and app_status = '1' 
+		and appyn='0'
+	</select>
+	
+	<!-- 남은결재자가 없는 경우 문서상태변경 -->
+	<insert id="app_success_NApprover" parameterType="HashMap">
+		update TBL_APPROVALDOCUMENT set status = '2'
+		where pk_documentnum = #{pk_documentnum}
+	</insert>
+	
+	<!-- 남은결재자가 있는 경우 문서상태변경 -->
+	<insert id="app_success_YApprover" parameterType="HashMap">
+		update TBL_APPROVALDOCUMENT set status = '1'
+		where pk_documentnum = #{pk_documentnum}
+	</insert>
+	
+	
+	<resultMap type="HashMap" id="endApprovalMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="writeday"   				column="writeday"    			javaType="String" />
+		<result property="apl_name"       			column="apl_name"      			javaType="String" />	
+		<result property="fk_empnum"       			column="fk_empnum"      		javaType="String" />	
+		<result property="name"       				column="name"     			 	javaType="String" />	
+		<result property="deptnamekor"   			column="deptnamekor" 			javaType="String" />	
+		<result property="spotnamekor"       		column="spotnamekor"     		javaType="String" />	
+		<result property="apl_no"       			column="apl_no"     			javaType="String" />	
+		<result property="status"       			column="status"     			javaType="String" />	
+	</resultMap>	
+	<!--  내가 결재 승인완료 문서 보기 -->
+	<select id="endApproval" parameterType="String" resultMap="endApprovalMap">
+		select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+		, status
+		from TBL_APPROVALPERSON B
+		join TBL_APPROVALDOCUMENT C
+		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		where B.fk_empnum = #{fk_empnum} and APPYN in('1','2')
+	</select>
+	
+	<!--  나의 결재 참조 문서 보기 -->
+	<select id="referenceApproval" parameterType="String" resultMap="waitApprovalMap">
+		select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+		from TBL_APPROVALPERSON B
+		join TBL_APPROVALDOCUMENT C
+		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		where B.fk_empnum = #{fk_empnum} and B.app_status = '0' 
+	</select>
 	
 	
 
