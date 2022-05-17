@@ -337,9 +337,7 @@ VTYPE		휴가종류
 직위별
 사번기준
  --%> 
-<div style="border: solid 1px gray; height: 120px; width: 100%;">
-홈바
-</div>
+
     <form name="searchFrm">
 		<table id="tbl_viewEmp">
 			
