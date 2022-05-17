@@ -117,9 +117,9 @@ public class YuhrService implements InterYuhrService {
 		
 	}
 	
-	// === Spring Scheduler 를 사용하여 특정 URL 사이트로 연결하기 ===
+	// === Spring Scheduler 를 사용하여 자정에 자동으로 근태 기록하기 ===
 	@Override
-	@Scheduled(cron = "0 2 17 * * *") // 자정에 작동된다
+	@Scheduled(cron = "0 0 0 * * *") // 자정에 작동된다
 	public void checkEndCommuteStatus() {
         // 스케줄러로 사용되어지는 메소드는 반드시 파라미터는 없어야 한다.!!!!!
 
@@ -158,6 +158,27 @@ public class YuhrService implements InterYuhrService {
 	public void status_no_workday(String pk_empnum) {
 		dao.status_no_workday(pk_empnum);
 		
+	}
+	
+	// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+	@Override
+	public List<Map<String, String>> getCommuteStatusInfo() {
+		List<Map<String, String>> commuteStatusInfo = dao.getCommuteStatusInfo();
+		return commuteStatusInfo;
+	}
+
+	// 로그인한 사원의 오늘 근무한 시간을 초단위까지 db 에 update
+	@Override
+	public int todayworkedtime(String pk_empnum) {
+		int m = dao.todayworkedtime(pk_empnum);
+		return m;
+	}
+
+	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
+	@Override
+	public List<Map<String, String>> showOneCommuteStatus(String pk_empnum) {
+		List<Map<String, String>> OneCommuteStatus = dao.showOneCommuteStatus(pk_empnum);
+		return OneCommuteStatus;
 	}
 
 

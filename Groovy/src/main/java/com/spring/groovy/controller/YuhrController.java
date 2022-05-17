@@ -414,10 +414,12 @@ public class YuhrController {
 		// 근태정보을 가져오기 위함
 		List<CommuteStatusVO> commStatusList = service.getCommStatus();
 		
-		// 이제 통근, 근태, 사원정보를 몽땅 가져온다.
+		// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+		List<Map<String, String>> commuteStatusInfo = service.getCommuteStatusInfo();
 		
 		mav.addObject("departments", departments);
 		mav.addObject("commStatusList", commStatusList);
+		mav.addObject("commuteStatusInfo", commuteStatusInfo);
 		
 		mav.setViewName("employee/worktime.tiles1");
 		
@@ -563,6 +565,9 @@ public class YuhrController {
 			System.out.println("정상퇴근");
 			// tbl_commute_status 에 등록할 근태상황은 없다.
 		}
+		
+		// 로그인한 사원의 오늘 근무한 시간을 초단위까지 db 에 update
+		int m = service.todayworkedtime(pk_empnum);
 
 		
 		return jsonObj.toString();
@@ -605,6 +610,23 @@ public class YuhrController {
 		mav.setViewName("msg");
 		return mav;
 	}
+	
+	
+	// 한 사원의 근태기록을 보여주는 페이지
+	@RequestMapping(value="/showOneCommuteStatus.groovy")
+	public ModelAndView showOneCommuteStatus(ModelAndView mav, HttpServletRequest request) {
 		
+		String pk_empnum = request.getParameter("pk_empnum");
+		
+		// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
+		List<Map<String, String>> OneCommuteStatus = service.showOneCommuteStatus(pk_empnum);
+		
+		mav.addObject("OneCommuteStatus", OneCommuteStatus);
+		
+		mav.setViewName("board/approver.tiles1");
+		// /WEB-INF/views/approval/approvalEdit.jsp
+		
+		return mav;
+	}
 	
 }//end of public class YuhrController

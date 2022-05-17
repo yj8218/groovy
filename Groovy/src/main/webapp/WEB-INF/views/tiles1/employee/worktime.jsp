@@ -128,12 +128,39 @@ a#goSearch:hover{
 #tbl_result{
 	margin-bottom: 100px;
 }
-
+.commuteList{
+	margin: 5px 0;
+	vertical-align: middle;
+	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
+	
+}
+.commuteList:hover{
+	cursor: pointer;
+	background-color: rgba(153, 102, 255, 0.1);  
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
 	
 });
+
+// function declaration
+function getOneCommuteInfo(pk_empnum){
+	
+	const url = "<%= ctxPath%>/showOneCommuteStatus.groovy?pk_empnum="+pk_empnum;
+	
+	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
+	const pop_width = 900;
+	const pop_height = 800;
+	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
+	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
+	
+	window.open(url, "showOneCommuteStatus",
+			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
+	
+
+	
+}// end of function getOneEmpInfo()
 
 
 </script>
@@ -252,27 +279,27 @@ VTYPE		휴가종류
 		</tr>
 		
 		<!--  ++ 관리자로 로그인 했을때만 볼수있게 처리 -->
-		<c:if test="${empty requestScope.commStatusList }">
+		<c:if test="${empty requestScope.commuteStatusInfo }">
 			<tr class="" >
 				<td colspan="12">근무통계 조회결과가 없습니다.</td>
 			</tr>
 		</c:if>
 		
-		<c:if test="${not empty requestScope.commStatusList }">
-			<c:forEach var="commStatus" items="${requestScope.commStatusList }" varStatus="status">
+		<c:if test="${not empty requestScope.commuteStatusInfo }">
+			<c:forEach var="InfoMap" items="${requestScope.commuteStatusInfo }" varStatus="status">
 		
-			<tr class="">
-				<td>1</td>
-				<td>2</td>
-				<td>3</td>
-				<td>4</td>
-				<td>5</td>
-				<td>${commStatus.late }</td>
-				<td>${commStatus.early_endcheck }</td>
-				<td>${commStatus.no_endcheck }</td>
-				<td>${commStatus.no_workday }</td>
-				<td></td>
-				<td></td>
+			<tr class="commuteList" onclick="getOneCommuteInfo('${InfoMap.pk_empnum}')">
+				<td>${status.count }</td>
+				<td>${InfoMap.pk_empnum }</td>
+				<td>${InfoMap.name }</td>
+				<td>${InfoMap.deptnamekor }</td>
+				<td>${InfoMap.resignationstatus }</td>
+				<td>${InfoMap.total_late }</td>
+				<td>${InfoMap.total_early_endcheck }</td>
+				<td>${InfoMap.total_no_endcheck }</td>
+				<td>${InfoMap.total_no_workday }</td>
+				<td>${InfoMap.totalworkingdays}</td>
+				<td>${InfoMap.totalworkedtime}</td>
 			</tr>
 		
 			</c:forEach>
