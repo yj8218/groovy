@@ -16,7 +16,7 @@
 <style type="text/css">
 
 div#container {
-	width: 40%;
+	width: 50%;
 	margin: 0 30px;
 }
 
