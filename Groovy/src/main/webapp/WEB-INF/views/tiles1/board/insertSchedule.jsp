@@ -120,20 +120,20 @@
 		// 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아와서 select 태그에 넣어주기 
 		$("select.calType").change(function(){
 			var fk_lgcatgono = $("select.calType").val();      // 내캘린더이라면 1, 사내캘린더이라면 2 이다.
-			var fk_userid = $("input[name=fk_userid]").val();  // 로그인 된 사용자아이디
+			var pk_empnum = $("input[name=pk_empnum]").val();  // 로그인 된 사용자아이디
 			
 			if(fk_lgcatgono != "") { // 선택하세요 가 아니라면
 				$.ajax({
-						url: "<%= ctxPath%>/schedule/selectSmallCategory.action",
+						url: "<%= ctxPath%>/schedule/selectSmallCategory.groovy",
 						data: {"fk_lgcatgono":fk_lgcatgono, 
-							   "fk_userid":fk_userid},
+							   "pk_empnum":pk_empnum},
 						dataType: "json",
 						success:function(json){
 							var html ="";
 							if(json.length>0){
 								
 								$.each(json, function(index, item){
-									html+="<option value='"+item.smcatgono+"'>"+item.smcatgoname+"</option>"
+									html+="<option value='"+item.pk_smcatgono+"'>"+item.smcatgoname+"</option>"
 								});
 								$("select.small_category").html(html);
 								$("select.small_category").show();
@@ -158,7 +158,7 @@
 				var joinUserName = $(this).val();
 			//	console.log("확인용 joinUserName : " + joinUserName);
 				$.ajax({
-					url:"<%= ctxPath%>/schedule/insertSchedule/searchJoinUserList.action",
+					url:"<%= ctxPath%>/schedule/insertSchedule/searchJoinUserList.groovy",
 					data:{"joinUserName":joinUserName},
 					dataType:"json",
 					success : function(json){
@@ -171,7 +171,7 @@
 								var name = item.name;
 								if(name.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
 									                             // name 이라는 문자열에 joinUserName 라는 문자열이 포함되지 않은 경우라면 false 
-								   joinUserArr.push(name+"("+item.userid+")");
+								   joinUserArr.push(name+"("+item.pk_empnum+")");
 								}
 							});
 							
@@ -304,7 +304,7 @@
 			$("input[name=joinuser]").val(joinuser);
 			
 			var frm = document.scheduleFrm;
-			frm.action="<%= ctxPath%>/schedule/registerSchedule_end.action";
+			frm.action="<%= ctxPath%>/schedule/registerSchedule_end.groovy";
 			frm.method="post";
 			frm.submit();
 
@@ -371,8 +371,9 @@
 				<th>캘린더선택</th>
 				<td>
 					<select class="calType schedule" name="fk_lgcatgono">
+					<%-- 
 					<c:choose>
-					<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.
+					사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다.
 						<c:when test="${loginuser.fk_pcode =='3' && loginuser.fk_dcode == '4' }">
 							<option value="">선택하세요</option>
 							<option value="1">내 캘린더</option>
@@ -380,17 +381,21 @@
 						</c:when>
 					--%> 
 					<%-- 일정등록시 사내캘린더 등록은 oginuser.gradelevel =='10' 인 사용자만 등록이 가능하도록 한다. --%> 
-						<c:when test="${loginuser.gradelevel =='10'}"> 
+						<%-- <c:when test="${loginuser.gradelevel =='10'}"> 
 							<option value="">선택하세요</option>
 							<option value="1">내 캘린더</option>
 							<option value="2">사내 캘린더</option>
-						</c:when>
-					<%-- 일정등록시 내캘린더 등록은 로그인 된 사용자이라면 누구나 등록이 가능하다. --%> 	
+						<%-- </c:when> --%>
+					<%-- 일정등록시 내캘린더 등록은 로그인 된 사용자이라면 누구나 등록이 가능하다.
 						<c:otherwise>
 							<option value="">선택하세요</option>
 							<option value="1">내 캘린더</option>
 						</c:otherwise >
 					</c:choose>
+					 --%> 	
+					<option value="">선택하세요</option>
+					<option value="1">내 캘린더</option>
+					<option value="2">사내 캘린더</option>
 					</select> &nbsp;
 					<select class="small_category schedule" name="fk_smcatgono"></select>
 				</td>
@@ -417,11 +422,11 @@
 				<td><textarea rows="10" cols="100" style="height: 200px;" name="content" id="content"  class="form-control"></textarea></td>
 			</tr>
 		</table>
-		<input type="hidden" value="${sessionScope.loginuser.userid}" name="fk_userid"/>
+		<input type="hidden" value="${sessionScope.loginuser.pk_empnum}" name="pk_empnum"/>
 	</form>
 	
 	<div style="float: right;">
 	<button type="button" id="register" class="btn_normal" style="margin-right: 10px; background-color: #0071bd;">등록</button>
-	<button type="button" class="btn_normal" style="background-color: #990000;" onclick="javascript:location.href='<%= ctxPath%>/schedule/scheduleManagement.action'">취소</button> 
+	<button type="button" class="btn_normal" style="background-color: #990000;" onclick="javascript:location.href='<%= ctxPath%>/schedule/scheduleManagement.groovy'">취소</button> 
 	</div>
 </div>

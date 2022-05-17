@@ -30,10 +30,6 @@ span.title {
 	margin: 10px 5px;
 }
 
-form[name="equipmentEdit"]{
-	margin-top: 20px;
-}
-
 div.box {
 	margin-top: 20px;
 }
@@ -50,20 +46,23 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
+	
 }
 
-div#btn {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -108,31 +107,6 @@ button#approvePersonAdd {
 $(document).ready(function(){
 	
 	
-	if(localStorage.getItem("approver") != null){
-        var approver   = localStorage.getItem("approver");
-        
-	
-	////////////////////////////////// 실험
-	
-	}
-        
-    $.ajax({
-	  url:"<%= request.getContextPath()%>/addApprover.groovy",
-	  data:{"approver":approver},
-	  type:"POST",
-	  dataType:"JSON",
-	  success:function(json){
-		  $('div#employeeList').html(json.approver);
-	  },
-	  error: function(request, status, error){
-			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	  } 
-        
-    })
-    
-    
-      
-     
 	
 	
 }); // $(document).ready(function()
@@ -203,9 +177,9 @@ function goEpuipment() {
 				</div>
 			</div>
 			 -->
-			<div id="btn" class="box">
-				<button type="button"  class="btn" onclick="goEpuipment()">신청하기</button>
-				<button type="button"  class="btn" onclick="cancel()">취소</button>
+			<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goEpuipment()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
 				<!-- history.back(); -->
 			</div>
 

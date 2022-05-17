@@ -1110,7 +1110,7 @@ td.fc-daygrid-day {
 	white-space:normal;
 	word-spacing:0px;
 }
-td.fc-daygrid-day a {
+td.fc-daygrid-day a.fc-daygrid-day-number {
 	margin-top:14px;
 	margin-left:10px;
 	margin-bottom:2px;

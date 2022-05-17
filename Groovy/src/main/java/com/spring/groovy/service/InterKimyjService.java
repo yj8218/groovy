@@ -28,7 +28,7 @@ public interface InterKimyjService {
 	List<EmployeeVO> searchJoinUserList(String joinUserName);
 
 	// 일정 등록하기
-	int registerSchedule_end(Map<String, String> paraMap) throws Throwable;
+	int registerSchedule_end(Calendar_schedule_VO scheduleVO) throws Throwable;
 
 	// 등록된 일정 가져오기
 	List<Calendar_schedule_VO> selectSchedule(String fk_empnum);
@@ -53,6 +53,22 @@ public interface InterKimyjService {
 
 	// 페이징 처리한 캘린더 가져오기(검색어가 없다라도 날짜범위 검색은 항시 포함된 것임)
 	List<Map<String,String>> scheduleListSearchWithPaging(Map<String, String> paraMap);
+
+	int voteYesAdd(Map<String, String> paraMap) throws Throwable;
+
+	int voteNoAdd(Map<String, String> paraMap) throws Throwable;
+
+	int voteUndefinedAdd(Map<String, String> paraMap) throws Throwable;
+
+	Map<String, String> voteTotalLoginCnt(Map<String, String> paraMap);
+
+	Map<String, String> voteTotalCnt(Map<String, String> paraMap);
+
+	List<Map<String, String>> voteYesUser(Map<String, String> paraMap);
+
+	List<Map<String, String>> voteNoUser(Map<String, String> paraMap);
+
+	List<Map<String, String>> voteUndefinedUser(Map<String, String> paraMap);
 	
 	
 }//end of public interface InterKimyjService

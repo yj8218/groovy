@@ -1,3 +1,43 @@
+---------------------------
+select SD.pk_scheduleno
+		     , to_char(SD.startdate,'yyyy-mm-dd hh24:mi') as startdate
+		     , to_char(SD.enddate,'yyyy-mm-dd hh24:mi') as enddate  
+		     , SD.subject
+		     , SD.color
+		     , nvl(SD.place,'-') as place
+		     , nvl(SD.joinuser,'공유자가 없습니다.') as joinuser
+		     , nvl(SD.content,'') as content
+		     , SD.fk_smcatgono
+		     , SD.fk_lgcatgono
+		     , SD.fk_empnum
+		     , M.name
+		     , SC.smcatgoname
+		     , LC.lgcatgoname
+		     , SD.vote
+		     , nvl(SD.placename, '') as placename
+		     , nvl(SD.addressname, '') as addressname
+		     , nvl(SD.placephone, '') as placephone
+		     , nvl(SD.roadaddressname, '-') as roadaddressname
+		     , SD.regdate
+		     , nvl(SD.orgfilename, '-') as orgfilename
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor
+		from tbl_calendar_schedule SD 
+		JOIN tbl_employee M
+		ON SD.fk_empnum = M.pk_empnum
+		JOIN tbl_calendar_small_category SC
+		ON SD.fk_smcatgono = SC.pk_smcatgono
+		JOIN tbl_calendar_large_category LC
+		ON SC.fk_lgcatgono = LC.pk_lgcatgono
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		
+		where SD.pk_scheduleno = 25
+
+---------------
 --pk_empnum
 --fk_empnum
 
@@ -6,6 +46,15 @@
 --pk_smcatgono
 
 --세션
+ALTER TABLE FINALORAUSER2.TBL_CALENDAR_SCHEDULE MODIFY VOTE NUMBER(2);
+
+select pk_empnum, name
+		from tbl_employee
+		where lower(name) like '%'|| lower('a') ||'%' or lower(pk_empnum) like '%'|| lower('a') ||'%'
+        
+select pk_empnum, name
+from tbl_employee
+where lower(name) like '%'|| lower('') ||'%'       
 ------------- >>>>>>>> 일정관리(풀캘린더) 시작 <<<<<<<< -------------
 
 -- *** 캘린더 대분류(내캘린더, 사내캘린더  분류) ***

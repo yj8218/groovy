@@ -4,7 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
 
 <!DOCTYPE html>

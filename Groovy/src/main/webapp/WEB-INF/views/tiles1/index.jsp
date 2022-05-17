@@ -101,6 +101,7 @@
 		
 		showEmpByDept();
 		
+		goReadBoard();
 		$("table.tblEmpList tr:last-child").css({'border-bottom':'none'});
 		
 		$("i.fa-thumbtack").click(function() {
@@ -239,7 +240,19 @@
 			});
 		});
 		
+		
+		
+		/* $('.modal').on('hidden.bs.modal', function (e) {
+			$(this).find('form')[0].reset();
+		}); */
+		
+		
+		
+		
 	}); // end of $(document).ready(function() {})
+	
+	
+
 	
 	
 	function showEmpByDept() {
@@ -247,6 +260,7 @@
 		const length = ${requestScope.empvoList.size()};
 	}
 	
+<<<<<<< HEAD
 	// 프로필을 보여주는 메소드
 	function showEmpProfile(pk_empnum) {
 		
@@ -295,13 +309,117 @@
 		}); // $.ajax({})
 	}
 	
+	
+	  
+	  // === 페이징 처리 안한 글 읽어오기  === //
+	  function goReadBoard() {
+		  
+		  $.ajax({
+			  url:"<%= request.getContextPath()%>/readBoard.groovy",
+			/*   data:jsonArr,   */
+		/* 	   data:{"pk_board_seq":1},  */
+			  dataType:"json",
+			  success:function(json){
+				  // [{"name":"엄정화","regDate":"2022-04-25 10:23:51","content":"두번째 댓글 입니다."},{"name":"엄정화","regDate":"2022-04-25 10:13:47","content":"첫번째 댓글 입니다."}] 
+				  // 또는
+				  // [] 
+				  
+				  console.log(json);
+				  
+				   if(json.length > 0) {
+					  $.each(json, function(index, item){
+					  /* for(var i=0; i<json.length; i++){} */
+						 /*  $("tbody#commentDisplay").html(html); */
+						  
+						 	html = "";
+						  
+						 	  html += "<div class='card mb-4 feedAll'>";
+						      html += "<div class='card-body'>";
+						   	  html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
+						   	  html +=  "<thead>";
+						   	  html +=  "<tr>";
+						   	  html +=  "<td>";
+						   	  html +=  "<i class='far fa-user-circle'></i>";
+						   	  html +=  "<span id='write_name'>"+ (index+1) + item.name + "</span>/<span id='write_date'>"+ item.b_regdate + "</span>  ";
+						   	  html +=  "</td>";
+						   	  
+						   	  
+						   	html +=  "<td align='right'>;"
+						   	html +=  "<i class='fas fa-thumbtack'></i>	상단고정";
+						   	html +=  "<i class='fas fa-ellipsis-v' data-toggle='dropdown'></i>	설정";
+						   	html +=  "<div class='dropdown-menu'>";
+						   	html +=  "  	<a class='dropdown-item' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
+						   	html +=  "  	<a class='dropdown-item' href='#'><i class='fas fa-external-link-alt'></i>다른 프로젝트에 복사</a>";
+						   	html +=  "  	<a class='dropdown-item' href='#'><i class='far fa-clone'></i>링크 복사</a>";
+						   	html +=  "</div>";
+						   	html +=  "</td>";
+						   	html +=  "</tr>";
+						   	html +=  "</thead>";
+						   	html +=  "<tbody>";
+						   	html +=  "<tr>";
+						   	html +=  "<td id='write_subject' colspan='2' style='font-size: 18pt;'>"+ item.b_subject + "</td>";
+						   	html +=  "</tr>";
+						   	html +=  "<tr style='border-top: solid 1px lightgray; border-bottom: solid 1px lightgray; height: 150px;'>";
+						   	html +=  "<td id='write_content' colspan='2'>"+ item.b_content + "</td>";
+						   	html +=  "</tr>";
+						   	html +=  "<tr>";
+						    html +=  "<td style='width: 50%;'>";
+							html +=  "<i class='far fa-meh-blank' data-toggle='dropdown'></i>좋아요&nbsp;&nbsp;&nbsp;";
+							html +=  "<div class='dropdown-menu emotion'>";
+							html +=  "<a class='dropdown-item' href=''><i class='far fa-smile-beam'></i><span>좋아요</span></a>";
+							html +=  "<a class='dropdown-item' href=''><i class='far fa-kiss-beam'></i><span>부탁해요</span></a>";
+							html +=  "<a class='dropdown-item' href=''><i class='far fa-sad-tear'></i><span>힘들어요</span></a>";
+							html +=  "<a class='dropdown-item' href=''><i class='far fa-grin-stars'></i><span>훌륭해요</span></a>";
+							html +=  "<a class='dropdown-item' href=''><i class='far fa-grin-hearts'></i><span>감사해요</span></a>";
+							html +=  "</div>";
+							html +=  "<i class='far fa-bookmark'></i>북마크";
+							/* html +=  "<i class='fas fa-bookmark'></i> 북마크 설정했을때"; */
+							html +=  "</td>";
+							html +=  "<td align='right'>댓글(댓글수) / 읽음(조회수)</td>";
+							html +=  "</tr>";
+							html +=  "</tbody>";
+							html +=  "</table> 	";
+							html +=  "</div>";
+							html +=  "<div class='card-footer' align='center'>";
+							html +=  "<i class='far fa-user-circle'></i>";
+							html +=  "<input type='text' class='form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력' />";
+							html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
+							html +=  "<input type='file' id='inputFile' style='display: none;'/>";
+							html +=  "</div></div>";
+						   			
+						  $("div#feedAllbox").append(html); 
+				/* 	      $("#write_name").append(item.name);
+						  $("#write_date").append(item.b_regdate);
+					//	  $("#write_date").append(item.b_subject);
+						  $("#write_content").append(item.b_content); */
+						 // alert("반복");	 
+										
+											
+									
+					   });
+				  }
+				  else {
+					 alert("error");
+				  }
+				   
+				  
+			  },
+			  error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			  }
+		  });
+		  
+	  }// end of function goReadComment(){}--------------------------
+	
 </script>
+
 <%-- final_html --%>
+<%-- 
 <div id="fixedTab">
-	<%-- 프로젝트 색상 / 프로젝트 제목 / 공개여부 / 프로젝트 설명 / 멤버 초대 / 검색  --%>
-	<%-- 프로젝트 색상 --%>
+	프로젝트 색상 / 프로젝트 제목 / 공개여부 / 프로젝트 설명 / 멤버 초대 / 검색 
+	프로젝트 색상
 	<div id="prjColor" data-toggle="modal" data-target="#prjColorPickerModal" style="width: 50px; height: 50px; background-color: blue; border-radius: 10px; display: inline-block;"></div>
-	<%-- 프로젝트 제목 --%>
+	프로젝트 제목
 	<div id="prjTitle" style="display: inline-block; margin-left: 10px;">
 		<i class="far fa-star"></i>
 		<i class="fas fa-ellipsis-v" data-toggle="dropdown"></i>
@@ -320,7 +438,7 @@
 		<p>프로젝트 설명</p>
 	</div>
 </div>
-
+ --%>
 <div id="content" style="display: flex;">
 	<div style="margin: auto; width: 90%;">
 		<div class="row">
@@ -330,8 +448,10 @@
 				  	<div class="tab-pane container active" id="home">
 				--%>
 		  		<div>
-					<h5>게시글작성</h5>
-					<div id="writeBoard" class="card border-dark mb-3" data-toggle="modal" onclick="writeBoardModal()">
+					<h5>게시글작성 하세요~#!</h5>
+					 <div id="writeBoard" class="card border-dark mb-3" data-toggle="modal" data-target="#writeBoardModal" > 
+					<!-- <div id="writeBoard" class="card border-dark mb-3"  onclick="showwrite()">   -->
+					<%-- <div id="writeBoard" class="card border-dark mb-3"   OnClick="location.href ='<%=ctxPath%>/add.groovy'" style="cursor:pointer;"> --%>
 					  	<div class="card-header">
 							<table class="w-100">
 								<tr align=center>
@@ -358,21 +478,92 @@
 					  	</div>
 					</div>
 				</div>
-				<div>
-					<h5>전체</h5>
+				
+				
+<!-- 글쓰기 Modal -->
+<div id="myWrite" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style="width: 670px; min-height:548px; ">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      
+      
+      <div class="modal-body" class="card border-dark mb-3">
+      					
+					  	<div class="card-header">
+							<table class="w-100">
+								<tr align=center>
+									<th class="w-25"><span id="text"><i class="far fa-file-alt"></i>글</span></th>
+									<th class="w-25"><span id="task"><i class="fas fa-list-ul"></i>업무</span></th>
+									<th class="w-25"><span id="schedule"><i class="far fa-calendar"></i>일정</span></th>
+									<th class="w-25"><span id="todo"><i class="far fa-check-square"></i>할일</span></th>						
+								</tr>
+							</table>
+					  	</div>
+					  	<form name="boardaddFrm" enctype="multipart/form-data">
+					  	<div class="card-body text-dark">
+							<table class="w-100">
+								<tr>
+									<th><input type="hidden" name="pk_empnum" value="${sessionScope.loginuser.pk_empnum}" />
+										<input type="text" name="name" value="${sessionScope.loginuser.name}" readonly />
+									</th>
+								</tr>
+								<tr> <%-- 선택 탭(글, 업무, 일정, 할일)마다 형식이 다름 --%>
+									<td><input id="postTitle" type="text" title="제목을 입력하세요" placeholder="제목을 입력하세요." autocomplete="off" data-required-yn="Y" class="js-post-title create-title-input" maxlength="100" ></td>
+									
+								</tr>
+								<tr> 
+									<td>내용을 입력하세요</td>
+									
+								</tr>
+								<tr>
+									<td align="right">
+										<i class="fas fa-paperclip"></i>
+										<i class="far fa-image"></i>
+										<i class="fas fa-map-marker-alt"></i>
+										<i class="fas fa-hashtag"></i>
+										<i class="fas fa-at"></i>
+									</td>
+								</tr>
+							</table>
+					  	</div>
+					  	</form>
+      </div>
+      
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+				
+				
+				
+				
+				
+				<div id="feedAllbox">
+					
 					<%-- 반복 --%>
+					<%-- <c:forEach items="${requestScope.boardList}" var="item" varStatus="status"> --%>
+					<!-- 
 					<div class="card mb-4 feedAll">
-						<div class="card-body">
+						 <div class="card-body">
 					    	<table style="width: 95%; margin: auto; padding: 10px;" class="tbl_boardInCard mb-3">
 					    		<thead>
 					    			<tr>
 										<td>
 											<i class="far fa-user-circle"></i>
-											사용자명 / 작성일자
+											<span id="write_name">사용자명</span>/<span id="write_date">작성일자</span>  
 										</td>
 										<td align="right">
-											<i class="fas fa-thumbtack"></i>	<%-- 상단고정 --%>
-											<i class="fas fa-ellipsis-v" data-toggle="dropdown"></i>	<%-- 설정 --%>
+											<i class="fas fa-thumbtack"></i>	상단고정
+											<i class="fas fa-ellipsis-v" data-toggle="dropdown"></i>	설정
 											<div class="dropdown-menu">
 										      	<a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i>삭제</a>
 										      	<a class="dropdown-item" href="#"><i class="fas fa-external-link-alt"></i>다른 프로젝트에 복사</a>
@@ -383,10 +574,10 @@
 					    		</thead>
 					    		<tbody>
 					    			<tr>
-										<td colspan="2" style="font-size: 18pt;">게시글 제목</td>
+										<td id="write_subject" colspan="2" style="font-size: 18pt;">게시글 제목</td>
 									</tr>
 									<tr style="border-top: solid 1px lightgray; border-bottom: solid 1px lightgray; height: 150px;">
-										<td colspan="2">게시글 내용(글 탭을 선택한 경우)</td>
+										<td id="write_content" colspan="2">게시글 내용(글 탭을 선택한 경우)</td>
 									</tr>
 									<tr>
 										<td style="width: 50%;">
@@ -399,7 +590,7 @@
 												<a class="dropdown-item" href=""><i class="far fa-grin-hearts"></i><span>감사해요</span></a>
 											</div>
 											<i class="far fa-bookmark"></i>북마크
-											<%-- <i class="fas fa-bookmark"></i> 북마크 설정했을때 --%>
+											<i class="fas fa-bookmark"></i> 북마크 설정했을때
 										</td>
 										<td align="right">댓글(댓글수) / 읽음(조회수)</td>
 									</tr>
@@ -412,7 +603,9 @@
 							<label class="btn_inputFile" for="inputFile"><i class="fas fa-paperclip ml-2"></i></label>
 							<input type="file" id="inputFile" style="display: none;"/>
 					  	</div>
-			        </div>
+			        </div> -->
+			       <%--  </c:forEach> --%>
+			        <!-- 반복끝  -->
 				</div>
 		  	</div>
 		  	
@@ -554,7 +747,14 @@
 		    	</div>
 		  	</div>
 		</div>
+		<jsp:include page="../tiles2/board/writeBoardModal.jsp"/>  
 		
-		<jsp:include page="../tiles2/board/writeBoardModal.jsp"></jsp:include>
+		
+		
+		
+
+		
+		
+		
 	</div>
 </div>

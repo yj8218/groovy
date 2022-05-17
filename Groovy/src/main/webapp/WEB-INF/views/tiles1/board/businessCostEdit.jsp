@@ -50,20 +50,23 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
+	
 }
 
-div#btn {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -151,21 +154,18 @@ $(document).ready(function(){
 });
 	
 	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
+function cancel() {
+	location.href='<%= ctxPath%>/approvalView.groovy';
+}
 	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
+function goBusinessCost() {
 	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
+	const frm = document.businessCostEditFrm;
+	frm.action = "goBusinessCost.groovy";
+	frm.method = "post";
+	frm.submit();
+	
 }	
-	
 	
 </script>
 
@@ -181,50 +181,46 @@ function approvePerson() {
 
 		<div class="title">아래 양식에 맞추어 신청해주세요</div>
 		
-		<form name="businessCostEdit">
+		<form name="businessCostEditFrm" enctype="multipart/form-data">
+
 			<div class="box">
 				<label>출장지역</label><br>
-				<input type="text" name="businessRegion" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="businessRegion" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 	
 			<div class="box">
 				<label>출장 시작일</label><br>
-				<input type="text" id="fromDate" name="businessStartDate" size="50" class="box" autocomplete="off" />
+				<input type="text" id="fromDate" name="businessStartDate" class="box" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>출장 종료일</label><br>
-				<input type="text" id="toDate" name="businessEndDate" size="50" class="box" autocomplete="off" />
+				<input type="text" id="toDate" name="businessEndDate"  class="box" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>출장 목적</label><br>
-				<input type="text" name="businessPurpose" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="businessPurpose"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
 			<div class="box">
 				<label>청구 금액</label><br>
-				<input type="text" name="businessMoney" size="50" class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
+				<input type="text" name="businessMoney"  class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
 			</div>
 			
 			<div class="box">
-				<label>점부파일</label><br>
-				<input type="file" name="fileUpload" size="50" />
+				<label>첨부파일</label><br>
+				<input type="file" name="attach"  />
 			</div>
 			
-			<div id="btn" class="box">
-				<button type="button"  class="btn">신청하기</button>
-				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
+			<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goBusinessCost()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
 			</div>
 		</form>
 	
 </div>
 		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
-	<div id="employeeList"></div>
-</div> 
 
 </body>
 </html>
