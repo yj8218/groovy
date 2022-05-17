@@ -38,7 +38,7 @@ span#title {
 	padding-left: 20px;
 }
 
-i.fas {
+i.icon {
 	padding : 20px 10px 20px 20px;
 }
 
@@ -135,7 +135,7 @@ div.approvalEdit:hover {
 				<div class="approvalEdit">
 					<a id="${appvo.apl_no }">
 					  <span id="category">${appvo.apl_categoryname }</span><br>
-					  <i class="${appvo.apl_img }"></i><span id="title">${appvo.apl_name}</span>
+					  <i class="${appvo.apl_img } icon"></i><span id="title">${appvo.apl_name}</span>
 					</a>
 				</div>
 			</li>

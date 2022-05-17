@@ -98,6 +98,7 @@ button#btn_cancel {
 	text-align: center;
 	margin: 0 auto;
 	float: right;
+	margin-bottom: 200px;
 } 
 
 </style>
