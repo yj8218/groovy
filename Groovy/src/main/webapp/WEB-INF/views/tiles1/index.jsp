@@ -260,7 +260,7 @@
 		const length = ${requestScope.empvoList.size()};
 	}
 	
-<<<<<<< HEAD
+
 	// 프로필을 보여주는 메소드
 	function showEmpProfile(pk_empnum) {
 		
