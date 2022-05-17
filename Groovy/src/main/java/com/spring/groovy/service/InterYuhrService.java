@@ -55,4 +55,13 @@ public interface InterYuhrService {
 	// tbl_commute_status 에 결근 1 update
 	void status_no_workday(String pk_empnum);
 
+	// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+	List<Map<String, String>> getCommuteStatusInfo();
+
+	// 로그인한 사원의 오늘 근무한 시간을 초단위까지 db 에 update
+	int todayworkedtime(String pk_empnum);
+
+	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
+	List<Map<String, String>> showOneCommuteStatus(String pk_empnum);
+
 }//end of public interface InterYuhrService

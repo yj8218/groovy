@@ -188,5 +188,26 @@ public class YuhrDAO implements InterYuhrDAO {
 		sqlsession.insert("yuhr.status_no_workday",pk_empnum);		
 	}
 
+	// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+	@Override
+	public List<Map<String, String>> getCommuteStatusInfo() {
+		List<Map<String, String>> commuteStatusInfo = sqlsession.selectList("yuhr.getCommuteStatusInfo");
+		return commuteStatusInfo;
+	}
+
+	// 로그인한 사원의 오늘 근무한 시간을 초단위까지 db 에 update
+	@Override
+	public int todayworkedtime(String pk_empnum) {
+		int m = sqlsession.update("yuhr.todayworkedtime", pk_empnum);
+		return m;
+	}
+
+	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
+	@Override
+	public List<Map<String, String>> showOneCommuteStatus(String pk_empnum) {
+		List<Map<String, String>> OneCommuteStatus = sqlsession.selectOne("yuhr.showOneCommuteStatus", pk_empnum);
+		return OneCommuteStatus;
+	}
+
 
 }//end of public class YuhrDAO implements InterYuhrDAO
