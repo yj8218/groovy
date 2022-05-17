@@ -19,20 +19,22 @@
 * {
   font-family: 'Noto Sans KR', sans-serif;
 }
-	.sidenav {
-  height: 100%;
-  width: 230px;
-  padding-right: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;  
-  background-color: #111;
-  overflow: scroll;
-  -ms-overflow-style: none;
-  padding-top: 60px;
-  color: white;
+
+.sidenav {
+	height: 100%;
+	width: 230px;
+	padding-right: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;  
+	background-color: #111;
+	overflow: scroll;
+	-ms-overflow-style: none;
+	padding-top: 60px;
+	color: white;
 }
+
 .sidenav::-webkit-scrollbar { 
     display: none;
     width: 0 !important;
@@ -49,119 +51,109 @@
     box-sizing: border-box;
     cursor: pointer;
     border-radius: 4px;
-   /*  border-radius: 5%; */
-  /*   border-style: groove; */
 }
 
-.sidenav ul.scroll a , ul.side-foot a , div.side-header a {
-  padding: 5px 5px 5px 30px;
-  text-decoration: none;
-  font-size: 14px;
-  /* font-weight: bold; */
-  color: #f1f1f1;
-  display: block;
-  height: 33px;
-  line-height: 33px;
-  vertical-align:  middle;
+div.sidenav  ul.scroll a , ul.side-foot a , div.side-header a {
+	padding: 5px 5px 5px 30px;
+	text-decoration: none;
+	font-size: 14px;
+	color: #f1f1f1;
+	display: block;
+	height: 33px;
+	line-height: 33px;
+	vertical-align:  middle;
 }
 
-ul.scroll{
-	    padding-inline-start: 0px  !important;
+div.sidenav ul.scroll{
+	padding-inline-start: 0px  !important;
 }
-ul.scroll > li{
- padding: 7px 5px 5px 30px;
+
+div.sidenav ul.scroll > li{
+	padding: 7px 5px 5px 30px;
 }
-ul.scroll > li a{
+
+div.sidenav ul.scroll > li a{
 	padding: 0 !important;
 	vertical-align:  middle;
 }
 
- ul.scroll >li li{
+div.sidenav  ul.scroll >li li{
     padding: 5px 5px 5px 5px;
-    
 }
-  div.accord{
+
+div.accord{
   	font-weight: bold;
-  	
-   
-  }
-  div.accord a{
-   padding: 12px 30px ;
-  }
- 
-
-  a.list:hover {
-  color: #36cfbd;
-  font-weight: bold;
-  }
-  .ico-home:before {
-  	content: "\e90e";
-  }
-  #myheader > div.pt-5.sidenav > div.accord > a
-  {
-  	cursor: pointer;
-  }
-  
-  .borderline{
-	border-top: solid 0.8px #595959; 
-  }
-  
-  div.sidenav i{
-   margin-right: 10px; 
-   width: 16px;
-   
-  }
-  
-  div.header ul, div.sidenav ul{
-  	padding: 0;
-  }
- 
-
-
-	/* 임의의 영역 생성 */
-.scroll { 
-  width: 200px;
-  height: 50%;
-  overflow-y: scroll;
 }
 
-/* 아래의 모든 코드는 영역::코드로 사용 */
+div.accord a{
+	padding: 12px 30px ;
+}
+
+div.sidenav   a.list:hover {
+	color: #36cfbd;
+	font-weight: bold;
+}
+
+div.sidenav   .ico-home:before {
+  	content: "\e90e";
+}
+
+div.sidenav   #myheader > div.pt-5.sidenav > div.accord > a{
+  	cursor: pointer;
+}
+  
+div.sidenav  .borderline{
+	border-top: solid 0.8px #595959; 
+}
+  
+div.sidenav i{
+	margin-right: 10px; 
+	width: 16px; 
+}
+  
+div.header-header ul, div.sidenav ul{
+	padding: 0;
+}
+
+.scroll { 
+	width: 200px;
+	height: 50%;
+	overflow-y: scroll;
+}
 
 .scroll::-webkit-scrollbar {
-    width: 7px;
-  height: 7px;
-  padding-right: 10px;
+	width: 7px;
+	height: 7px;
+	padding-right: 10px;
 }
-
 
 .scroll::-webkit-scrollbar-thumb {
     height: 30%; /* 스크롤바의 길이 */
     background: #999; /* 스크롤바의 색상 */
-    
     border-radius: 10px;
 }
+
 .scroll::-webkit-scrollbar-thumb:hover {
-  background: #666;
+	background: #666;
 }
 .scroll::-webkit-scrollbar-thumb:active {
-  background: #999;
+	background: #999;
 }
  
 .scroll::-webkit-scrollbar-track {
-       background: transparent;
+	background: transparent;
     border: 0 none transparent;
     border-radius: 53px;
 }
-.scroll::-webkit-scrollbar-track:hover , .scroll::-webkit-scrollbar-track:active, .scroll::-webkit-scrollbar-corner{
-  background: transparent;
-}
 
+.scroll::-webkit-scrollbar-track:hover , .scroll::-webkit-scrollbar-track:active, .scroll::-webkit-scrollbar-corner{
+	background: transparent;
+}
 
 div.nav_right > a{
 	padding: 0 5px;
-	
-	
 }
+
 div.nav_right a  i{
 	width: 30px;
 	height: 30px;
@@ -170,12 +162,7 @@ div.nav_right a  i{
 
 
 
-
-
-
-/* ========== header, sidebar css 끝  ==============*/
-
-
+/* ========== header, sidebar css 덜 끝(밑에 팝업모달들이 있어요)  ==============*/
 
 
 {box-sizing: border-box;}
@@ -229,12 +216,11 @@ div.nav_right a  i{
 
 
 /* The popup form - hidden by default */
-.form-popup {
+.header-form-popup {
   display: none;
   position: fixed;
-  top: 60px; 
+  top: 60px;  
   right: 0;
-  /* border: 1px solid #f1f1f1; */
   z-index: 9;
   width: 400px;
   bottom:auto;
@@ -245,19 +231,19 @@ div.nav_right a  i{
 }
 
 /* Add styles to the form container */
-.form-container {
+.header-form-container {
   padding: 10px;
   background-color: white;
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+.header-form-container input[type=text], .header-form-container input[type=password] {
   width: 100%;
 
 }
 
 /* Set a style for the submit/login button */
-.form-container .btn {
+.header-form-container .btn {
   padding: 0; 
   border: none;
   cursor: pointer;
@@ -268,12 +254,12 @@ div.nav_right a  i{
 
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.header-form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
 
 
- a.iconbar{
+div.nav_right > a.iconbar{
 	color:white ;  
 }
 
@@ -311,14 +297,6 @@ form.main-search{
     color:white;
 }
 
-/* #organizationInput::before{
-   font-family: "Font Awesome 5 Free"; 
-    font-weight: 600;
-    display: inline-block;
-    content: "\f002";
-    margin: 0 11px 0 0;
-    vertical-align: middle;
-} */
 
 .main-search input {
     padding-right: 10px;
@@ -388,7 +366,7 @@ ul.active{
 
 
 
-.topnav {
+div.header-header .topnav {
   overflow: hidden;
   /* background-color: #f1f1f1; */
 }
@@ -398,7 +376,7 @@ ul.active{
   border-bottom: 3px solid #111;
 } */
 
-.tab button.active {
+div.header-header .tab button.active {
   border-bottom: 3px solid #111;
   font-weight: 700;
   color: black;
@@ -408,13 +386,13 @@ ul.active{
 
 
 /* Style the tab */
-.tab {
+div.header-header .tab {
   overflow: hidden;
   
 }
 
 /* Style the buttons inside the tab */
-.tab button {
+div.header-header .tab button {
   background-color: white;
   float: left;
   border: none;
@@ -428,12 +406,12 @@ ul.active{
 }
 
 /* Style the tab content */
- .tabcontent{
+ div.header-header .tabcontent{
   display: none;
   padding: 10px 20px;
 }
 
-button#btnChat{
+div.header-header button#btnChat{
 	
     margin-left: 4px;
     width: auto;
@@ -448,32 +426,28 @@ button#btnChat{
 
 
 
-
-
-
-
-.layer_pop {
+div.header-header  .layer_pop {
     display: none;
-  position: fixed;
+    position: fixed;
   	width: 220px;
     min-width: 218px;
     padding: 14px;
     position: absolute;
     top: 70px;
     right: 30px;
-/*     z-index: 13; */
     background: #fff;
     border: 1px solid #777;
     -webkit-border-radius: 8px;
     border-radius: 8px;
-    font-size: 13px;
     text-align: left;
     color: #555;
-	height: 190px;
+
 }
 
+
+
 /* Add styles to the form container */
-.myinfo-container {
+div.header-header .myinfo-container {
   padding: 5px; 
   background-color: white;
   
@@ -482,11 +456,11 @@ button#btnChat{
 
 
 /* Add some hover effects to buttons */
-.myinfo-container {
+div.header-header .myinfo-container {
   opacity: 1; 
 }
 
-.myprofile-photo{
+div.header-header .myprofile-photo{
 	width: 40px;
     height: 40px;
     margin: 0 10px 0 0;
@@ -509,7 +483,7 @@ button#btnChat{
     width: 100%;
     background: linear-gradient(180deg,rgba(102,102,102,0) 45.31%,rgba(51,51,51,.6) 100%);
 }
-strong.user-name{
+div.header-header strong.user-name{
 	display: block;
     line-height: 21px;
     color: #555;
@@ -521,7 +495,7 @@ strong.user-name{
     font-weight: bold;
 }
 
-li.infoList {
+div.header-header li.infoList {
 
 	position: relative;
     min-height: 19px;
@@ -529,11 +503,11 @@ li.infoList {
     cursor: pointer;
     font-size: 14px;
 }
-li.infoList:hover{
+div.header-header li.infoList:hover{
 	 font-weight: bold;
 }
 
-div#myModal{
+div#myProfileCard{
 
     overflow-y: auto;
 /*     -ms-overflow-y: hidden; */
@@ -542,13 +516,13 @@ div#myModal{
     right: 0;
     
     top:10%;
-   
+   /* top:150px; */
     left: 0;
      height: 100%;
    
 }
 
-div#myModal div.modal-dialogs{
+div#myProfileCard div.modal-dialogs{
 	margin: 0 auto;
     padding-bottom: 15px;
   /*   z-index:1050;  */
@@ -562,26 +536,10 @@ div#myModal div.modal-dialogs{
 
 }
 
-.bottom-left {
+div.header-header .bottom-left {
   position: absolute;
   bottom: 8px;
   left: 16px;
-}
-div.card-body ul{
-	margin:0;
-	padding:0;
-}
-
-div.card-body ul li i {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-}
-div.card-body ul li span {
-    width: 200px;
-    padding: 0 0 0 10px;
-    display: inline-block;
-    border-bottom: 1px solid #eee;
 }
 div.btn-probottom {
 	display: inline-block;
@@ -623,7 +581,9 @@ width: 100px;
 
 
 /* === 정보수정  modal css 시작=== */
-div.modal-body input[type=text], div.modal-body select, div.modal-body textarea {
+div#myProfileCard2   div.modal-body input[type=text]
+,div#myProfileCard2  div.modal-body select
+,div#myProfileCard2  div.modal-body textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -631,12 +591,12 @@ div.modal-body input[type=text], div.modal-body select, div.modal-body textarea 
   resize: vertical;
 }
 
-div.modal-body label {
+div#myProfileCard2  div.modal-body label {
   padding: 12px 12px 12px 0;
   display: inline-block;
 }
 
-div.modal-body input[type=submit] {
+div#myProfileCard2 div.modal-body input[type=submit] {
   background-color: #04AA6D;
   color: white;
   padding: 12px 20px;
@@ -646,42 +606,24 @@ div.modal-body input[type=submit] {
   float: right;
 }
 
-div.modal-body input[type=submit]:hover {
+div#myProfileCard2  div.modal-body input[type=submit]:hover {
   background-color: #45a049;
 }
 
-div.modal-body {
+div#myProfileCard2  div.modal-body {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
 }
 
-.col-20 {
-  float: left;
-  width: 20%;
-  margin-top: 6px;
-}
-
-.col-70 {
-  float: left;
-  width: 70%;
-  margin-top: 6px;
-}
 
 /* Clear floats after the columns */
-div.modal-body .row:after {
+div#myProfileCard2 div.modal-body .row:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .col-20, .col-70, div.modal-body input[type=submit] {
-    width: 100%;
-    margin-top: 0;
-    text-align: center;
-  }
-}
+
 
 /* === 정보수정  modal css 끝 === */
