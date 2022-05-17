@@ -38,15 +38,28 @@
 	div.modal-body input{color: #6449fc; font-weight: bold;}
 	table#tbl_myInfo >tbody  >tr> th{border-style: none;}
 	#tbl_myInfo > tbody > tr > td:nth-child(3) {text-align: right;}
+	#myModal2 {
+ 		
+	}
+	#myModal2 > div{top: 10%;
+	}
 	
 </style>
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 카카오 주소 api -->
 <script type="text/javascript">
+	
+	let b_flagEmailDuplicateClick = false;
+	let b_flagEmailDuplicateClick2 = false;
+	//  "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기 위한 용도이다.
+	
+	
+	
 	$(document).ready(function(){
 	  	$('[data-toggle="tooltip"]').tooltip();   
-	  	$('#myModal').appendTo("body"); 
+	  /* 	$('#myModal').appendTo("body");  */
 	  	
+		getUserInfo();
  	   
 	});
 	
@@ -148,6 +161,11 @@
   		document.getElementById("myForm4").style.display = "none";
 	}
 	
+	function myModal(){
+		document.getElementById("myModal").style.display = "block"; 
+		
+	}
+	
 	
 	 //로그인한 유저 정보 불러오기
 	function getUserInfo(){
@@ -166,9 +184,9 @@
 			dataType:"JSON",
 			success:function(json){
 		//		alert(json.emppicturename);
-				<%-- const imgUrl = "<%=ctxPath %>/resources/images/프로필사진/"+json.emppicturename; --%>
-		//		$("#empImg").attr("src", imgUrl);
-
+				const imgUrl = "<%=ctxPath %>/resources/images/프로필사진/"+json.emppicturename; 
+				//$("#empImg").attr("src", imgUrl);
+				$("img.userimg").attr("src", imgUrl);
 			//	alert("나와"+json.pk_empnum);
 				$("td#td_pk_empnum").html(json.pk_empnum);
 				$("td#td_name").html(json.name);
@@ -284,7 +302,7 @@
  	      $("a#btn_emailEdit").hide(); // "후기수정" 글자 감추기
  	      $('input[name=myemail]').attr('value',myemail);
  	      // "후기수정" 을 위한 엘리먼트 만들기 
- 	      let html = "<input id='edit_textarea' type='email' val='' name='myemail'  required placeholder='이메일' style='height: 25px; width: 200px'/>";
+ 	      let html = "<input id='edit_textarea' type='email' val='' name='myemail'  required placeholder='이메일' style='height: 25px; width: 200px'/><span id='emailCheck' style='color: red; font-size: 12px;'>올바른 이메일 형식이 아닙니다.</span>";
  	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_OK'><span>확인</span></button></div>";
  	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_NO'><span>취소</span></button></div>";  
  	          
@@ -292,6 +310,10 @@
  	     
  	      $("#td_email").html(html); 
  	      $('input[name=myemail]').attr('value',myemail);
+ 	      $('span#emailCheck').hide();
+ 	      
+ 	
+ 	      
  	      // 수정취소 버튼 클릭시 
  	      $("button#btnEmailUpdate_NO").click(function(){
  	         $("#td_email").html(origin_myemail); // 원래의 제품후기 엘리먼트로 복원하기  
@@ -300,12 +322,11 @@
  	      
  	      // 수정완료 버튼 클릭시 
  	      $("button#btnEmailUpdate_OK").click(function(){
- 	         alert(pk_empnum); // 수정할 사원 번호 
- 	         alert($('input[name=myemail]').val()); // 수정할 제품후기 내용
+ 	    //     alert(pk_empnum); // 수정할 사원 번호 
+ 	     //    alert($('input[name=myemail]').val()); // 수정할 제품후기 내용
  	         const new_email = $('input[name=myemail]').val();
  	         
- 	         
-	 	     // *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
+ 	     // *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
 	 	    	let flagBool = false;
 	 	    	
 	 	    	$("input[name=myemail]").each( (index, item)=>{
@@ -326,34 +347,109 @@
 	 	    		alert("필수입력란은 모두 입력하셔야 합니다.");
 	 	    		return; // 종료
 	 	    	}
+ 	     
+ 	     
+////////////////////////////////// 				
+ 				const $target = $("input#edit_textarea");
+ 				
+ 				// 이메일 정규표현식 객체 생성
+ 		        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
+ 				
+ 			 	const bool = regExp.test($target.val());
+ 				
+ 			 	if(!bool){ // 이메일 정규표현식에 위배시
+ 					$("input#edit_textarea").prop("disabled", true);
+ 					$target.prop("disabled",false);
+ 					
+ 				    $target.next().show();
+ 					$target.focus();
+ 					$("span#emailCheck").html("");
+ 					
+ 					b_flagemailduplicateClick2 = false;
+ 				}
+ 				else{ // 이메일정규표현식에 통과시
+ 					$("input#edit_textarea").prop("disabled", false);
+ 					$target.next().hide();
+ 					
+ 					b_flagemailduplicateClick2 = true;
+ 					
+ 					$.ajax({
+ 		        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+ 		        	      data:{"checkColumn":"email",
+ 		        	    	  "checkValue":$target.val()},
+ 		        	      success:function(text){
+ 		        	    	  
+ 		        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
+ 		        	    	  
+ 		       	    	      // 이메일 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
+ 		           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
+ 		           	    		  alert($("input#edit_textarea").val() +" 은 이미 사용중인 이메일입니다");
+ 		           	    		  $("input#edit_textarea").val("");
+ 		           	    	  }
+ 		           	    	  else { // 중복아닌경우
+ 		           	    		//alert($("input#edit_textarea").val() +" 은 사용가능한 이메일입니다");
+ 		           	    	  }	  
+ 		        	      },
+ 		        	      error:function(request, status, error){
+ 		        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 		        	      }
+ 		          	});// end of ajax
+ 				}
+ 			
+ 			 	
+ 			 /* 	if(!b_flagemailduplicateClick2){// 이메일 중복확인 버튼을 클릭하지 않았을 때
+ 					alert("이메일 중복확인 버튼을 클릭하여 이메일 중복검사를 하세요");
+ 					return; // 종료
+ 				} */
+ 			 	
+ 	         /////////////////////////////////
+	 	     
+ 	     });   
  	         
- 	         $.ajax({
- 	            url:"<%= ctxPath%>/myEmailEditEnd.groovy",
- 	            type:"POST",
- 	            data:{"pk_empnum":pk_empnum
- 	                ,"myemail":$('input[name=myemail]').val()},
- 	            dataType:"JSON",
- 	            success:function(json) { // {"n":1} 또는 {"n":0}
- 	               if(json.isSuccess) {
- 	            	  alert("변경되었습니다.")
- 	            	  $("#td_email").html(new_email); // 원래의 제품후기 엘리먼트로 복원하기  
- 	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
- 	               }
- 	               else {
- 	                  alert("수정이 실패되었습니다.");
- 	                  $("#td_email").html(origin_myemail); // 원래의 제품후기 엘리먼트로 복원하기  
-	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
- 	               }
- 	            },
- 	            error: function(request, status, error){
- 	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
- 	            }   
- 	         });
- 	         
- 	      });
     	
     }//end of function emailEdit(pk_empnum){}------------------
+
     
+
+  //이메일 중복여부 검사하기
+  function isExistEmailCheck() {
+  	
+  	$("span#emailCheckResult").hide();
+  	
+  	b_flagEmailDuplicateClick = true;
+  	// 가입하기 버튼을 클릭시 "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기위한 용도임.
+  	
+  	// 첫번째 방법
+  	$.ajax({
+  		url:"<%= ctxPath%>/myEmailEditEnd.groovy",
+  		type:"post",
+  		data:{"pk_empnum":pk_empnum
+             ,"myemail":$('input[name=myemail]').val()},
+  		dataType:"json",
+  		success:function(json) {
+  			
+  			const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
+  	 			const bool = regExp.test($("input#email").val());  	
+  	 			
+  	 				if(json.isSuccess) {	// 입력한 $("input#email").val() 값이 이미 사용중이라면
+  	 					alert("변경되었습니다.")
+   	            	  $("#td_email").html(new_email); // 원래의 제품후기 엘리먼트로 복원하기  
+   	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
+   	         		  $("span#span_email").html(new_email);
+  	 				} else {	// 입력한 $("input#email").val() 값이 DB테이블(tbl_member)에 존재하지 않는 경우라면
+  	 				 alert("수정이 실패되었습니다.");
+	                  $("#td_email").html(origin_myemail); // 원래의 제품후기 엘리먼트로 복원하기  
+	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
+  	 				}
+  			
+  		},
+  		error: function(request, status, error){
+  			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+  		}
+  	});		
+  	
+  }// end of function isExistEmailCheck() {}----------------------------------
+
     
     
  // ◆주소 수정 ◆ 
@@ -598,7 +694,7 @@
  	 	   			$target.parent().find(".error").hide();
  	 	   		}
  	 	   	 
- 	 	   	}); 
+ 	    	}); 
  	    	
  	 	    // 아이디가 pwdcheck 제약 조건 패스워드 확인 검사
  	 	   	$("input#pwdCheck").blur(() => {
@@ -688,6 +784,99 @@
  	      });
     	
     }//end of function pwdEdit(pk_empnum){}------------------
+    
+    
+ // 연락처 수정
+    function mobileEdit(pk_empnum){
+    	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
+		
+    	const origin_myphone = $("#td_phone").html();
+    	//alert("testorigin:"+ origin_myphone);
+		const myphone = $("#td_phone").text();
+		//alert("test1:"+myphone); 
+		
+ 	      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
+ 	      $('input[name=myphone]').attr('value',myphone);
+ 	      // "후기수정" 을 위한 엘리먼트 만들기 
+ 	      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
+ 	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
+ 	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
+ 	          
+ 	      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
+ 	     
+ 	      $("#td_phone").html(html); 
+ 	      $('input[name=myphone]').attr('value',myphone);
+ 	      // 수정취소 버튼 클릭시 
+ 	      $("button#btnPhoneUpdate_NO").click(function(){
+ 	         $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기  
+ 	         $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+ 	      });
+ 	      
+ 	      // 수정완료 버튼 클릭시 
+ 	      $("button#btnPhoneUpdate_OK").click(function(){
+ 	         alert(pk_empnum); // 수정할 사원 번호 
+ 	         alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
+ 	         const new_phone = $('input[name=myphone]').val();
+ 	         
+ 	         $.ajax({
+ 	            url:"<%= ctxPath%>/myPhoneEditEnd.groovy",
+ 	            type:"POST",
+ 	            data:{"pk_empnum":pk_empnum
+ 	                ,"myphone":$('input[name=myphone]').val()},
+ 	            dataType:"JSON",
+ 	            success:function(json) { // {"n":1} 또는 {"n":0}
+ 	               if(json.isSuccess) {
+ 	            	  alert("변경되었습니다.")
+ 	            	  $("#td_phone").html(new_phone); 
+ 	            	  $("span#span_phone").html(new_phone); 
+ 	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	               else {
+ 	                  alert("수정이 실패되었습니다.");
+ 	                  $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기
+ 	                  $("span#span_phone").html(origin_myphone); 
+	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+ 	               }
+ 	            },
+ 	            error: function(request, status, error){
+ 	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 	            }   
+ 	         });
+ 	         
+ 	      });
+ 	   
+    }//end of function updateMyReview(index, review_seq){}----------------------
+
+    
+    function uploadFile(pk_empnum){
+        var form = $('#FILE_FORM')[0];
+        var formData = new FormData(form);
+        formData.append("fileObj", $("#input-file")[0].files[0]);
+
+        $.ajax({
+        	url:"<%= ctxPath%>/myphotoEdit.groovy",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'POST',
+                    success: function(result){
+                        alert("업로드 성공!!");
+                    }
+            });
+        
+        var options = {
+                dataType:"text",//결과
+                success:function(responseText){
+                    alert("업로드 성공!!");
+                }, error:function(e){e.responseText();}
+            };
+            
+        
+        $("#FILE_FORM").ajaxForm(options).submit();
+
+
+    }
+
 
 </script>
  
@@ -856,7 +1045,7 @@
 	        			
 	        			<ul style="list-style: none; margin:0;">
 	        				<li style="    display: flex;">
-	        					<img class="myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  />
+	        					<img class="userimg myprofile-photo" alt="icon-myprofile"  />
 	        					<div style="display: inline-block; box-sizing: border-box;">
 	        						<strong class="user-name" >${sessionScope.loginuser.name}</strong>
 	        						<span class="dept">
@@ -892,7 +1081,7 @@
         	       <div class="modal-dialogs"  >
 	        	       <div class="card " style="display: block; ">
 					   	<div style=" position: relative; ">
-						    <img class="card-img-top rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
+						    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
 						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
 					    </div>
 					    <div class="card-body">
@@ -914,7 +1103,7 @@
 					        	채팅
 					        	<i class="far fa-comments"></i>
 					        </button>
-					        <button class="btn-modi js-btn-modi btn-bottom" data-toggle="modal" data-target="#myModal2" style=" cursor: pointer;" >
+					        <button class="btn-modi js-btn-modi btn-bottom" onclick="myModal()" data-toggle="modal" data-target="#myModal2" style=" cursor: pointer;" >
 					       		정보수정
 					            <i class="far fa-address-card"></i>
 					        </button>
@@ -950,10 +1139,13 @@
 			        <th style="width: 100px;">사원번호</th>
 			        <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
 			        <td rowspan="4" style="border-left: 1px solid #dee2e6;">
-			        	<div style="vertical-align: middle;">
-				         	<img class="rounded" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  style="width:150px; height:auto; overflow: hidden;" />
-				         	<a onclick="picEdit()"  type="button" ><i class="far fa-edit"></i></a>
-				        </div>
+			        	<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="<%=ctxPath%>/myphotoEdit.groovy">
+				        	<div style="vertical-align: middle;">
+					         	<img class="rounded userimg"  style="width:150px; height:auto; overflow: hidden;" />
+					         	<label href="javascript:uploadFile();" className="input-file-button" for="input-file"   type="button" id="emppicturename" name= "attach" style="cursor: pointer;"><i class="far fa-edit"></i></label>
+								<input type="file" id="input-file" style="display : none;"/> 
+					        </div>
+				        </form>
 				    </td>
 			      </tr>
 			 	  <tr>

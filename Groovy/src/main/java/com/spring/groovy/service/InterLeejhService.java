@@ -3,6 +3,7 @@ package com.spring.groovy.service;
 import java.util.List;
 import java.util.Map;
 
+import com.spring.groovy.model.BoardVO;
 import com.spring.groovy.model.DepartmentVO;
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.model.SpotVO;
@@ -40,6 +41,24 @@ public interface InterLeejhService {
 	int myAddressUpdate(Map<String, String> paraMap);
 	// === 비밀번호 수정
 	int myPwdUpdate(Map<String, String> paraMap);
+
+	// === 파일 수정
+	int editFile(EmployeeVO empVo);
+
+	// === 글쓰기
+	int add(BoardVO boardvo);
+	// === 파일첨부 글쓰기
+	int add_withFile(BoardVO boardvo);
+
+	//하이차트 조직도
+	List<Map<String, String>> employeeChart();
+	
+	
+	//== 글조회수 증가와 함께 게시글 읽어오기
+	BoardVO getView(Map<String, String> paraMap);
+
+	// 글 list로 읽어오기 
+	List<BoardVO> getBoardList();
 
 	
 }//end of public interface InterLeejhService

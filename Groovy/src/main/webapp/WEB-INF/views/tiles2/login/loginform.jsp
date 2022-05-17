@@ -14,11 +14,11 @@
 		
 		
 		
-/* 		if(localStorage.getItem("keep") != null){
+ 		if(localStorage.getItem("keep") != null){
 		       var gab   = localStorage.getItem("keep");
 		       $('#pk_empnum').attr('value', gab );
 		       $('#keep').attr('checked', "checked");
-		} */
+		} 
 		
 		$("button#goLogin").click(function(){
 			func_Login();
@@ -32,15 +32,24 @@
 				
 		});
 		
-		
+		 
+		   /* function show() { */
+		   
+		      if( $("input:checkbox[id='keep']").prop("checked") ) {
+		         localStorage.setItem('keep',$("input#pk_empnum").val());
+		      }
+		      else {
+		         localStorage.removeItem('keep');
+		      }
+		   
 		////////////////////////////////////////////////////////////////////
-		
+	/* 	
 		// === 로컬스토리지(localStorage)에 저장된 key 가 "saveid" 인 userid 값을 불러와서 input 태그 userid 에 넣어주기 === //
 		const loginUserid = localStorage.getItem('keep');
 		if(loginUserid != null){
 			$("input#pk_empnum").val(loginUserid);
 			$("input:checkbox[id='keep']").prop("checked",true);
-		}
+		} */
 		////////////////////////////////////////////////////////////////////
 		
 	});// end of $(document).ready(function(){})-------------
@@ -48,10 +57,12 @@
 	
 	//Function Declaration
 	function func_Login(){
-		const pk_empnum = $("input#pk_empnum").val(); 
-	    const pwd = $("input#pwd").val(); 
-	      
-		if(pk_empnum.trim()=="") {
+		const pk_empnum = $("input#pk_empnum").val().trim(); 
+		alert(pk_empnum);
+	    const pwd = $("input#pwd").val().trim(); 
+	    
+	    
+	    if(pk_empnum.trim()=="") {
 		    alert("사원번호를 입력하세요!!");
 		   $("input#pk_empnum").val(""); 
 		   $("input#pk_empnum").focus();
@@ -84,7 +95,6 @@
 	    }
 		
 		const frm = document.loginFrm;
-		
 		frm.action = "<%= ctxPath%>/loginEnd.groovy",
 		frm.method = "POST";
 		frm.submit();
@@ -112,7 +122,7 @@
            <!--  <a href="">회원가입</a><br> -->
          </div>
          <div id = "loginbutton">
-            <button type="button" id="goLogin">로그인</button>
+            <button type="button" id="goLogin" >로그인</button>
          </div>
          <div id = "idScan">
             <input type="checkbox" id="keep" class="input_keep" value="off" /><label for="keep" class="input_keep">아이디(사원번호) 저장</label>

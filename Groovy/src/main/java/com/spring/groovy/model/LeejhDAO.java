@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.spring.groovy.model.BoardVO;
 import com.spring.groovy.common.AES256;
 import com.spring.groovy.model.EmployeeVO;
 
@@ -123,6 +124,59 @@ public class LeejhDAO implements InterLeejhDAO {
 	public int myPwdUpdate(Map<String, String> paraMap) {
 		int n = sqlsession.update("leejh.myPwdUpdate", paraMap);
 		return n;
+	}
+
+	@Override
+	public int editFile(EmployeeVO empVo) {
+		int n = sqlsession.update("leejh.editFile",  empVo);
+		return n;
+	}
+
+	// === 글쓰기
+	@Override
+	public int add(BoardVO boardvo) {
+		int n = sqlsession.insert("leejh.add", boardvo);
+		return n;
+	}
+
+	// === #145. tbl_board 테이블에서 groupno 컬럼의 최대값 알아오기 === //
+	@Override
+	public int getGroupnoMax() {
+		int maxgroupno = sqlsession.selectOne("leejh.getGroupnoMax");
+		return maxgroupno;
+	}
+
+	// === #158. 글쓰기(첨부파일이 있는 경우) === //
+	@Override
+	public int add_withFile(BoardVO boardvo) {
+		int n = sqlsession.insert("leejh.add_withFile", boardvo);
+		return n;
+	}
+
+	@Override
+	public List<Map<String, String>> employeeChart() {
+		List<Map<String, String>> employeeChartList = sqlsession.selectList("leejh.employeeChart");
+			return employeeChartList;
+	}
+
+	// ==== #64. 글1개 조회하기 ==== //
+	@Override
+	public BoardVO getView(Map<String, String> paraMap) {
+		BoardVO boardvo = sqlsession.selectOne("leejh.getView", paraMap);
+		return boardvo;
+	}
+
+	// ==== #65. 글조회수 1증가 하기 ==== //
+	@Override
+	public void  setAddReadCount(String pk_board_seq) {
+		sqlsession.update("leejh.setAddReadCount", pk_board_seq);
+	}
+	
+	// 글 list로 읽어오기 
+	@Override
+	public List<BoardVO> getBoardList() {
+		List<BoardVO> boardList = sqlsession.selectList("leejh.getBoardList");
+		return boardList;
 	}
 
 
