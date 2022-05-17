@@ -1374,11 +1374,11 @@ button.btn-bottom{
 <!-- 유저 프로필카드  -->
  				<div class="modal animate" id="myModal"  >
         	       <div class="modal-dialogs"  >
-<<<<<<< HEAD
+
 	        	       <div class="card" id="headerCard" style="width:400px; display: block; ">
-=======
+
 	        	       <div class="card " style="display: block; ">
->>>>>>> branch 'main' of https://github.com/yj8218/groovy.git
+
 					   	<div style=" position: relative; ">
 						    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
 						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
