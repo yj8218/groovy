@@ -3,22 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bfa073d5-91d8-4559-8991-0625d00ce4e2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/controller/JodnController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/controller/JodnController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/mapper/jodn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/mapper/jodn.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/InterJodnDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/InterJodnDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/JodnDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/model/JodnDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/InterJodnService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/InterJodnService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/JodnService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/service/JodnService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/absenceEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/absenceEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/approvalView.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/approvalView.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/businessCostEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/businessCostEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/equipmentEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/equipmentEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/expensesEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/expensesEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/foodExpensesEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/foodExpensesEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/newProjectEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/newProjectEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/vacationEdit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/board/vacationEdit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles2/board/writeBoardModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles2/board/writeBoardModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/spring/groovy/mapper/jodn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/spring/groovy/mapper/jodn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles/tile1/header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles/tile1/header.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/index.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +13,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="28pYNE170cs4rozjXhsOmQ4sUP2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -38,6 +27,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -49,10 +39,22 @@
       <updated>1651914955057</updated>
       <workItem from="1651914959613" duration="366000" />
       <workItem from="1652168605749" duration="1000" />
+      <workItem from="1652764830688" duration="488000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
