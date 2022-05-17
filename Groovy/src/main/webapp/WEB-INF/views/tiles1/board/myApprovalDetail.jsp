@@ -16,7 +16,7 @@
 <style type="text/css">
 
 div#container {
-	width: 40%;
+	width: 50%;
 	margin: 0 30px;
 }
 
@@ -98,6 +98,7 @@ button#btn_cancel {
 	text-align: center;
 	margin: 0 auto;
 	float: right;
+	margin-bottom: 200px;
 } 
 
 </style>

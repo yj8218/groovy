@@ -29,6 +29,7 @@ import com.spring.groovy.model.BoardVO;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.spring.groovy.annotation.NoLogging;
 import com.spring.groovy.common.AES256;
 import com.spring.groovy.common.GoogleMail;
 import com.spring.groovy.common.MyUtil;
@@ -55,6 +56,7 @@ public class LeejhController {
 	////////////////////////////////////////////////////////////////////////
 	
 	//  << 로그인 폼요청 >>
+	@NoLogging
 	@RequestMapping(value="/login.groovy", method= {RequestMethod.GET})
 	public ModelAndView login(ModelAndView mav, HttpServletRequest request) {
 		
@@ -64,6 +66,7 @@ public class LeejhController {
 	}
 	
 	//  << 로그인 처리하기 >>
+	@NoLogging
 	@RequestMapping(value="/loginEnd.groovy", method= {RequestMethod.POST})
 	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
 		
@@ -168,7 +171,7 @@ public class LeejhController {
 	
 	
 	// ===  로그아웃 처리하기 === //
-	
+	@NoLogging
 	@RequestMapping(value="/logout.groovy")
 	public ModelAndView logout(ModelAndView mav, HttpServletRequest request) {
 	
