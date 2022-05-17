@@ -100,7 +100,7 @@ select.search {
 		<div style="font-size: 20px; font-weight: bold; margin: 20px 0;">내 결재 정보 보기</div>
 		<form name="statusFrm">
 			<select class="search" name="searchValue">
-				<option value="">승인여부</option>
+				<option value="">전체</option>
 				<option value="0">승인대기</option>
 				<option value="1">승인중</option>
 				<option value="2">승인완료</option>

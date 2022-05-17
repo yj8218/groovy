@@ -280,15 +280,15 @@ public class JodnService implements InterJodnService {
 
 	// 나의 결재 완료 문서 보기
 	@Override
-	public List<Map<String, String>> endApproval(String fk_empnum) {
-		List<Map<String,String>> endApprovalList = dao.endApproval(fk_empnum);
+	public List<Map<String, String>> endApproval(Map<String, String> paraMap) {
+		List<Map<String,String>> endApprovalList = dao.endApproval(paraMap);
 		return endApprovalList;
 	}
 
 	// 나의 결재 참조 문서 보기
 	@Override
-	public List<Map<String, String>> referenceApproval(String fk_empnum) {
-		List<Map<String,String>> referenceApprovalList = dao.referenceApproval(fk_empnum);
+	public List<Map<String, String>> referenceApproval(Map<String, String> paraMap) {
+		List<Map<String,String>> referenceApprovalList = dao.referenceApproval(paraMap);
 		return referenceApprovalList;
 	}
 
@@ -301,8 +301,22 @@ public class JodnService implements InterJodnService {
 
 	// 승인대기 문서 조회 총 페이지 수 구하기
 	@Override
-	public int geWaitApprovalTotalCount(Map<String, String> paraMap) {
-		int totalCount = dao.geWaitApprovalTotalCount(paraMap);
+	public int getWaitApprovalTotalCount(Map<String, String> paraMap) {
+		int totalCount = dao.getWaitApprovalTotalCount(paraMap);
+		return totalCount;
+	}
+
+	// 승인완료 문서 조회 총 페이지 수 구하기
+	@Override
+	public int getEndApprovalTotalCount(Map<String, String> paraMap) {
+		int totalCount = dao.getEndApprovalTotalCount(paraMap);
+		return totalCount;
+	}
+
+	// 참조 문서 조회 총 페이지 수 구하기
+	@Override
+	public int getReferenceApprovalTotalCount(Map<String, String> paraMap) {
+		int totalCount = dao.getReferenceApprovalTotalCount(paraMap);
 		return totalCount;
 	}
 

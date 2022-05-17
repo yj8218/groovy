@@ -16,23 +16,25 @@
 <style type="text/css">
 
 div#container {
-	width: 90%;
+	width: 100%;
 	margin: 0 auto;
 }
 
 table#myAppInfo {
 	width: 100%;
+	margin-bottom: 50px;
 }
 
 table#myAppInfo tr:first-child {
-	border-bottom: solid 2px #ddd;
-	border-top: solid 2px #ddd;
+	/* border-bottom: solid 2px #6449FC;
+	border-top: solid 2px #6449FC; */
+	background-color: #faf9f9;
 	
 	
 }
 
 tr.selectOne:hover {
-	background-color: #6449FC;
+	background-color: #e0ccff;
 	cursor: pointer;
 	color: white;
 	
@@ -74,8 +76,7 @@ table#myAppInfo td , th {
 <body>
 
 	<div id="container">
-		
-		<h2>결재 참조 문서</h2>
+		<div style="font-size: 20px; font-weight: bold; margin: 20px 0;">결재 참조 문서</div>
 			<table id="myAppInfo" class="tcenter">
 				<tr id="fileItemTapLi">	
 					<th class="">번호</th>

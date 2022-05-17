@@ -1144,7 +1144,7 @@ public class JodnController {
 			int endRno = 0; // 끝 행 번호
 			
 			// 총 게시물 건수(totalCount)
-		    totalCount = service.geWaitApprovalTotalCount(paraMap);
+		    totalCount = service.getWaitApprovalTotalCount(paraMap);
 			
 			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
 			
@@ -1408,15 +1408,105 @@ public class JodnController {
 		
 		// 나의 결재 완료 문서 보기
 		@RequestMapping(value="/endApproval.groovy")
-		public ModelAndView endApproval(ModelAndView mav, HttpSession session) {
+		public ModelAndView endApproval(ModelAndView mav, HttpSession session, HttpServletRequest request) {
 			
 			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 			
 			String fk_empnum = loginuser.getPk_empnum();
 			
-			List<Map<String,String>> endApprovalList = service.endApproval(fk_empnum);
+			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 			
-			// pk_documentnum 값 가져오기
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			
+			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
+			int totalCount = 0; // 총 게시물 건수 
+			int sizePerPage = 10; // 한 페이지당 보여줄 게시물 건수
+			int currentShowPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.	
+			int totalPage = 0; // 총 페이지 수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			int startRno = 0; // 시작행 번호
+			int endRno = 0; // 끝 행 번호
+			
+			// 총 게시물 건수(totalCount)
+		    totalCount = service.getEndApprovalTotalCount(paraMap);
+			
+			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+			
+			if(str_currentShowPageNo == null ) {
+				// 게시판에 보여지는 초기화면 
+				currentShowPageNo = 1;
+			} else {
+				try {
+					currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+					if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+						currentShowPageNo = 1;
+					}
+				} catch(NumberFormatException e) {
+					currentShowPageNo = 1;
+				}
+			}
+			
+			startRno =  (currentShowPageNo - 1) * sizePerPage + 1;
+			endRno = startRno + sizePerPage - 1;
+			
+			paraMap.put("startRno", String.valueOf(startRno)); // 스트링타입으로 변환
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			// ~~~~~~~~~~~~~~~~~~~~~~~
+			
+			List<Map<String,String>> endApprovalList = service.endApproval(paraMap);
+			// 페이징 처리한 글 목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함 한 것)
+			
+			int blockSize = 10;
+			// blockSize는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+						
+			int loop = 1;
+			/*
+	          loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	        */
+			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+			
+			String pageBar = "<ul style='list-style: none;'>";
+			String url = request.getContextPath()+"/myApproval.groovy";
+			
+			// === [처음][이전] 만들기 == 
+			if(pageNo != 1) {
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			}
+			
+			while( !(loop>blockSize || pageNo > totalPage) ) {
+				if(pageNo == currentShowPageNo) {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px grey; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+				} else {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				}
+
+				loop++;
+				pageNo++;			
+				} // end of while 
+			
+			// === [다음][마지막] 만들기 ==
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			mav.addObject("pageBar", pageBar);
+			
+			// === #123. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = MyUtil.getCurrentURL(request);
+			mav.addObject("gobackURL", gobackURL.replace("&", " "));
+			
+			// 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 끝
+			///////////////////////////////////////////////////////////////////////
+			
 			
 			mav.addObject("endApprovalList", endApprovalList);
 			
@@ -1497,13 +1587,104 @@ public class JodnController {
 
 		// 나의 결재 참조 문서 보기
 		@RequestMapping(value="/referenceApproval.groovy")
-		public ModelAndView referenceApproval(ModelAndView mav, HttpSession session) {
+		public ModelAndView referenceApproval(ModelAndView mav, HttpSession session, HttpServletRequest request) {
 			
 			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 			
 			String fk_empnum = loginuser.getPk_empnum();
 			
-			List<Map<String,String>> referenceApprovalList = service.referenceApproval(fk_empnum);
+			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			
+			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
+			int totalCount = 0; // 총 게시물 건수 
+			int sizePerPage = 10; // 한 페이지당 보여줄 게시물 건수
+			int currentShowPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.	
+			int totalPage = 0; // 총 페이지 수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			int startRno = 0; // 시작행 번호
+			int endRno = 0; // 끝 행 번호
+			
+			// 총 게시물 건수(totalCount)
+		    totalCount = service.getReferenceApprovalTotalCount(paraMap);
+			
+			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+			
+			if(str_currentShowPageNo == null ) {
+				// 게시판에 보여지는 초기화면 
+				currentShowPageNo = 1;
+			} else {
+				try {
+					currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+					if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+						currentShowPageNo = 1;
+					}
+				} catch(NumberFormatException e) {
+					currentShowPageNo = 1;
+				}
+			}
+			
+			startRno =  (currentShowPageNo - 1) * sizePerPage + 1;
+			endRno = startRno + sizePerPage - 1;
+			
+			paraMap.put("startRno", String.valueOf(startRno)); // 스트링타입으로 변환
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			// ~~~~~~~~~~~~~~~~~~~~~~~
+			
+			List<Map<String,String>> referenceApprovalList = service.referenceApproval(paraMap);
+			// 페이징 처리한 글 목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함 한 것)
+			
+			int blockSize = 10;
+			// blockSize는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+						
+			int loop = 1;
+			/*
+	          loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	        */
+			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+			
+			String pageBar = "<ul style='list-style: none;'>";
+			String url = request.getContextPath()+"/myApproval.groovy";
+			
+			// === [처음][이전] 만들기 == 
+			if(pageNo != 1) {
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			}
+			
+			while( !(loop>blockSize || pageNo > totalPage) ) {
+				if(pageNo == currentShowPageNo) {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px grey; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+				} else {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				}
+
+				loop++;
+				pageNo++;			
+				} // end of while 
+			
+			// === [다음][마지막] 만들기 ==
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			mav.addObject("pageBar", pageBar);
+			
+			// === #123. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = MyUtil.getCurrentURL(request);
+			mav.addObject("gobackURL", gobackURL.replace("&", " "));
+			
+			// 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 끝
+			///////////////////////////////////////////////////////////////////////
 			
 			// pk_documentnum 값 가져오기
 			
