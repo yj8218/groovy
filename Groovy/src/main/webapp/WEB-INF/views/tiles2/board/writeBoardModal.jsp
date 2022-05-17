@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<% String ctxPath = request.getContextPath(); %>
 <style type="text/css">
 
 	ul#taskStatus {
@@ -24,6 +25,13 @@
 
 <script type="text/javascript">
 
+	
+	/* $('#writeBoardModal').on('hidden.bs.modal', function (e) {
+		   $(this).find('form')[0].reset(); 
+		/*   $("table").get(0).reset(); */
+	/* 	}); */
+	
+
 	$(document).ready(function() {
 		
 		$("textarea").keydown(function() {
@@ -38,9 +46,7 @@
 			$('table')[0].reset();
 		});
 		 */
-		$('.modal').on('hidden.bs.modal', function (e) {
-		  $(this).find('table')[0].reset()
-		});
+		
 		
 		$("div.addTask").click(function() {
 			let html = "";
@@ -74,15 +80,120 @@
 			$("tr#removeTr").remove();
 		});
 		
+		
+
+		  <%-- === #166. 스마트 에디터 구현 시작 === --%>
+		 	//전역변수
+		    var obj = [];
+		    
+		    //스마트에디터 프레임생성
+		    nhn.husky.EZCreator.createInIFrame({
+		        oAppRef: obj,
+		        elPlaceHolder: "smarteditor",
+		        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
+		        htParams : {
+		            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseToolbar : true,            
+		            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseVerticalResizer : true,    
+		            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseModeChanger : true,
+		        }
+		    });
+		    
+		    
+		  
+
+		    
+		    <%-- === 스마트 에디터 구현 끝 === --%>
+		  
+		  
+			  // 글쓰기버튼
+			  $("button#btnWrite").click(function(){
+				  
+				
+				  
+				  
+				  
+				  <%-- === 스마트 에디터 구현 시작 === --%>
+				 	//id가 content인 textarea에 에디터에서 대입
+			        obj.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+				  <%-- === 스마트 에디터 구현 끝 === --%>
+				  
+				  // 글제목 유효성 검사
+				  const subject = $("input#title").val().trim();
+				  if(subject == "") {
+					  alert("글제목을 입력하세요!!");
+					  return;
+				  }
+				  
+				  // 글내용 유효성 검사(스마트에디터 사용 안 할시)
+				
+				  const content = $("textarea#smarteditor").val().trim();
+				  if(content == "") {
+					  alert("글내용을 입력하세요!!");
+					  return;
+				  }
+				
+				
+				<%-- === 스마트에디터 구현 시작 === --%>
+				// 스마트에디터 사용시 무의미하게 생기는 p태그 제거
+				 var contentval = $("textarea#smarteditor").val();
+				        
+		         // === 확인용 ===
+		         // alert(contentval); // content에 내용을 아무것도 입력치 않고 쓰기할 경우 알아보는것.
+		         // "<p>&nbsp;</p>" 이라고 나온다.
+		        
+		         // 스마트에디터 사용시 무의미하게 생기는 p태그 제거하기전에 먼저 유효성 검사를 하도록 한다.
+		         // 글내용 유효성 검사 
+		         if(contentval == "" || contentval == "<p>&nbsp;</p>") {
+		        	 alert("글내용을 입력하세요!!");
+		        	 return;
+		         }
+			        
+			     // 스마트에디터 사용시 무의미하게 생기는 p태그 제거하기
+			        contentval = $("textarea#smarteditor").val().replace(/<p><br><\/p>/gi, "<br>"); //<p><br></p> -> <br>로 변환
+			     /*    
+			                대상문자열.replace(/찾을 문자열/gi, "변경할 문자열");
+			        ==> 여기서 꼭 알아야 될 점은 나누기(/)표시안에 넣는 찾을 문자열의 따옴표는 없어야 한다는 점입니다. 
+			                     그리고 뒤의 gi는 다음을 의미합니다.
+
+			        	g : 전체 모든 문자열을 변경 global
+			        	i : 영문 대소문자를 무시, 모두 일치하는 패턴 검색 ignore
+			     */    
+			        contentval = contentval.replace(/<\/p><p>/gi, "<br>"); //</p><p> -> <br>로 변환  
+			        contentval = contentval.replace(/(<\/p><br>|<p><br>)/gi, "<br><br>"); //</p><br>, <p><br> -> <br><br>로 변환
+			        contentval = contentval.replace(/(<p>|<\/p>)/gi, ""); //<p> 또는 </p> 모두 제거시
+			    
+			        $("textarea#smarteditor").val(contentval);
+			     
+			     // alert(contentval);
+				 <%-- === 스마트에디터 구현 끝 === --%>
+				  
+				  // 글암호 유효성 검사
+				  const pw = $("input#pw").val();
+				  if(pw == "") {
+					  alert("글암호를 입력하세요!!");
+					  return;
+				  }
+				  
+				  // 폼(form)을 전송(submit)
+				  const frm = document.addFrm;
+				  frm.method = "POST";
+				  frm.action = "<%= ctxPath%>/addEnd.groovy";
+				  frm.submit();
+			  });
+		
 	}); // end of $(document).ready(function() {})
+
 
 </script>
 
 <%-- modal_게시글 작성 --%>
-<div class="modal fade" id="writeBoardModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
-  	<div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="writeBoardModal"  tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg">
   	<!-- .modal-dialog-centered 클래스를 사용하여 페이지 내에서 모달을 세로 및 가로 중앙에 배치합니다. -->
-    	<div class="modal-content" style="height: 700px;">
+    	<div class="modal-content" style="height: 700px; ">
     		<!-- Modal header -->
 			<div class="modal-header" style="border:none;">
 				<h5 class="modal-title">게시물 작성</h5>
@@ -107,19 +218,49 @@
 				<div class="tab-content">
 					<%-- Tab panes(글) --%>
 				  	<div class="tab-pane container active py-3" id="text">
-				    	<form name="textFrm">
-				    		<table class="w-100">
+				    	<!-- <form name="textFrm"> -->
+				    	<form name="addFrm" enctype="multipart/form-data">
+				    		<table class="w-100 writezone">
+				    			<tr>
+									<td>
+										<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}" />
+										<input type="text" name="name" value="${sessionScope.loginuser.name}" readonly />
+									</td>
+								</tr>
+				    			
 				    			<tr style="border-bottom: solid 1px lightgray; outline: none;">
 				    				<td>
-				    					<input type="text" name="title" id="textTitle" placeholder="제목을 입력하세요." style="font-size: 16pt; width: 100%; border: none;" />
+				    					
+										   <input type="text" name="b_subject" id="title"  placeholder="제목" size="100" /> 
+										
 				    				</td>
 				    			</tr>
 				    			<tr>
-				    				<td>
-				    					<textarea class="w-100 mt-3" style="min-height: 100px; resize: none; border: none;" placeholder="내용을 입력하세요"></textarea>
-				    				</td>
+									<td>
+										<textarea style="width: 100%; height: 612px;" name="b_content" id="smarteditor"></textarea>
+									</td>
 				    			</tr>
+				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>
+								<tr>
+									<td>
+										<input type="file" name="attach" /> 
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<input type="password" name="b_pw" id="pw" placeholder="글암호를 입력하세요." /> 
+									</td>
+								</tr>
+								
+
 				    		</table>
+				    			<%-- === #143. 답변글쓰기가 추가된 경우 시작 === --%>
+								<input type="hidden" name="fk_seq" value="${requestScope.fk_seq}" />
+								<input type="hidden" name="groupno" value="${requestScope.groupno}" />
+								<input type="hidden" name="depthno" value="${requestScope.depthno}" />
+								<%-- ===  답변글쓰기가 추가된 경우 끝            === --%>
+								
 				    	</form>
 				  	</div>
 				  	<%-- Tab panes(업무) --%>
@@ -204,7 +345,8 @@
 			</div>
 			<!-- Modal footer -->
 			<div class="modal-footer" style="border:none;">
-				<button type="button" class="btn text-white w-25 my-3" style="background-color: #6449fc;">올리기</button>
+				<button  id="btnWrite" type="button" class="btn text-white w-25 my-3" style="background-color: #6449fc;">올리기</button>
+				
 			</div>
     	</div>
   	</div>
