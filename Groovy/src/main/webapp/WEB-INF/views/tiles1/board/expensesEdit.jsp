@@ -50,12 +50,15 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
+	
 }
 
 div#btn {
@@ -153,22 +156,6 @@ $(document).ready(function(){
 
 
 
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
-	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-	
-}	
-	
 	
 </script>
 

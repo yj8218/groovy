@@ -50,20 +50,22 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
 }
 
-div#btn {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -146,24 +148,20 @@ $(document).ready(function(){
 	        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	});
 
-});
+ }); // end of $(document).ready(function()
 
+function cancel() {
+	location.href='<%= ctxPath%>/approvalView.groovy';
+}
 	
-// 팝업창 띄우기 (사람 선택창)
-function approvePerson() {
-	// 승인참조 선택 띄우기
-	const url = "<%= request.getContextPath()%>/approver.groovy";
+function goNewProjectEdit() {
 	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
+	const frm = document.newProjectEditFrm;
+	frm.action = "goNewProject.groovy";
+	frm.method = "post";
+	frm.submit();
 	
-	window.open(url, "approvePersonAdd",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
 }	
-	
 	
 </script>
 
@@ -179,50 +177,44 @@ function approvePerson() {
 
 		<div class="title">신규프로젝트를 아래와 같이 작성해주세요!<br> 작성 시 참여 구성원 참조 대상 추가</div>
 		
-		<form name="newProjectEdit">
+		<form name="newProjectEditFrm" enctype="multipart/form-data">
 			<div class="box">
 				<label>프로젝트 명</label><br>
-				<input type="text" name="projectName" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="projectName"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 	
 			<div class="box">
 				<label>시작일</label><br>
-				<input type="text" id="fromDate" name="projectStartDate" size="50" class="box" autocomplete="off" />
+				<input type="text" id="fromDate" name="projectStartDate"  class="box" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>종료 예정일</label><br>
-				<input type="text" id="toDate" name="projectEndDate" size="50" class="box" autocomplete="off" />
+				<input type="text" id="toDate" name="projectEndDate"  class="box" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>참여자 인원</label><br>
-				<input type="text" name="projectPersonCnt" size="50" class="box" autocomplete="off" placeholder="인원수를 입력하세요."/>
+				<input type="text" name="projectPersonCnt"  class="box" autocomplete="off" placeholder="인원수를 입력하세요."/>
 			</div>
 			
 			<div class="box">
 				<label>참여자 명단</label><br>
-				<input type="text" name="projectPersonList" size="50" class="box" autocomplete="off" placeholder="인원을 입력하세요."/>
+				<input type="text" name="projectPersonList"  class="box" autocomplete="off" placeholder="인원을 입력하세요."/>
 			</div>
 			
 			<div class="box">
-				<label>점부파일</label><br>
-				<input type="file" name="fileUpload" size="50" />
+				<label>첨부파일</label><br>
+				<input type="file" name="attach"  />
 			</div>
-			<div id="btn" class="box">
-				<button type="button"  class="btn">신청하기</button>
-				<button type="button"  class="btn" onclick="javascript:location.href='<%= ctxPath%>/approvalView.groovy'">취소</button>
+			<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goNewProjectEdit()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
 			</div>
 
 		</form>
 	
 </div>
-		
-<div id="approvePerson" style="margin: 70px;">
-	<span id="title">승인, 참조대상</span><br>
-	<button type="button" class="btn" id="approvePersonAdd" onclick="approvePerson();">등록하기</button>
-	<div id="employeeList"></div>
-</div> 
 
 </body>
 </html>
