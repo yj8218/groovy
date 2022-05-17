@@ -87,7 +87,7 @@
 	.scrollover { -ms-overflow-style: none; } 
 	.scrollover::-webkit-scrollbar { display:none; }
 	
-	.empProfile > img {
+	 .empProfile > img {
 		width: 45px;
 		height: 45px;
 		overflow: hidden;
@@ -749,12 +749,6 @@
 		</div>
 		<jsp:include page="../tiles2/board/writeBoardModal.jsp"/>  
 		
-		
-		
-		
-
-		
-		
-		
 	</div>
 </div>
+

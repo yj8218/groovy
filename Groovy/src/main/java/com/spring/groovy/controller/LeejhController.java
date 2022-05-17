@@ -68,6 +68,9 @@ public class LeejhController {
 	public ModelAndView loginEnd(ModelAndView mav, HttpServletRequest request) {
 		
 		String pk_empnum = request.getParameter("pk_empnum");
+		
+		pk_empnum = pk_empnum.trim();
+		
 		String pwd = request.getParameter("pwd");
 		
 		Map<String, String> paraMap = new HashMap<>();

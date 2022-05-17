@@ -18,8 +18,56 @@
 		text-align: center;
 	}
 	
-	input:focus {outline:none;}
-	textarea:focus {outline:none;}
+	 input:focus {outline:none;}
+	 textarea:focus {outline:none;}
+	
+	/* === 정보수정  modal css 시작=== */
+	
+	   #writeBoardModal div.modal-body input[type=text]
+	,  #writeBoardModal div.modal-body select
+	,  #writeBoardModal div.modal-body textarea {
+	  width: 100%;
+	  padding: 12px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  resize: vertical;
+	}
+	  #writeBoardModal div.modal-body label {
+	  padding: 12px 12px 12px 0;
+	  display: inline-block;
+	}
+	
+	  #writeBoardModal div.modal-body input[type=submit] {
+	  background-color: #04AA6D;
+	  color: white;
+	  padding: 12px 20px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  float: right;
+	}
+	
+	 #writeBoardModal div.modal-body input[type=submit]:hover {
+	  background-color: #45a049;
+	}
+	
+	  #writeBoardModal div.modal-body {
+	  border-radius: 5px;
+	  background-color: #f2f2f2;
+	  padding: 20px;
+	}
+	
+	
+	/* Clear floats after the columns */
+	  #writeBoardModal div.modal-body .row:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+	}
+
+
+/* === 정보수정  modal css 끝 === */
+	
 	
 </style>
 
