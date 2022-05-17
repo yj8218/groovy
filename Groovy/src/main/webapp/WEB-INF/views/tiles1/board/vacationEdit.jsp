@@ -30,9 +30,6 @@ span.title {
 	margin: 10px 5px;
 }
 
-form[name="equipmentEdit"]{
-	margin-top: 20px;
-}
 
 div.box {
 	margin-top: 20px;
@@ -50,20 +47,22 @@ label {
 	font-size: 12pt;
 }
 
-button.btn {
+button.app_btn {
 	width: 120px;
 	border: solid 1px grey;
 	margin: 30px;
 	background-color: #6449FC;
 	color: white;
+	height: 37px;
+	border-radius: 7px;
 }
 
-div#btn {
+div#app_btn {
 	text-align: center;
 	margin: 0 auto;
 }
 
-button.btn:hover {
+button.app_btn:hover {
 	font-weight: bold;
 	color: white;
 	background-color: #b3b3ff;
@@ -163,7 +162,7 @@ $(document).ready(function(){
 	        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	});
 	
-	$('input.timepicker').timepicker({
+	$('input.timepickerStart').timepicker({
      // timeFormat: 'HH:mm', 24시간 사용 시 
 		timeFormat: 'h:mm p',
 	    interval: 60,
@@ -175,6 +174,17 @@ $(document).ready(function(){
 	    scrollbar: true
     });
 	
+	$('input.timepickerEnd').timepicker({
+	     // timeFormat: 'HH:mm', 24시간 사용 시 
+			timeFormat: 'h:mm p',
+		    interval: 60,
+		    minTime: '9',
+		    maxTime: '6:00pm',
+		    defaultTime: '18',
+		    dynamic: false,
+		    dropdown: true,
+		    scrollbar: true
+	    });
 	
 
 });
@@ -223,13 +233,13 @@ function goVacation() {
 			<div class="box">
 				<label>휴가 시작일</label><br>
 				<input type="text" id="fromDate" name="holidayStartDate" size="50" class="date"  />
-				<input type="text" class="timepicker date" name="holidayStartHour"/>
+				<input type="text" class="timepickerStart date" name="holidayStartHour"/>
 			</div>
 	
 			<div class="box">
 				<label>휴가 종료일</label><br>
 				<input type="text" id="toDate" name="holidayEndDate" size="50" class="date" />
-				<input type="text" class="timepicker date" name="holidayEndHour" />
+				<input type="text" class="timepickerEnd date" name="holidayEndHour" />
 			</div>
 			
 			<div class="box">
@@ -242,9 +252,9 @@ function goVacation() {
 				<input type="text" name="vetc" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
-			<div id="btn" class="box">
-				<button type="button"  class="btn" onclick="goVacation()">신청하기</button>
-				<button type="button"  class="btn" onclick="cancel()">취소</button>
+			<div id="app_btn" class="box">
+				<button type="button"  class="app_btn" onclick="goVacation()">신청하기</button>
+				<button type="button"  class="app_btn" onclick="cancel()">취소</button>
 			</div>
 			
 		</form>

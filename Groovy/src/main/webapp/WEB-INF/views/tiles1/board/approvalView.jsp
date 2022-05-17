@@ -23,12 +23,13 @@ div#editBoard li {
 }
 
 div.approvalEdit {
-	border: solid 1px grey;
+	border: solid 1px #6449FC;
 	width: 220px;
 	height: 140px;
     cursor: pointer;
     display: inline-flex;
     border-radius: 10px;
+    color: #6449FC;
 }
 
 span#title {
@@ -50,6 +51,8 @@ div.approvalEdit:hover {
 	color:white;
 	cursor: pointer;
 }
+
+
 
 </style>
 
@@ -77,43 +80,37 @@ div.approvalEdit:hover {
 		
 		// 비품 신청
 		$("a#1").click(function () {
-			alert("비품 신청");
 			location.href="<%= ctxPath%>/equipmentEdit.groovy";
 		})
 		
 		// 경조비 신청
 		$("a#2").click(function () {
-			alert("경조비 신청");
-			location.href="<%= ctxPath%>/expensesEdit.groovy";
+			alert("준비중입니다.");
+			<%-- location.href="<%= ctxPath%>/expensesEdit.groovy"; --%>
 		})
 		
 		// 출장비 신청
 		$("a#3").click(function () {
-			alert("출장비 신청");
 			location.href="<%= ctxPath%>/businessCostEdit.groovy";
 		})
 		
 		// 식비 사용 내역
 		$("a#4").click(function () {
-			alert("식비 사용 내역");
 			location.href="<%= ctxPath%>/foodExpensesEdit.groovy";
 		})
 		
 		// 휴가 신청
 		$("a#5").click(function () {
-			alert("휴가 신청");
 			location.href="<%= ctxPath%>/vacationEdit.groovy";
 		})
 		
 		// 휴직 신청
 		$("a#6").click(function () {
-			alert("휴직 신청");
 			location.href="<%= ctxPath%>/absenceEdit.groovy";
 		})
 		
 		// 신규 프로젝트 신청
 		$("a#7").click(function () {
-			alert("신규 프로젝트 신청");
 			location.href="<%= ctxPath%>/newProjectEdit.groovy";
 		})
 		
