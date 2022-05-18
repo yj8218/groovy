@@ -944,7 +944,7 @@ public class LeejhController {
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readComment(HttpServletRequest request) {
 		
-			String pk_board_seq = request.getParameter("pk_board_seq");
+		//	String pk_board_seq = request.getParameter("pk_board_seq");
 			
 			List<BoardVO> boardList = service.getBoardList();
 			
@@ -954,6 +954,7 @@ public class LeejhController {
 				for(BoardVO boardvo : boardList) {
 					JSONObject jsonObj = new JSONObject();
 					jsonObj.put("name", boardvo.getName());
+					jsonObj.put("pk_board_seq", boardvo.getPk_board_seq());
 					jsonObj.put("b_content", boardvo.getB_content());
 					jsonObj.put("b_regDate", boardvo.getB_regdate());
 					jsonObj.put("fk_empnum", boardvo.getFk_empnum());

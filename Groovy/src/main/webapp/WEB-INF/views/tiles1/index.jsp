@@ -348,6 +348,7 @@
 						   	html +=  "<i class='fas fa-thumbtack'></i>	상단고정";
 						   	html +=  "<i class='fas fa-ellipsis-v' data-toggle='dropdown'></i>	설정";
 						   	html +=  "<div class='dropdown-menu'>";
+						   	html +=  "  	<a class='dropdown-item' href='<%= ctxPath%>/boardedit.groovy?seq="+item.pk_board_seq+"'><i class='far fa-board-alt'></i>수정</a>";
 						   	html +=  "  	<a class='dropdown-item' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
 						   	html +=  "  	<a class='dropdown-item' href='#'><i class='fas fa-external-link-alt'></i>다른 프로젝트에 복사</a>";
 						   	html +=  "  	<a class='dropdown-item' href='#'><i class='far fa-clone'></i>링크 복사</a>";
