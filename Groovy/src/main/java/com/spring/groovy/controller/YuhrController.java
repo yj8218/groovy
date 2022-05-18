@@ -404,24 +404,38 @@ public class YuhrController {
 	
 	
 	
-	// 근태관리 페이지(사원용 및 관리자용)
+	// 근태관리 페이지(관리자용)
 	@RequestMapping(value ="/worktime.groovy")
-	public ModelAndView worktimeA(ModelAndView mav) {
+	public ModelAndView worktimeA(ModelAndView mav, HttpServletRequest request) {
 		
-		// 부서정보을 가져오기 위함
-		List<DepartmentVO> departments = service.getDepts();
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		int spotnum = loginuser.getFk_spotnum();
+		System.out.println(spotnum);
+		String login_empnum = loginuser.getPk_empnum();
 		
-		// 근태정보을 가져오기 위함
-		List<CommuteStatusVO> commStatusList = service.getCommStatus();
-		
-		// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
-		List<Map<String, String>> commuteStatusInfo = service.getCommuteStatusInfo();
-		
-		mav.addObject("departments", departments);
-		mav.addObject("commStatusList", commStatusList);
-		mav.addObject("commuteStatusInfo", commuteStatusInfo);
-		
-		mav.setViewName("employee/worktime.tiles1");
+		if(spotnum != 0) {// 관리자의 spotnum 은 0
+			// 관리자만 들어올 수 있는 페이지입니다. => 이전페이지로 보내기
+			mav.addObject("message", "관리자만 들어올 수 있는 페이지입니다.");
+			mav.addObject("loc", "javascript:history.back()");
+			mav.setViewName("msg");
+		}
+		else {
+			// 부서정보을 가져오기 위함
+			List<DepartmentVO> departments = service.getDepts();
+			
+			// 근태정보을 가져오기 위함
+			List<CommuteStatusVO> commStatusList = service.getCommStatus();
+			
+			// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
+			List<Map<String, String>> commuteStatusInfo = service.getCommuteStatusInfo();
+			
+			mav.addObject("departments", departments);
+			mav.addObject("commStatusList", commStatusList);
+			mav.addObject("commuteStatusInfo", commuteStatusInfo);
+			
+			mav.setViewName("employee/worktime.tiles1");
+		}
 		
 		return mav;//  /WEB-INF/views/tiles1/employee/worktime.jsp 페이지 만들어야 한다.
 		
@@ -612,19 +626,40 @@ public class YuhrController {
 	}
 	
 	
-	// 한 사원의 근태기록을 보여주는 페이지
+	// 한 사원의 근태기록을 보여주는 페이지 - 관리자, 사원 모두 사용해야한다.
+	// 관리자는 전체근태기록 -> 개인 근태기록
+	// 사원은 바로 개인 근태기록, 자기거만 보도록 한다.
 	@RequestMapping(value="/showOneCommuteStatus.groovy")
 	public ModelAndView showOneCommuteStatus(ModelAndView mav, HttpServletRequest request) {
 		
+		HttpSession session = request.getSession();
+		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
+		int spotnum = loginuser.getFk_spotnum();
+		System.out.println(spotnum);
+		String login_empnum = loginuser.getPk_empnum();
+		
 		String pk_empnum = request.getParameter("pk_empnum");
+		
+		if(spotnum != 0  ) {// 사원으로 로그인 하고 
+			if(login_empnum.equals(pk_empnum)) {// 자신의 근태기록을 클릭한경우
+				
+			}
+			else {// 다른 사람의 근태기록을 보려고 하는 경우
+				mav.addObject("message", "다른 사원의 근태기록은 조회할 수 없습니다.");
+				mav.addObject("loc", "javascript:history.back()");
+				
+				mav.setViewName("msg");
+			}
+		}
+		
 		
 		// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
 		List<Map<String, String>> OneCommuteStatus = service.showOneCommuteStatus(pk_empnum);
 		
 		mav.addObject("OneCommuteStatus", OneCommuteStatus);
+		mav.addObject("pk_empnum", pk_empnum);
 		
-		mav.setViewName("board/approver.tiles1");
-		// /WEB-INF/views/approval/approvalEdit.jsp
+		mav.setViewName("employee/oneCommuteStatus.tiles1");
 		
 		return mav;
 	}

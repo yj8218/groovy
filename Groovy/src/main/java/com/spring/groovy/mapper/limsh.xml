@@ -8,8 +8,10 @@
 
 	<!-- 직원 목록 가져오기(select) -->
 	<select id="showEmployeeList" resultType="com.spring.groovy.model.EmployeeVO">
-      select pk_empnum, name, phone, email, emppicturename, emppicturefilename
-      from tbl_employee
+      select pk_empnum, name, phone, email, emppicturename, emppicturefilename, s.spotnamekor
+      from tbl_employee E
+      join tbl_spot S
+      on e.fk_spotnum = s.pk_spotnum
       where resignationstatus = 0
       and not name like '%'||'관리'||'%'
       order by fk_deptnum asc, fk_spotnum desc
@@ -17,8 +19,10 @@
 
 	<!-- 검색한 프로젝트 참여자 목록 보여주기(select) -->
 	<select id="searchEmp" parameterType="HashMap" resultType="com.spring.groovy.model.EmployeeVO">
-		select pk_empnum, ${searchType}, phone, email, emppicturename, emppicturefilename
-		from tbl_employee 
+		select pk_empnum, ${searchType}, phone, email, emppicturename, emppicturefilename, s.spotnamekor
+		from tbl_employee E
+		join tbl_spot S
+		on e.fk_spotnum = s.pk_spotnum
 		where RESIGNATIONSTATUS = 0
 		and not name like '%'||'관리'||'%'
 		and lower(${searchType}) like '%'||lower(#{searchWord})||'%'
@@ -47,4 +51,10 @@
 		order by fk_spotnum desc
 	</select>
 	
+	<!-- 1:1 채팅 직원 정보 가져오기(select) -->
+	<select id="getEmp" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, name, phone, email, emppicturename, emppicturefilename
+      	from tbl_employee
+      	where name = #{name}
+	</select>
 </mapper>

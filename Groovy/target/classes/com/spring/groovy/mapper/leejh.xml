@@ -14,7 +14,7 @@
 				        startday, resignationstatus,  
 				        resignationday,  fk_vstatus,     
 				        emppicturename,  salary, lastpwdchangedate, emppicturefilename,
-				        spotnamekor, deptnamekor, pk_spotnum
+				        spotnamekor, deptnamekor, fk_spotnum
 				from
 				(
 					SELECT  E.pk_empnum, E.pwd, E.name, E.address, E.detailaddress, E.postcode, 
@@ -22,7 +22,7 @@
 					        to_char(E.startday, 'yyyy-mm-dd') as startday, E.resignationstatus,  
 					        E.resignationday,  E.fk_vstatus,     
 					        E.emppicturename,  E.salary, E.lastpwdchangedate, E.emppicturefilename,
-					        s.spotnamekor, s.pk_spotnum,
+					        s.spotnamekor, s.pk_spotnum as fk_spotnum,
 					        d.deptnamekor, d.pk_deptnum
 					from tbl_employee E
 					JOIN TBL_SPOT S 

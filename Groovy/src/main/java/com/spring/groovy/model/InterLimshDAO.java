@@ -19,6 +19,9 @@ public interface InterLimshDAO {
 
 	// 부서별 직원 목록 가져오기(select)
 	List<EmployeeVO> getEmpListByDept(String pk_deptnum);
+
+	// 1:1 채팅 직원 정보 가져오기(select)
+	EmployeeVO getEmp(String name);
 	
 
 }//end of public interface InterLimshDAO

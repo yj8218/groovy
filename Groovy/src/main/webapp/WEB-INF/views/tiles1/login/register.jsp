@@ -59,14 +59,13 @@
 	    color: #fff;
 	    text-align: center;
 	    background: #623ad6;
-	    line-height: 52px;
 	    height: 52px;
 	    width: 48%;
 	    -webkit-border-radius: 8px;
 	    border-radius: 8px;
-	    margin-top: 20px;
 	    font-weight: 486px;
 	    font-size: 16px;
+	    
 	}	
 	
 	button#goRegister:hover {

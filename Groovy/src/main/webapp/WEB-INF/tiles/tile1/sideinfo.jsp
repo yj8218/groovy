@@ -63,10 +63,9 @@
   		<div class="btn_newpjt" ><i class="fas fa-expand"></i>새 프로젝트</div>
   	</div>
   	<div class="mb-3 side-header">
-	  <a href="#about">
-	  <i class="fas fa-house-user"></i>내 프로젝트</a>
-	  <a href="#services"><i class="fas fa-search"></i>회사 공개 프로젝트</a>
-	  <a href="#clients"><i class="fas fa-archive"></i>미분류</a>
+	  <a href="<%=ctxPath%>/schedule/scheduleManagement.groovy"><i class="fas fa-house-user"></i>스케줄러</a>
+	  <a href="<%=ctxPath%>/showOneCommuteStatus.groovy"><i class="fas fa-tag"></i>내 근태관리</a>	
+	  <a href="<%=ctxPath%>/orgChart.groovy"><i class="fas fa-tag"></i>조직도</a>
 	  <a href="#contact"><i class="fas fa-ellipsis-v"></i>더보기</a>
 	</div>
 	
@@ -121,27 +120,68 @@
 			</div>
 	    </li>
 	    
+	    
+	    <!-- ============================================================================================================== 덕노 -->
 	    <li class="borderline">
-		  <div class="accord" data-toggle="collapse" data-target="#pjt_folder"><a style="cursor: pointer; ">프로젝트 폴더</a></div>
-		  <div id="pjt_folder" class="collapse">
+		  <div class="accord" data-toggle="collapse" data-target="#myApproval"><a style="cursor: pointer; ">결재하기</a></div>
+		  <div id="myApproval" class="collapse">
 				<ul style="list-style: none;">
 					<li>
-						<a href="#"><i class="fas fa-tag" style="color: red;"></i>마케팅</a>
+						<a href="<%=ctxPath%>/approvalView.groovy"><i class="fas fa-tag" style="color: red;"></i>기안하기</a>
 					</li>
 					<li>
-						<a href="#"><i class="fas fa-tag"></i>디자인</a>
+						<a href="<%=ctxPath%>/myApproval.groovy"><i class="fas fa-tag"></i>내 기안내역 조회</a>
+					</li>
+				</ul>
+			</div>
+	    </li>
+	    
+	     <li class="borderline">
+		  <div class="accord" data-toggle="collapse" data-target="#apprver"><a style="cursor: pointer; ">개인 결재 문서함</a></div>
+		  <div id="apprver" class="collapse">
+				<ul style="list-style: none;">
+					<li>
+						<a href="<%=ctxPath%>/waitApproval.groovy"><i class="fas fa-tag"></i>결재 대기 문서</a>
 					</li>
 					<li>
-						<a href="#"><i class="fas fa-tag"></i>엔지니어링</a>
+						<a href="<%=ctxPath%>/endApproval.groovy"><i class="fas fa-tag"></i>결재 수신 문서</a>
 					</li>
 					<li>
-						<a href="#"><i class="fas fa-tag"></i>1:1 문의하기</a>
+						<a href="<%=ctxPath%>/referenceApproval.groovy"><i class="fas fa-tag"></i>참조 문서</a>
 					</li>
 				</ul>
 			</div>
 	    </li>
 		
+	
+	    <!-- ============================================================================================================== 혜림 -->
+	    <li class="borderline">
+		  <div class="accord" data-toggle="collapse" data-target="#admin"><a style="cursor: pointer; ">어드민</a></div>
+		  <div id="admin" class="collapse">
+				<ul style="list-style: none;">
+					<li>
+						<a href="<%=ctxPath%>/register.groovy"><i class="fas fa-tag" style="color: red;"></i>사원등록</a>
+					</li>
+					<li>
+						<a href="<%=ctxPath%>/viewEmp.groovy"><i class="fas fa-tag"></i>사원정보</a>
+					</li>
+					<li>
+						<a href="<%=ctxPath%>/worktime.groovy"><i class="fas fa-tag"></i>근태관리</a>
+					</li>
+					<li>
+						<a href="<%=ctxPath%>/commutebutton.groovy"><i class="fas fa-tag"></i>임시</a>
+					</li>
+				</ul>
+			</div>
+	    </li>
+	
+	
+	
+	
 	</ul>
+	
+	<!-- ============================================================================================================== 끝 -->
+	
 	
 	<ul class="borderline side-foot" style="list-style: none; cursor: pointer; padding: 0;">
 		<li>

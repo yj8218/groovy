@@ -205,7 +205,7 @@ public class YuhrDAO implements InterYuhrDAO {
 	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
 	@Override
 	public List<Map<String, String>> showOneCommuteStatus(String pk_empnum) {
-		List<Map<String, String>> OneCommuteStatus = sqlsession.selectOne("yuhr.showOneCommuteStatus", pk_empnum);
+		List<Map<String, String>> OneCommuteStatus = sqlsession.selectList("yuhr.showOneCommuteStatus", pk_empnum);
 		return OneCommuteStatus;
 	}
 
