@@ -1,11 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="java.net.InetAddress" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<% String ctxPath = request.getContextPath(); %>
+<%
+   	String ctxPath = request.getContextPath();
+
+	InetAddress inet = InetAddress.getLocalHost();
+	String serverIP = inet.getHostAddress();
+	
+	int portnumber = request.getServerPort();
+	
+	String serverName = "http://" + serverIP + ":" + portnumber;
+%>
 
 <style type="text/css">
 
@@ -137,8 +148,11 @@
 			var openchatConfirm = confirm("프로젝트 채팅방을 개설하시겠습니까?\n프로젝트 참여자가 모두 참여하는 채팅방입니다.");
 			
 			if(openchatConfirm) {
-				alert("프로젝트 참여자 모두와 단체 채팅하기 => 팝업창");
-				openChat();
+				const url = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
+		        const popup_name = "multichat";
+		        const option = "width = 450, height = 650, top = 300, left = 600";
+				
+				window.open(url, popup_name, option);
 			}
 		});
 		
@@ -260,7 +274,6 @@
 		const length = ${requestScope.empvoList.size()};
 	}
 	
-<<<<<<< HEAD
 	// 프로필을 보여주는 메소드
 	function showEmpProfile(pk_empnum) {
 		
@@ -309,6 +322,11 @@
 		}); // $.ajax({})
 	}
 	
+	
+	// 그룹 채팅을 활성화하는 메소드
+	function openGroupChat() {
+		
+	}
 	
 	  
 	  // === 페이징 처리 안한 글 읽어오기  === //

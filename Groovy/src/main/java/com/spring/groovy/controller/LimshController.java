@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -92,6 +93,7 @@ public class LimshController {
 				jsonObj.put("emppicturename", empvo.getEmppicturename());
 				jsonObj.put("emppicturefilename", empvo.getEmppicturefilename());
 				jsonObj.put("spotnamekor", empvo.getSpotnamekor());
+				jsonObj.put("deptnamekor", empvo.getDeptnamekor());
 				
 				jsonArr.put(jsonObj);
 			}
@@ -191,6 +193,28 @@ public class LimshController {
 		
 		return jsonArr.toString();
 	}
+	
+	
+	// 새 채팅 팝업창 띄우기(초대할 직원 목록 보여주기)
+	@RequestMapping(value="/openNewChat.groovy")
+	public ModelAndView openNewChat(ModelAndView mav, HttpServletRequest request) {
+		
+		List<EmployeeVO> empvoList = service.showEmployeeList();
+
+		mav.addObject("empvoList", empvoList);
+		
+		mav.setViewName("board/openNewChat.tiles2");
+		
+		return mav;
+	}
+	
+	
+	// 그룹채팅 띄우기
+	@RequestMapping(value="/chatting/multichat.groovy", method={RequestMethod.GET})
+   	public String requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response) {
+   		
+   		return "chatting/multichat.tiles2";
+   	}
 /*	
 	@RequestMapping(value="/writeBoardModal.groovy")
 	public ModelAndView writeBoardModal(ModelAndView mav) {
