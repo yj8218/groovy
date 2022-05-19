@@ -81,7 +81,29 @@
 	
 
 	$(document).ready(function() {
-		
+		  <%-- === #166. 스마트 에디터 구현 시작 === --%>
+		 	//전역변수
+		    var obj = [];
+		    
+		    //스마트에디터 프레임생성
+		    nhn.husky.EZCreator.createInIFrame({
+		        oAppRef: obj,
+		        elPlaceHolder: "smarteditor",
+		        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
+		        htParams : {
+		            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseToolbar : true,            
+		            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseVerticalResizer : true,    
+		            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		            bUseModeChanger : true,
+		        },
+		        fOnAppLoad: function(){
+		        	$("iframe").css("width","100%").css("height","300px");
+		        }
+		    });
+		    
+		    
 		$("textarea").keydown(function() {
 			const content = $(this);
 			content[0].style.height = 'auto';
@@ -130,25 +152,7 @@
 		
 		
 
-		  <%-- === #166. 스마트 에디터 구현 시작 === --%>
-		 	//전역변수
-		    var obj = [];
-		    
-		    //스마트에디터 프레임생성
-		    nhn.husky.EZCreator.createInIFrame({
-		        oAppRef: obj,
-		        elPlaceHolder: "smarteditor",
-		        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
-		        htParams : {
-		            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-		            bUseToolbar : true,            
-		            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-		            bUseVerticalResizer : true,    
-		            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-		            bUseModeChanger : true,
-		        }
-		    });
-		    
+		
 		    
 		  
 
@@ -230,8 +234,13 @@
 				  frm.method = "POST";
 				  frm.action = "<%= ctxPath%>/addEnd.groovy";
 				  frm.submit();
+				  //$("#addFrm").submit();
 			  });
 		
+			  $('.modal').on('hidden.bs.modal', function (e) {
+					$(this).find('form')[0].reset();
+				}); 
+				
 	}); // end of $(document).ready(function() {})
 
 
@@ -267,25 +276,25 @@
 					<%-- Tab panes(글) --%>
 				  	<div class="tab-pane container active py-3" id="text">
 				    	<!-- <form name="textFrm"> -->
-				    	<form name="addFrm" enctype="multipart/form-data">
+				    	<form name="addFrm" id="addFrm" enctype="multipart/form-data">
 				    		<table class="w-100 writezone">
 				    			<tr>
 									<td>
 										<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}" />
-										<input type="text" name="name" value="${sessionScope.loginuser.name}" readonly />
+										<input type="hidden" name="name" value="${sessionScope.loginuser.name}" readonly />
 									</td>
 								</tr>
 				    			
 				    			<tr style="border-bottom: solid 1px lightgray; outline: none;">
 				    				<td>
 				    					
-										   <input type="text" name="b_subject" id="title"  placeholder="제목" size="100" /> 
+										   <input type="text" style="border:0px;" name="b_subject" id="title"  placeholder="제목을 입력하세요" size="100" /> 
 										
 				    				</td>
 				    			</tr>
 				    			<tr>
 									<td>
-										<textarea style="width: 100%; height: 612px;" name="b_content" id="smarteditor"></textarea>
+										<textarea style="width: 100%; height: 350px;" name="b_content" id="smarteditor" placeholder="내용을 입력하세요" ></textarea>
 									</td>
 				    			</tr>
 				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.groovy.model.BoardVO;
+import com.spring.groovy.model.CommentVO;
 import com.spring.groovy.model.DepartmentVO;
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.model.SpotVO;
@@ -59,6 +60,20 @@ public interface InterLeejhService {
 
 	// 글 list로 읽어오기 
 	List<BoardVO> getBoardList();
+
+	//글 삭제하기 
+	int del(Map<String, String> paraMap);
+
+	//댓글추가하기
+	int addComment(CommentVO commentvo);
+
+	//댓글목록 출력하기
+///	List<CommentVO> getCommentListPaging(Map<String, String> paraMap);
+
+	// 파일첨부 없는 경우 글 수정
+	int edit_board(Map<String, String> paraMap);
+	// 파일첨부 있는 경우 글 수정
+	int edit_board_withFile(Map<String, String> paraMap);
 
 	
 }//end of public interface InterLeejhService

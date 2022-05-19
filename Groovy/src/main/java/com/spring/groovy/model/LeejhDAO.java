@@ -179,6 +179,38 @@ public class LeejhDAO implements InterLeejhDAO {
 		return boardList;
 	}
 
+	// 글 삭제하기
+	@Override
+	public int del(Map<String, String> paraMap) {
+		int n = sqlsession.delete("leejh.del", paraMap);
+		return n;
+	}
+	//댓글추가하기
+	@Override
+	public int addComment(CommentVO commentvo) {
+		int n = sqlsession.insert("leejh.addComment", commentvo);
+		return n;
+	}
+	/*
+	//댓글목록 출력하기
+	@Override
+	public List<CommentVO> getCommentListPaging(Map<String, String> paraMap) {
+		List<CommentVO> commentList = sqlsession.selectList("leejh.getCommentListPaging");
+		return commentList;
+	}*/
+	// 파일첨부 없는 경우 글 수정
+	@Override
+	public int edit_board(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.edit_board", paraMap);
+		return n;
+	}
+	// 파일첨부 있는 경우 글 수정
+	@Override
+	public int edit_board_withFile(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.edit_board_withFile", paraMap);
+		return n;
+	}
+
 
 
 }//end of public class LeejhDAO implements InterLeejhDAO
