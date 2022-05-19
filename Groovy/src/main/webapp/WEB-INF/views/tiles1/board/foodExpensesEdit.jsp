@@ -84,6 +84,10 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
+span.error {
+	color: red;
+}
+
 </style>
 
 	<%-- Required meta tags --%>
@@ -143,6 +147,72 @@ $(document).ready(function(){
 	$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후) 
 	//////////////////////////////////////
 	
+	$("span.error").hide();    
+	
+	// 사용금액 공백 방지
+	$("input[name='foodExpensesCost']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	});     
+	
+	// 식사인원 공백 방지
+	$("input[name='foodExpensesPersonCnt']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	});     
+	
+	// 첨부파일 공백 방지
+	$("input[name='attach']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	});     
+	
+	
+	
+	
+	
 });	
 	
 	
@@ -151,6 +221,21 @@ function cancel() {
 }
 	
 function goFoodExpenses() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("식비사용내역 신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
 	
 	const frm = document.foodExpensesEditFrm;
 	frm.action = "goFoodExpenses.groovy";
@@ -177,27 +262,30 @@ function goFoodExpenses() {
 		<form name="foodExpensesEditFrm" enctype="multipart/form-data">
 			<div class="box">
 				<label>사용 날짜</label><br>
-				<input type="text" id="datepicker" name="foodExpensesDate"  class="box" autocomplete="off" />
+				<input type="text" id="datepicker" name="foodExpensesDate"  class="box requiredInfo" autocomplete="off" />
 			</div>
 	
 			<div class="box">
 				<label>사용 금액</label><br>
-				<input type="text" name="foodExpensesCost" class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
+				<input type="text" name="foodExpensesCost" class="box requiredInfo" autocomplete="off" placeholder="금액을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">사용 금액을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>식사 인원</label><br>
-				<input type="text" name="foodExpensesPersonCnt"  class="box" autocomplete="off" placeholder="숫자을 입력하세요."/>
+				<input type="text" name="foodExpensesPersonCnt"  class="box requiredInfo" autocomplete="off" placeholder="숫자을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">식사 인원을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>비고</label><br>
-				<input type="text" name="foodExpensesETC"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="foodExpensesETC"  class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
 			</div>
 			
 			<div class="box">
 				<label>첨부파일</label><br>
-				<input type="file" name="attach" />
+				<input type="file" name="attach" class="requiredInfo" />
+				<br><span class="error">첨부파일을 등록해주세요</span>
 			</div>
 			
 			<div id="app_btn" class="box">

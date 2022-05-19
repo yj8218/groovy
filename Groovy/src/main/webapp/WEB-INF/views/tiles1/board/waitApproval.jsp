@@ -60,11 +60,11 @@ table#myAppInfo td , th {
 					const $target = $(event.target);
 					
 				//	alert("확인용 => " + $target.parent().html() );
-						
+					const gobackURL = "${requestScope.gobackURL}";		
 					const pk_documentnum = $target.parent().children(".pk_documentnum").text();
 					const apl_no = $target.parent().children("td.apl_name").children("input.apl_no").val();
 					
-					location.href="<%= ctxPath%>/selectOneWaitDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum;																	
+					location.href="<%= ctxPath%>/selectOneWaitDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum+"&gobackURL="+gobackURL;																	
 					
 		}); 
 		

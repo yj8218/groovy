@@ -84,6 +84,10 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
+span.error {
+	color: red;
+}
+
 </style>
 
 		<%-- Required meta tags --%>
@@ -116,6 +120,8 @@ button#approvePersonAdd {
 
 $(document).ready(function(){
 	
+	$("span.error").hide();   
+	
 	$(function() {
 	    //모든 datepicker에 대한 공통 옵션 설정
 	    $.datepicker.setDefaults({
@@ -147,6 +153,97 @@ $(document).ready(function(){
 	        //To의 초기값을 3일후로 설정
 	        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	});
+	
+	// 프로젝트명 공백 방지
+	$("input[name='projectName']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	
+	// 참여인원 공백 방지
+	$("input[name='projectPersonCnt']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	
+	// 참여부서 공백 방지
+	$("input[name='projectPersonList']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	
+	// 첨부파일 공백 방지
+	$("input[name='attach']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	
+	
+	
+	
+	
+	
+	
 
  }); // end of $(document).ready(function()
 
@@ -155,6 +252,23 @@ function cancel() {
 }
 	
 function goNewProjectEdit() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("신규프로젝트 신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
+	
+	
 	
 	const frm = document.newProjectEditFrm;
 	frm.action = "goNewProject.groovy";
@@ -180,7 +294,8 @@ function goNewProjectEdit() {
 		<form name="newProjectEditFrm" enctype="multipart/form-data">
 			<div class="box">
 				<label>프로젝트 명</label><br>
-				<input type="text" name="projectName"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="projectName"  class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">프로젝트명을 입력해주세요</span>
 			</div>
 	
 			<div class="box">
@@ -194,18 +309,21 @@ function goNewProjectEdit() {
 			</div>
 			
 			<div class="box">
-				<label>참여자 인원</label><br>
-				<input type="text" name="projectPersonCnt"  class="box" autocomplete="off" placeholder="인원수를 입력하세요."/>
+				<label>참여인원</label><br>
+				<input type="text" name="projectPersonCnt"  class="box requiredInfo" autocomplete="off" placeholder="인원수를 입력하세요."/>
+				<span class="error">참여인원을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
-				<label>참여자 명단</label><br>
-				<input type="text" name="projectPersonList"  class="box" autocomplete="off" placeholder="인원을 입력하세요."/>
+				<label>참여부서</label><br>
+				<input type="text" name="projectPersonList"  class="box requiredInfo" autocomplete="off" placeholder="인원을 입력하세요."/>
+				<span class="error">참여부서를 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>첨부파일</label><br>
-				<input type="file" name="attach"  />
+				<input type="file" name="attach" class="requiredInfo" />
+				<br><span class="error">첨부파일을 등록해주세요</span>
 			</div>
 			<div id="app_btn" class="box">
 				<button type="button"  class="app_btn" onclick="goNewProjectEdit()">신청하기</button>

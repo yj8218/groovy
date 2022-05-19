@@ -14,6 +14,21 @@
 		on PK_APL_CATEGORYNO = APL_CATEGORYNO
 		order by apl_no
 	</select>
+	
+	<!-- 직원목록 보여주기 -->
+	<select id="getEmployeeList" parameterType="HashMap" resultType="com.spring.groovy.model.EmployeeVO">
+		select pk_empnum, deptnamekor ,name, fk_spotnum, fk_deptnum
+		from tbl_employee a
+		join tbl_spot b
+		on b.pk_spotnum = a.fk_spotnum
+		join tbl_department c
+		on c.pk_deptnum = a.fk_deptnum
+		where pk_empnum != #{fk_empnum}
+		<if test="search != null and search != ''">
+			and name like '%'||#{search}||'%'
+		</if>
+		order by fk_spotnum desc
+	</select>
 
 	<!-- 회계부서 직원 보여주기 -->
 	<select id="getAccountEmployee" resultType="com.spring.groovy.model.EmployeeVO">
@@ -487,13 +502,13 @@
 				on A.fk_deptnum = E.PK_DEPTNUM
 				join tbl_spot F
 				on F.PK_SPOTNUM = A.fK_SPOTNUM
-				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0'
+				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0'
 				order by writeday desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}	
 	</select>
-	<select id="geWaitApprovalTotalCount" parameterType="HashMap" resultType="int">
+	<select id="getWaitApprovalTotalCount" parameterType="HashMap" resultType="int">
 		select count(*)
 		from TBL_APPROVALPERSON B
 		join TBL_APPROVALDOCUMENT C
@@ -552,9 +567,34 @@
 		<result property="status"       			column="status"     			javaType="String" />	
 	</resultMap>	
 	<!--  내가 결재 승인완료 문서 보기 -->
-	<select id="endApproval" parameterType="String" resultMap="endApprovalMap">
-		select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
-		, status
+	<select id="endApproval" parameterType="HashMap" resultMap="endApprovalMap">
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		from
+		(	
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			from 
+			(
+				select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+				, status
+				from TBL_APPROVALPERSON B
+				join TBL_APPROVALDOCUMENT C
+				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				where B.fk_empnum = #{fk_empnum} and APPYN in('1','2')
+				order by writeday desc
+			)
+		)	 
+		where rno between #{startRno} and #{endRno}		
+	</select>
+	<select id="getEndApprovalTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
 		from TBL_APPROVALPERSON B
 		join TBL_APPROVALDOCUMENT C
 		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
@@ -569,9 +609,35 @@
 		where B.fk_empnum = #{fk_empnum} and APPYN in('1','2')
 	</select>
 	
+	
 	<!--  나의 결재 참조 문서 보기 -->
-	<select id="referenceApproval" parameterType="String" resultMap="waitApprovalMap">
-		select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+	<select id="referenceApproval" parameterType="HashMap" resultMap="endApprovalMap">
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		from
+		(	
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			from 
+			(
+				select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				from TBL_APPROVALPERSON B
+				join TBL_APPROVALDOCUMENT C
+				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				where B.fk_empnum = #{fk_empnum} and B.app_status = '0' 
+				order by writeday desc
+			)
+		)	 
+		where rno between #{startRno} and #{endRno}				
+	</select>
+	<select id="getReferenceApprovalTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
 		from TBL_APPROVALPERSON B
 		join TBL_APPROVALDOCUMENT C
 		on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
@@ -586,6 +652,90 @@
 		where B.fk_empnum = #{fk_empnum} and B.app_status = '0' 
 	</select>
 	
+	<!-- 결재반려하기  -->
+	<update id="app_fail" parameterType="HashMap">
+		update TBL_APPROVALPERSON set writeday = sysdate , appyn='2', opinion=#{opinion}
+		where fk_documentnum = #{pk_documentnum}
+		and fk_empnum = #{fk_empnum}
+	</update>
 	
+	<!-- 결재반려시 문서상태변경 -->
+	<update id="app_fail_Approver" parameterType="HashMap" >
+		update TBL_APPROVALDOCUMENT set status = '3'
+		where pk_documentnum = #{pk_documentnum}
+	</update>
+	
+	
+	<!-- 완전한 문서 표시해주기 -->
+	<update id="updateDocument" parameterType="HashMap">
+		update TBL_APPROVALDOCUMENT set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+	</update>
+	<update id="updateApproval" parameterType="HashMap">
+		<if test="apl_no == 1">
+		update TBL_APP_EQUIP set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 3">
+		update TBL_APP_BUSINESS set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 4">
+		update TBL_APP_FOOD set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 5">
+		update TBL_VACATIONLIST set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 6">
+		update TBL_APP_ABSENCE set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+		<if test="apl_no == 7">
+		update TBL_APP_PROJECT set app_success = '1'
+		where pk_documentnum = #{pk_documentnum}
+		</if>
+	</update>
+
+	<!-- 내결재문서 조회할때 불필요한 문서 삭제하기 -->
+	<delete id="removeDocument">
+		DELETE FROM tbl_approvaldocument
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_app_equip">
+		DELETE FROM TBL_APP_EQUIP
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_app_business">
+		DELETE FROM TBL_APP_BUSINESS
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_app_food">
+		DELETE FROM TBL_APP_FOOD
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_vacationlist">
+		DELETE FROM TBL_VACATIONLIST
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_app_absence">
+		DELETE FROM TBL_APP_ABSENCE
+		WHERE app_success = '0'
+	</delete>
+	<delete id="remove_tbl_app_project">
+		DELETE FROM TBL_APP_PROJECT
+		WHERE app_success = '0'
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+		
+		
+
 
 </mapper>

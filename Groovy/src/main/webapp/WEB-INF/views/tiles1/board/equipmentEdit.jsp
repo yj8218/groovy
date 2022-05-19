@@ -81,6 +81,10 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
+span.error {
+	color: red;
+}
+
 </style>
 
 	<%-- Required meta tags --%>
@@ -106,8 +110,128 @@ button#approvePersonAdd {
 
 $(document).ready(function(){
 	
+	$("input[name='productName']").focus();
+	$("span.error").hide();
 	
+	// 품명입력 공백 방지
+	$("input[name='productName']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
 	
+	// 링크입력 공백 방지
+	$("input[name='productLink']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	// 수량입력 공백 방지
+	$("input[name='productCnt']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	// 단가입력 공백 방지
+	$("input[name='productCost']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	// 금액입력 공백 방지
+	$("input[name='productMoney']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	// 사유입력 공백 방지
+	$("input[name='productInfo']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
 	
 }); // $(document).ready(function()
 	
@@ -117,6 +241,21 @@ function cancel() {
 }
 	
 function goEpuipment() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("비품 신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
 	
 	const frm = document.equipmentEditFrm;
 	frm.action = "goEpuipment.groovy";
@@ -142,32 +281,38 @@ function goEpuipment() {
 		<form name="equipmentEditFrm">
 			<div class="box">
 				<label>품명</label><br>
-				<input type="text" name="productName" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productName" size="50"  autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">품명을 입력해주세요</span>
 			</div>
-	
+			
 			<div class="box">
 				<label>상품정보(링크)</label><br>
-				<input type="text" name="productLink" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productLink" size="50"  autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">상품정보(링크)를 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>수량</label><br>
-				<input type="text" name="productCnt" size="50" class="box" autocomplete="off" placeholder="숫자을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productCnt" size="50"  autocomplete="off" placeholder="숫자을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">수량을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>단가</label><br>
-				<input type="text" name="productCost" size="50" class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productCost" size="50" autocomplete="off" placeholder="금액을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">단가를 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>금액</label><br>
-				<input type="text" name="productMoney" size="50" class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productMoney" size="50"  autocomplete="off" placeholder="금액을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">금액을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>사유</label><br>
-				<input type="text" name="productInfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input class="requiredInfo box" type="text" name="productInfo" size="50" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">사유을 입력해주세요</span>
 			</div>
 			<!-- 
 			<div class="box">

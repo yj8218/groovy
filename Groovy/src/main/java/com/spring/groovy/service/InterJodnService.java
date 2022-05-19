@@ -123,16 +123,35 @@ public interface InterJodnService {
 	int app_success_YApprover(Map<String, String> paraMap);
 
 	// 나의 결재 완료 문서 보기
-	List<Map<String, String>> endApproval(String fk_empnum);
+	List<Map<String, String>> endApproval(Map<String, String> paraMap);
 
 	// 나의 결재 참조 문서 보기
-	List<Map<String, String>> referenceApproval(String fk_empnum);
+	List<Map<String, String>> referenceApproval(Map<String, String> paraMap);
 
 	// 참조자 승인자 삭제하기
 	int delApprover(Map<String, String> paraMap);
 
 	// 승인대기 문서 조회 총 페이지 수 구하기
-	int geWaitApprovalTotalCount(Map<String, String> paraMap);
+	int getWaitApprovalTotalCount(Map<String, String> paraMap);
+
+	// 승인완료 문서 조회 총 페이지 수 구하기
+	int getEndApprovalTotalCount(Map<String, String> paraMap);
+
+	// 참조 문서 조회 총 페이지 수 구하기
+	int getReferenceApprovalTotalCount(Map<String, String> paraMap);
+
+	// 회원목록 불러오기
+	List<EmployeeVO> getEmployeeList(Map<String, String> paraMap);
+
+	// 결재 반려하기
+	int app_fail(Map<String, String> paraMap);
+
+	// 결재 반려시 문서상태변경
+	int app_fail_Approver(Map<String, String> paraMap);
+
+	// 불필요한 결재문서 삭제하기
+	void removeList();
+
 
 
 	

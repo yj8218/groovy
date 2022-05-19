@@ -131,9 +131,15 @@ th#right {
 	
 	$(document).ready(function(){
 		
-		let pk_documentnum = $("td.pk_documentnum").text();
+$("div#app_opinion_chk").hide();
 		
+		let pk_documentnum = $("td.pk_documentnum").text();
 		$("input[name='pk_documentnum']").val(pk_documentnum);
+		
+		if($("input#appyn").val() != null ){
+			$("div#app_opinion_chk").show();
+		} 
+		
 		$("textarea[name='opinion']").val("${requestScope.opinion}");
 		
 	}); // end of $(document).ready(function()
@@ -389,23 +395,28 @@ th#right {
 				</c:if>	
 			</table>
 			
-			<div style="font-weight: bold;">승인자 의견</div>
-			<table id="app_opinion">
-				<tr>
-					<th id="left" width="30%;">승인자</th>
-					<th id="right" width="70%;">의견</th>
-				</tr>
-			<c:forEach var="appList" items="${requestScope.approverList }">
-				<c:if test="${appList.app_status eq '1' }">	
+			<div id="app_opinion_chk">
+				<table id="app_opinion">
 					<tr>
-						<td style="background-color: #faf9f9;">[ ${appList.deptnamekor} ] ${appList.name} ${appList.spotnamekor}</td>
-						<td>${appList.opinion}</td>
+						<th colspan="2" class="first">승인자 의견</th>
 					</tr>
-				</c:if>		
-				</c:forEach>
-			</table>
-			
-			<button id="btn_back">확인</button>
+					<tr class="table_index">
+						<th width="30%;">승인자</th>
+						<th width="70%;">의견</th>
+					</tr>
+				<c:forEach var="appList" items="${requestScope.approverList }">
+					<c:if test="${appList.app_status eq '1' }">	
+						<c:if test="${appList.appyn ne '0' }">
+						<tr>
+							<td>[ ${appList.deptnamekor} ] ${appList.name} ${appList.spotnamekor}</td>
+							<td>${appList.opinion}<input type="hidden" id="appyn" value="${appList.appyn}"/></td>
+						</tr>
+						</c:if>
+					</c:if>		
+					</c:forEach>
+				</table>
+			</div>
+			<button id="btn_back" onclick="javascript:location.href='<%= ctxPath%>${requestScope.gobackURL}'">확인</button>
 			
 	</div>
 

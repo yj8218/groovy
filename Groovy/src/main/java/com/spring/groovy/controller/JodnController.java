@@ -92,26 +92,6 @@ public class JodnController {
 		if(n==1) {
 			service.goEpuipmentEdit(equipmentvo);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "1");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "비품신청에 실패했습니다.";
@@ -124,6 +104,8 @@ public class JodnController {
 		
 		}
 		
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=1");
+
 		return mav;
 	}
 
@@ -251,26 +233,6 @@ public class JodnController {
 		if(n==1) {
 			service.goBusinessCostEdit(businessCostVO);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "3");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "휴가신청에 실패했습니다.";
@@ -282,6 +244,9 @@ public class JodnController {
 			mav.setViewName("msg");
 		
 		}
+		
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=3");
+		
 		
 		return mav;
 	}
@@ -398,26 +363,6 @@ public class JodnController {
 		if(n==1) {
 			service.goFoodExpensesEdit(foodExpensesVO);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "4");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "식비사용내역신청에 실패했습니다.";
@@ -429,6 +374,8 @@ public class JodnController {
 			mav.setViewName("msg");
 		
 		}
+
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=4");
 		
 		return mav;
 	}
@@ -490,26 +437,6 @@ public class JodnController {
 		if(n==1) {
 			service.goVacationEdit(paraMap);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "5");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "휴가신청에 실패했습니다.";
@@ -521,6 +448,8 @@ public class JodnController {
 			mav.setViewName("msg");
 		
 		}
+		
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=5");
 		
 		return mav;
 	}
@@ -571,26 +500,6 @@ public class JodnController {
 		if(n==1) {
 			service.goAbsenceEdit(paraMap);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "6");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "휴직신청에 실패했습니다.";
@@ -602,6 +511,8 @@ public class JodnController {
 			mav.setViewName("msg");
 		
 		}
+		
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=6");
 		
 		return mav;
 	}
@@ -717,26 +628,6 @@ public class JodnController {
 		if(n==1) {
 			service.goNewProjectEdit(newProjectVO);
 			
-			// 회계부서
-			List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-			// 영업부서
-			List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-			// 인사부서
-			List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-			// 총무부서
-			List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-			
-			mav.addObject("pk_documentnum", pk_documentnum);
-			mav.addObject("apl_no", "7");
-			
-			mav.addObject("accountEmployeeList", accountEmployeeList);
-			mav.addObject("salesEmployeeList", salesEmployeeList);
-			mav.addObject("personnelEmployeeList", personnelEmployeeList);
-			mav.addObject("managerEmployeeList", managerEmployeeList);
-			
-			mav.setViewName("board/approver.tiles1");
-			// /WEB-INF/views/approval/approvalEdit.jsp
-			
 		} else {
 			
 			String message = "새프로젝트신청에 실패했습니다.";
@@ -749,40 +640,44 @@ public class JodnController {
 		
 		}
 		
+		mav.setViewName("redirect:/approver.groovy?pk_documentnum="+pk_documentnum+"&apl_no=7");
+		
 		return mav;
 	}
 
 	
 	///////////////////////////////////// 신규프로젝트신청 끝
 	
-	
-	
-	
-	
 	// 승인자 참조자 넣기 페이지
-	@RequestMapping(value="/approver.groovy")
-	public ModelAndView approver(ModelAndView mav) {
-		
-		
-		// 회계부서
-		List<EmployeeVO> accountEmployeeList = service.getAccountEmployee();
-		// 영업부서
-		List<EmployeeVO> salesEmployeeList = service.getSalesEmployee();
-		// 인사부서
-		List<EmployeeVO> personnelEmployeeList = service.getPersonnelEmployee();
-		// 총무부서
-		List<EmployeeVO> managerEmployeeList = service.getManagerEmployee();
-		
-		mav.addObject("accountEmployeeList", accountEmployeeList);
-		mav.addObject("salesEmployeeList", salesEmployeeList);
-		mav.addObject("personnelEmployeeList", personnelEmployeeList);
-		mav.addObject("managerEmployeeList", managerEmployeeList);
-		
-		mav.setViewName("board/approver.tiles1");
-		// /WEB-INF/views/approval/approvalEdit.jsp
-		
-		return mav;
-	}
+		@RequestMapping(value="/approver.groovy")
+		public ModelAndView approver(ModelAndView mav, HttpServletRequest request, HttpSession session) {
+			
+			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+			
+			String fk_empnum = loginuser.getPk_empnum();
+			String search = request.getParameter("search");
+			
+			String pk_documentnum = request.getParameter("pk_documentnum");
+			String apl_no = request.getParameter("apl_no");
+			
+			mav.addObject("pk_documentnum", pk_documentnum);
+			mav.addObject("apl_no", apl_no);
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("search", search);
+			
+			// 통합 직원 불러오기 
+			List<EmployeeVO> employeeList = service.getEmployeeList(paraMap);
+			
+			mav.addObject("search", search);
+			mav.addObject("employeeList", employeeList);
+			
+			mav.setViewName("board/approver.tiles1");
+			// /WEB-INF/views/approval/approvalEdit.jsp
+			
+			return mav;
+		}
 	
 	
 	// 승인자 데이터에 넣기 
@@ -792,7 +687,7 @@ public class JodnController {
 		
 		String str_approver_chk = request.getParameter("str_approver_chk");
 		String pk_documentnum = request.getParameter("pk_documentnum");
-		
+		String apl_no = request.getParameter("apl_no");
 //		System.out.println("확인용 str_approver_chk  =>"+ str_approver_chk);
 		
 		Map<String, Object> paraMap = new HashMap<>();
@@ -804,6 +699,7 @@ public class JodnController {
 		
 		paraMap.put("arr_approver_chk", arr_approver_chk);
 		paraMap.put("pk_documentnum", pk_documentnum);
+		paraMap.put("apl_no", apl_no);
 		
 		int n = service.approverList(paraMap);
 		
@@ -933,6 +829,8 @@ public class JodnController {
 			
 			mav.addObject("loginuser", loginuser);
 			
+			service.removeList();
+			
 			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 			
 			Map<String,String> paraMap = new HashMap<>();
@@ -999,15 +897,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px grey; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -1017,8 +915,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -1107,7 +1005,25 @@ public class JodnController {
 			// 승인자 참조자 조회하기
 			List<ApproverVO> approverList = service.app_List(pk_documentnum);
 			
+			// === #125. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = request.getParameter("gobackURL");
+		//	System.out.println("gobackURL 확인용 =>" +gobackURL);
+			// gobackURL 확인용 =>/list.action
+			// gobackURL 확인용 =>/list.action?searchType=
+			// replace 로 공백으로 바꿔준 후 
+			// gobackURL 확인용 =>/list.action?searchType= searchWord= currentShowPageNo=2
 			
+			if(gobackURL != null && gobackURL.contains(" ")) {
+				gobackURL = gobackURL.replace(" ", "&");
+			}
+			
+//			System.out.println("~~~~ view 의 searchType : " + searchType);
+//		    System.out.println("~~~~ view 의 searchWord : " + searchWord);
+//		    System.out.println("~~~~ view 의 gobackURL : " + gobackURL);
+
+			mav.addObject("gobackURL", gobackURL);
 			
 			mav.addObject("approverList", approverList);
 			
@@ -1144,7 +1060,7 @@ public class JodnController {
 			int endRno = 0; // 끝 행 번호
 			
 			// 총 게시물 건수(totalCount)
-		    totalCount = service.geWaitApprovalTotalCount(paraMap);
+		    totalCount = service.getWaitApprovalTotalCount(paraMap);
 			
 			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
 			
@@ -1187,15 +1103,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px grey; color:red; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -1205,8 +1121,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -1292,7 +1208,13 @@ public class JodnController {
 			// 승인자 참조자 조회하기
 			List<ApproverVO> approverList = service.app_List(pk_documentnum);
 			
+			String gobackURL = request.getParameter("gobackURL");
 			
+			if(gobackURL != null && gobackURL.contains(" ")) {
+				gobackURL = gobackURL.replace(" ", "&");
+			}
+
+			mav.addObject("gobackURL", gobackURL);
 			
 			mav.addObject("approverList", approverList);
 			
@@ -1360,26 +1282,14 @@ public class JodnController {
 			paraMap.put("pk_documentnum", pk_documentnum);
 			paraMap.put("opinion", opinion);
 
-			// 결재승인하기
-			int n = service.app_success(paraMap);
+			// 결재반려하기
+			int n = service.app_fail(paraMap);
 			
-			// 결재승인자 남은 인원수 알아오기
-			int count = service.approverCount(paraMap);
-			
-			int x = 0;
-			if(n==1 && count==0) {
-				// 남은 결재자가 없는 경우 문서상태변경
-				x = service.app_success_NApprover(paraMap);
-			}
-			
-			if(n==1 && count!=0) {
-				// 남은 결재자가 있는 경우 문서상태변경
-				x = service.app_success_YApprover(paraMap);
-			}
+			int	x = service.app_fail_Approver(paraMap);
 			
 			if(n==1 && x==1) {
 				
-				String message = "결재문서에 승인하셨습니다.";
+				String message = "결재문서를 반려하셨습니다.";
 				String loc = "redirect:/waitApproval.groovy";
 				
 				mav.addObject("message",message);
@@ -1408,15 +1318,105 @@ public class JodnController {
 		
 		// 나의 결재 완료 문서 보기
 		@RequestMapping(value="/endApproval.groovy")
-		public ModelAndView endApproval(ModelAndView mav, HttpSession session) {
+		public ModelAndView endApproval(ModelAndView mav, HttpSession session, HttpServletRequest request) {
 			
 			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 			
 			String fk_empnum = loginuser.getPk_empnum();
 			
-			List<Map<String,String>> endApprovalList = service.endApproval(fk_empnum);
+			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 			
-			// pk_documentnum 값 가져오기
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			
+			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
+			int totalCount = 0; // 총 게시물 건수 
+			int sizePerPage = 10; // 한 페이지당 보여줄 게시물 건수
+			int currentShowPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.	
+			int totalPage = 0; // 총 페이지 수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			int startRno = 0; // 시작행 번호
+			int endRno = 0; // 끝 행 번호
+			
+			// 총 게시물 건수(totalCount)
+		    totalCount = service.getEndApprovalTotalCount(paraMap);
+			
+			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+			
+			if(str_currentShowPageNo == null ) {
+				// 게시판에 보여지는 초기화면 
+				currentShowPageNo = 1;
+			} else {
+				try {
+					currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+					if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+						currentShowPageNo = 1;
+					}
+				} catch(NumberFormatException e) {
+					currentShowPageNo = 1;
+				}
+			}
+			
+			startRno =  (currentShowPageNo - 1) * sizePerPage + 1;
+			endRno = startRno + sizePerPage - 1;
+			
+			paraMap.put("startRno", String.valueOf(startRno)); // 스트링타입으로 변환
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			// ~~~~~~~~~~~~~~~~~~~~~~~
+			
+			List<Map<String,String>> endApprovalList = service.endApproval(paraMap);
+			// 페이징 처리한 글 목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함 한 것)
+			
+			int blockSize = 10;
+			// blockSize는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+						
+			int loop = 1;
+			/*
+	          loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	        */
+			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+			
+			String pageBar = "<ul style='list-style: none;'>";
+			String url = request.getContextPath()+"/myApproval.groovy";
+			
+			// === [처음][이전] 만들기 == 
+			if(pageNo != 1) {
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			}
+			
+			while( !(loop>blockSize || pageNo > totalPage) ) {
+				if(pageNo == currentShowPageNo) {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+				} else {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				}
+
+				loop++;
+				pageNo++;			
+				} // end of while 
+			
+			// === [다음][마지막] 만들기 ==
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			mav.addObject("pageBar", pageBar);
+			
+			// === #123. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = MyUtil.getCurrentURL(request);
+			mav.addObject("gobackURL", gobackURL.replace("&", " "));
+			
+			// 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 끝
+			///////////////////////////////////////////////////////////////////////
+			
 			
 			mav.addObject("endApprovalList", endApprovalList);
 			
@@ -1487,6 +1487,14 @@ public class JodnController {
 			// 승인자 참조자 조회하기
 			List<ApproverVO> approverList = service.app_List(pk_documentnum);
 			
+			String gobackURL = request.getParameter("gobackURL");
+			
+			if(gobackURL != null && gobackURL.contains(" ")) {
+				gobackURL = gobackURL.replace(" ", "&");
+			}
+
+			mav.addObject("gobackURL", gobackURL);
+			
 			mav.addObject("approverList", approverList);
 			
 			mav.setViewName("board/endApprovalDetail.tiles1");
@@ -1497,13 +1505,104 @@ public class JodnController {
 
 		// 나의 결재 참조 문서 보기
 		@RequestMapping(value="/referenceApproval.groovy")
-		public ModelAndView referenceApproval(ModelAndView mav, HttpSession session) {
+		public ModelAndView referenceApproval(ModelAndView mav, HttpSession session, HttpServletRequest request) {
 			
 			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
 			
 			String fk_empnum = loginuser.getPk_empnum();
 			
-			List<Map<String,String>> referenceApprovalList = service.referenceApproval(fk_empnum);
+			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			
+			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
+			int totalCount = 0; // 총 게시물 건수 
+			int sizePerPage = 10; // 한 페이지당 보여줄 게시물 건수
+			int currentShowPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.	
+			int totalPage = 0; // 총 페이지 수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			int startRno = 0; // 시작행 번호
+			int endRno = 0; // 끝 행 번호
+			
+			// 총 게시물 건수(totalCount)
+		    totalCount = service.getReferenceApprovalTotalCount(paraMap);
+			
+			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+			
+			if(str_currentShowPageNo == null ) {
+				// 게시판에 보여지는 초기화면 
+				currentShowPageNo = 1;
+			} else {
+				try {
+					currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+					if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+						currentShowPageNo = 1;
+					}
+				} catch(NumberFormatException e) {
+					currentShowPageNo = 1;
+				}
+			}
+			
+			startRno =  (currentShowPageNo - 1) * sizePerPage + 1;
+			endRno = startRno + sizePerPage - 1;
+			
+			paraMap.put("startRno", String.valueOf(startRno)); // 스트링타입으로 변환
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			// ~~~~~~~~~~~~~~~~~~~~~~~
+			
+			List<Map<String,String>> referenceApprovalList = service.referenceApproval(paraMap);
+			// 페이징 처리한 글 목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함 한 것)
+			
+			int blockSize = 10;
+			// blockSize는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+						
+			int loop = 1;
+			/*
+	          loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	        */
+			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+			
+			String pageBar = "<ul style='list-style: none;'>";
+			String url = request.getContextPath()+"/myApproval.groovy";
+			
+			// === [처음][이전] 만들기 == 
+			if(pageNo != 1) {
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			}
+			
+			while( !(loop>blockSize || pageNo > totalPage) ) {
+				if(pageNo == currentShowPageNo) {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+				} else {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				}
+
+				loop++;
+				pageNo++;			
+				} // end of while 
+			
+			// === [다음][마지막] 만들기 ==
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			mav.addObject("pageBar", pageBar);
+			
+			// === #123. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = MyUtil.getCurrentURL(request);
+			mav.addObject("gobackURL", gobackURL.replace("&", " "));
+			
+			// 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 끝
+			///////////////////////////////////////////////////////////////////////
 			
 			// pk_documentnum 값 가져오기
 			
@@ -1575,6 +1674,14 @@ public class JodnController {
 		
 			// 승인자 참조자 조회하기
 			List<ApproverVO> approverList = service.app_List(pk_documentnum);
+			
+			String gobackURL = request.getParameter("gobackURL");
+			
+			if(gobackURL != null && gobackURL.contains(" ")) {
+				gobackURL = gobackURL.replace(" ", "&");
+			}
+
+			mav.addObject("gobackURL", gobackURL);
 			
 			mav.addObject("approverList", approverList);
 			

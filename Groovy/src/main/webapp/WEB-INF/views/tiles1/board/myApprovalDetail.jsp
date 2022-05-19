@@ -87,7 +87,7 @@ th.last_radius {
 	background-color: #faf9f9;
 } */
 
-button#btn_cancel {
+button.btn_css {
 	border: none;
 	background-color: #6449FC;
 	width: 150px;
@@ -96,10 +96,29 @@ button#btn_cancel {
 	font-weight: bold;
 	border-radius: 7px;
 	text-align: center;
-	margin: 0 auto;
+	margin-left: 20px;
 	float: right;
 	margin-bottom: 200px;
 } 
+
+div#app_opinion_chk {
+	margin-top: 20px;
+}
+	
+table#app_opinion {
+	margin-bottom: 100px;
+	width: 100%;
+}
+
+table#app_opinion td, table#app_opinion th{
+	padding: 15px;
+}
+
+table#app_opinion th {
+	text-align: center;
+}
+table#app_opinion td {
+}	
 
 </style>
 
@@ -107,6 +126,15 @@ button#btn_cancel {
 <script type="text/javascript">
 	
 	$(document).ready(function(){
+		
+		$("div#app_opinion_chk").hide();
+		
+		let pk_documentnum = $("td.pk_documentnum").text();
+		$("input[name='pk_documentnum']").val(pk_documentnum);
+		
+		if($("input#appyn").val() != null ){
+			$("div#app_opinion_chk").show();
+		} 
 		
 		$("button#btn_cancel").click(function (){
 			
@@ -120,14 +148,11 @@ button#btn_cancel {
 				return;
 			}
 			
-			let pk_documentnum = $("td.pk_documentnum").text();
-			$("input[name='pk_documentnum']").val(pk_documentnum);
-			
-			
 			const frm = document.cancelFrm;
 			frm.action = "<%=ctxPath%>/cancelApproval.groovy";
 			frm.submit();
 		});
+		
 		
 		
 	}); // end of $(document).ready(function()
@@ -381,11 +406,35 @@ button#btn_cancel {
 					</tr>
 				</c:if>	
 			</table>
+			
+			<div id="app_opinion_chk">
+				<table id="app_opinion">
+					<tr>
+						<th colspan="2" class="first">승인자 의견</th>
+					</tr>
+					<tr class="table_index">
+						<th width="30%;">승인자</th>
+						<th width="70%;">의견</th>
+					</tr>
+				<c:forEach var="appList" items="${requestScope.approverList }">
+					<c:if test="${appList.app_status eq '1' }">	
+						<c:if test="${appList.appyn ne '0' }">
+						<tr>
+							<td>[ ${appList.deptnamekor} ] ${appList.name} ${appList.spotnamekor}</td>
+							<td>${appList.opinion}<input type="hidden" id="appyn" value="${appList.appyn}"/></td>
+						</tr>
+						</c:if>
+					</c:if>		
+					</c:forEach>
+				</table>
+			</div>
+			
 			<form name="cancelFrm">
 				<input type="hidden" name="pk_documentnum" />
 				<input type="hidden" name="apl_no" value="${requestScope.apl_no}"/>
-				<button type="button" id="btn_cancel" >결재취소하기</button>
+				<button type="button" id="btn_cancel" class="btn_css">결재취소하기</button>
 			</form>
+			<button class="btn_css" onclick="javascript:location.href='<%= ctxPath%>${requestScope.gobackURL}'">확인</button>
 	</div>
 
 
