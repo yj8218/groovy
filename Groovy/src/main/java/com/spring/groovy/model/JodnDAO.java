@@ -91,6 +91,10 @@ public class JodnDAO implements InterJodnDAO {
 	@Override
 	public int approverList(Map<String, Object> paraMap) {
 		int n = sqlsession.insert("jodn.approverList", paraMap);
+		
+		sqlsession.update("jodn.updateDocument", paraMap);
+		sqlsession.update("jodn.updateApproval", paraMap);
+		
 		return n;
 	}
 
@@ -170,7 +174,6 @@ public class JodnDAO implements InterJodnDAO {
 	// 새프로젝트 신청 상세정보 
 	@Override
 	public void goNewProjectEdit(NewProjectVO newProjectVO) {
-		System.out.println("fileSize = >" +newProjectVO.getFileSize());
 		sqlsession.insert("jodn.goNewProjectEdit", newProjectVO);	
 	}
 
@@ -334,7 +337,7 @@ public class JodnDAO implements InterJodnDAO {
 		int n = sqlsession.delete("jodn.delApprover", paraMap);
 		return n;
 	}
-
+	
 	// 승인완료 문서 조회 총 페이지 수 구하기
 	@Override
 	public int getEndApprovalTotalCount(Map<String, String> paraMap) {
@@ -347,6 +350,41 @@ public class JodnDAO implements InterJodnDAO {
 	public int getReferenceApprovalTotalCount(Map<String, String> paraMap) {
 		int totalCount = sqlsession.selectOne("jodn.getReferenceApprovalTotalCount", paraMap);
 		return totalCount;
+	}
+
+	// 회원목록 불러오기
+	@Override
+	public List<EmployeeVO> getEmployeeList(Map<String, String> paraMap) {
+		List<EmployeeVO> employeeList = sqlsession.selectList("jodn.getEmployeeList", paraMap);
+		return employeeList;
+	}
+
+	
+	// 결재반려하기
+	@Override
+	public int app_fail(Map<String, String> paraMap) {
+		int n = sqlsession.update("jodn.app_fail", paraMap);
+		return n;
+	}
+
+	// 결재반려시 문서상태변경
+	@Override
+	public int app_fail_Approver(Map<String, String> paraMap) {
+		int n = sqlsession.update("jodn.app_fail_Approver", paraMap);
+		return n;
+	}
+
+	// 불필요한 결재문서 삭제
+	@Override
+	public void removeList() {
+		sqlsession.delete("jodn.remove_tbl_app_equip");
+		sqlsession.delete("jodn.remove_tbl_app_business");
+		sqlsession.delete("jodn.remove_tbl_app_food");
+		sqlsession.delete("jodn.remove_tbl_vacationlist");
+		sqlsession.delete("jodn.remove_tbl_app_absence");
+		sqlsession.delete("jodn.remove_tbl_app_project");
+		sqlsession.delete("jodn.removeDocument");
+		
 	}
 	
 

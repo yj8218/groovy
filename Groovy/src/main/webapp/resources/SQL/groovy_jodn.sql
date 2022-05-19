@@ -139,7 +139,8 @@ order by A.FK_SPOTNUM
 
 
 select *
-from tbl_approvaldocument;
+from tbl_approvaldocument
+order by writeday
 
 select *
 from TBL_APP_EQUIP;
@@ -152,10 +153,42 @@ order by fk_documentnum, app_status desc
 
 
 DELETE FROM tbl_approvaldocument
-WHERE pk_documentnum = '20220512171146349'
+WHERE pk_documentnum in ('20220518000605596',
+'20220518000628761',
+'20220518000635194',
+'20220518000641026',
+'20220518000642123',
+'20220518001509473',
+'20220518001527108',
+'20220518001528141',
+'20220518001537410',
+'20220518001539667',
+'20220518001547459',
+'20220518002710052',
+'20220518002945282',
+'20220518151803012',
+'20220518151835526',
+'20220518151859748',
+'20220518152434876',
+'20220518153547367')
 
 DELETE FROM TBL_APP_EQUIP
-WHERE pk_documentnum = '20220515022148216'
+WHERE pk_documentnum in ('20220518000635194',
+'20220518000605596',
+'20220518000628761',
+'20220518000641026',
+'20220518000642123',
+'20220518001528141',
+'20220518001509473',
+'20220518001527108',
+'20220518001537410',
+'20220518001539667',
+'20220518001547459',
+'20220518002710052',
+'20220518002945282',
+'20220518153547367',
+'20220518151803012',
+'20220518151835526') 
 
 delete from TBL_APPROVALPERSON
 WHERE fk_documentnum = '20220512171146349'
@@ -567,6 +600,72 @@ on A.fk_deptnum = E.PK_DEPTNUM
 join tbl_spot F
 on F.PK_SPOTNUM = A.fK_SPOTNUM
 where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0'
+
+
+-- 참조자 승인자 검색 --
+select pk_empnum, deptnamekor ,name, fk_spotnum, fk_deptnum
+from tbl_employee a
+join tbl_spot b
+on b.pk_spotnum = a.fk_spotnum
+join tbl_department c
+on c.pk_deptnum = a.fk_deptnum
+where pk_empnum != '20170222-01' 
+and name like '%김%'
+order by fk_spotnum desc
+
+
+
+select *
+from tbl_approvaldocument
+order by writeday
+
+select *
+from TBL_APP_EQUIP;
+
+select *
+from TBL_APPROVALPERSON
+where 
+order by fk_documentnum, app_status desc
+
+
+select *
+from TBL_APP_EQUIP A
+join TBL_APPROVALPERSON B
+on A.pk_documentNum = B.fk_documentNum
+
+
+update TBL_APP_EQUIP set success = '1'
+where pk_documentnum = '20220516222733788'
+
+
+DELETE FROM tbl_approvaldocument
+WHERE pk_documentnum in ()
+
+DELETE FROM TBL_APP_EQUIP
+WHERE pk_documentnum in ('20220518000635194') 
+
+delete from TBL_APPROVALPERSON
+WHERE fk_documentnum = '20220512171146349'
+
+DELETE FROM tbl_approvaldocument
+WHERE success = '0'
+
+commit;
+
+rollback
+
+
+
+DELETE A,B,C,D,E,F,G
+select *
+FROM tbl_approvaldocument as A 
+LEFT JOIN TBL_APP_EQUIP as B ON A.success = B.success
+LEFT JOIN TBL_APP_ABSENCE as C ON C.success = B.success
+LEFT JOIN TBL_APP_BUSINESS as D ON D.success = C.success
+LEFT JOIN TBL_APP_FOOD as E ON D.success = E.success 
+LEFT JOIN TBL_APP_PROJECT as F ON E.success = F.success 
+LEFT JOIN TBL_VACATIONLIST as G ON F.success = G.success 
+WHERE A.success = '0'
 
 
 

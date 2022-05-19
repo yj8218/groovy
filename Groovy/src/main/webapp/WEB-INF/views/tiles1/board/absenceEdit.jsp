@@ -84,6 +84,10 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
+span.error {
+	color: red;
+}
+
 </style>
 
 	<%-- Required meta tags --%>
@@ -114,6 +118,8 @@ button#approvePersonAdd {
 <script type="text/javascript">
 	
 $(document).ready(function(){
+	
+	$("span.error").hide();    
 	
 	$(function() {
 	    //모든 datepicker에 대한 공통 옵션 설정
@@ -148,6 +154,29 @@ $(document).ready(function(){
 	
 	});
 
+	
+	// 휴직사유 공백 방지
+	$("input[name='absenceInfo']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	}); 
+	
+	
+	
 });
 	
 
@@ -156,6 +185,22 @@ function cancel() {
 }
 	
 function goAbsence() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("휴가신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
+	
 	
 	const frm = document.absenceEditFrm;
 	frm.action = "goAbsence.groovy";
@@ -190,7 +235,8 @@ function goAbsence() {
 		
 		<div class="box">
 			<label>휴직 사유</label><br>
-			<input type="text" name="absenceInfo"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+			<input type="text" name="absenceInfo"  class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
+			<span class="error">휴직 사유를 입력해주세요</span>
 		</div>
 		
 		<div class="box">

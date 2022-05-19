@@ -85,6 +85,11 @@ button#approvePersonAdd {
 	margin: 30px auto;
 }
 
+span.error {
+	color: red;
+}
+
+
 </style>
 
 	<%-- Required meta tags --%>
@@ -149,6 +154,89 @@ $(document).ready(function(){
 	        //To의 초기값을 3일후로 설정
 	        $('input#toDate').datepicker('setDate', '+3D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	
+	        
+        $("input[name='businessRegion']").focus();
+    	$("span.error").hide();    
+	        
+    	// 출장지역 공백 방지
+    	$("input[name='businessRegion']").blur(() => {
+    		const $target = $(event.target);
+    		
+    		const name = $target.val().trim();
+    		if(name == ""){
+    			
+    		//	$target.next().show();
+    		// 	또는
+    			$target.parent().find(".error").show();
+    			
+    		} else {
+    			// 공백이 아닌 글자를 입력했을 경우
+    			
+    			//	$target.next().hide();
+    			// 	또는
+    			$target.parent().find(".error").hide();
+    		}
+    	});     
+    	// 출장목적 공백 방지
+    	$("input[name='businessPurpose']").blur(() => {
+    		const $target = $(event.target);
+    		
+    		const name = $target.val().trim();
+    		if(name == ""){
+    			
+    		//	$target.next().show();
+    		// 	또는
+    			$target.parent().find(".error").show();
+    			
+    		} else {
+    			// 공백이 아닌 글자를 입력했을 경우
+    			
+    			//	$target.next().hide();
+    			// 	또는
+    			$target.parent().find(".error").hide();
+    		}
+    	});     
+	        
+    	// 청구금액 공백 방지
+    	$("input[name='businessMoney']").blur(() => {
+    		const $target = $(event.target);
+    		
+    		const name = $target.val().trim();
+    		if(name == ""){
+    			
+    		//	$target.next().show();
+    		// 	또는
+    			$target.parent().find(".error").show();
+    			
+    		} else {
+    			// 공백이 아닌 글자를 입력했을 경우
+    			
+    			//	$target.next().hide();
+    			// 	또는
+    			$target.parent().find(".error").hide();
+    		}
+    	});     
+    	// 첨부파일 공백 방지
+    	$("input[name='attach']").blur(() => {
+    		const $target = $(event.target);
+    		
+    		const name = $target.val().trim();
+    		if(name == ""){
+    			
+    		//	$target.next().show();
+    		// 	또는
+    			$target.parent().find(".error").show();
+    			
+    		} else {
+    			// 공백이 아닌 글자를 입력했을 경우
+    			
+    			//	$target.next().hide();
+    			// 	또는
+    			$target.parent().find(".error").hide();
+    		}
+    	});     
+	        
+	        
 	});
 
 });
@@ -159,6 +247,22 @@ function cancel() {
 }
 	
 function goBusinessCost() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("출장비 신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
+	
 	
 	const frm = document.businessCostEditFrm;
 	frm.action = "goBusinessCost.groovy";
@@ -185,32 +289,36 @@ function goBusinessCost() {
 
 			<div class="box">
 				<label>출장지역</label><br>
-				<input type="text" name="businessRegion" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="businessRegion" class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">출장지역을 입력해주세요</span>
 			</div>
 	
 			<div class="box">
 				<label>출장 시작일</label><br>
-				<input type="text" id="fromDate" name="businessStartDate" class="box" autocomplete="off" />
+				<input type="text" id="fromDate" name="businessStartDate" class="box requiredInfo" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>출장 종료일</label><br>
-				<input type="text" id="toDate" name="businessEndDate"  class="box" autocomplete="off" />
+				<input type="text" id="toDate" name="businessEndDate"  class="box requiredInfo" autocomplete="off" />
 			</div>
 			
 			<div class="box">
 				<label>출장 목적</label><br>
-				<input type="text" name="businessPurpose"  class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="businessPurpose"  class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">출장목적을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>청구 금액</label><br>
-				<input type="text" name="businessMoney"  class="box" autocomplete="off" placeholder="금액을 입력하세요."/>
+				<input type="text" name="businessMoney"  class="box requiredInfo" autocomplete="off" placeholder="금액을 입력하세요." oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+				<span class="error">청구 금액을 입력해주세요</span>
 			</div>
 			
 			<div class="box">
 				<label>첨부파일</label><br>
-				<input type="file" name="attach"  />
+				<input type="file" name="attach" class="requiredInfo" />
+				<br><span class="error">첨부파일을 등록해주세요</span>
 			</div>
 			
 			<div id="app_btn" class="box">

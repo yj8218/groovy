@@ -129,9 +129,6 @@ button.btn_wait {
 		frm.submit();
 	}
 	
-	function cancel() {
-		location.href="<%=ctxPath%>/waitApproval.groovy";
-	}
 	
 </script>
 
@@ -373,7 +370,7 @@ button.btn_wait {
 				<br>
 				<input type="hidden" name="pk_documentnum" />
 			</form>
-			<button class="btn_wait" type="button" onclick="cancel()">취소</button>
+			<button class="btn_wait" onclick="javascript:location.href='<%= ctxPath%>${requestScope.gobackURL}'">확인</button>
 			<button class="btn_wait" type="button" onclick="app_fail()">반려하기</button>
 			<button class="btn_wait" type="button" onclick="app_success()">승인하기</button>
 			

@@ -95,6 +95,10 @@ select[name='fk_vstatus'] {
 	border: solid 1px grey;
 }
 
+span.error{
+	color: red;
+}
+
 </style>
 
 	<%-- Required meta tags --%>
@@ -129,6 +133,9 @@ select[name='fk_vstatus'] {
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	$("input.hour").hide();
+	$("span.error").hide();
 	
 	$(function() {
 	    //모든 datepicker에 대한 공통 옵션 설정
@@ -186,6 +193,36 @@ $(document).ready(function(){
 		    scrollbar: true
 	    });
 	
+	$("select[name='fk_vstatus']").bind("change", function() {
+		
+		if($("select[name='fk_vstatus']").val() == '1'){
+			$("input.hour").show();
+		} else {
+			$("input.hour").hide();
+		}
+		
+	});
+	
+	// 휴가사유 공백 방지
+	$("input[name='vinfo']").blur(() => {
+		const $target = $(event.target);
+		
+		const name = $target.val().trim();
+		if(name == ""){
+			
+		//	$target.next().show();
+		// 	또는
+			$target.parent().find(".error").show();
+			
+		} else {
+			// 공백이 아닌 글자를 입력했을 경우
+			
+			//	$target.next().hide();
+			// 	또는
+			$target.parent().find(".error").hide();
+		}
+	});     
+	
 
 });
 	
@@ -196,6 +233,26 @@ function cancel() {
 }
 	
 function goVacation() {
+	
+	let b_FlagRequiredInfo = false;
+	
+	$("input.requiredInfo").each(function(index, item) {
+		const data = $(item).val().trim();
+		if(data == ""){
+			alert("휴가신청에 필요한 정보를 모두 입력해주세요");
+			b_FlagRequiredInfo = true;
+			return false; // each문에서 for문에서 break; 와 같은 기능이다.
+		}
+	});
+	
+	if(b_FlagRequiredInfo) {
+		return;
+	}
+	
+	if($("select[name='fk_vstatus']").val() == 0){
+		alert("휴가 종류를 선택해주세요");
+		return;
+	}
 	
 	const frm = document.vacationEditFrm;
 	frm.action = "goVacation.groovy";
@@ -233,18 +290,19 @@ function goVacation() {
 			<div class="box">
 				<label>휴가 시작일</label><br>
 				<input type="text" id="fromDate" name="holidayStartDate" size="50" class="date"  />
-				<input type="text" class="timepickerStart date" name="holidayStartHour"/>
+				<input type="text" class="timepickerStart date hour" name="holidayStartHour"/>
 			</div>
 	
 			<div class="box">
 				<label>휴가 종료일</label><br>
 				<input type="text" id="toDate" name="holidayEndDate" size="50" class="date" />
-				<input type="text" class="timepickerEnd date" name="holidayEndHour" />
+				<input type="text" class="timepickerEnd date hour" name="holidayEndHour" />
 			</div>
 			
 			<div class="box">
 				<label>휴가사유</label><br>
-				<input type="text" name="vinfo" size="50" class="box" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<input type="text" name="vinfo" size="50" class="box requiredInfo" autocomplete="off" placeholder="내용을 입력하세요."/>
+				<span class="error">휴가 사유를 입력해주세요</span>
 			</div>
 			
 			<div class="box">

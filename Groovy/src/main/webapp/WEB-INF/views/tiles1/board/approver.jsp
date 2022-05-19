@@ -14,7 +14,7 @@
 <style type="text/css">
 
 	div#container {
-		width: 60%;
+		width: 100%;
 		margin-left: 30px;
 		/* margin: 0 auto; */
 	}
@@ -180,6 +180,26 @@ div#btn_addApprover, div#btn_addReference {
 
 div#addPerson {
 	display: inline-block;
+	float: left;
+}
+
+div#btn_goApprover {
+	clear:both;
+}
+
+form[name='searchFrm'] {
+	display: inline-block;
+}
+
+button#btn_addReference , button#btn_addApprover {
+	text-align: center;
+	vertical-align: middle;
+	border: none;
+	background-color: #6449FC;
+	color: white; 
+	width: 60px;
+	height: 30px;
+	border-radius: 7px;
 }
 
 </style>
@@ -217,6 +237,11 @@ let html = "";
 let parent_submit = "";
 
 $(document).ready(function(){
+
+ 	if($("input[name='search']").val() != ""){
+		$(".panel").css('display', 'block');
+ 	}
+	
 	
 	// 회원목록 불러오는 아코디언
 	var acc = document.getElementsByClassName("accordion");
@@ -324,6 +349,8 @@ $(document).ready(function(){
 		        
 		  })
 		
+		  chk_arr.prop("checked", false); 
+		  
 	});
 	 
 	 
@@ -341,11 +368,13 @@ function goApprover() {
 	
 	let str_approver_chk = approver_data.join(',');
 	let pk_documentnum = $("input#approverDocnum").val();
+	let apl_no = $("input#apl_no").val();
 	
 	$.ajax({
 		  url:"<%= request.getContextPath()%>/addApproverEnd.groovy",
 		  data:{"str_approver_chk":str_approver_chk,
-				"pk_documentnum":pk_documentnum  
+				"pk_documentnum":pk_documentnum,
+				"apl_no":apl_no
 		  },
 		  type:"POST",
 		  dataType:"JSON",
@@ -430,6 +459,14 @@ function goCancel() {
 	
 }
 
+function search() {
+	
+	const frm = document.searchFrm;
+	frm.action = "<%= ctxPath%>/approver.groovy";
+	frm.submit();
+	
+}
+
 
 </script>
 
@@ -440,21 +477,47 @@ function goCancel() {
 
 	<div id="title">승인 ·참조 대상 설정</div>
 	<div id="searchEmployeeList">
-		<select class="search">
-			<option>이름</option>
-		</select>
-		<input type="text" name="search" >
-		<button type="button" class="search" >검색</button>
+		<form name="searchFrm">
+			<select class="search">
+				<option>이름</option>
+			</select>
+			<input type="text" name="search" value="${requestScope.search}">
+			<input type="hidden" >
+			<input type="hidden" name="pk_documentnum" value="${requestScope.pk_documentnum}">
+			<input type="hidden" name="apl_no" value="${requestScope.apl_no}">
+		</form>
+		<button type="button" class="search" onclick="search();">검색</button>
 	</div>
 	
 	<div id="body">
-	
+		
+		
 		<div id="employeeList">
 			<div style="font-weight: bold; margin: 20px; font-size: 20px;">회원목록</div>
+
+			<dl>
+				<dt class="accordion">임원</dt>
+				<dd class="panel">
+					<c:forEach var="empvo" items="${requestScope.employeeList }" varStatus="i">
+					<c:if test="${empvo.fk_deptnum eq 0}"> 
+						<div class="employee">
+							<input type="checkbox" class="employee" value="${empvo.pk_empnum }" id="officer${i.count }" name="officer${i.count }">
+							<label for="officer${i.count }">
+								<span style="color: blue; font-weight: bold;">[${empvo.deptnamekor }]</span>
+								<span>${empvo.name }</span>
+								<span>(${empvo.pk_empnum })</span>
+							</label>
+						</div>
+					</c:if>
+					</c:forEach>
+				</dd>
+			</dl>		
+			<br>
 			<dl>
 				<dt class="accordion">회계</dt>
 				<dd class="panel">
-					<c:forEach var="empvo" items="${requestScope.accountEmployeeList }" varStatus="i">
+					<c:forEach var="empvo" items="${requestScope.employeeList }" varStatus="i">
+					<c:if test="${empvo.fk_deptnum eq 1}"> 
 						<div class="employee">
 							<input type="checkbox" class="employee" value="${empvo.pk_empnum }" id="acc${i.count }" name="acc${i.count }">
 							<label for="acc${i.count }">
@@ -463,14 +526,16 @@ function goCancel() {
 								<span>(${empvo.pk_empnum })</span>
 							</label>
 						</div>
-					</c:forEach>	
+					</c:if>
+					</c:forEach>
 				</dd>
 			</dl>		
 			<br>
 			<dl>
 				<dt class="accordion">영업</dt>
 				<dd class="panel">
-					<c:forEach var="empvo" items="${requestScope.salesEmployeeList }" varStatus="i">
+					<c:forEach var="empvo" items="${requestScope.employeeList }" varStatus="i">
+					<c:if test="${empvo.fk_deptnum eq 2}"> 
 						<div class="employee">
 							<input type="checkbox" class="employee" value="${empvo.pk_empnum }" id="sales${i.count }" name="sales${i.count }">
 							<label for="sales${i.count }">
@@ -479,6 +544,7 @@ function goCancel() {
 								<span>(${empvo.pk_empnum })</span>
 							</label>
 						</div>
+					</c:if>	
 					</c:forEach>
 				</dd>
 			</dl>
@@ -486,7 +552,8 @@ function goCancel() {
 			<dl>
 				<dt class="accordion">인사</dt>
 				<dd class="panel">
-					<c:forEach var="empvo" items="${requestScope.personnelEmployeeList }" varStatus="i">
+					<c:forEach var="empvo" items="${requestScope.employeeList }" varStatus="i">
+					<c:if test="${empvo.fk_deptnum eq 3}"> 
 						<div class="employee">
 							<input type="checkbox" class="employee" value="${empvo.pk_empnum }" id="person${i.count }" name="person${i.count }" >
 							<label for="person${i.count }">
@@ -495,6 +562,7 @@ function goCancel() {
 								<span>(${empvo.pk_empnum })</span>
 							</label>
 						</div>
+					</c:if>	
 					</c:forEach>	
 				</dd>
 			</dl>
@@ -502,7 +570,8 @@ function goCancel() {
 			<dl>
 				<dt class="accordion">총무</dt>
 				<dd class="panel">
-					<c:forEach var="empvo" items="${requestScope.managerEmployeeList }" varStatus="i">
+					<c:forEach var="empvo" items="${requestScope.employeeList }" varStatus="i">
+					<c:if test="${empvo.fk_deptnum eq 4}"> 
 						<div class="employee">
 							<input type="checkbox" class="employee" value="${empvo.pk_empnum }" id="manager${i.count }" name="manager${i.count }" >
 							<label for="manager${i.count }">
@@ -511,9 +580,10 @@ function goCancel() {
 								<span>(${empvo.pk_empnum })</span>
 							</label>
 						</div>
+					</c:if>	
 					</c:forEach>	
 				</dd>
-			</dl>		
+			</dl>
 			
 		</div>
 		
@@ -547,7 +617,7 @@ function goCancel() {
 	<div id="btn_goApprover">
 		<form name="documentnumFrm">
 			<input type="hidden" name="pk_documentnum" value="${requestScope.pk_documentnum }"/>
-			<input type="hidden" name="apl_no" value="${requestScope.apl_no }"/>
+			<input type="hidden" id="apl_no" name="apl_no" value="${requestScope.apl_no }"/>
 			<button type="button"  class="btn_person" onclick="goApprover();">신청하기</button>
 			<button type="button"  class="btn_person" onclick="goCancel();">취소</button>
 		</form>

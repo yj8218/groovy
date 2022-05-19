@@ -67,11 +67,11 @@ select.search {
 			const $target = $(event.target);
 			
 		//	alert("확인용 => " + $target.parent().html() );
-				
+			const gobackURL = "${requestScope.gobackURL}";	
 			const pk_documentnum = $target.parent().children(".pk_documentnum").text();
 			const apl_no = $target.parent().children("td.deptnamekor").children("input.apl_no").val();
 			
-			location.href="<%= ctxPath%>/selectOneMyDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum;
+			location.href="<%= ctxPath%>/selectOneMyDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum+"&gobackURL="+gobackURL;
 																						
 		}); 
 		
@@ -136,13 +136,13 @@ select.search {
 								<td>승인대기</td>
 							</c:if>
 							<c:if test="${appList.status == 1 }">
-								<td>승인중</td>
+								<td style="font-weight:bold;">승인중</td>
 							</c:if>
 							<c:if test="${appList.status == 2 }">
-								<td>승인완료</td>
+								<td style="color:blue;">승인완료</td>
 							</c:if>
 							<c:if test="${appList.status == 3 }">
-								<td>반려</td>
+								<td style="color:red;">반려</td>
 							</c:if>
 						</tr>
 					</c:forEach>

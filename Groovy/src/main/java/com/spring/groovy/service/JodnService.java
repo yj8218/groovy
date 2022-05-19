@@ -320,6 +320,33 @@ public class JodnService implements InterJodnService {
 		return totalCount;
 	}
 
+	// 회원목록 불러오기
+	@Override
+	public List<EmployeeVO> getEmployeeList(Map<String, String> paraMap) {
+		List<EmployeeVO> employeeList = dao.getEmployeeList(paraMap);
+		return employeeList;
+	}
+
+	// 결재반려하기
+	@Override
+	public int app_fail(Map<String, String> paraMap) {
+		int n = dao.app_fail(paraMap);
+		return n;
+	}
+
+	// 결재반려시 문서상태변경 
+	@Override
+	public int app_fail_Approver(Map<String, String> paraMap) {
+		int n = dao.app_fail_Approver(paraMap);
+		return n;
+	}
+
+	// 불필요한 결재문서 삭제
+	@Override
+	public void removeList() {
+		dao.removeList();
+	}
+
 
 
 
