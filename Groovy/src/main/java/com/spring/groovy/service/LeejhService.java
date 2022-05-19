@@ -158,7 +158,7 @@ public class LeejhService implements InterLeejhService {
 	@Override
 	public BoardVO getView(Map<String, String> paraMap) {
 		BoardVO boardvo = dao.getView(paraMap); // 글1개 조회하기
-		
+		/*
 		String login_userid = paraMap.get("login_userid");  
 		// paraMap.get("login_userid") 은 로그인을 한 상태이라면 로그인한 사용자의 userid 이고,
 		// 로그인을 하지 않은 상태이라면  paraMap.get("login_userid") 은 null 이다.
@@ -170,7 +170,7 @@ public class LeejhService implements InterLeejhService {
 			
 			dao.setAddReadCount(boardvo.getPk_board_seq());  // 글조회수 1증가 하기 
 			boardvo = dao.getView(paraMap); 
-		}
+		}*/
 		
 		return boardvo;
 	}

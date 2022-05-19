@@ -1,6 +1,7 @@
 package com.spring.groovy.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -944,7 +945,7 @@ public class LeejhController {
 		// === #90. 메인화면 글 조회해오기(Ajax 로 처리) === //
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-		public String readComment(HttpServletRequest request) {
+		public String readBoard(HttpServletRequest request) {
 		
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
 			
@@ -1008,6 +1009,27 @@ public class LeejhController {
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("pk_board_seq", pk_board_seq);
+			
+			
+			/////////////////////////////////////
+			// === #164. 파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. == //
+			paraMap.put("searchType", "");
+			paraMap.put("searchWord", "");
+			
+			BoardVO boardvo = service.getView(paraMap);
+			String b_fileName = boardvo.getB_filename();
+			
+			if(b_fileName != null && !"".equals(b_fileName)) {
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root+"resources"+File.separator+"files";
+			
+			paraMap.put("path", path); //삭제해야할 파일이 저장된 경로
+			paraMap.put("b_fileName", b_fileName); //삭제해야할 파일이 저장된 경로
+			
+			}
+			// ===  파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. 끝== //
+			////////////////////////////////////
 			
 			int n = service.del(paraMap);
 			
@@ -1306,5 +1328,103 @@ public class LeejhController {
 			
 		
 		}
+		
+		// ==== #163. 첨부파일 다운로드 받기 ==== //
+		@RequestMapping(value="/downloadfile.groovy")
+		public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) {
+			
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			// 첨부파일이 있는 글번호 
+			
+			/*
+			      첨부파일이 있는 글번호에서
+			   20220429141939883981362180900.jpg 처럼
+			     이러한 fileName 값을 DB에서 가져와야 한다.
+			     또한 orgFilename 값도  DB에서 가져와야 한다.
+			*/
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("searchType", "");
+			paraMap.put("searchWord", "");
+			paraMap.put("pk_board_seq", pk_board_seq);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = null;
+	    	// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+			
+			try {
+				Integer.parseInt(pk_board_seq);
+				BoardVO boardvo = service.getView(paraMap);
+				
+				if(boardvo == null || (boardvo != null && boardvo.getB_filename() == null ) ) {
+					out = response.getWriter();
+					// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+					
+					out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
+					return; // 종료
+				}
+				else {
+					// 정상적으로 다운로드를 할 경우
+					
+					String b_filename = boardvo.getB_filename();
+					// 20220429141939883981362180900.jpg  이것인 바로 WAS(톰캣) 디스크에 저장된 파일명이다. 
+					
+					String b_orgfilename = boardvo.getB_orgfilename();
+					// 쉐보레전면.jpg  다운로드시 보여줄 파일명 
+					
+					
+					// 첨부파일이 저장되어 있는 WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
+		            // 이 경로는 우리가 파일첨부를 위해서 /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
+		            // WAS 의 webapp 의 절대경로를 알아와야 한다.
+					HttpSession session = request.getSession();
+					String root = session.getServletContext().getRealPath("/");
+					
+				//	System.out.println("~~~~ 확인용  webapp 의 절대경로 => " + root);
+					// ~~~~ 확인용  webapp 의 절대경로 => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\ 
+					
+					String path = root+"resources"+File.separator+"files";
+					/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+				            운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+				            운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+				    */
+					
+					// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+				//	System.out.println("~~~~ 확인용  path => " + path);
+					// ~~~~ 확인용  path => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files 
+					
+					// **** file 다운로드 하기 **** //
+					boolean flag = false; // file 다운로드 성공, 실패를 알려주는 용도
+					flag = fileManager.doFileDownload(b_filename, b_orgfilename, path, response);
+					// file 다운로드 성공시 flag 는 true, 
+					// file 다운로드 실패시 flag 는 false 를 가진다. 
+					
+					if(!flag) {
+						// 다운로드가 실패할 경우 메시지를 띄워준다.
+						out = response.getWriter();
+						// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+						
+						out.println("<script type='text/javascript'>alert('파일다운로드가 실패되었습니다.'); history.back();</script>");
+					}
+					
+				}
+				
+			} catch(NumberFormatException | IOException e) {
+				try {
+					out = response.getWriter();
+					// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+					
+					out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+			
+		}
+		
+		
+
+		
+		
 	
 }//end of public class LeejhController

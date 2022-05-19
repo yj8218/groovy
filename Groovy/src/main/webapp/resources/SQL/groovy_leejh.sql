@@ -4,6 +4,7 @@ show user;
 
 desc tbl_employee ;
 
+desc tbl_department;
 
 pk_empnum         not null varchar2(20)  
 pwd               not null varchar2(200) 
@@ -425,3 +426,8 @@ select pk_cmt_seq, cmt_name, cmt_content, cmt_regDate
           and fk_board_seq = 19
 		) V 
 		where rno between 1 and 3
+        
+        
+ update tbl_board set b_subject = '수정본'
+		                   , b_content = '수정합니다'
+		where pk_board_seq = 2

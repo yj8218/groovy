@@ -83,7 +83,8 @@
 	$(document).ready(function() {
 		
 		<%-- === #166. 스마트 에디터 구현 시작 === --%>
-	 	//전역변수
+	 	<%-- 
+		//전역변수
 	    var obj = [];
 	    
 	    //스마트에디터 프레임생성
@@ -102,7 +103,7 @@
 	         fOnAppLoad: function(){
 	        	$("iframe").css("width","100%").css("height","300px");
 	        } 
-	    });
+	    }); --%>
 	    
 	   // editBoardModal(index, pk_board_seq);
 	 //   editBoardModal(pk_board_seq);
@@ -281,7 +282,7 @@
 									<td>
 										<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}" />
 										<input type="hidden" name="name" value="${sessionScope.loginuser.name}" readonly />
-										 <input type="text" name="pk_board_seq" value="${requestScope.boardvo.pk_board_seq}" /> 
+										 <input type="hidden" name="pk_board_seq" value="${requestScope.boardvo.pk_board_seq}" /> 
 									</td>
 								</tr>
 				    			
@@ -294,7 +295,7 @@
 				    			</tr>
 				    			<tr>
 									<td>
-										<textarea style="width: 100%; height: 350px;" name="b_content" id="smarteditor2"></textarea>
+										<textarea style="width: 100%; height: 350px;" name="b_content" id="smarteditor2">${requestScope.boardvo.b_content}</textarea>
 									</td>
 				    			</tr>
 				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>

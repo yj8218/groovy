@@ -212,10 +212,10 @@
     -->
     <select id="getView" parameterType="HashMap" resultType="com.spring.groovy.model.BoardVO">
 		select 
-		      PK_BOARD_SEQ, FK_EMPNUM, name, B_SUBJECT, B_CONTENT, B_READCOUNT, B_REGDATE, B_PW 
+		      pk_board_seq, fk_empnum, name, b_subject, b_content, b_readcount, b_regdate, b_pw 
 		     
 		     , groupno, fk_seq, depthno
-		     , B_FILENAME, B_ORGFILENAME, B_FILESIZE
+		     , b_filename, b_orgfilename, b_filesize
 		from 
 		(
 		    select 
@@ -231,9 +231,9 @@
 			ON B.FK_EMPNUM = E.PK_EMPNUM
 		    where b_status = 1
             order by B.PK_BOARD_SEQ desc
-		    <!-- <if test='searchType != "" and searchWord != "" '>
+		    <if test='searchType != "" and searchWord != "" '>
 		    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
-		    </if> -->
+		    </if> 
 		) V
 		where V.PK_BOARD_SEQ = #{pk_board_seq}
     </select>
@@ -340,7 +340,7 @@
     </update>
     <update id="edit_board_withFile" parameterType="HashMap">
     	update tbl_board  set  b_subject = #{b_subject} , b_content = #{b_content}
-    						,b_emppicturename = #{newFileName} , b_emppicturefilename = #{originalFilename} , b_filesize = #{fileSize}
+    						, b_filename = #{newFileName} , b_orgfilename = #{originalFilename} , b_filesize = #{fileSize}
 		where pk_board_seq = #{pk_board_seq}	
     </update>
 	
