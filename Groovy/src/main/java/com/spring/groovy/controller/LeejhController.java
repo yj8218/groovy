@@ -195,6 +195,7 @@ public class LeejhController {
 
 	
 	// === 비밀번호 찾기 화면 메서드 === //
+	@NoLogging
 	@RequestMapping(value = "findpwd.groovy")
 	public ModelAndView findpwd(ModelAndView mav) {
 		mav.setViewName("login/findpwd.tiles2");
@@ -202,6 +203,7 @@ public class LeejhController {
 	}
 	
 	// === 비밀번호 찾기 인증번호 발송 메서드 === //
+	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/sendCodeEmail.groovy", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
 	public String sendCodeEmail(HttpServletRequest request) {
@@ -273,6 +275,7 @@ public class LeejhController {
 	}
 	
 	// === 인증번호 체크 메서드 === ///
+	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/checkCode.groovy", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
 	public String checkCode(HttpServletRequest request) {
@@ -306,6 +309,7 @@ public class LeejhController {
 	
 	
 	// === 새비밀번호 업데이트 메서드(update) === //
+	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/newPwdUpdate.groovy", method = {RequestMethod.POST})
 	public String newPasswordUpdate(HttpServletRequest request) {
@@ -1425,8 +1429,8 @@ public class LeejhController {
 		/*
 		//글 한개 조회해오기
 		@ResponseBody
-		@RequestMapping(value ="/getUserInfo.groovy", produces="text/plain;charset=UTF-8")
-		public String getUserInfo(HttpServletRequest request ) {
+		@RequestMapping(value ="/getU.groovy", produces="text/plain;charset=UTF-8")
+		public String g(HttpServletRequest request ) {
 			
 			String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
 

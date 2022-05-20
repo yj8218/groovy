@@ -197,7 +197,7 @@
 
 <div class="container">
    <div class="logo">
-       <img class="logo" src="<%= ctxPath %>/resources/images/common/logo.png" />
+       <a href="<%=ctxPath%>"><img class="logo" src="<%= ctxPath %>/resources/images/common/logo.png" href="<%=ctxPath%>" /></a>
    </div>
    <h1 align="center">비밀번호 찾기</h1>
    	<h5 align="center"> 기존 본인정보의 이메일을 입력하시면, 비밀번호 변경 메일을 발송해드립니다.</h5>

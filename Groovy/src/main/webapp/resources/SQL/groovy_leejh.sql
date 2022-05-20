@@ -408,6 +408,8 @@ add cmt_orgFilename varchar2(255) ;-- 진짜 파일명(강아지.png)  // 사용
 alter table tbl_board_comment
 add cmt_fileSize number; --파일크기
 
+select *
+from tbl_employee
 
 select *
 from tbl_board_comment;
