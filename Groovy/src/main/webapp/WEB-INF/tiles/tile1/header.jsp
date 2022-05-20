@@ -62,9 +62,7 @@ div#myProfileCard div.card-body ul li span {
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myProfileCard').appendTo("body"); 
 
-
-	  	getUserInfo();
-	  	
+		getUserInfo();
 	});
 	
 	
@@ -128,7 +126,6 @@ div#myProfileCard div.card-body ul li span {
 		  evt.currentTarget.className += " active";
 	}
 		
-	
 	
 	function OpenOrganizationForm() {
   		document.getElementById("myForm").style.display = "block";
@@ -876,10 +873,17 @@ div#myProfileCard div.card-body ul li span {
 
 
    }
-	
-	
-	
-</script>
+
+   
+	// 새 채팅(팝업창)
+	function openNewChat() {
+		const url = "<%= ctxPath %>/openNewChat.groovy";
+        const popup_name = "openNewChat";
+        const option = "width = 550, height = 650, top = 300, left = 600";
+		
+		window.open(url, popup_name, option);
+	}
+</script>	
  
  <!-- =================상단 네비게이션 시작 =====================-->
 <div class="header-header">
@@ -947,7 +951,7 @@ div#myProfileCard div.card-body ul li span {
 										  <button class="tablinks" onclick="openChatTab(event, 'chatContact')">연락처</button>
 									</div>
 									<div style=" float:right;   top: -40px; position: relative;">
-										<button id="btnChat"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat"  />새 채팅</button>
+										<button id="btnChat" onclick="openNewChat()"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat" />새 채팅</button>
 								    </div>
 								</div>
 								
@@ -1078,14 +1082,13 @@ div#myProfileCard div.card-body ul li span {
         	
 	</nav>
 
-
 	<!-- ●●● 유저정보 팝업 => [유저프로필카드]  ●●●================================-->
 		<div class="modal animate" id="myProfileCard"  >
 			<div class="modal-dialogs"  >
       	    	<div class="card" id="headerCard" style="width:400px; display: block; ">
 
       	       		<div class="card " style="display: block; ">
-
+      	       		
 					   	<div style=" position: relative; ">
 						    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
 						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
@@ -1114,11 +1117,10 @@ div#myProfileCard div.card-body ul li span {
 					            <i class="far fa-address-card"></i>
 					        </button>
 					     </div>
-					     
-		  			</div> 
-				</div>
-		 	</div>
-		</div>
+					  </div> 
+        	    	</div>
+				  </div>
+				 </div>
 				  
 	<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
 	<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6);" >
