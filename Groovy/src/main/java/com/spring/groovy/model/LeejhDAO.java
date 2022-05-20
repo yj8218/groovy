@@ -216,8 +216,9 @@ public class LeejhDAO implements InterLeejhDAO {
 	//맵으로 게시글 가져오기   
 	@Override
 	public Map<String, String> boardView(String pk_board_seq) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Map<String,String> map = sqlsession.selectOne("leejh.boardView", pk_board_seq);
+		return map;
 	}
 
 
