@@ -2769,7 +2769,7 @@ $(document).ready(function(){
                			                     
                			                    events.push({
                			                       id: item.pk_documentnum,
-               			                       title: item.vinfo,
+               			                       title: item.vinfo+,
                			                       start: startdate,
                			                       end: enddate,
                			                       color: '#555',
