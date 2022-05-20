@@ -165,6 +165,8 @@ public class LeejhDAO implements InterLeejhDAO {
 		BoardVO boardvo = sqlsession.selectOne("leejh.getView", paraMap);
 		return boardvo;
 	}
+	
+	
 
 	// ==== #65. 글조회수 1증가 하기 ==== //
 	@Override
@@ -178,6 +180,47 @@ public class LeejhDAO implements InterLeejhDAO {
 		List<BoardVO> boardList = sqlsession.selectList("leejh.getBoardList");
 		return boardList;
 	}
+
+	// 글 삭제하기
+	@Override
+	public int del(Map<String, String> paraMap) {
+		int n = sqlsession.delete("leejh.del", paraMap);
+		return n;
+	}
+	//댓글추가하기
+	@Override
+	public int addComment(CommentVO commentvo) {
+		int n = sqlsession.insert("leejh.addComment", commentvo);
+		return n;
+	}
+	/*
+	//댓글목록 출력하기
+	@Override
+	public List<CommentVO> getCommentListPaging(Map<String, String> paraMap) {
+		List<CommentVO> commentList = sqlsession.selectList("leejh.getCommentListPaging");
+		return commentList;
+	}*/
+	// 파일첨부 없는 경우 글 수정
+	@Override
+	public int edit_board(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.edit_board", paraMap);
+		return n;
+	}
+	// 파일첨부 있는 경우 글 수정
+	@Override
+	public int edit_board_withFile(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.edit_board_withFile", paraMap);
+		return n;
+	}
+
+	//맵으로 게시글 가져오기   
+	@Override
+	public Map<String, String> boardView(String pk_board_seq) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

@@ -58,7 +58,6 @@
 	//Function Declaration
 	function func_Login(){
 		const pk_empnum = $("input#pk_empnum").val().trim(); 
-		alert(pk_empnum);
 	    const pwd = $("input#pwd").val().trim(); 
 	    
 	    
@@ -116,9 +115,9 @@
          
             <input type="password" id="pwd" class="LOGIN" name="pwd" size="30" placeholder="비밀번호"><br><br>
          </div>
-         <div id = "link">
+         <div id = "link" style="text-align:right;">
             <!-- <a href="">사원번호 찾기</a>&nbsp; -->
-            <a href="<%= ctxPath%>/findpwd.groovy">비밀번호 찾기</a>&nbsp;
+            <a href="<%= ctxPath%>/findpwd.groovy" >비밀번호 찾기</a>&nbsp;
            <!--  <a href="">회원가입</a><br> -->
          </div>
          <div id = "loginbutton">

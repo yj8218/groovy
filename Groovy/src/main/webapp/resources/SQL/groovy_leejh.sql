@@ -4,6 +4,7 @@ show user;
 
 desc tbl_employee ;
 
+desc tbl_department;
 
 pk_empnum         not null varchar2(20)  
 pwd               not null varchar2(200) 
@@ -245,32 +246,6 @@ alter table tbl_board
 modify b_content not null;
 
 
-
-create table tbl_comment
-(seq           number               not null   -- 댓글번호
-,fk_userid     varchar2(20)         not null   -- 사용자ID
-,name          varchar2(20)         not null   -- 성명
-,content       varchar2(1000)       not null   -- 댓글내용
-,regDate       date default sysdate not null   -- 작성일자
-,parentSeq     number               not null   -- 원게시물 글번호
-,status        number(1) default 1  not null   -- 글삭제여부
-                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
-                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
-,constraint PK_tbl_comment_seq primary key(seq)
-,constraint FK_tbl_comment_userid foreign key(fk_userid) references tbl_member(userid)
-,constraint FK_tbl_comment_parentSeq foreign key(parentSeq) references tbl_board(seq) on delete cascade
-,constraint CK_tbl_comment_status check( status in(1,0) ) 
-);
-
-create sequence commentSeq
-start with 1
-increment by 1
-nomaxvalue
-nominvalue
-nocycle
-nocache;
-
-
 select *
 from tbl_board;
 
@@ -393,3 +368,66 @@ select
 		) V
 		where V.PK_BOARD_SEQ = 1
 
+
+----------------------댓글
+
+create table tbl_board_comment
+(pk_cmt_seq           number               not null   -- 댓글번호
+,fk_empnum     varchar2(20)         not null   -- 사용자ID
+,cmt_name          varchar2(20)         not null   -- 성명
+,cmt_content       varchar2(1000)       not null   -- 댓글내용
+,cmt_regDate       date default sysdate not null   -- 작성일자
+,fk_board_seq     number               not null   -- 원게시물 글번호
+,cmt_status        number(1) default 1  not null   -- 글삭제여부
+                                               -- 1 : 사용가능한 글,  0 : 삭제된 글
+                                               -- 댓글은 원글이 삭제되면 자동적으로 삭제되어야 한다.
+,constraint PK_tbl_comment_seq primary key(pk_cmt_seq)
+,constraint FK_tbl_comment_userid foreign key(fk_empnum) references tbl_employee(pk_empnum)
+,constraint FK_tbl_comment_fk_board_seq foreign key(fk_board_seq) references tbl_board(pk_board_seq) on delete cascade
+,constraint CK_tbl_comment_status check( cmt_status in(1,0) ) 
+);
+
+create sequence commentSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+
+
+alter table tbl_board_comment
+add cmt_fileName varchar2(255); -- WAS(톰캣)에 저장될 파일명(2020120809271535243254235235234.png)
+
+
+alter table tbl_board_comment
+add cmt_orgFilename varchar2(255) ;-- 진짜 파일명(강아지.png)  // 사용자가 파일을 업로드 하거나 파일을 다운로드 할때 사용되어지는 파일명  
+
+
+alter table tbl_board_comment
+add cmt_fileSize number; --파일크기
+
+
+select *
+from tbl_board_comment;
+
+select pk_cmt_seq, cmt_name, cmt_content, cmt_regDate
+    		 , cmt_fileName, cmt_orgFilename, cmt_fileSize 
+		from 
+		(
+		  select row_number() over(order by pk_cmt_seq desc) AS rno
+		  		, pk_cmt_seq, cmt_name, cmt_content, to_char(cmt_regDate, 'yyyy-mm-dd hh24:mi:ss') AS cmt_regDate
+		    	, nvl(cmt_fileName,' ') AS cmt_fileName
+     			, nvl(cmt_orgFilename, ' ') AS cmt_orgFilename
+    			, nvl(to_char(cmt_fileSize), ' ') AS cmt_fileSize 
+		  from tbl_board_comment
+		  where cmt_status = 1 
+          and fk_board_seq = 19
+		) V 
+		where rno between 1 and 3
+        
+        
+ update tbl_board set b_subject = '수정본'
+		                   , b_content = '수정합니다'
+		where pk_board_seq = 2

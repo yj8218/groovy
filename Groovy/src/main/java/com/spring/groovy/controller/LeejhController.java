@@ -1,6 +1,7 @@
 package com.spring.groovy.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -504,6 +505,8 @@ public class LeejhController {
 		
 	}
 	
+	
+	
 	// 이메일 수정
 	@ResponseBody
 	@RequestMapping(value="/myEmailEditEnd.groovy")
@@ -914,8 +917,8 @@ public class LeejhController {
 		for(Map<String,String> map : employeeChartList) {
 				JsonObject jsonObj = new JsonObject();  //얘도 소문자 ~ 하면 구글슨~
 				jsonObj.addProperty("name", 			map.get("name")); //put대신 addProperty
-				jsonObj.addProperty("deptnamekor", 	    map.get("deptnamekor"));
-				jsonObj.addProperty("spotnamekor",	    map.get("spotnamekor"));
+				jsonObj.addProperty("id", 	    map.get("deptnamekor"));
+				jsonObj.addProperty("title",	    map.get("spotnamekor"));
 				
 				/*
 				 [{"department_name":"Accounting","cnt":"2","percentage":"1.87"},{"department_name":"Administration","cnt":"1","percentage":".93"},{"department_name":"Executive","cnt":"3","percentage":"2.8"},{"department_name":"Finance","cnt":"6","percentage":"5.61"},{"department_name":"Human Resources","cnt":"1","percentage":".93"},{"department_name":"IT","cnt":"5","percentage":"4.67"},{"department_name":"Marketing","cnt":"2","percentage":"1.87"},{"department_name":"Public Relations","cnt":"1","percentage":".93"},{"department_name":"Purchasing","cnt":"6","percentage":"5.61"},{"department_name":"Sales","cnt":"34","percentage":"31.78"},{"department_name":"Shipping","cnt":"45","percentage":"42.06"},{"department_name":"부서없음","cnt":"1","percentage":".93"}]
@@ -939,10 +942,10 @@ public class LeejhController {
 	
 		
 		
-		// === #90. 원게시물에 딸린 댓글들을 조회해오기(Ajax 로 처리) === //
+		// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-		public String readComment(HttpServletRequest request) {
+		public String readBoard(HttpServletRequest request) {
 		
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
 			
@@ -968,14 +971,538 @@ public class LeejhController {
 				 	jsonObj.put("b_filename", boardvo.getB_filename());
 				 	jsonObj.put("b_orgfilename", boardvo.getB_orgfilename());
 				 	jsonObj.put("b_filesize", boardvo.getB_filesize());
-				 	
+				 	jsonObj.put("emppicturename", boardvo.getEmppicturename());
+				 	jsonObj.put("deptnamekor", boardvo.getDeptnamekor());
+				 	jsonObj.put("spotnamekor", boardvo.getSpotnamekor());
 					jsonArr.put(jsonObj);
 				}// end of for---------------------
 			}
 			
 			return jsonArr.toString();
 		}
+		
+		
+		// === #51. 게시판 글 수정 모달요청 === //
+		@RequestMapping(value="/editBoard.groovy")
+		public ModelAndView editBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+			mav.setViewName("board/editBoardModal.tiles2");
+			//  /WEB-INF/views/tiles1/board/add.jsp 파일을 생성한다.
+		
+		    return mav;
+		}
+		
+		
 	
-	
+
+		//글삭제
+		@ResponseBody
+		@RequestMapping(value="/delBoard.groovy")
+		public String delBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+			//String fk_empnum = request.getParameter("fk_empnum");
+			//System.out.println("fk_empnum:"+fk_empnum);
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("pk_board_seq", pk_board_seq);
+			
+			
+			/////////////////////////////////////
+			// === #164. 파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. == //
+			paraMap.put("searchType", "");
+			paraMap.put("searchWord", "");
+			
+			BoardVO boardvo = service.getView(paraMap);
+			String b_fileName = boardvo.getB_filename();
+			
+			if(b_fileName != null && !"".equals(b_fileName)) {
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root+"resources"+File.separator+"files";
+			
+			paraMap.put("path", path); //삭제해야할 파일이 저장된 경로
+			paraMap.put("b_fileName", b_fileName); //삭제해야할 파일이 저장된 경로
+			
+			}
+			// ===  파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. 끝== //
+			////////////////////////////////////
+			
+			int n = service.del(paraMap);
+			
+			boolean isSuccess = false;
+			JSONObject jsonObj = new JSONObject(); // {}
+			
+			if(n == 1) {
+				isSuccess = true;
+				jsonObj.put("isSuccess", isSuccess);
+			}
+			else {
+				isSuccess = false;
+				jsonObj.put("isSuccess", isSuccess);
+			}
+			
+			String json = jsonObj.toString();
+			
+			return json;
+			
+		}
+		
+		
+		
+		
+		
+		// ===  댓글쓰기(Ajax 로 처리) === //
+		@ResponseBody
+		@RequestMapping(value="/addComment.groovy", method= {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String addComment(CommentVO commentvo) {
+			// 댓글쓰기에 첨부파일이 없는 경우 
+			
+			int n = 0;
+			
+			try {
+				n = service.addComment(commentvo);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+			// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+			// 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.)  
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("n", n);
+			//jsonObj.put("cmt_name", commentvo.getCmt_name());
+			
+			return jsonObj.toString();  // "{"n":1,"name":"엄정화"}" 또는 "{"n":0,"name":"서영학"}"
+		}
+		
+		
+		/*
+		// === #128. 원게시물에 딸린 댓글들을 페이징 처리해서 조회해오기(Ajax 로 처리) === //
+		@ResponseBody
+		@RequestMapping(value="/commentList.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+		public String commentList(HttpServletRequest request) {
+			
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String currentShowPageNo = request.getParameter("currentShowPageNo");
+			
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			
+			int sizePerPage = 5;  // 한 페이지당 5개의 댓글을 보여줄 것임.
+			/*
+			    currentShowPageNo      startRno     endRno
+			   --------------------------------------------
+			       1page        ==>       1           5
+			       2page        ==>       6           10
+			       3page        ==>       11          15
+			       4page        ==>       16          20
+			       ....  
+			 */
+		/*
+			int startRno = (( Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+			int endRno = startRno + sizePerPage - 1;
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("startRno", String.valueOf(startRno));
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			List<CommentVO> commentList = service.getCommentListPaging(paraMap);
+			
+			JSONArray jsonArr = new JSONArray(); // []
+			
+			if(commentList != null) {
+				for(CommentVO cmtvo : commentList) {
+					JSONObject jsonObj = new JSONObject();
+					jsonObj.put("cmt_content", cmtvo.getCmt_content());
+					jsonObj.put("cmt_name", cmtvo.getCmt_name());
+					jsonObj.put("cmt_regDate", cmtvo.getCmt_regDate());
+					
+					// == 댓글읽어오기에 있어서 첨부파일 기능을 넣은 경우 시작 == //
+					jsonObj.put("pk_cmt_seq", cmtvo.getPk_cmt_seq());
+					jsonObj.put("cmt_fileName", cmtvo.getCmt_fileName());
+					jsonObj.put("cmt_orgFilename", cmtvo.getCmt_orgFilename());
+					jsonObj.put("cmt_fileSize", cmtvo.getCmt_fileSize());
+					// == 댓글읽어오기에 있어서 첨부파일 기능을 넣은 경우 끝 == //
+					
+					jsonArr.put(jsonObj);
+				}// end of for------------------
+			}
+			
+			return jsonArr.toString();
+		}
+		
+		*/
+		
+		/*
+		// 연락처 수정
+		@ResponseBody
+		@RequestMapping(value="/editBoardEnd.groovy")
+		public String editBoardEnd(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+		
+			String pk_empnum = request.getParameter("pk_empnum");
+			String myphone = request.getParameter("myphone");
+			System.out.println("myphone:"+myphone);
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("pk_empnum", pk_empnum);
+			paraMap.put("myphone", myphone);
+			
+			int n = service.myPhoneUpdate(paraMap);
+			
+			boolean isSuccess = false;
+			JSONObject jsonObj = new JSONObject(); // {}
+			
+			if(n == 1) {
+				isSuccess = true;
+				jsonObj.put("isSuccess", isSuccess);
+			}
+			else {
+				isSuccess = false;
+				jsonObj.put("isSuccess", isSuccess);
+			}
+			
+			String json = jsonObj.toString();
+			
+			return json;
+			
+		}*/
+		
+		
+		// === #54. 게시판 수정 완료 요청 === //
+		@RequestMapping(value="/editBoardEnd.groovy", method= {RequestMethod.POST})
+		public ModelAndView editBoardEnd(Map<String,String> paraMap, ModelAndView mav, BoardVO boardvo, MultipartHttpServletRequest mrequest) { // <== After Advice 를 사용하기 및 파일 첨부하기 	
+		
+			
+			String pk_board_seq = mrequest.getParameter("pk_board_seq");
+			String b_subject = mrequest.getParameter("b_subject");
+			String b_content = mrequest.getParameter("b_content");
+			
+			//Map<String,String> paraMap = new HashMap<>();
+			
+			paraMap.put("pk_board_seq", pk_board_seq);
+			paraMap.put("b_subject", b_subject);
+			paraMap.put("b_content", b_content);
+			
+			
+			/*
+		    form 태그의 name 명과  BoardVO 의 필드명이 같다라면 
+		    request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
+		        자동적으로 BoardVO boardvo 에 set 되어진다.
+		*/
+			
+		/*
+			=== #151. 파일첨부가 된 글쓰기 이므로  
+			        먼저 위의  public ModelAndView pointPlus_addEnd(Map<String,String> paraMap, ModelAndView mav, BoardVO boardvo) { 을 
+			        주석처리 한 이후에 아래와 같이 한다.
+			    MultipartHttpServletRequest mrequest 를 사용하기 위해서는 
+			        먼저 /Board/src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml 에서     
+			    #21 파일업로드 및 파일다운로드에 필요한 의존객체 설정하기 를 해두어야 한다.  
+			*/
+			/*
+				   웹페이지에 요청 form이 enctype="multipart/form-data" 으로 되어있어서 Multipart 요청(파일처리 요청)이 들어올때 
+				   컨트롤러에서는 HttpServletRequest 대신 MultipartHttpServletRequest 인터페이스를 사용해야 한다.
+				  MultipartHttpServletRequest 인터페이스는 HttpServletRequest 인터페이스와  MultipartRequest 인터페이스를 상속받고있다.
+				   즉, 웹 요청 정보를 얻기 위한 getParameter()와 같은 메소드와 Multipart(파일처리) 관련 메소드를 모두 사용가능하다.  	
+			*/	
+			
+			// === 사용자가 쓴 글에 파일이 첨부되어 있는 것인지, 아니면 파일첨부가 안된것인지 구분을 지어주어야 한다. === 
+			// === #153. !!! 첨부파일이 있는 경우 작업 시작 !!! ===
+			MultipartFile attach = boardvo.getAttach();
+			
+			if( !attach.isEmpty() ) {
+				// attach(첨부파일)가 비어 있지 않으면(즉, 첨부파일이 있는 경우라면)
+				
+				/*
+				   1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+				   >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
+				              우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
+				              조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다.       
+				*/
+				// WAS 의 webapp 의 절대경로를 알아와야 한다.
+				HttpSession session = mrequest.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				
+			//	System.out.println("~~~~ 확인용  webapp 의 절대경로 => " + root);
+				// ~~~~ 확인용  webapp 의 절대경로 => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\ 
+				
+				String path = root+"resources"+File.separator+"files";
+				/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+			            운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+			            운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+			    */
+				
+				// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+			//	System.out.println("~~~~ 확인용  path => " + path);
+				// ~~~~ 확인용  path => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files  
+			
+				
+			/*
+			   2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기 
+			*/
+				String newFileName = "";
+				// WAS(톰캣)의 디스크에 저장될 파일명 
+				
+				byte[] bytes = null;
+				// 첨부파일의 내용물을 담는 것 
+				
+				long fileSize = 0;
+				// 첨부파일의 크기 
+				
+				try {
+					bytes = attach.getBytes();
+					// 첨부파일의 내용물을 읽어오는 것
+					
+					String originalFilename = attach.getOriginalFilename();
+				 // attach.getOriginalFilename() 이 첨부파일명의 파일명(예: 강아지.png) 이다.
+				//	System.out.println("~~~~ 확인용 originalFilename => " + originalFilename);
+					// ~~~~ 확인용 originalFilename => LG_싸이킹청소기_사용설명서.pdf
+					
+					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+					// 첨부되어진 파일을 업로드 하도록 하는 것이다. 
+					
+				//	System.out.println(">>> 확인용 newFileName => " + newFileName);
+					// >>> 확인용 newFileName => 20220429123036877439302653900.pdf
+				
+			/*
+			   3. BoardVO boardvo 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 
+			*/
+					paraMap.put("newFileName", newFileName);
+					// WAS(톰캣)에 저장될 파일명(2022042912181535243254235235234.png)
+					
+					paraMap.put("originalFilename", originalFilename);
+					// 게시판 페이지에서 첨부된 파일(강아지.png)을 보여줄 때 사용.
+					// 또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용.
+					
+					fileSize = attach.getSize(); // 첨부파일의 크기(단위는 byte임)
+					paraMap.put("fileSize", String.valueOf(fileSize));
+					
+					
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			// === !!! 첨부파일이 있는 경우 작업 끝 !!! ===
+			
+		
+		//	int n = service.add(boardvo);  // <== 파일첨부가 없는 글쓰기 
+			
+		//  === #156. 파일첨부가 있는 글쓰기 또는 파일첨부가 없는 글쓰기로 나뉘어서 service 호출하기 === // 
+		//  먼저 위의  int n = service.add(boardvo); 부분을 주석처리 하고서 아래와 같이 한다.	
+			
+			int n = 0;
+			System.out.println(pk_board_seq);
+			
+			if( attach.isEmpty() ) {
+				// 파일첨부가 없는 경우라면 
+				n = service.edit_board(paraMap);
+			}
+			else {
+				// 파일첨부가 있는 경우라면 
+				n = service.edit_board_withFile(paraMap);
+			}
+			
+			if(n==1) {
+				mav.addObject("message", "글 수정 성공!!");
+				mav.addObject("loc",mrequest.getContextPath()+"/index.groovy");
+				//  /list.action 페이지로 redirect(페이지이동)해라는 말이다.
+			}
+			else {
+				mav.addObject("message", "글 수정 실패!!");
+				mav.addObject("loc", "javascript:history.back()");
+				
+				//  /WEB-INF/views/tiles1/board/error/add_error.jsp 파일을 생성한다.
+			}
+			
+			mav.setViewName("msg");
+			
+			return mav;
+			
+			
+		
+		}
+		
+		// ==== #163. 첨부파일 다운로드 받기 ==== //
+		@RequestMapping(value="/downloadfile.groovy")
+		public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) {
+			
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			// 첨부파일이 있는 글번호 
+			
+			/*
+			      첨부파일이 있는 글번호에서
+			   20220429141939883981362180900.jpg 처럼
+			     이러한 fileName 값을 DB에서 가져와야 한다.
+			     또한 orgFilename 값도  DB에서 가져와야 한다.
+			*/
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("searchType", "");
+			paraMap.put("searchWord", "");
+			paraMap.put("pk_board_seq", pk_board_seq);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = null;
+	    	// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+			
+			try {
+				Integer.parseInt(pk_board_seq);
+				BoardVO boardvo = service.getView(paraMap);
+				
+				if(boardvo == null || (boardvo != null && boardvo.getB_filename() == null ) ) {
+					out = response.getWriter();
+					// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+					
+					out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
+					return; // 종료
+				}
+				else {
+					// 정상적으로 다운로드를 할 경우
+					
+					String b_filename = boardvo.getB_filename();
+					// 20220429141939883981362180900.jpg  이것인 바로 WAS(톰캣) 디스크에 저장된 파일명이다. 
+					
+					String b_orgfilename = boardvo.getB_orgfilename();
+					// 쉐보레전면.jpg  다운로드시 보여줄 파일명 
+					
+					
+					// 첨부파일이 저장되어 있는 WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
+		            // 이 경로는 우리가 파일첨부를 위해서 /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
+		            // WAS 의 webapp 의 절대경로를 알아와야 한다.
+					HttpSession session = request.getSession();
+					String root = session.getServletContext().getRealPath("/");
+					
+				//	System.out.println("~~~~ 확인용  webapp 의 절대경로 => " + root);
+					// ~~~~ 확인용  webapp 의 절대경로 => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\ 
+					
+					String path = root+"resources"+File.separator+"files";
+					/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+				            운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+				            운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+				    */
+					
+					// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+				//	System.out.println("~~~~ 확인용  path => " + path);
+					// ~~~~ 확인용  path => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files 
+					
+					// **** file 다운로드 하기 **** //
+					boolean flag = false; // file 다운로드 성공, 실패를 알려주는 용도
+					flag = fileManager.doFileDownload(b_filename, b_orgfilename, path, response);
+					// file 다운로드 성공시 flag 는 true, 
+					// file 다운로드 실패시 flag 는 false 를 가진다. 
+					
+					if(!flag) {
+						// 다운로드가 실패할 경우 메시지를 띄워준다.
+						out = response.getWriter();
+						// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+						
+						out.println("<script type='text/javascript'>alert('파일다운로드가 실패되었습니다.'); history.back();</script>");
+					}
+					
+				}
+				
+			} catch(NumberFormatException | IOException e) {
+				try {
+					out = response.getWriter();
+					// out 은 웹브라우저에 기술하는 대상체라고 생각하자.
+					
+					out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+			
+		}
+		
+		/*
+		//글 한개 조회해오기
+		@ResponseBody
+		@RequestMapping(value ="/getUserInfo.groovy", produces="text/plain;charset=UTF-8")
+		public String getUserInfo(HttpServletRequest request ) {
+			
+			String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
+
+			// 한명의 사원 상세정보 가져오기
+			EmployeeVO user = service.getUserInfo(pk_empnum);
+			
+			JSONObject jsonObj = new JSONObject();
+			
+			jsonObj.put("pk_empnum", user.getPk_empnum());
+			jsonObj.put("name", user.getName());
+			jsonObj.put("birthday", user.getBirthday());
+			jsonObj.put("gender", user.getGender());
+			jsonObj.put("age", user.getAge());
+
+			jsonObj.put("postcode", user.getPostcode());
+			jsonObj.put("address", user.getAddress());
+			jsonObj.put("detailaddress", user.getDetailaddress());
+			
+			jsonObj.put("phone", user.getPhone());
+			
+			try {
+				jsonObj.put("email", aes.decrypt(user.getEmail()));
+			} catch (JSONException | UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			
+			jsonObj.put("deptnamekor", user.getDeptnamekor());
+			jsonObj.put("spotnamekor", user.getSpotnamekor());
+			
+			jsonObj.put("startday", user.getStartday());
+			jsonObj.put("resignationstatus", user.getResignationstatus());
+			jsonObj.put("resignationday", user.getResignationday());
+			jsonObj.put("fk_vstatus", user.getFk_vstatus());
+			jsonObj.put("salary", user.getSalary());
+			
+			jsonObj.put("emppicturename", user.getEmppicturename());
+			return jsonObj.toString();
+		}
+		*/
+		/*
+		// === 일정상세보기 ===
+		@ResponseBody
+		@RequestMapping(value="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
+		public String detailSchedule(HttpServletRequest request) {
+			
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+			// 검색하고 나서 취소 버튼 클릭했을 때 필요함
+			String listgobackURL_board = request.getParameter("listgobackURL_board");
+			//mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
+
+			
+			// 일정상세보기에서 일정수정하기로 넘어갔을 때 필요함
+			String gobackURL_detailBoard = MyUtil.getCurrentURL(request);
+			//mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
+			
+			try {
+				Integer.parseInt(pk_board_seq);
+				Map<String,String> map = service.boardView(pk_board_seq);
+				
+				JSONObject jsonObj = new JSONObject();//
+				
+				jsonObj.put("map", map);//{"n":1}
+				return jsonObj.toString();//"{"n":1}"
+				
+			} catch (NumberFormatException e) {
+				//mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+				return gobackURL_detailSchedule;
+			}
+			
+			
+			
+			
+			
+		}
+		*/
+		
 	
 }//end of public class LeejhController

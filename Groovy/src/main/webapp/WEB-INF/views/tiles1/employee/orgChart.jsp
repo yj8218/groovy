@@ -183,7 +183,8 @@ $(document).ready(function(){
 	        	            level: 4,
 	        	            color: '#359154'
 	        	        }],
-	        	        nodes: jsonArr,
+	        	        nodes: jsondata,
+	        	        
 	        	        colorByPoint: false,
 	        	        color: '#007ad0',
 	        	        dataLabels: {
