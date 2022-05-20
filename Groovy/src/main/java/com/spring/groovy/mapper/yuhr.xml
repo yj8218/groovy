@@ -179,7 +179,7 @@
 	
 	<insert id="status_late" parameterType="String">
 		 insert into tbl_commute_status(pk_commute_statusnum, fk_empnum, late)
-		values(commute_statusseq.nextval, #{pk_empnum}, 1)
+		values(commute_statusseq.nextval, #{pk_empnum}, late + 1)
 	</insert>
 	
 	<select id="isClickedStartBtn" parameterType="String" resultType="int">
@@ -194,13 +194,19 @@
 	</update>
 	
 	<update id="status_early_endcheck" parameterType="String" >
-		update tbl_commute_status set EARLY_ENDCHECK = 1
+		update tbl_commute_status set EARLY_ENDCHECK = EARLY_ENDCHECK + 1
     	where fk_empnum = #{pk_empnum} and to_char(today, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
 	</update>
 	
-	<update id="status_no_endcheck" parameterType="String" >
-		update tbl_commute_status set NO_ENDCHECK = 1
-    	where fk_empnum = #{pk_empnum} and to_char(today, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	<update id="status_no_endcheck"  >
+		update tbl_commute_status set NO_ENDCHECK = NO_ENDCHECK + 1
+		where fk_empnum in (
+		select fk_empnum
+		from tbl_commute
+		where to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+		and endwork is null
+		)
+		and to_char(today, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
 	</update>
 	
 	<insert id="status_no_workday" parameterType="String" >
@@ -222,54 +228,89 @@
 		<result property="totalworkedtime" 	column="totalworkedtime" 			javaType="String" />
 	</resultMap>
 	
-	<select id="getCommuteStatusInfo" resultMap="commuteStatusMap">
-	    SELECT pk_empnum 
-	         , name 
-	         , deptnamekor 
-	         , resignationstatus 
-	         , total_late 
-	         , total_early_endcheck 
-	         , total_no_endcheck 
-	         , total_no_workday  
-	         , totalworkingdays 
-	         , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
+	<select id="getCommuteStatusInfo" resultMap="commuteStatusMap" parameterType="HashMap">
+	    SELECT pk_empnum, name, deptnamekor, resignationstatus, total_late, total_early_endcheck 
+	    	 , total_no_endcheck, total_no_workday, totalworkingdays, totalworkedtime
 	    FROM
 	    (
-	      select name, pk_empnum, fk_deptnum
-	           , case when RESIGNATIONSTATUS in(0) then '재직' else '퇴직' end AS RESIGNATIONSTATUS
-	      from tbl_employee 
-	      
-	    ) E
-	    JOIN
-	    (
-	      select fk_empnum
-	            , sum(LATE) as total_late
-	            , sum(EARLY_ENDCHECK) as total_EARLY_ENDCHECK
-	            , sum(NO_ENDCHECK) as total_NO_ENDCHECK
-	            , sum(NO_WORKDAY) as total_NO_WORKDAY
-	      from tbl_commute_status
-	      group by fk_empnum
-	    ) S
-	    ON E.pk_empnum = S.fk_empnum
-	    JOIN 
-	    (
-	      select PK_DEPTNUM, DEPTNAMEKOR
-	      from TBL_DEPARTMENT
-	    ) D
-	    on D.PK_DEPTNUM = E.fk_deptnum
-	    JOIN 
-	    (
-	      select fk_empnum, count(*) as totalworkingdays
-	      from TBL_COMMUTE
-	      group by fk_empnum
-	    ) C
-	    on c.fk_empnum = E.pk_empnum
-	    JOIN 
-	    (
-	      select FK_EMPNUM, TOTALWORKED_DAY, ASTOTALWORKED_HH, TOTALWORKED_MI, TOTALWORKED_SS
-	      from totalworkedtimecalc
-	    ) W
-	    on c.fk_empnum = W.FK_EMPNUM
+	    	SELECT ROWNUM AS rno
+	    		 , pk_empnum, name, deptnamekor, resignationstatus, total_late, total_early_endcheck  
+	         	 , total_no_endcheck, total_no_workday, totalworkingdays, totalworkedtime
+	        from
+	        (
+				SELECT pk_empnum, name, deptnamekor, resignationstatus, total_late, total_early_endcheck 
+	    	 		 , total_no_endcheck, total_no_workday, totalworkingdays
+			         , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
+			    FROM
+			    (
+			    	select name, pk_empnum, fk_deptnum
+			           	 , case when RESIGNATIONSTATUS in(0) then '재직' else '퇴직' end AS RESIGNATIONSTATUS
+			        from tbl_employee 
+					where 1=1
+					<if test="search_item == 'name' ">
+					and name like '%'||#{search_value}||'%'
+					</if>
+					<if test="search_item == 'pk_empnum' ">
+					and pk_empnum = #{search_value}
+					</if>
+					<if test="dept != ''">
+					and fk_deptnum = #{dept}
+					</if>
+			   ) E
+			   JOIN
+			   (
+			   		select fk_empnum
+			             , sum(LATE) as total_late
+			             , sum(EARLY_ENDCHECK) as total_EARLY_ENDCHECK
+			             , sum(NO_ENDCHECK) as total_NO_ENDCHECK
+			             , sum(NO_WORKDAY) as total_NO_WORKDAY
+			      	from tbl_commute_status
+			      	group by fk_empnum
+			   ) S
+			   ON E.pk_empnum = S.fk_empnum
+			   JOIN 
+			   (
+			      	select PK_DEPTNUM, DEPTNAMEKOR
+			      	from TBL_DEPARTMENT
+			   ) D
+			   on D.PK_DEPTNUM = E.fk_deptnum
+			   JOIN 
+			   (
+			      	select fk_empnum, count(*) as totalworkingdays
+			      	from TBL_COMMUTE
+			      	<if test="date_start != '' ">
+			      	where to_char(startwork, 'yyyy-mm-dd') between to_date(#{date_start}, 'yyyy-mm-dd') and to_date(#{date_end}, 'yyyy-mm-dd')
+			      	</if>
+			      	group by fk_empnum
+			   ) C
+			   on c.fk_empnum = E.pk_empnum
+			   JOIN 
+			   (
+			      	select FK_EMPNUM, TOTALWORKED_DAY, ASTOTALWORKED_HH, TOTALWORKED_MI, TOTALWORKED_SS
+			      	from totalworkedtimecalc
+			   ) W
+			   on c.fk_empnum = W.FK_EMPNUM
+				<if test="select_order == 'total_late desc' ">
+				order by total_late desc
+				</if>
+				<if test="select_order == 'total_early_endcheck desc' ">
+				order by total_early_endcheck desc
+				</if>
+				<if test="select_order == 'total_no_endcheck desc' ">
+				order by total_no_endcheck desc
+				</if>
+				<if test="select_order == 'total_no_workday desc' ">
+				order by total_no_workday desc
+				</if>
+				<if test="select_order == 'totalworkingdays desc' ">
+				order by totalworkingdays desc
+				</if>
+				<if test="select_order == 'totalworkedtime desc' ">
+				order by totalworkedtime desc
+				</if>
+				)   
+			)
+		where rno between #{startRno} and #{endRno}
 	</select>
 	
 	<update id="todayworkedtime" parameterType="String">
@@ -309,8 +350,8 @@
 	
 	<select id="showOneCommuteStatus" parameterType="String" resultMap="oneCommuteStatusMap">
 		select c.fk_empnum
-		     , to_char(startwork, 'yyyy-mm-dd hh24:mi:ss') as startwork
-		     , to_char(endwork, 'yyyy-mm-dd hh24:mi:ss') as endwork
+		     , to_char(startwork, 'hh24:mi:ss') as startwork
+		     , to_char(endwork, 'hh24:mi:ss') as endwork
 		     , to_char(TODAY, 'yyyy-mm-dd') as today, TODAYWORKEDTIME, LATE, EARLY_ENDCHECK, NO_ENDCHECK, NO_WORKDAY
 		     , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
 		from tbl_commute C
@@ -319,8 +360,52 @@
 		left JOIN totalworkedtimecalc T
 		on c.fk_empnum = T.FK_EMPNUM
 		where C.fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(today, 'yyyy-mm-dd')
-		
+	</select>
 	
+	<select id="getCommuteTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from
+		(
+			
+			select count(*)
+			from
+			(
+			    select S.fk_empnum
+			         , name, pk_empnum, fk_deptnum
+			         , to_char(startwork, 'yyyy-mm-dd'), to_char(endwork, 'yyyy-mm-dd')
+			    from tbl_commute_status S
+			    JOIN TBL_employee E
+			    on S.fk_empnum = E.pk_empnum
+			    JOIN TBL_commute C
+			    on S.fk_empnum = C.fk_empnum
+			    where 1=1
+			    <if test="dept != ''"> 
+			    	and fk_deptnum = #{dept}
+			    </if>
+			    <if test="date_start != ''">
+			    	and to_char(startwork, 'yyyy-mm-dd') between to_date(#{date_start}, 'yyyy-mm-dd') and to_date(#{date_end}, 'yyyy-mm-dd')
+			    </if>
+			    <if test="search_item == 'name'">
+					and ${search_item} like '%'||#{search_value}||'%'
+				</if>
+				<if test="search_item == 'pk_empnum'">
+			    	and ${search_item} = #{search_value}
+			    </if>
+			) 
+			group by fk_empnum
+		)	
+	</select>
+	
+	<select id="getEmpsNoWorkToday" resultType="String">
+		select pk_empnum
+	    from tbl_employee
+	    where pk_empnum not in ( 
+	    select fk_empnum
+	    from tbl_commute where to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+	    ) and pk_empnum not in ( 
+	    select fk_empnum 
+	    from TBL_VACATIONLIST where to_char(sysdate, 'yyyy-mm-dd') between to_date(substr(vstartdate, 0, 10), 'yyyy-mm-dd') and to_date(substr(venddate, 0, 10), 'yyyy-mm-dd')
+		)	
 	</select>
 	
 	

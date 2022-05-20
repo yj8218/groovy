@@ -62,13 +62,6 @@
 	color: #6449fc;
 }
 
-li:hover{
-	background-color: rgba(153, 102, 255, 0.1);  
-	border: solid 1px #9966FF;
-	cursor: pointer;
-	
-	
-}
 #fileLayerUl{
 	font-size: 11pt;
 }
@@ -138,7 +131,6 @@ a#goSearch:hover{
 	
 }
 .commuteList:hover{
-	cursor: pointer;
 	background-color: rgba(153, 102, 255, 0.1);  
 }
 </style>

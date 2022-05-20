@@ -119,7 +119,8 @@ public class YuhrService implements InterYuhrService {
 	
 	// === Spring Scheduler 를 사용하여 자정에 자동으로 근태 기록하기 ===
 	@Override
-	@Scheduled(cron = "0 0 0 * * *") // 자정에 작동된다
+//	@Scheduled(cron = "0 0 0 * * *") // 자정에 작동된다
+	@Scheduled(cron = "0 56 16 * * *") // 
 	public void checkEndCommuteStatus() {
         // 스케줄러로 사용되어지는 메소드는 반드시 파라미터는 없어야 한다.!!!!!
 
@@ -128,7 +129,7 @@ public class YuhrService implements InterYuhrService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = dateFormat.format(currentDate.getTime());
 
-		System.out.println("Spring Scheduler 작동시간 => " + currentTime);
+		System.out.println("checkEndCommuteStatus Spring Scheduler 작동시간 => " + currentTime);
 		
 		// !!!! === 특정 사이트의 웹페이지를 보여주기 위해 기본브라우저를 띄운다 == !!
 		// 조심할 것은, http:// 를 주소에 꼭 붙여아 한다.
@@ -148,8 +149,8 @@ public class YuhrService implements InterYuhrService {
 
 	// tbl_commute_status 에 퇴근미체크 1 update
 	@Override
-	public void status_no_endcheck(String pk_empnum) {
-		dao.status_no_endcheck(pk_empnum);
+	public void status_no_endcheck() {
+		dao.status_no_endcheck();
 		
 	}
 
@@ -162,8 +163,8 @@ public class YuhrService implements InterYuhrService {
 	
 	// 모든 사원의 부서,재직여부,근태정보들,총근무일수,총근무시간
 	@Override
-	public List<Map<String, String>> getCommuteStatusInfo() {
-		List<Map<String, String>> commuteStatusInfo = dao.getCommuteStatusInfo();
+	public List<Map<String, String>> getCommuteStatusInfo(Map<String, String> paraMap) {
+		List<Map<String, String>> commuteStatusInfo = dao.getCommuteStatusInfo(paraMap);
 		return commuteStatusInfo;
 	}
 
@@ -180,6 +181,21 @@ public class YuhrService implements InterYuhrService {
 		List<Map<String, String>> OneCommuteStatus = dao.showOneCommuteStatus(pk_empnum);
 		return OneCommuteStatus;
 	}
+	
+	// 조회한 조건에 따른 총 근태의 수
+	@Override
+	public int getCommuteTotalCount(Map<String, String> paraMap) {
+		int totalCount = dao.getCommuteTotalCount(paraMap);
+		return totalCount;
+	}
+
+	// 오늘 휴무 아닌데 출근 안한 사원들의 empnum
+	@Override
+	public List<String> getEmpsNoWorkToday() {
+		List<String> empsNoWorkToday = dao.getEmpsNoWorkToday();
+		return empsNoWorkToday;
+	}
+
 
 
 	
