@@ -395,7 +395,7 @@ nominvalue
 nocycle
 nocache;
 
-
+desc tbl_board;
 
 alter table tbl_board_comment
 add cmt_fileName varchar2(255); -- WAS(톰캣)에 저장될 파일명(2020120809271535243254235235234.png)
@@ -413,6 +413,9 @@ from tbl_employee
 
 select *
 from tbl_board_comment;
+
+select *
+from tbl_calendar_comment
 
 select pk_cmt_seq, cmt_name, cmt_content, cmt_regDate
     		 , cmt_fileName, cmt_orgFilename, cmt_fileSize 
@@ -433,3 +436,18 @@ select pk_cmt_seq, cmt_name, cmt_content, cmt_regDate
  update tbl_board set b_subject = '수정본'
 		                   , b_content = '수정합니다'
 		where pk_board_seq = 2
+        
+select *
+from tbl_employee
+        
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV3RLrXnqTwbk' where pk_empnum = '20160130-01';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV4RLrXnqTwbk' where pk_empnum = '20160225-01';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV5RLrXnqTwbk' where pk_empnum = '20160225-02';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV6RLrXnqTwbk' where pk_empnum = '20160225-03';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV7RLrXnqTwbk' where pk_empnum = '20160820-01';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV8RLrXnqTwbk' where pk_empnum = '20160820-02';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV9RLrXnqTwbk' where pk_empnum = '20160820-03';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV10RLrXnqTwbk' where pk_empnum = '20150502-01';
+update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV11RLrXnqTwbk' where pk_empnum = '20170222-01';
+
+commit;

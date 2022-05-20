@@ -221,6 +221,37 @@ public class LeejhDAO implements InterLeejhDAO {
 		return map;
 	}
 
+	//댓글추가
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("leejh.commentAdd", paraMap);
+		return n; 
+	}
+	//댓글보기
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("leejh.commentShow", paraMap);
+		return listMap;
+	}
+	//원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = sqlsession.selectOne("leejh.getCommentTotalPage", paraMap);
+		return totalPage;
+	}
+	//댓글수정
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.commentEdit", paraMap);
+		return n;
+	}
+	//댓글삭제
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.commentDel", paraMap);
+		return n;
+	}
+
 
 
 

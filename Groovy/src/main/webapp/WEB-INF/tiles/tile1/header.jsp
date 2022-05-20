@@ -66,10 +66,13 @@ div#myProfileCard div.card-body ul li span {
 
 	  	getUserInfo();
 		
-  		/* $('.modal').on('hidden.bs.modal', function (e) {
+  		 $('.modal').on('hidden.bs.modal', function (e) {
 			$(this).find('form')[0].reset();
+			$(this).find('form[name="editFrm"]')[0].reset();
+			$(this).find('form[name="registerFrm"]')[0].reset();
+			
 		}); 
-  		  */
+  		 
   		
 	});
 	
@@ -180,6 +183,7 @@ div#myProfileCard div.card-body ul li span {
 	
 	function myProfileCard2(){
 		//document.getElementById("myProfileCard").style.display = "none"; 
+		//$("div.myProfileCard2").empty();
 		$('#myProfileCard').modal('hide');
 		
 	}
@@ -564,12 +568,12 @@ div#myProfileCard div.card-body ul li span {
 			$("a#btn_addressEdit").hide(); // "후기수정" 글자 감추기
 			
 			// "후기수정" 을 위한 엘리먼트 만들기 
-			let html = "<input id='edit_postcode'      class='addr'   type='text' val='' name='mypostcode' size='6' maxlength='5' required placeholder='우편번호' style='height: 25px; width: 200px'/><img id='zipcodeSearch' src='<%=ctxPath %>/resources/images/common/b_zipcode.gif' style='vertical-align: middle;' />"+
-			 			 "<input id='edit_address'       class='addr'   type='text' val='' name='myaddress'  maxlength='20' size='40' required placeholder='주소' style='height: 25px; width: 200px'/>"+
-			 			 "<input id='edit_detailAddress' class='addr'   type='text' val='' name='mydetailAddress'  size='40' required placeholder='상세주소'  style='height: 25px; width: 200px'/>"+
-			 			 "<input id='edit_extraAddress'                 type='text' val='' name='myextraAddress'  size='40' required placeholder='추가주소' style='height: 25px; width: 200px'/>";
-			     html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_OK'><span>확인</span></button></div>";
-			     html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_NO'><span>취소</span></button></div>";  
+			let html = "<tr><td style='border: 0px;'><input id='edit_postcode'      class='addr'   type='text' val='' name='mypostcode' size='6' maxlength='5' required placeholder='우편번호' style='height: 25px; width: 200px'/></td><td style='border: 0px;'><img id='zipcodeSearch' src='<%=ctxPath %>/resources/images/common/b_zipcode.gif' style='vertical-align: middle;' /></td></tr>"+
+			 			 "<tr><td style='border: 0px;'><input id='edit_address'       class='addr'   type='text' val='' name='myaddress'  maxlength='20' size='40' required placeholder='주소' style='height: 25px; width: 200px'/></td>"+
+			 			 "<td style='border: 0px;'><input id='edit_detailAddress' class='addr'   type='text' val='' name='mydetailAddress'  size='40' required placeholder='상세주소'  style='height: 25px; width: 200px'/></td></tr>"+
+			 			 "<tr><td style='border: 0px;'><input id='edit_extraAddress'                 type='text' val='' name='myextraAddress'  size='40' required placeholder='추가주소' style='height: 25px; width: 200px'/></td>";
+			     html += "<td style='border: 0px;'><div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_OK'><span>확인</span></button></div>";
+			     html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnAddrUpdate_NO'><span>취소</span></button></div></td></tr>";  
 			     
 			 // 수정 버튼 누르면 뜰 input 태그들에 값 넣어주기
 			$("#td_address").html(html); 
@@ -715,15 +719,15 @@ div#myProfileCard div.card-body ul li span {
 	     
 	      // "비번수정" 을 위한 엘리먼트 만들기 
 	      let html = "<table><tr class=''>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</tr><tr>";
-			  html += "<th><label for='originpwd'>현재 비밀번호&nbsp;<span id='star'>*</span></label></th>";
-		   	  html += "<td><input type='password' class='requiredInfo' id='originpwd' name='originpwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error'  style='color: red;'>암호가 올바르지 않습니다.</span></td>";
+			  html += "<th style='border: 0px;'><label for='originpwd'>현재 비밀번호&nbsp;<span id='star'>*</span></label></th>";
+		   	  html += "<td style='border: 0px;'><input type='password' class='requiredInfo' id='originpwd' name='originpwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error'  style='color: red;'>암호가 올바르지 않습니다.</span></td>";
 		   	  html += "</tr>";
-	          html += "<th><label for='mypwd'>비밀번호&nbsp;<span id='star'>*</span></label></th>";
-	    	  html += "<td><input type='password' class='requiredInfo' id='mypwd' name='mypwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error' style='color: red;'>암호가 올바르지 않습니다.</span></td>";
+	          html += "<th style='border: 0px;'><label for='mypwd'>비밀번호&nbsp;<span id='star'>*</span></label></th>";
+	    	  html += "<td style='border: 0px;'><input type='password' class='requiredInfo' id='mypwd' name='mypwd' size='20' maxlength='20' required placeholder='비밀번호를 입력해주세요' /><span class='error' style='color: red;'>암호가 올바르지 않습니다.</span></td>";
 	    	  html += "</tr>";
 	    	  html += "<tr>";
-	    	  html += "<th><label class='title' for='pwdcheck'>비밀번호확인&nbsp;<span id='star'>*</span></label></th>";
-	    	  html += "<td><input type='password' class='requiredInfo' id='pwdCheck' size='20' maxlength='20' required placeholder='비밀번호를 다시 입력해주세요'  /><span class='error' style='color: red;' >암호가 일치하지 않습니다.</span></td>";
+	    	  html += "<th style='border: 0px;'><label class='title' for='pwdcheck'>비밀번호확인&nbsp;<span id='star'>*</span></label></th>";
+	    	  html += "<td style='border: 0px;'><input type='password' class='requiredInfo' id='pwdCheck' size='20' maxlength='20' required placeholder='비밀번호를 다시 입력해주세요'  /><span class='error' style='color: red;' >암호가 일치하지 않습니다.</span></td>";
 	    	  html += "</tr></table>";
 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPwdUpdate_OK'><span>확인</span></button></div>";
 	          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPwdUpdate_NO'><span>취소</span></button></div>";  
@@ -884,9 +888,9 @@ div#myProfileCard div.card-body ul li span {
 		      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
 		      $('input[name=myphone]').attr('value',myphone);
 		      // "후기수정" 을 위한 엘리먼트 만들기 
-		      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
-		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
-		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
+		      let html = "<tr><td style='border: 0px;'><input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/></td>";
+		          html += "<td style='border: 0px;'><div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
+		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div></td></tr>";  
 		          
 		      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
 		     
