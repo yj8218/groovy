@@ -68,4 +68,6 @@ public interface InterLeejhDAO {
 	//맵으로 게시글 가져오기   
 	Map<String, String> boardView(String pk_board_seq);
 
+	
+
 }//end of public interface InterLeejhDAO
