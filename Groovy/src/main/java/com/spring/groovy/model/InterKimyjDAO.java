@@ -81,6 +81,20 @@ public interface InterKimyjDAO {
 
 	List<Map<String, String>> voteUndefinedUser(Map<String, String> paraMap);
 
+	int commentAdd(Map<String, String> paraMap);
+
+	List<Map<String, String>> commentShow(Map<String, String> paraMap);
+
+	int commentEdit(Map<String, String> paraMap);
+
+	int commentDel(Map<String, String> paraMap);
+
+	int scheduleDel(Map<String, String> paraMap);
+
+	int getCommentTotalPage(Map<String, String> paraMap);
+
+	List<Map<String, String>> selectVacationlist();
+
 	
 	
 

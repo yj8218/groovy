@@ -1,3 +1,95 @@
+select  VL.vstartdate, VL.venddate, VL.vinfo, E.pk_empnum, E.name, V.VTYPE,
+from
+TBL_VACATIONLIST VL
+JOIN TBL_EMPLOYEE E
+ON E.PK_EMPNUM = VL.FK_EMPNUM
+JOIN TBL_APPROVALDOCUMENT AD
+ON E.PK_EMPNUM = AD.FK_EMPNUM
+JOIN TBL_VACATION V
+ON V.PK_VSTATUS = VL.FK_VSTATUS
+JOIN tbl_spot S
+ON E.fk_spotnum = S.pk_spotnum
+JOIN tbl_department D
+ON E.fk_deptnum = D.pk_deptnum
+where AD.STATUS = '3' and AD.FK_APL_NO = 5;
+
+
+
+--------
+select fk_scheduleno, fk_empnum, regdate, name, content, emppicturename, spotnamekor, deptnamekor, commentseq 
+		from 
+		(
+		select row_number() over(order by commentseq desc) AS rno
+			 , CC.fk_scheduleno
+		     , CC.fk_empnum
+		     , CC.regdate
+		     , CC.name
+		     , CC.content
+		     , CC.commentseq
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor   
+		from tbl_calendar_comment CC
+		JOIN tbl_employee M
+		ON CC.fk_empnum = M.pk_empnum
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		where CC.fk_scheduleno = 34
+		) V 
+		where rno between 1 and 3
+		
+
+
+
+
+
+
+--------------------
+
+create sequence calcommentSeq
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into tbl_calendar_comment(fk_scheduleno, fk_empnum, commentseq, regdate, name, "COMMENT") values(28, 'admin', calcommentSeq.nextval, sysdate, '한관리', '테스트')
+INSERT INTO FINALORAUSER2.TBL_CALENDAR_COMMENT (FK_SCHEDULENO,FK_EMPNUM,COMMENTSEQ,NAME,"COMMENT")
+	VALUES ('28','admin',calcommentSeq.nextval,sysdate,'한관리','테스트');
+    
+    commit
+    
+ 
+ 
+ 
+ 		select CC.fk_scheduleno
+		     , CC.fk_empnum
+		     , CC.commentseq
+		     , CC.regdate
+		     , CC.name
+		     , CC.content
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor
+		from tbl_calendar_comment CC
+		JOIN tbl_employee M
+		ON CC.fk_empnum = M.pk_empnum
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		where CC.fk_scheduleno = 34
+ 
+ 
+ 
+ 
+ 
+    
+
+
 ---------------------------
 select SD.pk_scheduleno
 		     , to_char(SD.startdate,'yyyy-mm-dd hh24:mi') as startdate

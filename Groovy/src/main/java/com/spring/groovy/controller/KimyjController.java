@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import com.spring.groovy.common.FileManager;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.Calendar_schedule_VO;
@@ -936,5 +935,390 @@ public class KimyjController {
 			
 		}
 		
+
+		@ResponseBody
+		@RequestMapping(value ="/commentAdd.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentAdd(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_scheduleno = request.getParameter("fk_scheduleno");
+			String name = request.getParameter("name");
+			String content = request.getParameter("content");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_scheduleno", fk_scheduleno);
+			paraMap.put("name", name);
+			paraMap.put("content", content);
+			
+			
+			
+			//댓글쓰기에 첨부파일이 없는 경우
+			int n = 0;
+			try {
+				n = service.commentAdd(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
 		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+		@ResponseBody
+		@RequestMapping(value ="/commentShow.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+		public String commentShow(HttpServletRequest request) {
+			
+			String fk_scheduleno = request.getParameter("fk_scheduleno");
+			String currentShowPageNo = request.getParameter("currentShowPageNo");
+			System.out.println("페이징"+fk_scheduleno);
+			System.out.println("페이징2"+currentShowPageNo);
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			int sizePerPage = 3;
+			int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+			int endRno = startRno + sizePerPage - 1;
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			
+			paraMap.put("fk_scheduleno", fk_scheduleno);
+			paraMap.put("startRno",String.valueOf(startRno));
+			paraMap.put("endRno",String.valueOf(endRno));
+		
+			
+			
+			List<Map<String,String>> listMap = service.commentShow(paraMap);
+			
+
+			JSONArray jsonArr = new JSONArray();
+		 	for(Map<String, String> map :listMap) {
+		 		JSONObject jsObj = new JSONObject();
+				jsObj.put("fk_scheduleno", map.get("FK_SCHEDULENO"));
+				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+				jsObj.put("regdate", map.get("REGDATE"));
+				jsObj.put("name", map.get("NAME"));
+				jsObj.put("content", map.get("CONTENT"));
+				jsObj.put("emppicturename", map.get("EMPPICTURENAME"));
+				jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
+				jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
+				jsObj.put("commentseq", map.get("COMMENTSEQ"));
+				
+				
+				jsonArr.put(jsObj);
+		 	}
+
+			return jsonArr.toString();
+	
+		}
+		
+		// === #132.  원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+		@ResponseBody
+		@RequestMapping(value ="/getCommentTotalPage.groovy", method = {RequestMethod.GET})
+		public String getCommentTotalPage(HttpServletRequest request) {
+				
+			String fk_scheduleno = request.getParameter("fk_scheduleno");
+			String sizePerPage = request.getParameter("sizePerPage");
+			System.out.println("페이징3"+fk_scheduleno);
+			System.out.println("페이징4"+sizePerPage);
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_scheduleno", fk_scheduleno);
+			paraMap.put("sizePerPage",sizePerPage);
+		
+			int totalPage = service.getCommentTotalPage(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("totalPage",totalPage);
+			
+		
+			return jsonObj.toString();
+			
+		}//end of public String getCommentTotalPage(HttpServletRequest request)
+		
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value ="/commentEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentEdit(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_scheduleno = request.getParameter("fk_scheduleno");
+			String commentseq = request.getParameter("commentseq");
+			String content = request.getParameter("content");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_scheduleno", fk_scheduleno);
+			paraMap.put("commentseq", commentseq);
+			paraMap.put("content", content);
+			
+			
+			int n = 0;
+			try {
+				n = service.commentEdit(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value ="/commentDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentDel(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_scheduleno = request.getParameter("fk_scheduleno");
+			String commentseq = request.getParameter("commentseq");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_scheduleno", fk_scheduleno);
+			paraMap.put("commentseq", commentseq);
+			
+			
+			int n = 0;
+			try {
+				n = service.commentDel(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value ="/scheduleDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String scheduleDel(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String pk_scheduleno = request.getParameter("pk_scheduleno");
+			
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("pk_scheduleno", pk_scheduleno);
+			
+
+			int n = 0;
+			try {
+				n = service.scheduleDel(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+	
+
+	@ResponseBody
+	@RequestMapping(value="/scheduleEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String scheduleEdit(HttpServletRequest request) {
+		
+		String pk_scheduleno = request.getParameter("pk_scheduleno");
+		JSONObject jsonObj = new JSONObject();//
+		try {
+			Integer.parseInt(pk_scheduleno);
+			Map<String,String> map = service.detailSchedule(pk_scheduleno);
+			
+			
+			
+			jsonObj.put("map", map);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+			
+		} catch (NumberFormatException e) {
+			jsonObj.put("message", "실패");
+			return jsonObj.toString();
+		}
+			
+	}	
+		
+	
+	
+	// === 일정 수정하기 ===
+		@ResponseBody
+		@RequestMapping(value ="/goEditSchedule_withAttach", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+		public String goEditSchedule_withAttach(Calendar_schedule_VO scheduleVO, MultipartHttpServletRequest mrequest ) {
+		//public String registerSchedule_end(Calendar_schedule_VO scheduleVO, HttpServletRequest mrequest ) {
+			System.out.println("넘어옴 파일있음");
+			MultipartFile attach= scheduleVO.getAttach();
+			System.out.println("확인: "+attach);
+			String vote = scheduleVO.getVote();
+			System.out.println("확인: "+vote);
+			
+			
+			if(scheduleVO.getVote() == null) {
+				scheduleVO.setVote("0");
+			}
+			System.out.println("확인: "+vote);
+			
+			String Joinuser = scheduleVO.getJoinuser();
+			System.out.println("확인: "+Joinuser);
+			if(!attach.isEmpty()) {//존재하는지 여부 파일첨부파일게시물 확인
+				/*
+	            1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+	            >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
+	                       우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
+	                       조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다. 
+	            //was webapp의 절대경로를 알아야한다.                           
+	            */
+				HttpSession session = mrequest.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				
+				System.out.println("root "+root);
+				
+				String path = root + "resources"+File.separator+"download";
+				/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+				운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+				운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+				*/
+				
+				//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+				System.out.println("path "+path);
+				
+				//2. 파일첨부를 위한 변수의 설정및 값을 초기화 한후 파일 올리기
+				
+				String newFileName = "";//WAS(톰캣)의 디스크에 저장될 파일명
+				
+				byte[] bytes = null;//첨부파일의 내용물 담는것
+				
+				long fileSize = 0;//첨부파일의 크기
+				
+				try {
+					bytes = attach.getBytes();//첨부파일의 내용물 읽어온다.
+					
+					String originalFilename = attach.getOriginalFilename();
+					//getOriginalFilename 첨부파일의 파일명(예: 강아지.png);
+					System.out.println("originalFilename "+originalFilename);
+					
+					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+					//첨부된 파일을 업로드 하도록 하는 것이다.
+					System.out.println("newFileName "+newFileName);
+					
+					
+					//2. boardvo에 fileName 값과 originalFilename, fileSize값 넣어주기
+					
+					scheduleVO.setFileName(newFileName);//WAS(톰캣)의 디스크에 저장될 파일명
+					scheduleVO.setOrgFilename(originalFilename);
+					//게시판 페이지에서 첨부된파일(강아지,png)을 보여줄때 사용
+					//또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용
+					fileSize = attach.getSize();//첨부파일의 크기(단위 바이트)
+					scheduleVO.setFileSize(String.valueOf(fileSize));
+					
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			
+			
+			int n = 0;
+			try {
+				n = service.editSchedule_end(scheduleVO);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+			// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+		    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+			
+		}
+		
+		
+		
+		// === 일정 수정하기 ===
+			@ResponseBody
+			@RequestMapping(value ="/goEditSchedule_noAttach.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+			public String goEditSchedule_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) {
+				System.out.println("넘어옴 파일없음");
+				if(scheduleVO.getVote() == null) {
+					scheduleVO.setVote("0");
+				}
+				int n = 0;
+				
+				try {
+					n = service.editSchedule_end(scheduleVO);
+				} catch (Throwable e) {
+					//e.printStackTrace();
+				}
+			
+				// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+			    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
+				JSONObject jsonObj = new JSONObject();//
+				
+				jsonObj.put("n", n);//{"n":1}
+				return jsonObj.toString();//"{"n":1}"
+				
+			}
+	
+	
+	
+			// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
+			@ResponseBody
+			@RequestMapping(value="/selectVacationlist.groovy", produces="text/plain;charset=UTF-8")
+			public String selectVacationlist(HttpServletRequest request) {
+				System.out.println("확인");
+				//등록된 일정 가져오기
+				
+				//String fk_empnum = request.getParameter("fk_empnum");
+						
+				List<Map<String,String>> listMap = service.selectVacationlist();
+				
+				JSONArray jsArr = new JSONArray();
+				
+				if(listMap != null && listMap.size() > 0) {
+					
+					for(Map<String, String> map :listMap) {
+				 		JSONObject jsObj = new JSONObject();
+						jsObj.put("pk_documentnum", map.get("PK_DOCUMENTNUM"));
+						jsObj.put("vstartdate", map.get("VSTARTDATE"));
+						jsObj.put("venddate", map.get("VENDDATE"));
+						jsObj.put("vinfo", map.get("VINFO"));
+						jsObj.put("pk_empnum", map.get("PK_EMPNUM"));
+						jsObj.put("name", map.get("NAME"));
+						jsObj.put("vtype", map.get("VTYPE"));
+						jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
+						jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
+						
+						System.out.println(map.get("PK_DOCUMENTNUM"));
+						jsArr.put(jsObj);
+					}// end of for-------------------------------------
+				
+				}
+				
+				return jsArr.toString();
+				
+				
+				
+		
+			}
+		
+		
+		
+	
 }//end of public class KimyjController

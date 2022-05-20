@@ -131,6 +131,8 @@
 		<result property="DEPTNAMEKOR"     column="deptnamekor" 	javaType="String" />
 		<result property="PLACEURL"        column="placeurl" 	    javaType="String" />
 		<result property="FILENAME"        column="filename" 	    javaType="String" />
+		<result property="PK_LGCATGONO"    column="pk_lgcatgono" 	    javaType="String" />
+		<result property="PK_SMCATGONO"    column="pk_smcatgono" 	    javaType="String" />
 		
 		
 	</resultMap>
@@ -141,7 +143,7 @@
 		     , SD.subject
 		     , SD.color
 		     , nvl(SD.place,'-') as place
-		     , nvl(SD.joinuser,'공유자가 없습니다.') as joinuser
+		     , nvl(SD.joinuser,'-') as joinuser
 		     , nvl(SD.content,'-') as content
 		     , SD.fk_smcatgono
 		     , SD.fk_lgcatgono
@@ -149,6 +151,8 @@
 		     , M.name
 		     , SC.smcatgoname
 		     , LC.lgcatgoname
+		     , SC.pk_smcatgono
+		     , LC.pk_lgcatgono
 		     , SD.vote
 		     , nvl(SD.placename, '-') as placename
 		     , nvl(SD.addressname, '-') as addressname
@@ -186,6 +190,7 @@
 	
 	<!-- 일정수정하가 -->
 	<update id="editSchedule_end" parameterType="com.spring.groovy.model.Calendar_schedule_VO">
+	<if test="fileName == null">
 		update tbl_calendar_schedule set startdate = to_date(#{startdate}, 'yyyymmddhh24miss')
 		                               , enddate = to_date(#{enddate}, 'yyyymmddhh24miss')
 		                               , subject = #{subject}
@@ -195,7 +200,38 @@
 		                               , place = #{place}
 		                               , joinuser = #{joinuser}
 		                               , content = #{content}
-		where pk_scheduleno = #{pk_scheduleno} 
+		                               , vote = #{vote}
+		                               , placename = #{placeName}
+		                               , addressname = #{addressName}
+		                               , placephone = #{placePhone}
+		                               , roadaddressname = #{roadAddressName}
+		                               , regdate = default
+		                               , placeurl = #{placeUrl}
+		where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</if>
+	<if test="fileName != null">
+		update tbl_calendar_schedule set startdate = to_date(#{startdate}, 'yyyymmddhh24miss')
+			                               , enddate = to_date(#{enddate}, 'yyyymmddhh24miss')
+			                               , subject = #{subject}
+			                               , fk_lgcatgono = #{fk_lgcatgono}
+			                               , fk_smcatgono = #{fk_smcatgono}
+			                               , color = #{color}
+			                               , place = #{place}
+			                               , joinuser = #{joinuser}
+			                               , content = #{content}
+			                               , vote = #{vote}
+			                               , placename = #{placeName}
+			                               , addressname = #{addressName}
+			                               , placephone = #{placePhone}
+			                               , roadaddressname = #{roadAddressName}
+			                               , regdate = default
+			                               , placeurl = #{placeUrl}
+			                              
+			                               , filename = #{fileName} 
+			                               , orgfilename = #{orgFilename}
+			                               , filesize = #{fileSize}
+			where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</if>
 	</update>
 	
 	
@@ -427,5 +463,108 @@
 		on U.fk_empnum = M.pk_empnum
 		where fk_scheduleno = #{fk_scheduleno}
 	</select>
+	
+	<insert id="commentAdd" parameterType="HashMap" >
+		insert into tbl_calendar_comment(fk_scheduleno, fk_empnum, commentseq, regdate, name, content) values(#{fk_scheduleno}, #{fk_empnum}, calcommentSeq.nextval, default, #{name}, #{content})
+	</insert>
+	
+	
+	
+	<resultMap type="HashMap" id="commentShow_Map">
+		<result property="FK_SCHEDULENO"    column="fk_scheduleno" 	  javaType="String" />
+		<result property="FK_EMPNUM" 	    column="fk_empnum" 		  javaType="String" />
+		<result property="REGDATE"          column="regdate"          javaType="String" />
+		<result property="NAME"             column="name"             javaType="String" />
+		<result property="CONTENT"          column="content"          javaType="String" />
+		<result property="EMPPICTURENAME"   column="emppicturename"   javaType="String" />
+		<result property="SPOTNAMEKOR"      column="spotnamekor"      javaType="String" />
+		<result property="DEPTNAMEKOR"      column="deptnamekor"      javaType="String" />
+		<result property="COMMENTSEQ"      column="commentseq"      javaType="String" />
+		
+	</resultMap>
+	
+	<select id="commentShow" parameterType="HashMap" resultMap="commentShow_Map" >
+		select fk_scheduleno, fk_empnum, regdate, name, content, emppicturename, spotnamekor, deptnamekor, commentseq 
+		from 
+		(
+		select row_number() over(order by commentseq desc) AS rno
+			 , CC.fk_scheduleno
+		     , CC.fk_empnum
+		     , CC.regdate
+		     , CC.name
+		     , CC.content
+		     , CC.commentseq
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor   
+		from tbl_calendar_comment CC
+		JOIN tbl_employee M
+		ON CC.fk_empnum = M.pk_empnum
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		where CC.fk_scheduleno = #{fk_scheduleno}
+		) V 
+		where rno between #{startRno} and #{endRno}
+		
+	</select>
+	
+
+	<update id="commentEdit">
+		update tbl_calendar_comment set content = #{content}, regdate = default
+		where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} and commentseq = #{commentseq}
+	</update>
+	
+	<delete id="commentDel">
+	 delete from tbl_calendar_comment where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} and commentseq = #{commentseq}
+	</delete>
+	
+	
+	<delete id="scheduleDel">
+	 delete from tbl_calendar_schedule where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</delete>
+	
+	<select id="getCommentTotalPage" parameterType="HashMap" resultType="int"> 
+		select ceil(count(*)/#{sizePerPage})
+		from tbl_calendar_comment
+		where fk_scheduleno = #{fk_scheduleno}
+    </select> 
+    
+    
+    <!-- 일정 상세 보기 -->
+	<resultMap type="HashMap" id="selectVacationlist_Map">
+		<result property="PK_DOCUMENTNUM" 	       column="pk_documentnum" 	        javaType="String" />
+		<result property="VSTARTDATE" 	           column="vstartdate" 	            javaType="String" />
+		<result property="VENDDATE" 	           column="venddate" 	            javaType="String" />
+		<result property="VINFO" 	               column="vinfo" 	                javaType="String" />
+		<result property="PK_EMPNUM" 	           column="pk_empnum" 	            javaType="String" />
+		<result property="NAME"                    column="name"                    javaType="String" />
+		<result property="VTYPE" 	               column="vtype" 	                javaType="String" />
+		<result property="SPOTNAMEKOR" 	           column="spotnamekor" 	        javaType="String" />
+		<result property="DEPTNAMEKOR"             column="deptnamekor" 	        javaType="String" />
+	</resultMap>
+	<select id="selectVacationlist" resultMap="selectVacationlist_Map">
+		select  VL.pk_documentnum, VL.vstartdate, VL.venddate, VL.vinfo, E.pk_empnum, E.name, V.vtype, S.spotnamekor, D.deptnamekor
+		from
+		tbl_vacationlist VL
+		join tbl_employee E
+		on E.pk_empnum = VL.fk_empnum
+		join tbl_approvaldocument AD
+		on E.pk_empnum = AD.fk_empnum
+		join tbl_vacation V
+		on V.pk_vstatus = VL.fk_vstatus
+		join tbl_spot S
+		ON E.fk_spotnum = S.pk_spotnum
+		join tbl_department D
+		on E.fk_deptnum = D.pk_deptnum
+		where AD.status = '3' and AD.fk_apl_no = 5
+	</select>
+    
+    
+    
+    
+    
+	
 	
 </mapper>

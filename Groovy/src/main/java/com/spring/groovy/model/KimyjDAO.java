@@ -222,5 +222,47 @@ public class KimyjDAO implements InterKimyjDAO {
 		return listMap;
 	}
 
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("kimyj.commentAdd", paraMap);
+		return n;
+	}
+
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("kimyj.commentShow", paraMap);
+		return listMap;
+	}
+
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = sqlsession.update("kimyj.commentEdit", paraMap);
+		return n;
+	}
+
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = sqlsession.delete("kimyj.commentDel", paraMap);
+		return n;
+	}
+
+	@Override
+	public int scheduleDel(Map<String, String> paraMap) {
+		int n = sqlsession.delete("kimyj.scheduleDel", paraMap);
+		return n;
+	}
+
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = sqlsession.selectOne("kimyj.getCommentTotalPage", paraMap);
+		return totalPage;
+	}
+
+	@Override
+	public List<Map<String, String>> selectVacationlist() {
+		List<Map<String,String>> listMap = sqlsession.selectList("kimyj.selectVacationlist");
+		return listMap;
+	}
+
 
 }//end of public class KimyjDAO implements InterKimyjDAO 

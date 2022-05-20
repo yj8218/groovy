@@ -25,8 +25,56 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=234c62ec75f13db891af0691bfcdc606&libraries=services"></script>
-	
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">	
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone" rel="stylesheet">
 <style type="text/css">
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+
+.showSchedule *:focus-visible {
+outline: none;
+}
+
+
 
 div.sideCalList {
   height: 100%;
@@ -34,7 +82,7 @@ div.sideCalList {
   padding-right: 0;
   position: fixed;
   z-index: 100;
-  top: 0;
+  top: 15px;
   left: 0;  
   background-color: #eee;
   border-right: 1px solid #555;
@@ -462,7 +510,7 @@ div#modal_addSchedule i.icon-calendar{
     display: inline-block;
 }
 
-div#modal_addSchedule ul div {
+div#modal_addSchedule ul li > div {
  display: inline-block;
  position: relative; 
     display: table-cell;
@@ -559,18 +607,13 @@ margin:0;
    width: 16px;
     height: 16px;
     position: relative;
-    top: 2.5px;
-     background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
+    top: 4.2px;
+    right: 5px;
 
 }
-div#modal_addSchedule div.vote-group input[type=checkbox]:checked + label {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-on.svg');
+div#modal_addSchedule div.vote-group label span{
+font-size: 19px;
 }
-
-div#modal_addSchedule div.vote-group input[type=checkbox]:disabled + label {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
-}
-
 
 
 div#modal_addSchedule div.vote-group span{
@@ -633,7 +676,7 @@ div#modal_addSchedule input.place{
     font-size: 15px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    width: 21%;
+    
 }
 
 div#modal_addSchedule i.icon-file-upload{
@@ -644,7 +687,7 @@ div#modal_addSchedule i.icon-file-upload{
 }
 
 div#modal_addSchedule input.upload-name{
-	/* width: 100%; */
+	 width: 12%;
     max-width: 480px;
     height: 38px;
     line-height: 38px;
@@ -657,21 +700,11 @@ div#modal_addSchedule input.upload-name{
 }
 
 div#modal_addSchedule div.filebox label{
- 	margin:0;
-    width: 28px;
-    height: 28px;
-    line-height: 25px;
-    cursor: pointer;
-    text-align: center;
-        box-sizing: content-box;
+
+        position: relative;
+        top:6.4px;
 }
-div#modal_addSchedule i.icon-file {
-background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-file.svg')!important;
- width: 20px;
-height: 20px; 
-display: inline-block;
-vertical-align: middle;
-}
+
 
 div#modal_addSchedule input.upload-file{
 	position: absolute;
@@ -846,9 +879,9 @@ margin-right: 10px;
  
  div.showSchedule{ 
  	width: 674px;
-    height: 100%;
+    /* height: 100%; */
     min-height: auto;
-    max-height: 100%;
+    max-height: max-content;
     position: absolute;
     top: -20px;
     bottom: 0;
@@ -860,14 +893,14 @@ margin-right: 10px;
     border-left: 1px solid #ccc;
         border: 1px solid #ccc;
     box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
-    
+    display:block;
     font-size: 14px;
     font-weight: 400;
  }
   
   div.showSchedule div.card-header{
   	overflow: hidden;
-    padding: 12px 20px;
+    padding: 10px 20px;
     height: 45px;
     background: #fff;
     border-bottom: 1px solid #eee;
@@ -882,13 +915,13 @@ margin-right: 10px;
     margin: 0;
     padding: 0;
   }
-  div.showSchedule div.card-header h3 span {
+  div.showSchedule div.card-header h3 span.js-project-title-button {
  	 overflow: hidden;
    /*  display: inline-block; */
     max-width: 300px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    vertical-align: middle;
+   
    margin-left: 5px;
 
   }
@@ -898,6 +931,7 @@ margin-right: 10px;
         float: right;
     margin-top: 1px;
     position: absolute;
+    color: #333;
   }
   div.showSchedule div.card-header button.close span{
   /* font-family: icon-contents!important; */
@@ -907,6 +941,7 @@ margin-right: 10px;
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
+    
   }
   
   div.showSchedule div.card-body{
@@ -1334,7 +1369,7 @@ div.showSchedule span.memo-span a{
 div.showSchedule div.card-vote{
 display: block;
 margin: 30px 0 0;
-    padding: 30px 0 18px 0;
+    padding: 35px 0 15px 0;
     border-top: 1px solid #eee;
     text-align: center;
     font-size: 0;
@@ -1426,7 +1461,7 @@ color: #555;
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 div.showSchedule li.card-footer-li{
@@ -1516,11 +1551,56 @@ display: inline-block;
     font-size: 14px;
     font-family: Roboto;
     color: #999;
+        margin-left: 5px;
 }			                     
 
 div.showSchedule div.comment-writer-menu{
 float: right;
 }
+
+
+div.showSchedule button.card-edit{
+margin: 0;
+    padding: 0;
+font-size: 14px;
+    color: #999;
+    cursor: pointer;
+     display: inline-block;
+   border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
+   
+}
+div.showSchedule button.card-delete{
+margin: 0;
+    padding: 0;
+    display: inline-block;
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    
+    border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
+    margin-left: 5px;
+   
+}
+
+
+
+
+
+
+
+
+
+
 
 div.showSchedule button.comment-edit{
 margin: 0;
@@ -1551,7 +1631,23 @@ margin: 0;
         font-family: inherit;
             line-height: normal;
     margin: 0;
+    margin-left: 5px;
    
+}
+
+div.showSchedule button.comment-cancell{
+margin: 0;
+    padding: 0;
+font-size: 14px;
+    color: #999;
+    cursor: pointer;
+     display: inline-block;
+   border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
 }
 
 			                   
@@ -1570,15 +1666,27 @@ word-break: break-all;
 
 
 div.showSchedule div.card-footer2{
-overflow: hidden;
-    padding: 14px 30px;
-    
-        position: sticky;
-    bottom: 0;
-    margin: 0;
-    background: #faf9f9;
-    
-    box-shadow: 0 -2px 6px rgb(0 0 0 / 6%);
+  overflow: hidden;
+  padding: 14px 30px;
+  
+  position: sticky;
+  bottom: 0;
+  margin: 0;
+  background: #faf9f9;
+ /*  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06); */
+}
+
+
+div.showSchedule div.card-footer2.sticky {
+  position: sticky;
+  bottom: 0;
+  margin: 0;
+  background: #faf9f9;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+}
+
+div.showSchedule div.card-footer2 {
+  cursor: default;
 }
 
 
@@ -1631,27 +1739,50 @@ position: relative;
 
 }
 
-div.showSchedule div.comment-writer-text{
-width: 100%;
-    padding: 11px 60px 11px 20px;
-    min-height: 44px;
-    background: #fff;
-    border: 1px solid #ddd;
-  
-    border-radius: 4px;
-   
-    box-sizing: border-box;
-    color: #555;
-    word-break: break-all;
-    white-space: pre-wrap;
-    cursor: text;
+div.showSchedule div.comment-writer-text[contenteditable]{
+ width: 100%;
+  padding: 11px 60px 11px 20px;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #555;
+  word-break: break-all;
+  white-space: pre-wrap;
+  cursor: text;
 }
 
-div.showSchedule div.comment-writer-text:before {
+div.showSchedule input.comment-writer-text{
+ width: 100%;
+  padding: 11px 60px 11px 20px;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #555;
+  word-break: break-all;
+  white-space: pre-wrap;
+  cursor: text;
+}
+
+div.showSchedule div.comment-writer-text[contenteditable]:empty:before{
 	    display: block;
     content: attr(placeholder);
     color: #999;
 }
+
+
+div.showSchedule div.comment-writer-text[contenteditable=true]:hover,
+div.showSchedule div.comment-writer-text[contenteditable=true]:focus {
+  border-color: #555;
+  -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 
 div.showSchedule div.card-content-map{
 width:100%;
@@ -1716,11 +1847,11 @@ text-underline-offset : 2px;
 }
 
 div.showSchedule h3.card-title i{
- background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-density.svg')!important;
-    width: 20px;
-    height: 20px;
+
+    /* width: 20px;
+    height: 20px; */
     display: inline-block;
-   filter: invert(17%) sepia(70%) saturate(15%) hue-rotate(316deg) brightness(90%) contrast(94%);
+
       vertical-align: middle;
 }
 
@@ -1759,6 +1890,10 @@ color: #00b695;
     font-size: 15px;
     
     line-height: 19px;
+    
+        position: relative;
+    display: flex;
+    cursor: pointer;
 }
 
 div.showSchedule span.noCnt{
@@ -1767,6 +1902,9 @@ div.showSchedule span.noCnt{
         
     font-size: 15px;
         line-height: 19px;
+        
+        display: flex;
+         cursor: pointer;
 }
 div.showSchedule span.undefinedCnt{
   margin-left: 55px;
@@ -1774,6 +1912,9 @@ div.showSchedule span.undefinedCnt{
       
     font-size: 15px;
         line-height: 19px;
+        
+        display: flex;
+         cursor: pointer;
 }
 
 div.showSchedule span.yesCnt span{
@@ -1794,81 +1935,240 @@ line-height: 19px;
 }
 
 
-div.showSchedule div.voteTotalCnt em{
+div.showSchedule div.vote-group em{
     margin-left: 2px;
     font-weight: 700;
     font-size: 16px;
        font-style: normal;
 }
 
-ul.yesul{
-list-style: none;
-    padding: 0;
-    margin: 0;
-    display: block;
-    outline: 0;
+
+
+div.showSchedule div.vote-group{
+    position: relative;
+  /*   display: flex; */
+    -webkit-box-pack: justify;
+    justify-content: space-between;
     
-    z-index: 2147483647;
-    color: #333;
-    width: 200px !important;
-    font-size: 15px;
-    line-height: 38px;
-    /* border-radius: 4px; */
-    border: 1px solid #6449fc !important;
-    max-height: 200px;
-    overflow: scroll;
+  /*   padding: 14.5px 30px; */
+    background: #fff;
+
+}
+
+
+div.showSchedule div.vote-yes-group{
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+div.showSchedule ul.vote-yes-ul{
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+   /*  top: 50px; */
+    right: 390px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #00b695;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    max-width: 200px;
+   max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #00b695;
+        
+         display: none;
+         
+         overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: default;
-    
-        top: 363px;
-    left: 350.5px;
-    width: 480px;
+
+}
+div.showSchedule ul.vote-yes-ul::-webkit-scrollbar {
     display: none;
-
 }
 
-ul.noul{
-display:none;
-  overflow: hidden;
-     position: relative;
+div.showSchedule ul.vote-yes-ul li{
+display: block;
+    position: relative;
+}
+
+div.showSchedule div.vote-no-group{
+   display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+div.showSchedule ul.vote-no-ul li{
+display: block;
+    position: relative;
+}
+
+div.showSchedule ul.vote-no-ul{
+      overflow: hidden;
+    position: absolute;
     z-index: 1;
-    top: 50px;
-    right: 35px;
-    background: #fff;
-    border: 1px solid #555;
+   /*  top: 50px; */
+    right: 300px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #fb2a2a;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    border-radius: 6px;
-    padding: 4px 0;
-    width: 100px;
-    height: 100px;
+    padding: 5px 5px;
+    max-width: 200px;
+    max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #fb2a2a;
+
+ display: none;
+ 
+ overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+div.showSchedule ul.vote-no-ul::-webkit-scrollbar {
+    display: none;
 }
 
-ul.undefinedul{
-display:none;
-  overflow: hidden;
-     position: relative;
+div.showSchedule div.vote-undefined-group{
+   display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+div.showSchedule ul.vote-undefined-ul{
+      overflow: hidden;
+    position: absolute;
     z-index: 1;
-    top: 50px;
-    right: 35px;
-    background: #fff;
-    border: 1px solid #555;
+   /*  top: 50px; */
+    right: 210px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #777;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    border-radius: 6px;
-    padding: 4px 0;
-    width: 100px;
-    height: 100px;
+    padding: 5px 5px;
+    max-width: 200px;
+   max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #777;
+        
+        display: none;
+
+overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+div.showSchedule ul.vote-undefined-ul::-webkit-scrollbar {
+    display: none;
+}
+
+div.showSchedule ul.vote-undefined-ul li{
+display: block;
+    position: relative;
+}
+
+div.showSchedule ul.vote-undefined-ul li div, div.showSchedule ul.vote-no-ul li div, div.showSchedule ul.vote-yes-ul li div{
+font-size: 13px;
+
+}
+
+
+div.showSchedule input.comment-writer-text:hover,div.showSchedule input.comment-writer-text:focus {
+	
+	border: 1px solid #6449fc  !important;
+}
+
+
+div.comment-text-area input.comment-writer-text{
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+
+div.showSchedule div.comment-header{
+padding: 10px 30px 0 30px;
+   /*  border-top: 1px solid #ddd; */
+}
+
+
+h3.card-title i span {
+ position: relative;
 }
 
 
 
 
+/* 댓글 페이징 */
+div.comment-header ul{
+list-style: none;
+padding: 0;
+margin: 0;
+text-align: center;
+
+}
+div.comment-header ul li{
+display: inline;
+color: #6449fc;
+font-size: 15px;
+font-weight: 600;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+div.comment-header ul li.numberli{
+padding-left: 7px;
+padding-right: 7px;
+}
+div.comment-header ul li.numberli:last-child{
+padding-right: 15px;
+}
+
+div.comment-header ul li a{
+
+color: #555;
+font-size: 14px;
+font-weight: 600;
+    cursor: pointer;
+
+}
+
+div.comment-header ul li span{
+position: relative;
+top:6.5px;
+padding: 0;
+margin: 0;
+}
+/* --- */
+
+div#map div{
+width: max-content;
+  height: max-content;
+}
+ 
+span.plusUser i.fas {
+
+position: relative;
+top: 3.4px;
+cursor: pointer;
+}
+span.plusUser i.fas span{
+font-size: 18px;
+}
 
 </style>
 
@@ -1897,7 +2197,12 @@ function searchPlaces(keyword) {
 
 	// 지도를 생성합니다    
 	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	var imageSrc = '<%=ctxPath %>/resources/images/kimyj/map-mark.png', // 마커이미지의 주소입니다    
+	imageSize = new kakao.maps.Size(36, 36), // 마커이미지의 크기입니다
+	imageOption = {offset: new kakao.maps.Point(18, 36)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
+	//마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 	// 장소 검색 객체를 생성합니다
 	var ps = new kakao.maps.services.Places(); 
 
@@ -1963,25 +2268,22 @@ function searchPlaces(keyword) {
 	    // 마커를 생성하고 지도에 표시합니다
 	    var marker = new kakao.maps.Marker({
 	        map: map,
-	        position: new kakao.maps.LatLng(place.y, place.x) 
+	        position: new kakao.maps.LatLng(place.y, place.x),
+	        image: markerImage
 	    });
 
 	    // 마커에 클릭이벤트를 등록합니다
 	    kakao.maps.event.addListener(marker, 'click', function() {
 	        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-	       	console.log(place.place_name);
-	    	console.log(place.address_name);
-	    	console.log(place.phone);
-	    	if (place.road_address_name) {
-	    		console.log(place.road_address_name);
-	    	}
-	    	console.log(place.place_url);
+	       	
 	    	
 	    
 	        if(!place.place_name){
-	        	infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.address_name + '</div>');
+	        	infowindow.setContent('<div style=" white-space:normal;  text-align:center;padding:6px; border: 1px solid #6449fc; color: #555;">' + place.address_name + '</div>');
+	        }else if(place.place_name && !place.phone){
+	        	infowindow.setContent('<div style=" white-space:normal; text-align:center;padding:6px; border: 1px solid #6449fc; color: #555;">' + place.place_name +", "+place.address_name+'</div>');
 	        }else{
-	        	infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name +", "+place.address_name+", "+place.phone+ '</div>');
+	        	infowindow.setContent('<div style=" white-space:normal; text-align:center;padding:6px; border: 1px solid #6449fc; color: #555;">' + place.place_name +", "+place.address_name+", "+place.phone+ '</div>');
 	        }
 	        
 	        infowindow.open(map, marker);
@@ -1992,11 +2294,7 @@ function searchPlaces(keyword) {
 	        $("input.road_address_name").val(place.road_address_name);
 	        $("input.place_url").val(place.place_url);
 	       
-	        console.log($("input.place_name").val());
-	    	console.log($("input.address_name").val());
-	    	console.log($("input.place_phone").val());
-	    	console.log($("input.place_url").val());
-	    	//console.log($("input.road_address_name").val());
+	  
 	        
 	    });
 	}
@@ -2010,14 +2308,57 @@ var calendar;
 
 $(document).ready(function(){
 	
+	
+	
+	$("input#filename").on('change', function(e){
+		 var textObj = document.getElementById('filename');
+		 
+		 var resize = textObj.value.length;
+		 if(Number(resize)>25 && Number(resize)<50){
+			 resize = resize*5;
+		 }else if(Number(resize)>50){
+			 resize = resize*7;
+		 }else if(Number(resize)==0){
+			 resize = 69;
+		 }
+		
+		 $("input.upload-name").css('width',resize); 
+	});
+	
+	
+	
+	
+	
+	
+	$(document).on("click", "div.card-header button.close", function(){
+		$("div.showSchedule").empty();
+		$("div.showSchedule").hide();
+	});
+	
+	
+	$(document).on("click", "span.yesCnt", function(){
+		$("ul.vote-yes-ul").toggle('slow');
+	});
+	
+	$(document).on("click", "span.noCnt", function(){
+		 $("ul.vote-no-ul").toggle('slow');
+	});
+	
+	$(document).on("click", "span.undefinedCnt", function(){
+		$("ul.vote-undefined-ul").toggle('slow');
+	});
+
+	
 	 $("div.showSchedule").hide();
 	
 	$(document).on("click", "input:checkbox[name=vote]", function(){
 		var bool = $(this).prop("checked");
 		if(bool){
 			$(this).val("1");
+			$("div.vote-group label").html('<span class="material-icons-outlined">check_circle</span>');
 		}else{
 			$(this).val("0");
+			$("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
 		}	
 	});// end of $("input:checkbox[id=allComCal]").click(function(){})
 	
@@ -2033,27 +2374,38 @@ $(document).ready(function(){
 	});
 
 //////////////
+
+	
+	$(document).on('keyup', 'form.comment-writer-container input.comment-writer-text', function (event) {
+		if(event.keyCode == 13){ 
+			const fk_scheduleno = $("input.schedulenoShave").val();
+	
+			commentAdd(fk_scheduleno);
+		}
+	});
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
 	//파일 업로드 
 	$("input.upload-file").on('change', function(){
         if(window.FileReader){
-            var filename = $(this)[0].files[0].name;
+        	
+        	if($(this).val() == '' || $(this).val() == null){
+        		$("input.upload-name").val("파일선택");
+        		return;
+        	}else{
+        		
+        		var filename = $(this)[0].files[0].name;
+        	}
+            
         } else {
             var filename = $(this).val().split('/').pop().split('\\').pop();
         }
-
+		
         $(this).siblings('input.upload-name').val(filename);
     });
 	
@@ -2076,7 +2428,12 @@ $(document).ready(function(){
 	});
 	 
 	$("input.selectDay").on('show.daterangepicker', function (ev, picker) {
-	   
+		 $(".yearselect").css("float", "left");
+		    $(".monthselect").css("float", "right");
+		    $(".cancelBtn").css({'background-color':'#ff4444', 'color':'#fff', 'float':'right', 'border':'none'});
+		    $(".applyBtn").css({'background-color':'#6449fc', 'border':'none'});
+		  
+		    
 	});
 
 
@@ -2262,6 +2619,7 @@ $(document).ready(function(){
         locale: 'ko',
         selectable: true,
 	    editable: false,
+	    googleCalendarApiKey : 'AIzaSyDCwjlUWOcjVeJz1pk-cvkVovrZfz-kQQc',   	
 	    headerToolbar: {
 	    	  left: 'prev next',
 	          /* center: 'title', dayGridMonth dayGridWeek dayGridDay 'prev next' */
@@ -2270,13 +2628,34 @@ $(document).ready(function(){
 	    dayMaxEventRows: true, // for all non-TimeGrid views
 	    views: {
 	      timeGrid: {
-	        dayMaxEventRows: 3 // adjust to 6 only for timeGridWeek/timeGridDay\
+	        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay\
 	      }
 	    },
-	    
+	    //events: 'ko.south_korea#holiday@group.v.calendar.google.com',
+	     eventSources: [
+	        {
+	              googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+	              className: 'koHolidays',
+	              color: '#ED1A3D', //rgb,#ffffff 등의 형식으로 할 수 있어요.
+	              textColor: '#FFF', 
+	              id: 'koHolidays'
+	            }
+
+	        ],
+	        eventClick: function(event, jsEvent, view, info) {
+	        	var check = /[a-zA-Z]/gi;
+	        	
+	        	if(event.event.id.match(check) != null){
+		        	 event.jsEvent.cancelBubble = true;
+					event.jsEvent.preventDefault(); 
+	        	}
+
+	          },  
+	        
+	     
 	    // ===================== DB 와 연동하는 법 시작 ===================== //
     	events:function(info, successCallback, failureCallback) {
-	
+    		
 	    	 $.ajax({
                  url: '<%= ctxPath%>/schedule/selectSchedule.groovy',
                  data:{"fk_empnum":$('input#fk_empnum').val()},
@@ -2366,7 +2745,55 @@ $(document).ready(function(){
                          }                             
                          
                       // console.log(events);                       
-                         successCallback(events);                               
+                        // successCallback(events);  
+                         
+                         
+                         $.ajax({
+                             url: '<%= ctxPath%>/selectVacationlist.groovy',
+                             //data:{"fk_empnum":$('input#fk_empnum').val()},
+                             dataType: "json",
+                             success:function(json) {
+                            	 /*
+                            	    json 의 값 예
+                            	    [{"enddate":"2021-11-26 18:00:00.0","fk_lgcatgono":"2","color":"#009900","pk_scheduleno":"1","fk_smcatgono":"4","subject":"파이널 프로젝트 코딩","startdate":"2021-11-08 09:00:00.0","fk_empnum":"seoyh"},{"enddate":"2021-11-29 13:50:00.0","fk_lgcatgono":"1","color":"#990008","pk_scheduleno":"2","fk_smcatgono":"7","subject":"팀원들 점심식사","joinuser":"leess,eomjh","startdate":"2021-11-29 12:50:00.0","fk_empnum":"seoyh"},{"enddate":"2021-12-02 20:00:00.0","fk_lgcatgono":"1","color":"#300bea","pk_scheduleno":"3","fk_smcatgono":"11","subject":"팀원들 뒤풀이 여행","joinuser":"leess,eomjh","startdate":"2021-12-01 09:00:00.0","fk_empnum":"seoyh"}]
+                            	 */
+                            	 //var events = [];
+                                 if(json.length > 0){
+                                     
+                                         $.each(json, function(index, item) {
+                                                var startdate = moment(item.vstartdate).format('YYYY-MM-DD HH:mm:ss');
+                                                
+                                                var enddate = moment(item.venddate).format('YYYY-MM-DD HH:mm:ss');
+                                                var subject = item.vinfo;
+                                               // alert(startdate+":"+enddate);
+               			                     
+               			                    events.push({
+               			                       id: item.pk_documentnum,
+               			                       title: item.vinfo,
+               			                       start: startdate,
+               			                       end: enddate,
+               			                       color: '#555',
+               			                       //url:"javascript:detailSchedule("+item.pk_scheduleno+")",
+               			                       <%--  url: "<%= ctxPath%>/schedule/detailSchedule.groovy?pk_scheduleno="+item.pk_scheduleno, --%>
+               			                       //color: item.color,
+               			                       //cid: "100" // 사내캘린더 내의 서브캘린더 체크박스의 value값과 일치하도록 만들어야 한다. 그래야만 서브캘린더의 체크박스와 cid 값이 연결되어 체크시 풀캘린더에서 일정이 보여지고 체크해제시 풀캘린더에서 일정이 숨겨져 안보이게 된다. 
+               			                    }); // end of events.push({})
+               			               
+               			                    
+                                         });         
+                                 }
+                                   console.log(events);                       
+                                     successCallback(events);                               
+                              },
+               				  error: function(request, status, error){
+               			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+               			      }	
+                                                        
+                      }); // end of $.ajax()
+                         
+                         
+                         
+                         
                   },
 				  error: function(request, status, error){
 			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -2374,6 +2801,11 @@ $(document).ready(function(){
                                             
           }); // end of $.ajax()
         
+          
+          
+          
+          
+          
         }, // end of events:function(info, successCallback, failureCallback) {}
         
         // ===================== DB 와 연동하는 법 끝 ===================== //
@@ -2401,11 +2833,13 @@ $(document).ready(function(){
     	 eventDidMount: function (arg) {
 	            var arr_calendar_checkbox = document.querySelectorAll("input.calendar_checkbox"); 
 	            // 사내캘린더, 내캘린더, 공유받은캘린더 에서의 모든 체크박스임
+	           
 	            
 	            arr_calendar_checkbox.forEach(function(item) { // item 이 사내캘린더, 내캘린더, 공유받은캘린더 에서의 모든 체크박스 중 하나인 체크박스임
 		              if (item.checked) { 
 		            	// 사내캘린더, 내캘린더, 공유받은캘린더 에서의 체크박스중 체크박스에 체크를 한 경우 라면
-		                
+		                //console.log("일정을 보여주는 cid : "  + arg.event.extendedProps.cid);
+		                //console.log("일정을 보여주는 체크박스의 value값(item.value) : " + item.value);
 		            	if (arg.event.extendedProps.cid === item.value) { // item.value 가 체크박스의 value 값이다.
 		                	// console.log("일정을 보여주는 cid : "  + arg.event.extendedProps.cid);
 		                	// console.log("일정을 보여주는 체크박스의 value값(item.value) : " + item.value);
@@ -2645,47 +3079,21 @@ $(document).ready(function(){
 	// 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아와서 select 태그에 넣어주기 
 	$("select.calType").change(function(){
 		var fk_lgcatgono = $("select.calType").val();      // 내캘린더이라면 1, 사내캘린더이라면 2 이다.
-		var fk_empnum = $("input[name=fk_empnum]").val();  // 로그인 된 사용자아이디
-		
-		if(fk_lgcatgono != "") { // 선택하세요 가 아니라면
-			$.ajax({
-					url: "<%= ctxPath%>/schedule/selectSmallCategory.groovy",
-					data: {"fk_lgcatgono":fk_lgcatgono, 
-						   "fk_empnum":fk_empnum},
-					dataType: "json",
-					success:function(json){
-						var html ="";
-						if(json.length>0){
-							
-							$.each(json, function(index, item){
-								html+="<option value='"+item.pk_smcatgono+"'>"+item.smcatgoname+"</option>"
-							});
-							$("select.small_category").html(html);
-							$("select.small_category").show();
-						}
-					},
-					error: function(request, status, error){
-			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-					}
-			});
-		}
-		
-		else {
-			// 선택하세요 이라면
-			$("select.small_category").hide();
-		}
-		
+		selectCalType(fk_lgcatgono);
 	});
 	
 	
 	// 공유자 추가하기
 	$("input#joinUserName").bind("keyup",function(){
 			var joinUserName = $(this).val();
-		//	console.log("확인용 joinUserName : " + joinUserName);
+			
+
+			//console.log("확인용 joinUserName : " + joinUserName);
 			$.ajax({
 				url:"<%= ctxPath%>/schedule/insertSchedule/searchJoinUserList.groovy",
 				data:{"joinUserName":joinUserName},
 				dataType:"json",
+				async : false, 
 				success : function(json){
 					var joinUserArr = [];
 			//		console.log("이:"+json.length);
@@ -2693,6 +3101,7 @@ $(document).ready(function(){
 						
 						$.each(json, function(index,item){
 							var name = item.name;
+							
 							var pk_empnum = item.pk_empnum;
 							if(name.includes(joinUserName) || pk_empnum.includes(joinUserName)){ // name 이라는 문자열에 joinUserName 라는 문자열이 포함된 경우라면 true , 
 								                             // name 이라는 문자열에 joinUserName 라는 문자열이 포함되지 않은 경우라면 false 
@@ -2716,7 +3125,8 @@ $(document).ready(function(){
 						
 					}// end of if------------------------------------
 				}// end of success-----------------------------------
-			});
+			});	
+		
 	});
 	
 
@@ -2740,6 +3150,152 @@ $(document).ready(function(){
 		});
 		    
 	
+	  
+	  
+	//수정버튼 
+	  $(document).on('click',"button#editSchedule",function(){
+	  	
+	  	const day = $("input.selectDay").val();
+	  	
+	  	var [startDate, endDate] = day.split(' ~ ');
+	  	console.log(startDate);
+	  	console.log(endDate);
+	  	
+	  	// 일자 유효성 검사 (시작일자가 종료일자 보다 크면 안된다!!)
+	  	//var startDate = $("input#startDate").val();	
+	  	var sArr = startDate.split("-");
+	  	startDate= "";	
+	  	for(var i=0; i<sArr.length; i++){
+	  		startDate += sArr[i];
+	  	}
+	  	var sArr = startDate.split(":");
+	  	startDate= "";	
+	  	for(var i=0; i<sArr.length; i++){
+	  		startDate += sArr[i];
+	  	}
+	  	
+	  	startDate = startDate.replace(/\s/gi, "");
+	  	console.log(startDate);
+	  	//var endDate = $("input#endDate").val();	
+	  	var eArr = endDate.split("-");   
+	   	var endDate= "";
+	   	for(var i=0; i<eArr.length; i++){
+	   		endDate += eArr[i];
+	   	}
+	   	var eArr = endDate.split(":");
+	   	endDate= "";	
+	  	for(var i=0; i<eArr.length; i++){
+	  		endDate += eArr[i];
+	  	}
+	  	endDate = endDate.replace(/\s/gi, "");
+	  	console.log(endDate);
+	  	
+	   	//var startHour= $("select#startHour").val();
+	   	//var endHour = $("select#endHour").val();
+	   	//var startMinute= $("select#startMinute").val();
+	   	//var endMinute= $("select#endMinute").val();
+	      
+	   	// 조회기간 시작일자가 종료일자 보다 크면 경고
+	      if (Number(endDate) - Number(startDate) < 0) {
+	       	alert("종료일이 시작일 보다 작습니다."); 
+	       	return;
+	      }
+	     /*  
+	   	// 시작일과 종료일 같을 때 시간과 분에 대한 유효성 검사
+	      else if(Number(endDate) == Number(startDate)) {
+	      	
+	      	if(Number(startHour) > Number(endHour)){
+	      		alert("종료일이 시작일 보다 작습니다."); 
+	      		return;
+	      	}
+	      	else if(Number(startHour) == Number(endHour)){
+	      		if(Number(startMinute) > Number(endMinute)){
+	      			alert("종료일이 시작일 보다 작습니다."); 
+	      			return;
+	      		}
+	      		else if(Number(startMinute) == Number(endMinute)){
+	      			alert("시작일과 종료일이 동일합니다."); 
+	      			return;
+	      		}
+	      	}
+	      }// end of else if---------------------------------
+	  	 
+	  	  */
+	  	 
+	  	// 제목 유효성 검사
+	  	var subject = $("input#subject").val().trim();
+	      if(subject==""){
+	  		alert("제목을 입력하세요."); 
+	  		return;
+	  	}
+	      
+	      // 캘린더 선택 유무 검사
+	  	var calType = $("select.calType").val().trim();
+	  	if(calType==""){
+	  		alert("캘린더 종류를 선택하세요."); 
+	  		return;
+	  	}
+	  	
+	  	// 달력 형태로 만들어야 한다.(시작일과 종료일)
+	  	// 오라클에 들어갈 date 형식(년월일시분초)으로 만들기
+	  	var sdate = startDate+"00";
+	  	var edate = endDate+"00";
+	  	
+	  	$("input[name=startdate]").val(sdate);
+	  	$("input[name=enddate]").val(edate);
+
+//	  	console.log("캘린더 소분류 번호 => " + $("select[name=fk_smcatgono]").val());
+	  	/*
+	  	      캘린더 소분류 번호 => 1 OR 캘린더 소분류 번호 => 2 OR 캘린더 소분류 번호 => 3 OR 캘린더 소분류 번호 => 4 
+	  	*/
+	  	
+	  //  console.log("색상 => " + $("input#color").val());
+	  	
+	  	// 공유자 넣어주기
+	  	var plusUser_elm = document.querySelectorAll("div.displayUserList > span.plusUser");
+	  	var joinUserArr = new Array();
+	  	
+	  	plusUser_elm.forEach(function(item,index,array){
+	  	//	console.log(item.innerText.trim());
+	  		/*
+	  			이순신(leess) 
+	  			아이유1(iyou1) 
+	  			설현(seolh) 
+	  		*/
+	  		joinUserArr.push(item.innerText.trim());
+	  	});
+	  	
+	  	var joinuser = joinUserArr.join(", ");
+	  		console.log("공유자 => " + joinuser);
+	  	// 이순신(leess),아이유1(iyou1),설현(seolh) 
+	  	
+	  	$("input[name=joinuser]").val(joinuser);
+	  	
+	  	
+	  	
+	  	if($("input[name=attach]").val() == "") {
+	  		  // 첨부파일이 없는 댓글쓰기인 경우
+	  		  //alert("파일없음");
+	  		  goEditSchedule_noAttach();
+	  		  
+	  	  }
+	  	  else {
+	  		 // 첨부파일이 있는 댓글쓰기인 경우 
+	  		 // alert("파일있음");
+	  		 goEditSchedule_withAttach();
+	  	  }
+	  	
+	  });// end of $("button#register").click(function(){})--------------------
+
+
+
+
+
+
+	  
+	  
+	  
+	  
 	 //등록버튼 
 	// 등록 버튼 클릭
 	$("button#register").click(function(){
@@ -2854,7 +3410,7 @@ $(document).ready(function(){
 			joinUserArr.push(item.innerText.trim());
 		});
 		
-		var joinuser = joinUserArr.join(",");
+		var joinuser = joinUserArr.join(", ");
 		//	console.log("공유자 => " + joinuser);
 		// 이순신(leess),아이유1(iyou1),설현(seolh) 
 		
@@ -2907,7 +3463,7 @@ function goAddSchedule_withAttach(){
 				
 				 $("div#modal_addSchedule").modal("hide");
 				/* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
-				calendar.refetchEvents()
+				calendar.refetchEvents();
 			}else{
 				alert("일정 등록에 실패하였습니다.");
 			}
@@ -3095,8 +3651,8 @@ function showCompanyCal(){
 					<%-- 사내 캘린더 추가를 할 수 있는 직원은 직위코드가 3 이면서 부서코드가 4 에 근무하는 사원이 로그인 한 경우에만 가능하도록 조건을 걸어둔다. 
 					if("${sessionScope.loginuser.fk_pcode}" =='3' && "${sessionScope.loginuser.fk_dcode}" == '4') { --%>
 					<%-- if("${sessionScope.loginuser.gradelevel}" =='10') {--%>
-					html += "<button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
-					html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
+					html += "<button class='btn_edit' data-target='editCal' onclick='editComCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas'><span class='material-icons-outlined'> edit_calendar </span></i></button></td>";  
+					html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas'><span class='material-icons-outlined'> event_busy </span></i></button></td>";
 					<%-- }--%>
 					
 					html += "</p>";
@@ -3226,8 +3782,8 @@ function showmyCal(){
 					 html += "<input type='checkbox' name='my_smcatgono' class='calendar_checkbox my_smcatgono' value='"+item.pk_smcatgono+"' checked id='my_smcatgono_"+index+"'/>";
 					 html += "<label for='my_smcatgono_"+index+"'></label><span>"+item.smcatgoname+"</span>";
 					
-					 html += "<button class='btn_edit' data-target='editCal' onclick='editMyCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-edit'></i></button></td>";  
-					 html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas fa-trash'></i></button></td>";
+					 html += "<button class='btn_edit' data-target='editCal' onclick='editMyCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas'><span class='material-icons-outlined'> edit_calendar </span></i></button></td>";  
+					 html += "<button class='btn_edit delCal' onclick='delCalendar("+item.pk_smcatgono+",\""+item.smcatgoname+"\")'><i class='fas'><span class='material-icons-outlined'> event_busy </span></i></button></td>";
 			
 					 html += "</p>";
 					 html += "</div>";
@@ -3364,7 +3920,7 @@ function add_joinUser(value){  // value 가 공유자로 선택한이름 이다.
 	}
 	
 	else {
-		$("div.displayUserList").append("<span class='plusUser'>"+value+"&nbsp;<i class='fas fa-times-circle'></i></span>");
+		$("div.displayUserList").append("<span class='plusUser'>"+value+"&nbsp;<i class='fas'><span class='material-icons-outlined'> add_circle_outline </span></i></span>");
 	}
 	
 	$("input#joinUserName").val("");
@@ -3384,6 +3940,16 @@ function showMap(address){
 // 지도를 생성합니다    
 var map = new kakao.maps.Map(mapContainer, mapOption); 
 
+
+
+var imageSrc = '<%=ctxPath %>/resources/images/kimyj/map-mark.png', // 마커이미지의 주소입니다    
+imageSize = new kakao.maps.Size(48, 48), // 마커이미지의 크기입니다
+imageOption = {offset: new kakao.maps.Point(24, 48)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+  
+//마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+
     
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
@@ -3396,15 +3962,20 @@ geocoder.addressSearch(address, function(result, status) {
 
         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+        
+        
+        
+        
         // 결과값으로 받은 위치를 마커로 표시합니다
         var marker = new kakao.maps.Marker({
             map: map,
-            position: coords
+            position: coords,
+            image: markerImage
         });
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+address+'</div>'
+            content: '<div style="width:200px;text-align:center;padding:6px 0; border: 1px solid #6449fc; color: #555;">'+address+'</div>'
         });
         infowindow.open(map, marker);
 
@@ -3416,6 +3987,66 @@ geocoder.addressSearch(address, function(result, status) {
 });   
 	
 }
+
+function showMap2(address){
+	$("li.mapLi").show();
+	
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	
+	var imageSrc = '<%=ctxPath %>/resources/images/kimyj/map-mark.png', // 마커이미지의 주소입니다    
+	imageSize = new kakao.maps.Size(48, 48), // 마커이미지의 크기입니다
+	imageOption = {offset: new kakao.maps.Point(24, 48)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	  
+	//마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+	
+	
+	    
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch(address, function(result, status) {
+	
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+	
+	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	        
+	        
+	        
+	        
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        var marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords,
+	            image: markerImage
+	        });
+	
+	        // 인포윈도우로 장소에 대한 설명을 표시합니다
+	        var infowindow = new kakao.maps.InfoWindow({
+	            content: '<div style="width:200px;text-align:center;padding:6px 0; border: 1px solid #6449fc; color: #555;">'+address+'</div>'
+	        });
+	        infowindow.open(map, marker);
+	
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        map.relayout();
+	        map.setCenter(coords);
+	        
+    } 
+});   
+	
+}
+
 
 //자세히보기
 function detailSchedule(pk_scheduleno){
@@ -3431,6 +4062,7 @@ function detailSchedule(pk_scheduleno){
         	  voteYesUser(pk_scheduleno);
 			     voteNoUser(pk_scheduleno);
 			     voteUndefinedUser(pk_scheduleno);
+			    
         	 
          
 			//{"map":{"STARTDATE":"2022-05-02 00:00","FK_SMCATGONO":"13","FK_EMPNUM":"admin","FK_LGCATGONO":"1","SMCATGONAME":"테스트6","PLACE":"강남맛집","PK_SCHEDULENO":"26","ENDDATE":"2022-05-02 23:59","NAME":"한관리","COLOR":"#6449fc","SUBJECT":"파일없음-유","CONTENT":"파일없음-유","JOINUSER":"한관리(0-20150502)"}}
@@ -3455,11 +4087,11 @@ function detailSchedule(pk_scheduleno){
         
          html += '<div class="card-header">';
          html += '<h3 class="card-title">';
-         html += '<i></i>';<!-- 아이콘 -->
+         html += '<i><span class="material-icons-outlined"> bookmark_border </span></i>';<!-- 아이콘 -->
          html += '<span class="js-project-title-button">'+json.map.LGCATGONAME+'-'+json.map.SMCATGONAME+'</span>'; <!-- 대분류캘린더-소분류캘린더 -->
          html += '</h3>';
-         html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-         html += '<span aria-hidden="true">&times;</span>';
+         html += '<button type="button" class="close">';
+         html += '<span class="material-icons-outlined"> close </span>';
          html += '</button>';
          html += '</div>';
    	
@@ -3479,20 +4111,19 @@ function detailSchedule(pk_scheduleno){
          html += '</div>';
    	 			
          html += '<div>';
-         html += '<div class="card-option">';
+         
  				
-         html += '<button class="card-option-btn"></button>';
- 						
-         html += '<ul class="card-option-ul">';
-         html += '<li class="card-option-li" data-code="modify">';
-         html += '<a href="#"> <i class="icon-edit"></i>수정</a>';
-         html += '</li>';
-         html += '<li class="card-option-li" data-code="delete">';
-         html += '<a href="#"> <i class="icon-delete"></i>삭제</a>';
-         html += '</li>';
-         html += '</ul>';
+         if('${sessionScope.loginuser.pk_empnum}' == json.map.FK_EMPNUM){
+        	 html += '<div class="card-option">';
+        
+         html += '<button type="button" class="card-edit" onclick="scheduleEdit('+pk_scheduleno+')">수정</button>';
+         html += '<button type="button" class="card-delete" onclick="scheduleDel('+pk_scheduleno+')">삭제</button>';
          html += '</div>';
+         }
+        
          html += '</div>';
+         
+         
          html += '</div>';
   
          html += '<div class="card-body-bottom">';
@@ -3568,27 +4199,50 @@ function detailSchedule(pk_scheduleno){
          html += '</div>';
  					
 		 if(json.map.VOTE == 1){/* 참석유무 */
+			 html += '<div class="card-vote">';
+			 
+		        html += '<div class="vote-group">';			
+		         html += '<div>';
+		         
+		         
+		         html += '<div class="vote-yes-group">';
+		         html += '<span class="yesCnt">';
+			     html += '<span>참석</span><em>0</em>';
+			   
+			     html += '</span>';
+		         html += '<ul class="vote-yes-ul">';
+		         html += '</ul>';
+		         
+		         html += '</div>';
+		         
+		         html += '<div class="vote-no-group">';
+		         html += '<span class="noCnt">';
+				 html += '<span>불참</span><em>0</em>';
+
+				 html += '</span>';
+		         html += '<ul class="vote-no-ul">';
+		         html += '</ul>';
+
+		         html += '</div>';
+		         
+		         html += '<div class="vote-undefined-group">';
+		         html += '<span class="undefinedCnt">';
+				 html += '<span>미정</span><em>0</em>';
+				
+				 html += '</span>';	
+		         html += '<ul class="vote-undefined-ul">';
+		         html += '</ul>';
+
+		         html += '</div>';
+		         
+		         
+		         
+		         html += '</div>';
+		         
+		         html += '</div>';
 			 
 
-	         html += '<div class="card-vote">';
-	         
-	         html += '<div class="voteTotalCnt">';
-		     html += '<span class="yesCnt">';
-		     html += '<span>참석</span><em>0</em>';
-		     html += '</span>';
-		     
-			 html += '<span class="noCnt">';
-			 html += '<span>불참</span><em>0</em>';
-			 
-			 html += '</span>';
-			 
-			 html += '<span class="undefinedCnt">';
-			 html += '<span>미정</span><em>0</em>';
-			 html += '</span>';
-			 html += '</div>';
-	         
-	         
-	         
+		         
 	         html += '<button class="vote-btn-yes" onclick="voteYesAdd('+json.map.PK_SCHEDULENO+')">참석</button>';
 	         html += '<button class="vote-btn-no" onclick="voteNoAdd('+json.map.PK_SCHEDULENO+')">불참</button>';
 	         html += '<button class="vote-btn-undefined" onclick="voteUndefinedAdd('+json.map.PK_SCHEDULENO+')">미정</button>';
@@ -3598,8 +4252,10 @@ function detailSchedule(pk_scheduleno){
          html += '</div>';
  		
          html += '<div class="card-footer">';
+         /* html += '<div class="comment-header"></div>'; */
+         
          html += '<ul class="card-footer-group">';
- 				
+ 	/* 			
          html += '<li class="card-footer-li">';
  			               
          html += '<div class="comment-user-profile">';
@@ -3628,7 +4284,10 @@ function detailSchedule(pk_scheduleno){
          html += '</div>';
 
 	     html += '</li>'; 
+	     
+	      */
 		 html += '</ul>';
+		 html += '<div class="comment-header"></div>';
 		 html += '</div>';
 
 		 html += '<div class="card-footer2">';
@@ -3638,12 +4297,17 @@ function detailSchedule(pk_scheduleno){
 
          html += '<form class="comment-writer-container">';
          html += '<fieldset>';
-	     html += '<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>';
-		 html += '<input type="hidden" class="comment-upload-input">';
+	  /*    html += '<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>'; */
+		 html += '<input type="text" class="comment-writer-text"  placeholder="댓글등록은 Enter키 입니다.">';
+		 html += '<input type="text" style="display:none;">';
+		/*  html += '<input type="hidden" class="schedulenoShave">'; */
 		 html += '</fieldset>';                     
 		 html += '</form>';
          html += '</div>';
-			
+		
+        
+         $(".schedulenoShave").val(pk_scheduleno);
+       
         /*  <div class="card showSchedule"> */
          $("div.showSchedule").html(html);
         
@@ -3651,6 +4315,7 @@ function detailSchedule(pk_scheduleno){
          	$("div.card-content-map").hide();
          	showMap(json.map.ADDRESSNAME);
          }
+         commentShow(pk_scheduleno,1);
         
          $("div.showSchedule").show();
 
@@ -3668,7 +4333,9 @@ function voteYesAdd(fk_scheduleno) {
 	$("button.vote-btn-yes").css({'background':'#00b19c','color':'#fff'});
 	$("button.vote-btn-no").css({'background':'','color':''});
 	$("button.vote-btn-undefined").css({'background':'','color':''});
-	
+	$("ul.vote-yes-ul").hide();
+	$("ul.vote-no-ul").hide();
+	$("ul.vote-undefined-ul").hide();
 
 	
 		   $.ajax({
@@ -3700,7 +4367,9 @@ function voteNoAdd(fk_scheduleno) {
 	$("button.vote-btn-no").css({'background':'#ff6b6b','color':'#fff'});
 	$("button.vote-btn-yes").css({'background':'','color':''});
 	$("button.vote-btn-undefined").css({'background':'','color':''});
-	
+	$("ul.vote-yes-ul").hide();
+	$("ul.vote-no-ul").hide();
+	$("ul.vote-undefined-ul").hide();
 	 
 		   $.ajax({
 			   url:"<%= ctxPath%>/voteNoAdd.groovy",
@@ -3731,7 +4400,9 @@ function voteUndefinedAdd(fk_scheduleno) {
 	$("button.vote-btn-undefined").css({'background':'#777','color':'#fff'});
 	$("button.vote-btn-yes").css({'background':'','color':''});
 	$("button.vote-btn-no").css({'background':'','color':''});
-	   		
+	$("ul.vote-yes-ul").hide();
+	$("ul.vote-no-ul").hide();
+	$("ul.vote-undefined-ul").hide();   		
 		   $.ajax({
 			   url:"<%= ctxPath%>/voteUndefinedAdd.groovy",
 			   type:"POST",
@@ -3764,9 +4435,9 @@ function voteTotalCnt(fk_scheduleno) {
 			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}"},
 		   dataType:"JSON", 
 		   success:function(json) {
-			   $("div.voteTotalCnt span.yesCnt em").html(json.map.YESCNT);
-			   $("div.voteTotalCnt span.noCnt em").html(json.map.NOCNT);
-			   $("div.voteTotalCnt span.undefinedCnt em").html(json.map.UNDEFINEDCNT);
+			   $("div.vote-group span.yesCnt em").html(json.map.YESCNT);
+			   $("div.vote-group span.noCnt em").html(json.map.NOCNT);
+			   $("div.vote-group span.undefinedCnt em").html(json.map.UNDEFINEDCNT);
 		   },
 		   error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -3829,14 +4500,23 @@ function voteYesUser(fk_scheduleno) {
 		   success:function(json) {
 			   
 			   let html = ""
-			   $.each(json, function(index, item) {
-				   html +='<li>';
-				   html += '<div>'+item.name+'('+item.fk_empnum+')</div>';
-				   html += '</div>'; 
-				   html +='</li>';   
-			   })
+			   if(json.length>0){
+				   $("span.yesCnt").css({'pointer-events':''});
+			  
+				   $.each(json, function(index, item) {
+					   html +='<li>';
+					   html += '<div>'+item.name+'('+item.fk_empnum+')</div>';
+					   html += '</div>'; 
+					   html +='</li>';   
+				   });
+				   
+			   }else{
+				   $("span.yesCnt").css({'pointer-events':'none'});
+			  
+			   }
+			  
 			   
-			   $("ul.yesul").html(html);
+			   $("ul.vote-yes-ul").html(html);
 	
 			  
 		   },
@@ -3859,14 +4539,19 @@ function voteNoUser(fk_scheduleno) {
 			   
 		   
 			   	let html = ""
+			   	if(json.length>0){
+			   	 $("span.noCnt").css({'pointer-events':''});
 				   $.each(json, function(index, item) {
 					   html +='<li>';
 					   html += '<div>'+item.name+'('+item.fk_empnum+')</div>';
 					   html += '</div>'; 
 					   html +='</li>';   
-				   })
+				   });
+			   	}else{
+			   	 $("span.noCnt").css({'pointer-events':'none'});
+			   	}
 				   
-				   $("ul.noul").html(html);
+				   $("ul.vote-no-ul").html(html);
 
 			
 		   },
@@ -3888,14 +4573,22 @@ function voteUndefinedUser(fk_scheduleno) {
 		   success:function(json) {
 			   
 			  		let html = ""
+	  			if(json.length>0){
+					  
+					   $("span.undefinedCnt").css({'pointer-events':''});
+	  		         $("span.undefinedCnt").on('click');
 					   $.each(json, function(index, item) {
 						   html +='<li>';
-						   html += '<div>'+item.name+'('+item.fk_empnum+')</div>';
+						   html += '<div>'+item.name+'('+item.c+')</div>';
 						   html += '</div>'; 
 						   html +='</li>';   
-					   })
-					   
-					   $("ul.undefinedul").html(html);
+					   });
+	  			}else{
+	  				
+	  				$("span.undefinedCnt").css({'pointer-events':'none'});	
+	  			   
+	  			}
+					   $("ul.vote-undefined-ul").html(html);
 			   
 		   
 			 
@@ -3906,6 +4599,597 @@ function voteUndefinedUser(fk_scheduleno) {
 	   });	   
 	   
 }// end of function goLikeDislikeCount()-------------------
+
+
+
+function commentAdd(fk_scheduleno) {
+	
+	   const content = $("input.comment-writer-text").val();
+	 
+	   $.ajax({
+		   url:"<%= ctxPath%>/commentAdd.groovy",
+		   type:"POST",
+		   data:{"fk_scheduleno":fk_scheduleno,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+			   "name":"${sessionScope.loginuser.name}",
+			   "content":content },
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+		  	if(json.n == 1){
+		  		$("input.comment-writer-text").val("");
+		  		commentShow(fk_scheduleno,1);   
+		  	}else{
+		  		alert("댓글쓰기 실패");
+		  	}
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+
+function commentShow(fk_scheduleno, currentShowPageNo) {
+	
+	   $.ajax({
+		   url:"<%= ctxPath%>/commentShow.groovy",
+		   type:"GET",
+		   data:{"fk_scheduleno":fk_scheduleno,
+			   "currentShowPageNo":currentShowPageNo},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+			  
+	  			if(json.length>0){
+	  				
+	  				let html = ""
+					   $.each(json, function(index, item) {
+						   var regdate = moment(item.regdate).format('YYYY-MM-DD HH:mm');
+					 
+						     html += '<li class="card-footer-li" id="commentid-'+item.commentseq+'">';
+ 			               
+					         html += '<div class="comment-user-profile">';
+					         html += '<span class="comment-user-profile-span"></span>';
+					         html += '</div>';
+					 			            
+					         html += '<div class="comment-container">';
+					         html += '<div class="comment-user-area">';
+					         html += '<div class="comment-user">';
+					         html += '<span class="comment-user-name">['+item.deptnamekor+' : '+item.spotnamekor+'] '+item.name+'</span>';
+					         html += '<span class="comment-user-position"></span>';
+					         html += '<span class="record-date">'+regdate+'</span>'; 
+					         html += '</div>';
+					 		if('${sessionScope.loginuser.pk_empnum}' == item.fk_empnum){
+					 			 html += '<div class="comment-writer-menu">';
+						         html += '<button type="button" class="comment-edit" onclick="commentEdit('+fk_scheduleno+','+item.commentseq+')">수정</button>';
+						         html += '<button type="button" class="comment-delete" onclick="commentDel('+fk_scheduleno+','+item.commentseq+')">삭제</button>';
+						         html += '</div>'; 
+					 		}
+					        
+					         
+					         html += '</div>';
+					 			                
+					         html += '<div class="comment-content">';
+					         html += '<div class="comment-text-area">';
+						     html += '<div class="comment-text"><div>'+item.content+'</div></div>';
+						 	 html += '</div>';	
+					         html += '</div>'; 
+					         html += '</div>';
+
+						     html += '</li>'; 
+					   });
+					   $("ul.card-footer-group").html(html);
+					   
+					   makeCommentPageBar(fk_scheduleno, currentShowPageNo);
+	  			}
+
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+
+
+
+function commentEdit(fk_scheduleno,commentseq) {
+	
+   let html ="";
+   html += '<input type="text" class="comment-writer-text"  placeholder="입력 Enter 입니다.">';
+   html += '<input type="text" style="display:none;">';
+   const backuptext = $("li#commentid-"+commentseq+" div.comment-text div").text();
+
+   $("li#commentid-"+commentseq+" div.comment-text-area").html(html);
+   $("li#commentid-"+commentseq+" input.comment-writer-text").val(backuptext);
+  
+   $("div.card-footer2").hide();
+   
+   html ="";
+   html += '<button type="button" class="comment-cancell" onclick="commentEditCancell('+fk_scheduleno+')">취소</button>';
+   $("li#commentid-"+commentseq+" div.comment-writer-menu").html(html);
+   
+   
+	$(document).on('keyup', 'li#commentid-'+commentseq+' input.comment-writer-text', function (event) {
+		if(event.keyCode == 13){ 
+			 const contentEdit = $("li#commentid-"+commentseq+" input.comment-writer-text").val();
+			 
+			 $.ajax({
+				   url:"<%= ctxPath%>/commentEdit.groovy",
+				   type:"POST",
+				   data:{"fk_scheduleno":fk_scheduleno,
+					   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+					   "commentseq":commentseq,
+					   "content":contentEdit},
+				   dataType:"JSON", 
+				   success:function(json) {
+					   
+				  	if(json.n == 1){
+				  		   alert("댓글수정 성공");
+				  		 commentShow(fk_scheduleno,1); 
+						   $("div.card-footer2").show();
+				  	}else{
+				  		alert("댓글수정 실패");
+				  	}
+					   
+			 
+				   },
+				   error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				   }
+			   });	
+			 
+
+		}
+	});
+	
+   
+
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+function commentDel(fk_scheduleno,commentseq) {
+	
+	   $.ajax({
+		   url:"<%= ctxPath%>/commentDel.groovy",
+		   type:"POST",
+		   data:{"fk_scheduleno":fk_scheduleno,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+			   "commentseq":commentseq},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+		  	if(json.n == 1){
+		  		   alert("댓글삭제 성공");
+		  		 commentShow(fk_scheduleno,1);   
+		  	}else{
+		  		alert("댓글삭제 실패");
+		  	}
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+
+function commentEditCancell(fk_scheduleno){
+	
+	commentShow(fk_scheduleno,1); 
+    $("div.card-footer2").show();
+}
+
+
+function scheduleDel(pk_scheduleno) {
+	$("div.showSchedule").empty();
+	$("div.showSchedule").hide();
+	
+	   $.ajax({
+		   url:"<%= ctxPath%>/scheduleDel.groovy",
+		   type:"POST",
+		   data:{"pk_scheduleno":pk_scheduleno,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}"},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+		  	if(json.n == 1){
+		  		   alert("스케줄삭제 성공");
+		  		 calendar.refetchEvents();
+		  	}else{
+		  		alert("스케줄삭제 실패");
+		  	}
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+  
+
+function scheduleEdit(pk_scheduleno) {
+	
+	 $('form.scheduleFrm').each(function() {
+		      this.reset();
+		  	});
+   	 $("li.mapLi").hide();
+   	$("select.small_category").empty();
+   	$("select.small_category").hide();
+   	$("input.subject").css('color','');
+   	$("div.displayUserList").empty();
+	
+
+
+	   $.ajax({
+		   url:"<%= ctxPath%>/scheduleEdit.groovy",
+		   type:"POST",
+		   data:{"pk_scheduleno":pk_scheduleno,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}"},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+			   $("div.showSchedule").empty();
+				$("div.showSchedule").hide();
+				
+				$("#modal_addSchedule h5.modal-title").text("일정수정");
+				
+				let html = "";
+				html += '<button type="button" id="editSchedule" class="btn btn-success btn-sm btn_normal">수정</button>';
+				html += '<button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>';
+				$("#modal_addSchedule div.modal-footer").html(html);
+			  
+				selectCalType(json.map.PK_LGCATGONO);
+				
+				$("#modal_addSchedule input#color").val(json.map.COLOR);//색상
+				$("#modal_addSchedule input#subject").val(json.map.SUBJECT);//제목
+				$("#modal_addSchedule input#subject").css({'color':json.map.COLOR});//제목
+				
+				$("#modal_addSchedule textarea#content").val(json.map.CONTENT);//내용
+				
+				$("#modal_addSchedule select.calType").val(json.map.PK_LGCATGONO).prop("selected", true);//대분류
+				
+				
+				
+				$("#modal_addSchedule select.small_category").val(json.map.PK_SMCATGONO).prop("selected", true);//소분류
+				
+				
+				
+	      		$('#modal_addSchedule input.selectDay').data('daterangepicker').setStartDate(json.map.STARTDATE);
+				$('#modal_addSchedule input.selectDay').data('daterangepicker').setEndDate(json.map.ENDDATE);
+				$("#modal_addSchedule input#vote").val(json.map.VOTE);	 
+			 	$("#modal_addSchedule input.eidt_pk_scheduleno").val(pk_scheduleno);	 
+				
+				
+				if(json.map.VOTE == 1){	
+					$("#modal_addSchedule input#vote").prop("checked", true);
+				}else{
+					$("#modal_addSchedule input#vote").prop("checked", false);
+					
+				}
+				
+				if(json.map.ADDRESSNAME != "-"){
+					$("#modal_addSchedule input#place").val(json.map.ADDRESSNAME);//지도
+			
+					$("#modal_addSchedule input.place_name").val(json.map.PLACENAME);
+			        $("#modal_addSchedule input.address_name").val(json.map.ADDRESSNAME);
+			        $("#modal_addSchedule input.place_phone").val(json.map.PLACEPHONE);
+			        $("#modal_addSchedule input.road_address_name").val(json.map.ROADADDRESSNAME);
+			        $("#modal_addSchedule input.place_url").val(json.map.PLACEURL);
+
+					showMap2(json.map.ADDRESSNAME);
+
+				}
+				if(json.map.JOINUSER != "공유자가 없습니다."){
+					
+					let arr = json.map.JOINUSER.split(',');
+					$.each(arr, function (index, item) {
+						let joinUserName = item.trim();
+						add_joinUser(joinUserName);
+						
+					});
+	
+				}
+				
+
+				$('#modal_addSchedule').modal('show');  
+			   
+			   
+			   
+			
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+		  	
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	  
+	   
+
+}// end of function goLikeDislikeCount()-------------------
+
+
+function selectCalType(fk_lgcatgono){
+	
+	
+	
+	var fk_empnum = $("input[name=fk_empnum]").val();  // 로그인 된 사용자아이디
+	
+	if(fk_lgcatgono != "") { // 선택하세요 가 아니라면
+		$.ajax({
+				url: "<%= ctxPath%>/schedule/selectSmallCategory.groovy",
+				data: {"fk_lgcatgono":fk_lgcatgono, 
+					   "fk_empnum":fk_empnum},
+				dataType: "json",
+				async : false, 
+				success:function(json){
+					var html ="";
+					if(json.length>0){
+						
+						$.each(json, function(index, item){
+							html+="<option value='"+item.pk_smcatgono+"'>"+item.smcatgoname+"</option>"
+						});
+						$("select.small_category").html(html);
+						$("select.small_category").show();
+					}
+				},
+				error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+		});
+	}
+	
+	else {
+		// 선택하세요 이라면
+		$("select.small_category").hide();
+	}
+}
+
+
+
+
+
+
+function goEditSchedule_withAttach(){
+	alert("<%= ctxPath%>/goEditSchedule_withAttach.groovy");
+	 var formData = $("form[name=scheduleFrm]").serialize();
+	  $("form[name=scheduleFrm]").ajaxForm({
+		 url: "<%= ctxPath%>/goEditSchedule_withAttach.groovy",
+		data: formData,
+		 type:"POST",
+	 	  enctype:"multipart/form-data",
+		  dataType:"JSON",
+		 success:function(json){
+			if(json.n == 1){
+				alert("일정 수정에 성공하였습니다.");
+				 $('form.scheduleFrm').each(function() {
+		   		      this.reset();
+		   		  	});
+		        $("select.small_category").empty();
+		        $("select.small_category").hide();
+				
+				 $("div#modal_addSchedule").modal("hide");
+				/* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
+				calendar.refetchEvents();
+			}else{
+				alert("일정 수정에 실패하였습니다.");
+			}
+		 },
+		 error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	     }	 
+	 });
+	
+	  $("form[name=scheduleFrm]").submit();
+	
+}
+
+function goEditSchedule_noAttach(){
+	alert("<%= ctxPath%>/goEditSchedule_noAttach.groovy");
+	var formData = $("form[name=scheduleFrm]").serialize();
+	  $.ajax({
+		 url: "<%= ctxPath%>/goEditSchedule_noAttach.groovy",
+		data: formData,
+		 type:"POST",
+		  dataType:"JSON",
+		 success:function(json){
+			if(json.n == 1){
+				alert("일정 수정에 성공하였습니다.");
+				 $('form.scheduleFrm').each(function() {
+		   		      this.reset();
+		   		  	});
+		        $("select.small_category").empty();
+		        $("select.small_category").hide();
+				
+				 $("div#modal_addSchedule").modal("hide");
+				/* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
+				calendar.refetchEvents()
+			}else{
+				alert("일정 수정에 실패하였습니다.");
+			}
+		 },
+		 error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	     }	 
+	 });
+	  
+	
+}
+
+
+//////////
+
+function makeCommentPageBar(fk_scheduleno, currentShowPageNo) {
+	  
+	  <%-- === 원글에 대한 댓글의 totalPage 수를 알아오려고 한다. ===  --%>
+	  $.ajax({
+		  url:"<%= ctxPath%>/getCommentTotalPage.groovy",
+		  data:{"fk_scheduleno":fk_scheduleno,
+			    "sizePerPage":"3"},
+		  type:"GET",
+		  dataType:"JSON",
+		  success:function(json){
+			 //  console.log("확인용 댓글의 전체페이지수 : " + json.totalPage);
+			 
+			 if(json.totalPage > 0) {
+				 // 댓글이 있는 경우 
+				 
+				 const totalPage = json.totalPage;
+				 
+				 let pageBarHTML = "<ul>";
+				 
+				 const blockSize = 5;
+			//	 const blockSize = 2;
+				 
+				// blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수 이다.
+				/*
+				                 1 2 3 4 5 6 7 8 9 10  [다음][마지막]           -- 1개블럭
+				   [맨처음][이전]  11 12 13 14 15 16 17 18 19 20  [다음][마지막]   -- 1개블럭
+				   [맨처음][이전]  21 22 23
+				*/
+				 
+				 let loop = 1;
+				 /*
+			    	loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+			     */
+			    
+
+			     if(typeof currentShowPageNo == "string") {
+			    	 currentShowPageNo = Number(currentShowPageNo);
+			     }
+			     
+			     // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
+			     let pageNo = Math.floor( (currentShowPageNo - 1)/blockSize ) * blockSize + 1;
+			     /*
+			       currentShowPageNo 가 3페이지 이라면 pageNo 는 1 이 되어야 한다.
+			       ((3 - 1)/10) * 10 + 1;
+			       ( 2/10 ) * 10 + 1;
+			       ( 0.2 ) * 10 + 1;
+			       Math.floor( 0.2 ) * 10 + 1;  // 소수부가 있을시 Math.floor(0.2) 은 0.2 보다 작은 최대의 정수인 0을 나타낸다.
+			       0 * 10 + 1 
+			       1
+			       
+			       currentShowPageNo 가 11페이지 이라면 pageNo 는 11 이 되어야 한다.
+			       ((11 - 1)/10) * 10 + 1;
+			       ( 10/10 ) * 10 + 1;
+			       ( 1 ) * 10 + 1;
+			       Math.floor( 1 ) * 10 + 1;  // 소수부가 없을시 Math.floor(1) 은 그대로 1 이다.
+			       1 * 10 + 1
+			       11
+			       
+			       currentShowPageNo 가 20페이지 이라면 pageNo 는 11 이 되어야 한다.
+			       ((20 - 1)/10) * 10 + 1;
+			       ( 19/10 ) * 10 + 1;
+			       ( 1.9 ) * 10 + 1;
+			       Math.floor( 1.9 ) * 10 + 1;  // 소수부가 있을시 Math.floor(1.9) 은 1.9 보다 작은 최대의 정수인 1을 나타낸다.
+			       1 * 10 + 1
+			       11
+			    
+			       
+				    1  2  3  4  5  6  7  8  9  10  -- 첫번째 블럭의 페이지번호 시작값(pageNo)은 1 이다.
+				    11 12 13 14 15 16 17 18 19 20  -- 두번째 블럭의 페이지번호 시작값(pageNo)은 11 이다.
+				    21 22 23 24 25 26 27 28 29 30  -- 세번째 블럭의 페이지번호 시작값(pageNo)은 21 이다.
+				    
+				    currentShowPageNo         pageNo
+				   ----------------------------------
+				         1                      1 = ((1 - 1)/10) * 10 + 1
+				         2                      1 = ((2 - 1)/10) * 10 + 1
+				         3                      1 = ((3 - 1)/10) * 10 + 1
+				         4                      1
+				         5                      1
+				         6                      1
+				         7                      1 
+				         8                      1
+				         9                      1
+				         10                     1 = ((10 - 1)/10) * 10 + 1
+				        
+				         11                    11 = ((11 - 1)/10) * 10 + 1
+				         12                    11 = ((12 - 1)/10) * 10 + 1
+				         13                    11 = ((13 - 1)/10) * 10 + 1
+				         14                    11
+				         15                    11
+				         16                    11
+				         17                    11
+				         18                    11 
+				         19                    11 
+				         20                    11 = ((20 - 1)/10) * 10 + 1
+				         
+				         21                    21 = ((21 - 1)/10) * 10 + 1
+				         22                    21 = ((22 - 1)/10) * 10 + 1
+				         23                    21 = ((23 - 1)/10) * 10 + 1
+				         ..                    ..
+				         29                    21
+				         30                    21 = ((30 - 1)/10) * 10 + 1
+				         
+				*/
+			     
+				// === [맨처음][이전] 만들기 === //
+				pageBarHTML += "<li class='firstli'><a href='javascript:commentShow(\""+fk_scheduleno+"\",\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
+				pageBarHTML += "<li class='previousli'><a href='javascript:commentShow(\""+fk_scheduleno+"\",\""+(pageNo-1)+"\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
+				
+				if(pageNo != 1) {
+					
+					
+				}
+				
+				while( !(loop > blockSize || pageNo > totalPage) ) {
+					
+					if(pageNo == currentShowPageNo) {
+						pageBarHTML += "<li class='numberli'>"+pageNo+"</li>";  
+					}
+					else {
+						pageBarHTML += "<li class='numberli'><a href='javascript:commentShow(\""+fk_scheduleno+"\",\""+pageNo+"\")'>"+pageNo+"</a></li>"; 
+					}
+					
+					loop++;
+					pageNo++;
+					
+				}// end of while-----------------------
+				
+				
+				// === [다음][마지막] 만들기 === //
+				if( pageNo <= totalPage ) {
+
+
+					
+				}
+				pageBarHTML += "<li class='nextli'><a href='javascript:commentShow(\""+fk_scheduleno+"\",\""+pageNo+"\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
+				pageBarHTML += "<li class='lastli'><a href='javascript:commentShow(\""+fk_scheduleno+"\",\""+totalPage+"\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>"; 
+				 
+				pageBarHTML += "</ul>";
+				 
+				$("div.comment-header").html(pageBarHTML);
+			 }// end of if(json.totalPage > 0){}-------------------------------
+			  
+		  },
+		  error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		  }    
+	  });
+	  
+  }// end of function makeCommentPageBar(currentShowPageNo) {}--------------------
+  
+
+
+
+
 
 
 
@@ -3934,7 +5218,7 @@ function voteUndefinedUser(fk_scheduleno) {
 	     		<c:if test="${sessionScope.loginuser.fk_pcode =='3' && sessionScope.loginuser.fk_dcode == '4' }"> --%>
 	     		<%--<c:if test="${sessionScope.loginuser.gradelevel =='10'}"> --%> 
 		 			<button class="btn_edit" onclick="addComCalendar()">
-		 				<i class='fas'>&#xf055;</i>
+		 				<i class='fas'><span class="material-icons-outlined"> add_circle_outline </span></i>
 		 			</button>
 		 		<%--</c:if>--%> 
 			<%--</c:if>	--%> 
@@ -3959,7 +5243,7 @@ function voteUndefinedUser(fk_scheduleno) {
 			<div class="myCalTitle">
 				<span>내 캘린더</span>
 				<button class="btn_edit" onclick="addMyCalendar()">
-					<i class='fas'>&#xf055;</i>
+					<i class='fas'><span class="material-icons-outlined"> add_circle_outline </span></i>
 				</button>
 				<i class="ico-arrow active fas">&#xf078;</i>
 			</div>
@@ -3988,13 +5272,15 @@ function voteUndefinedUser(fk_scheduleno) {
 		            <li>
 		                <div>
 		                    <p>
-		                    	<input type="checkbox" checked id="sharedCal" class="calendar_checkbox" value="0"/><label for="sharedCal"></label><span>표시</span>
+		                    	<input type="checkbox" checked id="sharedCal" class="calendar_checkbox" value="100"/><label for="sharedCal"></label><span>표시</span>
 		                    </p>
 		                </div>
 		            </li>
 		        </ul>
 			 </div>
 		</li>
+		
+		
 		      
     </ul>	
 </div>
@@ -4005,161 +5291,7 @@ function voteUndefinedUser(fk_scheduleno) {
 
 <!-- 카드 -->
 <div class="card showSchedule">
-
-<%-- 
-	<div class="card-header">
-		<h3 class="card-title">
-			<i></i><!-- 아이콘 -->
-			<span class="js-project-title-button">대분류캘린더-소분류캘린더</span> <!-- 대분류캘린더-소분류캘린더 -->
-		</h3>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-       	</button>
-  	</div>
-  	
-  	<div class="card-body">
-		<div class="card-scroll">
-		
-  	 		<div class="card-body-top">
-  	 		
-  	 			<div class="card-author">
-  	 				<span class="card-profileImg"></span><!-- 프로필이미지 -->
-					<dl class="card-author-info">
-						<dt>
-					    	<strong class="author-name">김영준</strong><!-- 작성자이름 -->	   		
-					        <span class="author-date">2022-05-07 23:03</span><!-- 작성시간 -->
-					    </dt>
-					</dl>
-  	 			</div>
-  	 			
-				<div>
-				     <div class="card-option">
-				
-						<button class="card-option-btn"></button>
-						
-						<ul class="card-option-ul">
-				    		<li class="card-option-li" data-code="modify">
-				    			<a href="#"> <i class="icon-edit"></i>수정</a>
-							</li>
-							<li class="card-option-li" data-code="delete">
-							    <a href="#"> <i class="icon-delete"></i>삭제</a>
-							</li>
-						</ul>
-					</div>
-				</div>	
-  	 		</div>
- 
-			<div class="card-body-bottom">
-				<div class="card-schedule-date">
-					<strong class="card-month">05-2022</strong><strong class="card-day">04</strong><!-- 미니달력 -->
-				</div>
-				<div class="card-schedule-title-area">
-			     	<h4 class="card-schedule-title">제목</h4> <!-- 제목 -->
-			     	<div class="card-schedule-day">
-						<span class="card-schedule-startDate">2022-05-04 (수), 23:10</span> <!-- 시작일 -->
-						<span class="card-schedule-endDate">2022-05-06 (금), 00:10</span> <!-- 종료일 -->
-					</div>
-				</div>
-			</div>
-		
-			<div class="card-container">
-				<div class="card-content">
-				
-					<div class="card-content2">
-						<ul class="card-content-group">		
-				
-							<li>
-								<div class="card-content-title"><i class="icon-text"></i></div>
-								<div class="card-content-memo">
-									<span class="memo-span"><div>테스트</div></span>
-								</div>
-							</li>
-					
-						</ul>
-					</div>
-					
-
-					<div class="card-vote">
-						<button class="vote-btn-yes">참석</button>
-						<button class="vote-btn-no">불참</button>
-						<button class="vote-btn-undefined">미정</button>
-					</div>		
-					
-				</div>
-			</div>
-		
-			<div class="card-footer">
-				<ul class="card-footer-group">
-				
-					<li class="card-footer-li">
-			               
-						<div class="comment-user-profile">
-						    <span class="comment-user-profile-span"></span>
-						</div>
-			            
-						<div class="comment-container">
-			                <div class="comment-user-area">
-			                    <div class="comment-user">
-			                        <span class="comment-user-name">김영준</span>
-			                        <span class="comment-user-position"></span>
-			                        <span class="record-date">2022-05-14 07:26</span> 
-			                    </div>
-			                    
-			                    <div class="comment-writer-menu">
-			                        <button type="button" class="comment-edit">수정</button>
-			                        <button type="button" class="comment-delete">삭제</button>
-			                    </div> 
-			                </div>
-			                
-			                <div class="comment-content">
-								<div class="comment-text-area">
-								    <div class="comment-text"><div>''김영준','유혜림'' → ''김영준','유혜림','이재희','임성희','조덕노'', 참석자를 변경하였습니다.</div></div>
-								</div>	
-			                </div>  
-			            </div>
-			            
-			        </li> 
-			    </ul>
-			 </div>
-
-			<div class="card-footer2">
-				<div class="comment-writer-profile">
-			    	<span class="comment-writer-profile-span"></span>
-			    </div>
-			    
-			    <form class="comment-writer-container">
-			    	<fieldset>
-						<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>
-						<input type="hidden" class="comment-upload-input">
-					</fieldset>                     
-			    </form>
-			</div>
-
-
-	  	 			
-		</div>
-  	</div>
-  	--%>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div>
@@ -4239,8 +5371,8 @@ function voteUndefinedUser(fk_scheduleno) {
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goAddComCal()">추가</button>
-			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+				<button type="button" id="addCom" class="btn" onclick="goAddComCal()">추가</button>
+			    <button type="button" class="btn modal_close" data-dismiss="modal">취소</button>
 			</div>
         </div>
     </div>
@@ -4276,8 +5408,8 @@ function voteUndefinedUser(fk_scheduleno) {
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditComCal()">수정</button>
-			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+				<button type="button" id="addCom" class="btn" onclick="goEditComCal()">수정</button>
+			    <button type="button" class="btn modal_close" data-dismiss="modal">취소</button>
 			</div>
         </div>
     </div>
@@ -4314,8 +5446,8 @@ function voteUndefinedUser(fk_scheduleno) {
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goAddMyCal()">추가</button>
-			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+				<button type="button" id="addCom" class="btn" onclick="goAddMyCal()">추가</button>
+			    <button type="button" class="btn modal_close" data-dismiss="modal">취소</button>
 			</div>
         </div>
     </div>
@@ -4351,8 +5483,8 @@ function voteUndefinedUser(fk_scheduleno) {
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" id="addCom" class="btn btn-success btn-sm" onclick="goEditMyCal()">수정</button>
-			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+				<button type="button" id="addCom" class="btn" onclick="goEditMyCal()">수정</button>
+			    <button type="button" class="btn modal_close" data-dismiss="modal">취소</button>
 			</div>
         </div>
     </div>
@@ -4425,7 +5557,7 @@ function voteUndefinedUser(fk_scheduleno) {
 	 				 		 <div class="vote-group">
 	 				 		 	<span>투표기능</span>
 	 				 		 	<input type="checkbox" id="vote" name="vote" class="vote_checkbox">
-	 				 		 	<label for="vote"></label>	
+	 				 		 	<label for="vote"><span class="material-icons-outlined"> radio_button_unchecked </span></label>	
 	 				 		 </div>
 	 				 		 
 	 				 		 
@@ -4440,8 +5572,8 @@ function voteUndefinedUser(fk_scheduleno) {
 	 				 		 <div class="title"><i class="icon-place"></i></div>
 	 				 		 <div>
 	 				 		 
-	 				 		 <input type="text" name="place" id="place" class="place" data-required-yn="Y" autocomplete="off" maxlength="500"  placeholder="장소를 입력하세요."/>
-	 				 		 <i class="icon-search"></i>
+	 				 		 <input type="text" name="place" id="place" class="place" data-required-yn="Y" autocomplete="off" maxlength="500"  placeholder="장소를 입력하세요 장소등록은 Enter키입니다."/>
+	 				 		
 	 				 		 </div>
 	 				 		  
 						</li>
@@ -4464,11 +5596,11 @@ function voteUndefinedUser(fk_scheduleno) {
 						<li>
 	 				 		 <div class="title"><i class="icon-file-upload"></i></div>
 	 				 		 <div class="filebox">
-	 				 		 	<label for="filename"><i class="icon-file"></i></label> 
+	 				 		 	
 						  		<input type="file" id="filename" class="upload-file" name="attach"> 
 	 				 		 
-								<input class="upload-name" value="파일선택" disabled="disabled">
-								
+								<input class="upload-name" id="upload-name" value="파일선택" disabled="disabled">
+								<label for="filename"><span class="material-icons-outlined"> pageview </span></label> 
 														
 							</div>
 						</li>
@@ -4478,12 +5610,13 @@ function voteUndefinedUser(fk_scheduleno) {
 					<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}" />
 					<input type="hidden" name="startdate"/>
 					<input type="hidden" name="enddate"/>
-					
+					<input type="hidden" name="pk_scheduleno" class="eidt_pk_scheduleno"/>
 					<input type="hidden" name="placeName" class="place_name"/>
 					<input type="hidden" name="addressName" class="address_name"/>
 					<input type="hidden" name="placePhone" class="place_phone"/>
 					<input type="hidden" name="roadAddressName" class="road_address_name"/>
 					<input type="hidden" name="placeUrl" class="place_url"/>
+					
 
 				</form>
 						
@@ -4491,18 +5624,14 @@ function voteUndefinedUser(fk_scheduleno) {
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" id="register" class="btn btn-success btn-sm btn_normal">등록</button>
-			    <button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>
+				<button type="button" id="register" class="btn">등록</button>
+			    <button type="button" class="btn modal_close" data-dismiss="modal">취소</button>
 			</div>
         </div>
     </div>
 </div>
 
 
-
-<ul class= "yesul"></ul>
-<ul class= "noul"></ul>
-<ul class= "undefinedul"></ul>
 
 
 
@@ -4511,4 +5640,6 @@ function voteUndefinedUser(fk_scheduleno) {
 <form name="dateFrm">
 	<input type="hidden" name="chooseDate" class="chooseDate" />	
 </form>	
+<input type="hidden" class="schedulenoShave"/>	
+
 

@@ -1001,6 +1001,7 @@ div#wrapper2 {
 	display:inline-block;
 	width:100%;
 	padding: 20px;
+	padding-bottom: 0px;
 }
 /* ========== full calendar css 시작 ========== */
 a,a:hover,.fc-daygrid {
@@ -1034,10 +1035,15 @@ button.btn_normal {
 div.sideCalList button.btn_edit {
 	border:none;
 	font-size: 13px;
-	padding-left: 7px;
 	padding-right: 0;
 	    color: #333;
+	    position: relative;
+	    top:4.2px;
 }
+div.sideCalList button.btn_edit i span{
+	font-size: 18px;
+}
+
 .fc table {
 		border-collapse:separate !important;
 	border-spacing:6px 6px !important;
