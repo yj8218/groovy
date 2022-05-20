@@ -43,6 +43,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	@Override		
 	public void afterConnectionEstablished(WebSocketSession wsession) throws Exception {
 		
+		System.out.println("2번");
+		
 		// >>> 파라미터 WebSocketSession wsession은 웹소켓서버에 접속한 클라이언트 사용자임. <<<
 		
 		// 웹소켓서버에 접속한 클라이언트의 IP Address 얻어오기

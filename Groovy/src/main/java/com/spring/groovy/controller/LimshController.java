@@ -213,6 +213,8 @@ public class LimshController {
 	@RequestMapping(value="/chatting/multichat.groovy", method={RequestMethod.GET})
    	public String requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response) {
    		
+		System.out.println("1번");
+		
    		return "chatting/multichat.tiles2";
    	}
 /*	
