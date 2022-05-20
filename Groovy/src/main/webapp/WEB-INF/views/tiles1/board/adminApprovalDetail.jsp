@@ -132,6 +132,7 @@ table#app_opinion td {
 			$("table#reference").hide();
 		} 
 		
+		
 		$("div#app_opinion_chk").hide();
 		
 		let pk_documentnum = $("td.pk_documentnum").text();

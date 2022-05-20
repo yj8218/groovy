@@ -277,14 +277,14 @@ public class JodnDAO implements InterJodnDAO {
 
 	// 나의 결재 대기 문서 조회
 	@Override
-	public List<Map<String, String>> waitApproval(Map<String, String> paraMap) {
+	public List<Map<String, String>> waitApproval(Map<String, Object> paraMap) {
 		List<Map<String, String>> waitApprovalList = sqlsession.selectList("jodn.waitApproval", paraMap);
 		return waitApprovalList;
 	}
 
 	// 승인대기 문서 조회 총 페이지 수 구하기
 	@Override
-	public int getWaitApprovalTotalCount(Map<String, String> paraMap) {
+	public int getWaitApprovalTotalCount(Map<String, Object> paraMap) {
 		int totalCount = sqlsession.selectOne("jodn.getWaitApprovalTotalCount", paraMap);
 		return totalCount;
 	}
@@ -385,6 +385,42 @@ public class JodnDAO implements InterJodnDAO {
 		sqlsession.delete("jodn.remove_tbl_app_project");
 		sqlsession.delete("jodn.removeDocument");
 		
+	}
+
+	
+	// 차트용 직원조회하기
+	@Override
+	public List<EmployeeVO> getAllEmployeeList() {
+		List<EmployeeVO> employeeList = sqlsession.selectList("jodn.getAllEmployeeList");
+		return employeeList;
+	}
+
+	// 관리자 페이지 결재목록 총게시물 구하기
+	@Override
+	public int getAdminApprovalTotalCount(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("jodn.getAdminApprovalTotalCount", paraMap);
+		return n;
+	}
+
+	// 관리자 페이지 결재목록 페이징처리 조회
+	@Override
+	public List<Map<String, String>> adminApprovalList(Map<String, String> paraMap) {
+		List<Map<String, String>> adminApprovalList = sqlsession.selectList("jodn.adminApprovalList", paraMap);
+		return adminApprovalList;
+	}
+
+	// 내 직급 넘버 받아오기
+	@Override
+	public int getSpotnum(String fk_empnum) {
+		int n = sqlsession.selectOne("jodn.getSpotnum", fk_empnum);
+		return n;
+	}
+
+	// 문서별 직급번호 받아오기
+	@Override
+	public List<Map<String, String>> getAppLineList(String fk_empnum) {
+		List<Map<String,String>> appLineList = sqlsession.selectList("jodn.getAppLineList", fk_empnum);
+		return appLineList;
 	}
 	
 
