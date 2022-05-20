@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.groovy.annotation.NoLogging;
 import com.spring.groovy.common.FileManager;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.*;
@@ -1047,8 +1049,45 @@ public class JodnController {
 			
 			// pk_documentnum 값 가져오기 결재승인 순서 관련 작업 남아있음
 			
-			Map<String, String> paraMap = new HashMap<>();
+			// 내 직급 넘버 받아오기
+			int spotnum = service.getSpotnum(fk_empnum);
+			
+			// 문서별 직급번호 받아오기
+			List<Map<String,String>> appLineList = service.getAppLineList(fk_empnum);
+			
+			
+//		 	String[] fk_documentnumArr = {};
+			/*
+			 * ArrayList<String> fk_documentnumArr = new ArrayList<>(); for(int i=0;
+			 * i<appLineList.size(); i++ ) { if(spotnum ==
+			 * Integer.parseInt(appLineList.get(i).get("minSpotnum"))) {
+			 * fk_documentnumArr.add(appLineList.get(i).get("fk_documentnum")); }
+			 * 
+			 * }
+			 */
+		 	
+		 	String[] fk_documentnumArr = new String[appLineList.size()];
+		 	
+		 	for(int i=0; i<fk_documentnumArr.length; i++ ) {
+				if(spotnum == Integer.parseInt(appLineList.get(i).get("minSpotnum"))) {
+					fk_documentnumArr[i] = appLineList.get(i).get("fk_documentnum");
+				}
+			}
+			
+//		 	System.out.println("fk_documentnumArr 확인용 => "+ fk_documentnumArr);
+		 	
+//		 	String str_fk_documentnumArr = fk_documentnumArr.toString();
+//		 	
+//		 	str_fk_documentnumArr = str_fk_documentnumArr.substring(1, str_fk_documentnumArr.length()-1);
+//		 	
+//		 	System.out.println("확인용 str_fk_documentnumArr =>" + str_fk_documentnumArr);
+//		
+//		 	
+			
+			
+			Map<String, Object> paraMap = new HashMap<>();
 			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_documentnumArr", fk_documentnumArr);
 			
 			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
 			int totalCount = 0; // 총 게시물 건수 
@@ -1931,6 +1970,231 @@ public class JodnController {
 				}
 		}
 		
+		@RequestMapping(value="/employeeChart.groovy")
+		public ModelAndView employeeChart(ModelAndView mav, HttpServletRequest request) {
+			
+			List<EmployeeVO> employeeList = service.getAllEmployeeList();
+			
+			mav.addObject("employeeList", employeeList);
+			
+			mav.setViewName("employee/employeeChart.tiles1");
+			
+			
+			
+			return mav;
+		}
 		
+		
+		
+		// 관리자 결재내역 보기
+		@RequestMapping(value="/adminApproval.groovy")
+		public ModelAndView adminApproval(ModelAndView mav, ApprovalVO approvalVO, HttpSession session, HttpServletRequest request) {
+			
+			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+			String fk_empnum = loginuser.getPk_empnum();
+			String searchValue = request.getParameter("searchValue");
+			
+			mav.addObject("loginuser", loginuser);
+			
+			service.removeList();
+			
+			String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+			
+			Map<String,String> paraMap = new HashMap<>();
+			paraMap.put("fk_empnum", fk_empnum);
+			// 검색이 있는 나의 결재 내역 정보 조회
+			paraMap.put("searchValue", searchValue);
+			
+			// 총 게시물 건수(totalCount)는 검색조건이 있을 때와 검색조건이 없을 때로 나뉘어진다.
+			int totalCount = 0; // 총 게시물 건수 
+			int sizePerPage = 10; // 한 페이지당 보여줄 게시물 건수
+			int currentShowPageNo = 0; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.	
+			int totalPage = 0; // 총 페이지 수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+			
+			int startRno = 0; // 시작행 번호
+			int endRno = 0; // 끝 행 번호
+			
+			// 총 게시물 건수(totalCount)
+		    totalCount = service.getAdminApprovalTotalCount(paraMap);
+			
+			totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+			
+			if(str_currentShowPageNo == null ) {
+				// 게시판에 보여지는 초기화면 
+				currentShowPageNo = 1;
+			} else {
+				try {
+					currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+					if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+						currentShowPageNo = 1;
+					}
+				} catch(NumberFormatException e) {
+					currentShowPageNo = 1;
+				}
+			}
+			
+			startRno =  (currentShowPageNo - 1) * sizePerPage + 1;
+			endRno = startRno + sizePerPage - 1;
+			
+			paraMap.put("startRno", String.valueOf(startRno)); // 스트링타입으로 변환
+			paraMap.put("endRno", String.valueOf(endRno));
+			
+			// ~~~~~~~~~~~~~~~~~~~~~~~
+			
+			List<Map<String,String>> adminApprovalList = service.adminApprovalList(paraMap);
+			// 페이징 처리한 글 목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함 한 것)
+			
+			mav.addObject("searchValue",searchValue);
+			
+			int blockSize = 10;
+			// blockSize는 1개 블럭(토막)당 보여지는 페이지 번호의 개수이다.
+						
+			int loop = 1;
+			/*
+	          loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	        */
+			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+			
+			String pageBar = "<ul style='list-style: none;'>";
+			String url = request.getContextPath()+"/adminApproval.groovy";
+			
+			if(searchValue == null ) {
+				searchValue = "";
+			}
+			
+			// === [처음][이전] 만들기 == 
+			if(pageNo != 1) {
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			}
+			
+			while( !(loop>blockSize || pageNo > totalPage) ) {
+				if(pageNo == currentShowPageNo) {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+				} else {
+					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				}
+
+				loop++;
+				pageNo++;			
+				} // end of while 
+			
+			// === [다음][마지막] 만들기 ==
+			
+			if(pageNo <= totalPage) {
+				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			}
+			
+			pageBar += "</ul>";
+			
+			mav.addObject("pageBar", pageBar);
+			
+			// === #123. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = MyUtil.getCurrentURL(request);
+			mav.addObject("gobackURL", gobackURL.replace("&", " "));
+			
+			// 페이징 처리를 한 검색어가 있는 전체 글목록 보여주기 끝
+			///////////////////////////////////////////////////////////////////////
+			
+			mav.addObject("adminApprovalList", adminApprovalList);
+			
+			mav.setViewName("board/adminApproval.tiles1");
+			// /WEB-INF/views/tiles1/board/expensesEdit.jsp
+			
+			return mav;
+		}
+		
+		// 관리자 결재정보 상세정보 조회하기
+		@RequestMapping(value="/selectOneAdminDocument.groovy")
+		public ModelAndView selectOneAdminDocument(ModelAndView mav, ApprovalVO approvalVO, ApproverVO approverVO, HttpSession session, HttpServletRequest request ) {
+			
+			EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+			
+			String fk_empnum = loginuser.getPk_empnum();
+			
+			String pk_documentnum = request.getParameter("pk_documentnum");
+			String apl_no = request.getParameter("apl_no");
+			
+			Map<String,String> paraMap = new HashMap<>();
+			paraMap.put("pk_documentnum", pk_documentnum);
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("apl_no", apl_no);
+
+			mav.addObject("apl_no",apl_no);
+
+			if("1".equals(apl_no)) { // 비품신청
+				
+				ApprovalVO equipmentvo = service.selectEquipmentDocument(paraMap);
+				
+			//	System.out.println(equipmentvo.getEquipmentvo().getProductName());
+			//	System.out.println("equipmentvo.getEquipmentvo() => " + equipmentvo.getEquipmentvo());
+				mav.addObject("equipmentvo", equipmentvo);
+				
+			} else if("3".equals(apl_no)) { // 출장비 신청
+				
+				Map<String,String> businessCostMap = service.selectBusinessCostDocument(paraMap);
+				
+				mav.addObject("businessCostMap", businessCostMap);
+			
+			} else if("4".equals(apl_no)) { // 식비신청
+				
+				Map<String,String> foodExpensesMap = service.selectFoodExpensesDocument(paraMap);
+				
+				mav.addObject("foodExpensesMap", foodExpensesMap);
+			
+			} else if("5".equals(apl_no)) { // 휴가신청
+				
+				Map<String,String> vacationMap = service.selectVacationDocument(paraMap);
+				
+				mav.addObject("vacationMap", vacationMap);
+			
+			} else if("6".equals(apl_no)) { // 휴직신청
+				
+				Map<String,String> absenceMap = service.selectAbsenceDocument(paraMap);
+				
+				mav.addObject("absenceMap", absenceMap);
+			
+			} else if("7".equals(apl_no)) { // 신규프로젝트신청
+				
+				Map<String,String> newProjectMap = service.selectnewProjectDocument(paraMap);
+				
+				mav.addObject("newProjectMap", newProjectMap);
+			
+			}
+		    
+			// 승인자 참조자 조회하기
+			List<ApproverVO> approverList = service.app_List(pk_documentnum);
+			
+			// === #125. 페이징 처리되어진 후 특정 글제목을 클릭하여 상세내용을 본 이후
+		    //           사용자가 목록보기 버튼을 클릭했을때 돌아갈 페이지를 알려주기 위해
+		    //           현재 페이지 주소를 뷰단으로 넘겨준다.
+			String gobackURL = request.getParameter("gobackURL");
+		//	System.out.println("gobackURL 확인용 =>" +gobackURL);
+			// gobackURL 확인용 =>/list.action
+			// gobackURL 확인용 =>/list.action?searchType=
+			// replace 로 공백으로 바꿔준 후 
+			// gobackURL 확인용 =>/list.action?searchType= searchWord= currentShowPageNo=2
+			
+			if(gobackURL != null && gobackURL.contains(" ")) {
+				gobackURL = gobackURL.replace(" ", "&");
+			}
+			
+//			System.out.println("~~~~ view 의 searchType : " + searchType);
+//		    System.out.println("~~~~ view 의 searchWord : " + searchWord);
+//		    System.out.println("~~~~ view 의 gobackURL : " + gobackURL);
+
+			mav.addObject("gobackURL", gobackURL);
+			
+			mav.addObject("approverList", approverList);
+			
+			
+			mav.setViewName("board/adminApprovalDetail.tiles1");
+			// /WEB-INF/views/tiles1/board/expensesEdit.jsp
+			
+			return mav;
+		}
 	
 }//end of public class JodnController
