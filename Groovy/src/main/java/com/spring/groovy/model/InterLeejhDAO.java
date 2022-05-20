@@ -65,5 +65,7 @@ public interface InterLeejhDAO {
 	int edit_board(Map<String, String> paraMap);
 	// 파일첨부 있는 경우 글 수정
 	int edit_board_withFile(Map<String, String> paraMap);
+	//맵으로 게시글 가져오기   
+	Map<String, String> boardView(String pk_board_seq);
 
 }//end of public interface InterLeejhDAO

@@ -165,6 +165,8 @@ public class LeejhDAO implements InterLeejhDAO {
 		BoardVO boardvo = sqlsession.selectOne("leejh.getView", paraMap);
 		return boardvo;
 	}
+	
+	
 
 	// ==== #65. 글조회수 1증가 하기 ==== //
 	@Override
@@ -210,6 +212,15 @@ public class LeejhDAO implements InterLeejhDAO {
 		int n = sqlsession.update("leejh.edit_board_withFile", paraMap);
 		return n;
 	}
+
+	//맵으로 게시글 가져오기   
+	@Override
+	public Map<String, String> boardView(String pk_board_seq) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

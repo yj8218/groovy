@@ -158,21 +158,9 @@ public class LeejhService implements InterLeejhService {
 	@Override
 	public BoardVO getView(Map<String, String> paraMap) {
 		BoardVO boardvo = dao.getView(paraMap); // 글1개 조회하기
-		/*
-		String login_userid = paraMap.get("login_userid");  
-		// paraMap.get("login_userid") 은 로그인을 한 상태이라면 로그인한 사용자의 userid 이고,
-		// 로그인을 하지 않은 상태이라면  paraMap.get("login_userid") 은 null 이다.
-		
-		if(login_userid != null &&
-		   boardvo != null &&
-		  !login_userid.equals(boardvo.getFk_empnum())) {
-			// 글조회수 증가는 로그인을 한 상태에서 다른 사람의 글을 읽을때만 증가하도록 한다. 
-			
-			dao.setAddReadCount(boardvo.getPk_board_seq());  // 글조회수 1증가 하기 
-			boardvo = dao.getView(paraMap); 
-		}*/
 		
 		return boardvo;
+		
 	}
 
 	// 글 list로 읽어오기 
@@ -234,6 +222,13 @@ public class LeejhService implements InterLeejhService {
 		
 		int n = dao.edit_board_withFile(paraMap);
 		return n;
+	}
+	
+	//맵으로 게시글 가져오기   
+	@Override
+	public Map<String, String> boardView(String pk_board_seq) {
+		Map<String,String> map = dao.boardView(pk_board_seq);
+		return map;
 	}
 
 

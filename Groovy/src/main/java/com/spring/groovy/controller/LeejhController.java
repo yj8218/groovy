@@ -942,7 +942,7 @@ public class LeejhController {
 	
 		
 		
-		// === #90. 메인화면 글 조회해오기(Ajax 로 처리) === //
+		// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readBoard(HttpServletRequest request) {
@@ -1422,9 +1422,87 @@ public class LeejhController {
 			
 		}
 		
-		
+		/*
+		//글 한개 조회해오기
+		@ResponseBody
+		@RequestMapping(value ="/getUserInfo.groovy", produces="text/plain;charset=UTF-8")
+		public String getUserInfo(HttpServletRequest request ) {
+			
+			String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
 
-		
+			// 한명의 사원 상세정보 가져오기
+			EmployeeVO user = service.getUserInfo(pk_empnum);
+			
+			JSONObject jsonObj = new JSONObject();
+			
+			jsonObj.put("pk_empnum", user.getPk_empnum());
+			jsonObj.put("name", user.getName());
+			jsonObj.put("birthday", user.getBirthday());
+			jsonObj.put("gender", user.getGender());
+			jsonObj.put("age", user.getAge());
+
+			jsonObj.put("postcode", user.getPostcode());
+			jsonObj.put("address", user.getAddress());
+			jsonObj.put("detailaddress", user.getDetailaddress());
+			
+			jsonObj.put("phone", user.getPhone());
+			
+			try {
+				jsonObj.put("email", aes.decrypt(user.getEmail()));
+			} catch (JSONException | UnsupportedEncodingException | GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+			
+			jsonObj.put("deptnamekor", user.getDeptnamekor());
+			jsonObj.put("spotnamekor", user.getSpotnamekor());
+			
+			jsonObj.put("startday", user.getStartday());
+			jsonObj.put("resignationstatus", user.getResignationstatus());
+			jsonObj.put("resignationday", user.getResignationday());
+			jsonObj.put("fk_vstatus", user.getFk_vstatus());
+			jsonObj.put("salary", user.getSalary());
+			
+			jsonObj.put("emppicturename", user.getEmppicturename());
+			return jsonObj.toString();
+		}
+		*/
+		/*
+		// === 일정상세보기 ===
+		@ResponseBody
+		@RequestMapping(value="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
+		public String detailSchedule(HttpServletRequest request) {
+			
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+			// 검색하고 나서 취소 버튼 클릭했을 때 필요함
+			String listgobackURL_board = request.getParameter("listgobackURL_board");
+			//mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
+
+			
+			// 일정상세보기에서 일정수정하기로 넘어갔을 때 필요함
+			String gobackURL_detailBoard = MyUtil.getCurrentURL(request);
+			//mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
+			
+			try {
+				Integer.parseInt(pk_board_seq);
+				Map<String,String> map = service.boardView(pk_board_seq);
+				
+				JSONObject jsonObj = new JSONObject();//
+				
+				jsonObj.put("map", map);//{"n":1}
+				return jsonObj.toString();//"{"n":1}"
+				
+			} catch (NumberFormatException e) {
+				//mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+				return gobackURL_detailSchedule;
+			}
+			
+			
+			
+			
+			
+		}
+		*/
 		
 	
 }//end of public class LeejhController

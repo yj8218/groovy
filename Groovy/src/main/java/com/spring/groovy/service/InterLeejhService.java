@@ -58,6 +58,7 @@ public interface InterLeejhService {
 	//== 글조회수 증가와 함께 게시글 읽어오기
 	BoardVO getView(Map<String, String> paraMap);
 
+	
 	// 글 list로 읽어오기 
 	List<BoardVO> getBoardList();
 
@@ -74,6 +75,11 @@ public interface InterLeejhService {
 	int edit_board(Map<String, String> paraMap);
 	// 파일첨부 있는 경우 글 수정
 	int edit_board_withFile(Map<String, String> paraMap);
+
+	//맵으로 게시글 가져오기   --추후 getView랑 통합해야함.
+	Map<String, String> boardView(String pk_board_seq);
+
+	
 
 	
 }//end of public interface InterLeejhService
