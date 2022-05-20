@@ -1426,50 +1426,38 @@ public class LeejhController {
 			
 		}
 		
-		/*
+		
 		//글 한개 조회해오기
 		@ResponseBody
-		@RequestMapping(value ="/getU.groovy", produces="text/plain;charset=UTF-8")
-		public String g(HttpServletRequest request ) {
+		@RequestMapping(value ="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
+		public String goBoardView(HttpServletRequest request ) {
 			
-			String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
+			String pk_board_seq = request.getParameter("pk_board_seq"); // 한명의 사원 사번 받아옴
+			
+			// 검색하고 나서 취소 버튼 클릭했을 때 필요함
+			String listgobackURL_board = request.getParameter("listgobackURL_board");
+			//mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
 
-			// 한명의 사원 상세정보 가져오기
-			EmployeeVO user = service.getUserInfo(pk_empnum);
 			
-			JSONObject jsonObj = new JSONObject();
-			
-			jsonObj.put("pk_empnum", user.getPk_empnum());
-			jsonObj.put("name", user.getName());
-			jsonObj.put("birthday", user.getBirthday());
-			jsonObj.put("gender", user.getGender());
-			jsonObj.put("age", user.getAge());
-
-			jsonObj.put("postcode", user.getPostcode());
-			jsonObj.put("address", user.getAddress());
-			jsonObj.put("detailaddress", user.getDetailaddress());
-			
-			jsonObj.put("phone", user.getPhone());
+			// 일정상세보기에서 일정수정하기로 넘어갔을 때 필요함
+			String gobackURL_detailBoard = MyUtil.getCurrentURL(request);
+			//mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
 			
 			try {
-				jsonObj.put("email", aes.decrypt(user.getEmail()));
-			} catch (JSONException | UnsupportedEncodingException | GeneralSecurityException e) {
-				e.printStackTrace();
+				Integer.parseInt(pk_board_seq);
+				Map<String,String> map = service.boardView(pk_board_seq);
+				
+				JSONObject jsonObj = new JSONObject();//
+				
+				jsonObj.put("map", map);//{"n":1}
+				return jsonObj.toString();//"{"n":1}"
+				
+			} catch (NumberFormatException e) {
+				//mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+				return gobackURL_detailBoard;
 			}
-			
-			jsonObj.put("deptnamekor", user.getDeptnamekor());
-			jsonObj.put("spotnamekor", user.getSpotnamekor());
-			
-			jsonObj.put("startday", user.getStartday());
-			jsonObj.put("resignationstatus", user.getResignationstatus());
-			jsonObj.put("resignationday", user.getResignationday());
-			jsonObj.put("fk_vstatus", user.getFk_vstatus());
-			jsonObj.put("salary", user.getSalary());
-			
-			jsonObj.put("emppicturename", user.getEmppicturename());
-			return jsonObj.toString();
 		}
-		*/
+		
 		/*
 		// === 일정상세보기 ===
 		@ResponseBody

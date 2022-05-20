@@ -1331,7 +1331,9 @@ $("input#commentContent").keydown(function(key){
 	  
 	  // === 페이징 처리 안한 글 읽어오기  === //
 	  function goReadBoard() {
+		  $("div.showBoardDetail").hide();
 		  
+		  $("div#feedAllbox").empty();
 		  $.ajax({
 			  url:"<%= request.getContextPath()%>/readBoard.groovy",
 			  dataType:"json",
@@ -1572,8 +1574,7 @@ function goBoardView(pk_board_seq) {
         	 
         var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
          let html = "";
-         if(json.length > 0) {
-        	 $.each(json, function(index, item){
+
 		         html += '<div class="card-header">';
 		         html += '<h3 class="card-title">';
 		         html += '<i></i>'; 
@@ -1593,8 +1594,8 @@ function goBoardView(pk_board_seq) {
 		         html += '<span class="card-profileImg"></span>';/*  프로필이미지  */
 		         html += '<dl class="card-author-info">';
 		         html += '<dt>';
-		         html += '<strong class="author-name"> ['+item.deptnamekor+' : '+item.spotnamekor+'] '+item.name+'</strong>';/* <!-- 작성자이름 -->	 */   		
-		         html += '<span class="author-date">'+item.b_regDate+'</span>'; /* <!-- 작성시간 --> */
+		         html += '<strong class="author-name"> ['+json.map.deptnamekor+' : '+json.map.spotnamekor+'] '+json.map.name+'</strong>';/* <!-- 작성자이름 -->	 */   		
+		         html += '<span class="author-date">'+json.map.b_regDate+'</span>'; /* <!-- 작성시간 --> */
 		         html += '</dt>';
 		         html += '</dl>';
 		         html += '</div>';
@@ -1621,7 +1622,7 @@ function goBoardView(pk_board_seq) {
 		/*          html += '<strong class="card-month" style="color:'+json.map.COLOR+'">'+miniCalendarYM+'</strong><strong class="card-day" style="background-color:'+json.map.COLOR+'">'+miniCalendarDD+'</strong>';<!-- 미니달력 --> */
 		         html += '</div>';
 		         html += '<div class="card-schedule-title-area">';
-		         html += '<h4 class="card-schedule-title">'+item.b_subject+'</h4>';/*  <!-- 제목 --> */
+		         html += '<h4 class="card-schedule-title">'+json.map.b_subject+'</h4>';/*  <!-- 제목 --> */
 		         html += '<div class="card-schedule-day">';
 		       /*   html += '<span class="card-schedule-startDate">'+startdate+' ('+startdate_day+'), '+startdate_time+'</span>'; <!-- 시작일 -->
 		         html += '<span class="card-schedule-endDate">'+enddate+' ('+enddate_day+'), '+enddate_time+'</span>'; <!-- 종료일 --> */
@@ -1638,7 +1639,7 @@ function goBoardView(pk_board_seq) {
 		         html += '<li>';
 		         html += '<div class="card-content-title"><i class="icon-text"></i></div>';
 		         html += '<div class="card-content-memo">';
-		         html += '<span class="memo-span"><div>'+item.b_content+'</div></span>';
+		         html += '<span class="memo-span"><div>'+json.map.b_content+'</div></span>';
 		         html += '</div>';
 		         html += '</li>';
 		        /*  if(json.map.ADDRESSNAME != "-"){
@@ -1669,7 +1670,7 @@ function goBoardView(pk_board_seq) {
 			         html += '<li>';
 			         html += '<div class="card-content-title"><i class="icon-file-download"></i></div>';
 			         html += '<div class="card-content-download">';
-			         html += '<span class="download-span"><a href="<%= ctxPath%>/downloadfile.groovy?pk_board_seq='+item.pk_board_seq+'">'+item.b_orgfilename+'</a></span>';
+			         html += '<span class="download-span"><a href="<%= ctxPath%>/downloadfile.groovy?pk_board_seq='+json.map.pk_board_seq+'">'+json.map.b_orgfilename+'</a></span>';
 			         html += '</div>';
 			         html += '</li>';
 			         
@@ -1767,11 +1768,7 @@ function goBoardView(pk_board_seq) {
 		        	 
 		        /*  <div class="card showBoardDetail"> */
 		         
-        	  });
-        	 
-        }
-         
-        
+      
         /* 
          if(json.map.ADDRESSNAME != "-"){
          	$("div.card-content-map").hide();
@@ -2295,138 +2292,6 @@ function goBoardView(pk_board_seq) {
 <div class="card showBoardDetail">
 
 
-	<div class="card-header">
-		<h3 class="card-title">
-			<i></i><!-- 아이콘 -->
-			<!-- <span class="js-project-title-button">대분류캘린더-소분류캘린더</span> 대분류캘린더-소분류캘린더 -->
-		</h3>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-       	</button>
-  	</div>
-  	
-  	<div class="card-body">
-		<div class="card-scroll">
-		
-  	 		<div class="card-body-top">
-  	 		
-  	 			<div class="card-author">
-  	 				<span class="card-profileImg"></span><!-- 프로필이미지 -->
-					<dl class="card-author-info">
-						<dt>
-					    	<strong class="author-name"></strong><!-- 작성자이름 -->	   		
-					        <span class="author-date"></span><!-- 작성시간 -->
-					    </dt>
-					</dl>
-  	 			</div>
-  	 			
-				<div>
-				     <div class="card-option">
-				
-						<button class="card-option-btn"></button>
-						
-						<ul class="card-option-ul">
-				    		<li class="card-option-li" data-code="modify">
-				    			<a href="#"> <i class="icon-edit"></i>수정</a>
-							</li>
-							<li class="card-option-li" data-code="delete">
-							    <a href="#"> <i class="icon-delete"></i>삭제</a>
-							</li>
-						</ul>
-					</div>
-				</div>	
-  	 		</div>
- 
-			<div class="card-body-bottom">
-				<div class="card-schedule-date">
-					<strong class="card-month">05-2022</strong><strong class="card-day">04</strong><!-- 미니달력 -->
-				</div>
-				<div class="card-schedule-title-area">
-			     	<h4 class="card-schedule-title"></h4> <!-- 제목 -->
-			     	<div class="card-schedule-day">
-						<!-- <span class="card-schedule-startDate">2022-05-04 (수), 23:10</span> 시작일
-						<span class="card-schedule-endDate">2022-05-06 (금), 00:10</span> 종료일 -->
-					</div>
-				</div>
-			</div>
-		
-			<div class="card-container">
-				<div class="card-content">
-				
-					<div class="card-content2">
-						<ul class="card-content-group">		
-				
-							<li>
-								<div class="card-content-title"><i class="icon-text"></i></div>
-								<div class="card-content-memo">
-									<span class="memo-span"><div>테스트</div></span>
-								</div>
-							</li>
-					
-						</ul>
-					</div>
-					
-<!-- 
-					<div class="card-vote">
-						<button class="vote-btn-yes">참석</button>
-						<button class="vote-btn-no">불참</button>
-						<button class="vote-btn-undefined">미정</button>
-					</div>		
-					 -->
-				</div>
-			</div>
-		
-			<div class="card-footer">
-				<ul class="card-footer-group">
-				
-					<li class="card-footer-li">
-			               
-						<div class="comment-user-profile">
-						    <span class="comment-user-profile-span"></span>
-						</div>
-			            
-						<div class="comment-container">
-			                <div class="comment-user-area">
-			                    <div class="comment-user">
-			                        <span class="comment-user-name">김영준</span>
-			                        <span class="comment-user-position"></span>
-			                        <span class="record-date">2022-05-14 07:26</span> 
-			                    </div>
-			                    
-			                    <div class="comment-writer-menu">
-			                        <button type="button" class="comment-edit">수정</button>
-			                        <button type="button" class="comment-delete">삭제</button>
-			                    </div> 
-			                </div>
-			                
-			                <div class="comment-content">
-								<div class="comment-text-area">
-								    <div class="comment-text"><div>''김영준','유혜림'' → ''김영준','유혜림','이재희','임성희','조덕노'', 참석자를 변경하였습니다.</div></div>
-								</div>	
-			                </div>  
-			            </div>
-			            
-			        </li> 
-			    </ul>
-			 </div>
-
-			<div class="card-footer2">
-				<div class="comment-writer-profile">
-			    	<span class="comment-writer-profile-span"></span>
-			    </div>
-			    
-			    <form class="comment-writer-container">
-			    	<fieldset>
-						<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>
-						<input type="hidden" class="comment-upload-input">
-					</fieldset>                     
-			    </form>
-			</div>
-
-
-	  	 			
-		</div>
-  	</div>
   	
 </div>
 		
