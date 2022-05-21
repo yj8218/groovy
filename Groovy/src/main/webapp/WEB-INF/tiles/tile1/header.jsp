@@ -50,6 +50,66 @@ div#myProfileCard div.card-body ul li span {
     border-bottom: 1px solid #eee;
 }
 
+a#stopwatch{
+	color: #f1f1f1;
+    font-size: 21px;
+    font-weight: 700;
+    position: relative;
+    top:3px;
+    
+    
+}
+button#startBtn{
+    height: 30px;
+    width: 80px;
+    padding: 0 20px;
+    margin-left: 10px;
+    background: #6449fc;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    border: 0;
+}
+
+button#endBtn{
+	height: 30px;
+    width: 80px;
+    padding: 0 20px;
+    margin-left: 10px;
+    background: #ff4444;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    border: 0;
+
+}
+span#span_start{
+color: #f1f1f1;
+    font-size: 20px;
+    font-weight: 700;
+    position: relative;
+    top:1px;
+    margin-left: 10px;
+}
+span#span_end{
+color: #f1f1f1;
+    font-size: 20px;
+    font-weight: 700;
+    position: relative;
+    top:1px;
+     margin-left: 10px;
+}
+
+.fa-sitemap:before {
+    
+    font-size: 22px;
+    position: relative;
+ 	top: 4px;
+}
 </style>
 
 <script type="text/javascript">
@@ -66,6 +126,7 @@ div#myProfileCard div.card-body ul li span {
 	// 출퇴근 관련(1) 끝 by 혜림  <<< //
 	
 	$(document).ready(function(){
+		
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myProfileCard').appendTo("body"); 
 
@@ -1098,8 +1159,22 @@ div#myProfileCard div.card-body ul li span {
    					let hours = today.getHours(); // 시
    					let minutes = today.getMinutes();  // 분
    					let seconds = today.getSeconds();  // 초
-   					let milliseconds = today.getMilliseconds(); // 밀리초
-   					let html = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+   					//let milliseconds = today.getMilliseconds(); // 밀리초
+   					//let html = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+   					
+   					if(Number(hours)<10){
+   	   					hours = "0"+hours;
+   	   				}
+   	   				if(Number(minutes)<10){
+   	   					minutes = "0"+minutes;
+   	   				}
+   	   				if(Number(seconds)<10){
+   	   					seconds = "0"+seconds;
+   	   				}
+   	   				let html = hours + ':' + minutes + ':' + seconds;
+   					
+   					
+   					
    					$("#time_startwork").html(html);
    					
    				},
@@ -1116,8 +1191,8 @@ div#myProfileCard div.card-body ul li span {
                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
              }
    	});
-   	
-   	document.getElementById("start").onclick();
+   	startClock();
+   	//document.getElementById("start").onclick();
    }
 
 
@@ -1160,9 +1235,19 @@ div#myProfileCard div.card-body ul li span {
    				let hours = today.getHours(); // 시
    				let minutes = today.getMinutes();  // 분
    				let seconds = today.getSeconds();  // 초
-   				let milliseconds = today.getMilliseconds(); // 밀리초
+   				//let milliseconds = today.getMilliseconds(); // 밀리초
    				
-   				let html = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+   				//let html = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+   				if(Number(hours)<10){
+   					hours = "0"+hours;
+   				}
+   				if(Number(minutes)<10){
+   					minutes = "0"+minutes;
+   				}
+   				if(Number(seconds)<10){
+   					seconds = "0"+seconds;
+   				}
+   				let html = hours + ':' + minutes + ':' + seconds;
    				$("#time_endwork").html(html);
    				
    			},
@@ -1175,8 +1260,8 @@ div#myProfileCard div.card-body ul li span {
    		$("button#endBtn").attr("disabled", true);
    		
    	}
-   	
-   	document.getElementById("stop").onclick();
+   	stopClock();
+   	//document.getElementById("stop").onclick();
    }
 
 
@@ -1214,37 +1299,44 @@ div#myProfileCard div.card-body ul li span {
  
  <!-- =================상단 네비게이션 시작 =====================-->
 <div class="header-header">
+
 	<nav class=" navbar  d-flex justify-content-between navbar-expand-lg navbar-dark fixed-top" style="height: 60px; background-color:#2c2a34;">
- 			<div  ></div>
- 			
- 			<div  style="display:flex;    position: relative;">
-				<div class="searchBox" style="  display:flex; position: relative; align-items:center; ">
-					<form id="searchPopupTopButton" class="main-search clearfix" style="display:flex;">
-						<div class="main-search-box">
-							<input type="text" class="cursor-pointer" placeholder="전체검색"  />
-						</div>
-						<button class="searchBtn" type="button">옵션</button>
-						
-					</form>
-					
+ 	<!-- 
+	<div  style="display:flex;    position: relative;">
+		<div class="searchBox" style="  display:flex; position: relative; align-items:center; ">
+			<form id="searchPopupTopButton" class="main-search clearfix" style="display:flex;">
+				<div class="main-search-box">
+					<input type="text" class="cursor-pointer" placeholder="전체검색"  />
 				</div>
-        	</div>
+				<button class="searchBtn" type="button">옵션</button>
+			</form>
+		</div>
+    </div>
+	-->
+     <div class="timer">
+    	<a id="stopwatch">00:00:00</a>
+		<!-- 
+		<button id="start" onclick="startClock()" style="visibility: hidden;">start</button>
+		<button id="stop" onclick="stopClock()" style="visibility: hidden;">stop</button> 
+		-->
+   		
+		<button id="startBtn" onclick="javascript:startwork('${sessionScope.loginuser.pk_empnum}'); ">출근</button>
+		
+		
+		
+		<button id="endBtn" onclick="javascript:endwork('${sessionScope.loginuser.pk_empnum}'); ">퇴근</button>
+		
+		
+		<span id="span_start">출근시각  : <span id="time_startwork"></span></span>
+		<span id="span_end">퇴근시각 : <span id="time_endwork"></span></span>
+    </div>
+     
+     
         	
         	
-        	
-        	<div class="nav_right"> 
-        	<a id="stopwatch" style="color:white;" >00:00:00</a>
-		    
-		        <button id="start" onclick="startClock()" style="visibility: hidden ;">start</button>
-		        <button id="stop" onclick="stopClock()" style="visibility: hidden;">stop</button>
-		    
-			<button id="startBtn" onclick="javascript:startwork('${sessionScope.loginuser.pk_empnum}'); ">출근</button>
-			<button id="endBtn" onclick="javascript:endwork('${sessionScope.loginuser.pk_empnum}'); ">퇴근</button>
-			
-			<span style="color: white;">출근시각: <span id="time_startwork" style="color: white;"></span></span>
-			<span style="color: white;">퇴근시각: <span id="time_endwork" style="color: white;"></span></span>
-        	
-     <!-- ●●● 조직도 팝업 ●●●================================-->
+	<div class="nav_right"> 
+	
+     	<!-- ●●● 조직도 팝업 ●●●================================-->
         		<a class="iconbar" onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " data-toggle="tooltip" data-placement="bottom" title="조직도" style="display: inline-block; ">
                     <i class="fas fa-sitemap"></i>
                 </a>
@@ -1274,7 +1366,7 @@ div#myProfileCard div.card-body ul li span {
 				
 				
       <!-- ●●● 채팅 팝업 ●●●================================-->
-                <a class="iconbar" onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a>
+                <!-- <a class="iconbar" onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a> -->
                 
                 <div class="header-form-popup" id="myForm2" >
 	                	<article action="" class="header-form-container">
@@ -1324,10 +1416,10 @@ div#myProfileCard div.card-body ul li span {
 				</div>
 				
 	<!-- ●●● 알림 팝업 ●●●================================-->
-                <a class="iconbar" onclick="OpenAlarmForm()" type="button" id="alarmTopButton" data-toggle="tooltip" data-placement="bottom" title="알림">
+               <!--  <a class="iconbar" onclick="OpenAlarmForm()" type="button" id="alarmTopButton" data-toggle="tooltip" data-placement="bottom" title="알림">
 	                <i class="fas fa-bell"></i>
             	</a>
-            	
+            	 -->
             	<div class="header-form-popup" id="myForm3">
                 	<article action="" class="header-form-container">
 					    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
