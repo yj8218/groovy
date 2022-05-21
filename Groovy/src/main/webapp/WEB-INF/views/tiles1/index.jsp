@@ -1432,7 +1432,18 @@ margin: 0;
 	    
 	     --%>
 
-		
+	     // === 댓글 입력후 엔터하기 === //
+			//$("input#commentContent").keydown(function(key){
+			$(document).on('keyup', 'input#commentContent', function (event) {
+				
+				if(event.keyCode == 13){
+					alert(fk_board_seq);
+					goAddComment(fk_board_seq);
+					
+					
+				}
+			});
+				
 		 $("div.showBoardDetail").hide();
 		<%-- === #166. 스마트 에디터 구현 시작 === --%>
 	 	<%-- //전역변수
@@ -1464,7 +1475,7 @@ margin: 0;
 		});
 	    
 	    $("div.showBoardDetail").hide();
-		
+	    
 
 		
 	    $('#writeBoardModal').on('show.bs.modal', function (e) {
@@ -1630,16 +1641,7 @@ margin: 0;
 		
 		
 		
- // === 댓글 입력후 엔터하기 === //
-//$("input#commentContent").keydown(function(key){
-$(document).on('keyup', 'input#commentContent', function (event) {
 
-	if(event.keyCode == 13){
-		goAddComment(fk_board_seq);
-		
-	}
-});
-		
 $(document).on('keyup', 'form.comment-writer-container input.comment-writer-text', function (event) {
 	if(event.keyCode == 13){ 
 		const fk_board_seq = $("input.boardno").val();
@@ -1713,6 +1715,10 @@ function openPersonalChat(pk_empnum) {
 	}); // $.ajax({})
 }
 	
+/* 	function showtest(pk_board_seq){
+		alert(pk_board_seq);
+		
+	} */
 	
 	  
 	  // === 페이징 처리 안한 글 읽어오기  === //
@@ -1732,7 +1738,7 @@ function openPersonalChat(pk_empnum) {
 						  
 						 	html = "";
 						  
-							html += "<div class='card mb-4 feedAll'>";
+							html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
 							html += "<div class='card-body'>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 							html +=  "<thead>";
@@ -1793,29 +1799,32 @@ function openPersonalChat(pk_empnum) {
 							html +=  "</table> 	";
 							html +=  "</div>";
 							
-							/* html+= "<div><ul class='card-footer-group'></ul></div>" ; */
+							 html+= "<div><ul class='commentDisplay"+item.pk_board_seq+"'></ul></div>" ;
 								
 							html +=  "<div class='card-footer' align='center'>";
 							html +=  " <form name='addCommentFrm' id='addCommentFrm'><i class='far fa-user-circle'></i>";
-							html +=  '<input type="hidden" name="fk_board_seq" id="fk_board_seq" value="'+item.pk_board_seq+'" />';
-							html +=  "<input type='text' id='commentContent'  class='form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
+							html +=  '<input type="hidden" name="fk_board_seq" id="fk_board_seq" class="fk-board-seq" value="'+item.pk_board_seq+'" />';
+							html +=  "<input type='text' id='commentContent"+item.pk_board_seq+"'  class='comment-Content comment-writer-text form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
 							
 							
  		/* 					html +=  '<input type="hidden" name="fk_empnum" id="fk_empnum" value="'+${sessionScope.loginuser.pk_empnum}+'" />';
 							html +=  '<input type="hidden" name="cmt_name" id="cmt_name" value="'+'${sessionScope.loginuser.name}'+'" />';  */
 							html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
 							html +=  "<input type='file' id='commentAttach' style='display: none;'/>";
-							/* html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment()" >댓글쓰기 확인</button>'; *//* style="display:none;" */
-							html +=  "</form></div></div>";
+						    html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment('+item.pk_board_seq+')" >댓글쓰기 확인</button>'; /* style="display:none;" */
+							html +=  "</form></div></div><div id='feedpaging'></div>";
 							
-						
+							/* commentShow(item.pk_board_seq,1); */
 							$("div#feedAllbox").append(html);
-						  
+							
+							
+							
+								
 						  /* 
 						  
 						  goViewComment(index , item.pk_board_seq) ;
 						   */
-						 
+							
 						  
 					   });
 					
@@ -1906,8 +1915,6 @@ function openPersonalChat(pk_empnum) {
 					  
 					  goViewComment(index , item.pk_board_seq) ;
 					   */
-					 
-					  makeBoardPageBar();
 					  
 					  
 				  }
@@ -1916,15 +1923,15 @@ function openPersonalChat(pk_empnum) {
 	              
 				  	  $("div#feedAllbox").append(html); 
 				  }
-				   
-				   
+				   commentShow(pk_board_seq,1);
+				  
 			  },
 			  error: function(request, status, error){
 					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			  }
 			  
 			  
-			  
+			 
 			  
 		  });
 		  
@@ -2209,7 +2216,7 @@ function goBoardView(pk_board_seq) {
          commentShow(pk_board_seq,1);
          
          $("div.showBoardDetail").show();
-
+        
          ////////////////////
          },
          error: function(request, status, error){
@@ -2290,9 +2297,9 @@ function goBoardView(pk_board_seq) {
 	  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~댓글구역~~~~~~~~~~~~~	    
 	 	// == 댓글쓰기 == 
-	    function goAddComment(){
+	    function goAddComment(pk_board_seq){
 	  	  
-	  	  const commentContent = $("input#commentContent").val().trim();
+	  	  const commentContent = $("input.comment-Content").val().trim();
 	  	  if(commentContent == "") {
 	  		  alert("댓글 내용을 입력하세요!!");
 	  		  return; // 종료
@@ -2319,12 +2326,12 @@ function goBoardView(pk_board_seq) {
 	  		  const queryString = $("form[name=addCommentFrm]").serialize();
 	  	  --%>
 	  	  //const ${sessionScope.loginuser.pk_empnum}.val() 
-	  	  const fk_board_seq = $("input#fk_board_seq").val();
+	  	  const fk_board_seq = $("input.fk-board-seq").val();
 	  	  $.ajax({
 	  		  url:"<%= ctxPath %>/addComment.groovy",
 	  		  data:{"fk_empnum":"${sessionScope.loginuser.pk_empnum}" 
 	  			   ,"cmt_name":"${sessionScope.loginuser.name}"
-	  			   ,"cmt_content":$("input#commentContent").val() 
+	  			   ,"cmt_content":$("input.comment-Content").val() 
 	  			   ,"fk_board_seq":fk_board_seq},
 	  	 /*   또는
 	  	      data:queryString, */	   
@@ -2343,7 +2350,7 @@ function goBoardView(pk_board_seq) {
 	  			     //goViewComment(1); // 페이징 처리한 댓글 읽어오기
 	  			 }
 	  			 
-	  			 $("input#commentContent").val("");
+	  			 $("input.comment-Content").val("");
 	  		  },
 	  		  error: function(request, status, error){
 	  				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -2550,7 +2557,7 @@ function commentShow(fk_board_seq, currentShowPageNo){
 						     html += '</li>'; 
 					   });
 					   $("ul.card-footer-group").html(html);
-					   
+					   $("ul.commentDisplay").html(html);
 					   makeCommentPageBar(fk_board_seq, currentShowPageNo);
 	  			}
 
@@ -2808,159 +2815,106 @@ $.ajax({
 }// end of function makeCommentPageBar(currentShowPageNo) {}--------------------
 
 
-//////////
 
-function makeBoardPageBar(currentShowPageNo) {
-	
-	<%-- === 원글에 대한 댓글의 totalPage 수를 알아오려고 한다. ===  --%>
-	$.ajax({
-	url:"<%= ctxPath%>/getBoardTotalPage.groovy",
-	data:{"sizePerPage":"10"},
-	type:"GET",
-	dataType:"JSON",
-	success:function(json){
-	//  console.log("확인용 댓글의 전체페이지수 : " + json.totalPage);
-	
-	if(json.totalPage > 0) {
-	 // 댓글이 있는 경우 
+
+
+
+
+function makeBoardPageBar(BcurrentShowPageNo) {
+
+<%-- === 원글에 대한 댓글의 totalPage 수를 알아오려고 한다. ===  --%>
+$.ajax({
+  url:"<%= ctxPath%>/getBoardTotalPage.groovy",
+  data:{
+	    "sizePerPage":"10"},
+  type:"GET",
+  dataType:"JSON",
+  success:function(json){
+	 //  console.log("확인용 댓글의 전체페이지수 : " + json.totalPage);
 	 
-	 const totalPage = json.totalPage;
-	 
-	 let pageBarHTML = "<ul>";
-	 
-	 const blockSize = 10;
+	 if(json.totalPage > 0) {
+		 // 댓글이 있는 경우 
+		 
+		 const totalPage = json.totalPage;
+		 
+		 let pageBarHTML = "<ul>";
+		 
+		 const blockSize = 10;
 	//	 const blockSize = 2;
-	 
-	// blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수 이다.
-	/*
-	                 1 2 3 4 5 6 7 8 9 10  [다음][마지막]           -- 1개블럭
-	   [맨처음][이전]  11 12 13 14 15 16 17 18 19 20  [다음][마지막]   -- 1개블럭
-	   [맨처음][이전]  21 22 23
-	*/
-	 
-	 let loop = 1;
-	 /*
-		loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
-	 */
-	
-	
-	 if(typeof currentShowPageNo == "string") {
-		 currentShowPageNo = Number(currentShowPageNo);
-	 }
-	 
-	 // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
-	 let pageNo = Math.floor( (currentShowPageNo - 1)/blockSize ) * blockSize + 1;
-	 /*
-	   currentShowPageNo 가 3페이지 이라면 pageNo 는 1 이 되어야 한다.
-	   ((3 - 1)/10) * 10 + 1;
-	   ( 2/10 ) * 10 + 1;
-	   ( 0.2 ) * 10 + 1;
-	   Math.floor( 0.2 ) * 10 + 1;  // 소수부가 있을시 Math.floor(0.2) 은 0.2 보다 작은 최대의 정수인 0을 나타낸다.
-	   0 * 10 + 1 
-	   1
-	   
-	   currentShowPageNo 가 11페이지 이라면 pageNo 는 11 이 되어야 한다.
-	   ((11 - 1)/10) * 10 + 1;
-	   ( 10/10 ) * 10 + 1;
-	   ( 1 ) * 10 + 1;
-	   Math.floor( 1 ) * 10 + 1;  // 소수부가 없을시 Math.floor(1) 은 그대로 1 이다.
-	   1 * 10 + 1
-	   11
-	   
-	   currentShowPageNo 가 20페이지 이라면 pageNo 는 11 이 되어야 한다.
-	   ((20 - 1)/10) * 10 + 1;
-	   ( 19/10 ) * 10 + 1;
-	   ( 1.9 ) * 10 + 1;
-	   Math.floor( 1.9 ) * 10 + 1;  // 소수부가 있을시 Math.floor(1.9) 은 1.9 보다 작은 최대의 정수인 1을 나타낸다.
-	   1 * 10 + 1
-	   11
-	
-	   
-	    1  2  3  4  5  6  7  8  9  10  -- 첫번째 블럭의 페이지번호 시작값(pageNo)은 1 이다.
-	    11 12 13 14 15 16 17 18 19 20  -- 두번째 블럭의 페이지번호 시작값(pageNo)은 11 이다.
-	    21 22 23 24 25 26 27 28 29 30  -- 세번째 블럭의 페이지번호 시작값(pageNo)은 21 이다.
+		 
+		// blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수 이다.
+		/*
+		                 1 2 3 4 5 6 7 8 9 10  [다음][마지막]           -- 1개블럭
+		   [맨처음][이전]  11 12 13 14 15 16 17 18 19 20  [다음][마지막]   -- 1개블럭
+		   [맨처음][이전]  21 22 23
+		*/
+		 
+		 let loop = 1;
+		 /*
+	    	loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	     */
 	    
-	    currentShowPageNo         pageNo
-	   ----------------------------------
-	         1                      1 = ((1 - 1)/10) * 10 + 1
-	         2                      1 = ((2 - 1)/10) * 10 + 1
-	         3                      1 = ((3 - 1)/10) * 10 + 1
-	         4                      1
-	         5                      1
-	         6                      1
-	         7                      1 
-	         8                      1
-	         9                      1
-	         10                     1 = ((10 - 1)/10) * 10 + 1
-	        
-	         11                    11 = ((11 - 1)/10) * 10 + 1
-	         12                    11 = ((12 - 1)/10) * 10 + 1
-	         13                    11 = ((13 - 1)/10) * 10 + 1
-	         14                    11
-	         15                    11
-	         16                    11
-	         17                    11
-	         18                    11 
-	         19                    11 
-	         20                    11 = ((20 - 1)/10) * 10 + 1
-	         
-	         21                    21 = ((21 - 1)/10) * 10 + 1
-	         22                    21 = ((22 - 1)/10) * 10 + 1
-	         23                    21 = ((23 - 1)/10) * 10 + 1
-	         ..                    ..
-	         29                    21
-	         30                    21 = ((30 - 1)/10) * 10 + 1
-	         
-	*/
-	 
-	// === [맨처음][이전] 만들기 === //
-	pageBarHTML += "<li class='firstli'><a href='javascript:goReadBoardList(\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
-	pageBarHTML += "<li class='previousli'><a href='javascript:goReadBoardList(\""+(pageNo-1)+"\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
-	
-	if(pageNo != 1) {
+
+	     if(typeof BcurrentShowPageNo == "string") {
+	    	 BcurrentShowPageNo = Number(BcurrentShowPageNo);
+	     }
+	     
+	     // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
+	     let pageNo = Math.floor( (BcurrentShowPageNo - 1)/blockSize ) * blockSize + 1;
+	    
+
+	     
+		// === [맨처음][이전] 만들기 === //
+		pageBarHTML += "<li class='firstli'><a href='javascript:boardRead(\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
+		pageBarHTML += "<li class='previousli'><a href='javascript:boardRead(\""+(pageNo-1)+"\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
 		
-		
-	}
-	
-	while( !(loop > blockSize || pageNo > totalPage) ) {
-		
-		if(pageNo == currentShowPageNo) {
-			pageBarHTML += "<li class='numberli'>"+pageNo+"</li>";  
-		}
-		else {
-			pageBarHTML += "<li class='numberli'><a href='javascript:goReadBoardList(\""+pageNo+"\")'>"+pageNo+"</a></li>"; 
+		if(pageNo != 1) {
+			
+			
 		}
 		
-		loop++;
-		pageNo++;
+		while( !(loop > blockSize || pageNo > totalPage) ) {
+			
+			if(pageNo == BcurrentShowPageNo) {
+				pageBarHTML += "<li class='numberli'>"+pageNo+"</li>";  
+			}
+			else {
+				pageBarHTML += "<li class='numberli'><a href='javascript:commentShow(\""+pageNo+"\")'>"+pageNo+"</a></li>"; 
+			}
+			
+			loop++;
+			pageNo++;
+			
+		}// end of while-----------------------
 		
-	}// end of while-----------------------
-	
-	
-	// === [다음][마지막] 만들기 === //
-	if( pageNo <= totalPage ) {
-	
-	
 		
-	}
-	pageBarHTML += "<li class='nextli'><a href='javascript:goReadBoardList(\""+pageNo+"\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
-	pageBarHTML += "<li class='lastli'><a href='javascript:goReadBoardList(\""+totalPage+"\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>"; 
-	 
-	pageBarHTML += "</ul>";
-	 
-	$("div.comment-header").html(pageBarHTML);
-	}// end of if(json.totalPage > 0){}-------------------------------
-	
-	},
-	error: function(request, status, error){
-	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	}    
-	});
+		// === [다음][마지막] 만들기 === //
+		if( pageNo <= totalPage ) {
+
+
+			
+		}
+		pageBarHTML += "<li class='nextli'><a href='javascript:goReadBoardList(\""+pageNo+"\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
+		pageBarHTML += "<li class='lastli'><a href='javascript:goReadBoardList(\""+totalPage+"\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>"; 
+		 
+		pageBarHTML += "</ul>";
+		 
+		$("div#feedpaging").html(pageBarHTML);
+	 }// end of if(json.totalPage > 0){}-------------------------------
+	  
+  },
+  error: function(request, status, error){
+		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+  }    
+});
 
 }// end of function makeCommentPageBar(currentShowPageNo) {}--------------------
 
 
-	    
+
+
+
+
 	    
 </script>
 
@@ -3066,6 +3020,7 @@ function makeBoardPageBar(currentShowPageNo) {
 					<!-- 글피드 보기  -->
 					<a type="button" onclick="goReadBoard()">글피드보기</a><a type="button"  onclick="goReadBoardList()">글목록보기</a>
 					<div id="feedAllbox"></div>
+					
 					
 		  	</div>
 		  	
