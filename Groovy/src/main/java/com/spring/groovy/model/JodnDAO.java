@@ -422,6 +422,13 @@ public class JodnDAO implements InterJodnDAO {
 		List<Map<String,String>> appLineList = sqlsession.selectList("jodn.getAppLineList", fk_empnum);
 		return appLineList;
 	}
+
+	// 남은 휴가일수 알아오기
+	@Override
+	public String getVacationdate(String fk_empnum) {
+		String str_vacationdate = sqlsession.selectOne("jodn.getVacationdate", fk_empnum);
+		return str_vacationdate;
+	}
 	
 
 
