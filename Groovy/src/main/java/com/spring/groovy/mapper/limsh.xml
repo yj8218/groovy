@@ -60,6 +60,12 @@
 	<select id="getEmp" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
 		select pk_empnum, name, phone, email, emppicturename, emppicturefilename
       	from tbl_employee
-      	where name = #{name}
+      	where pk_empnum = #{pk_empnum}
 	</select>
+	
+	<!-- 채팅방 생성하기(insert) -->
+	<insert id="createChat" parameterType="HashMap">
+		insert into(chatroomSeq, receiver, sender)
+		values(seq_chatroom.nextval, #{receiver}, #{sender})
+	</insert>
 </mapper>

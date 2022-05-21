@@ -23,4 +23,18 @@
        </websocket:handshake-interceptors>
     </websocket:handlers>
     
+    <!-- index.jsp -->
+    <beans:bean id="echoHandler2" class="com.spring.chatting.websockethandler.WebsocketEchoHandler2" init-method="init" />
+    <websocket:handlers>
+        <websocket:mapping path="/websocketConnectEmp.groovy" handler="echoHandler2" />
+        
+        <!-- websocket:handlers 태그안에서 아래처럼 websocket:handshake-interceptors에
+             HttpSessionHandshakeInterceptor를 추가해주면
+             WebSocketHandler에 접근하기 전에 
+                       먼저 HttpSession에 접근하여 HttpSession에 저장된 값을 읽어 들여 WebSocketHandler에서 사용할 수 있도록 처리해줌. -->
+        <websocket:handshake-interceptors>
+            <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+       </websocket:handshake-interceptors>
+    </websocket:handlers>
+    
 </beans:beans>

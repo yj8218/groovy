@@ -939,50 +939,49 @@ div#myProfileCard div.card-body ul li span {
                 <a class="iconbar" onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a>
                 
                 <div class="header-form-popup" id="myForm2" >
-	                	<article action="" class="header-form-container">
-						    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
-							    <strong >채팅</strong>
-							    <button type="button" class="btn cancel" onclick="closeForm2()"><i class="fas fa-times icon-search"></i></button>
+                	<article action="" class="header-form-container">
+					    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
+						    <strong >채팅</strong>
+						    <button type="button" class="btn cancel" onclick="closeForm2()"><i class="fas fa-times icon-search"></i></button>
+						</div>
+						<div style="">
+							<div style="margin:0 20px; border-bottom: solid 1px  #ddd;">
+								<div class="tab" >
+									  <button class="tablinks " onclick="openChatTab(event, 'chatting')">채팅</button>
+									  <button class="tablinks" onclick="openChatTab(event, 'chatContact')">연락처</button>
+								</div>
+								<div style=" float:right;   top: -40px; position: relative;">
+									<button id="btnChat" onclick="openNewChat()"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat" />새 채팅</button>
+							    </div>
 							</div>
-							<div style="">
-								<div style="margin:0 20px; border-bottom: solid 1px  #ddd;">
-									<div class="tab" >
-										  <button class="tablinks " onclick="openChatTab(event, 'chatting')">채팅</button>
-										  <button class="tablinks" onclick="openChatTab(event, 'chatContact')">연락처</button>
-									</div>
-									<div style=" float:right;   top: -40px; position: relative;">
-										<button id="btnChat" onclick="openNewChat()"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat" />새 채팅</button>
-								    </div>
-								</div>
-								
-								<div style="padding: 0 20px; margin: 10px 0;">
-									<input id="chatInput" type="text" class="searchInput" placeholder="이름, 채팅방명 검색" autocomplete="off" name="name" required />
-								</div>
-								
-								<div id="chatting" class="tabcontent" >
-									<div  style= "padding: 7px 20px 20px 20px;">
-										<ul  class="pjtList scroll" style="   padding:5px 20px; ">
-											<li class="department-item " >
-									            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">채팅채팅</span>
-									        </li>
-										</ul>
-									</div>
-								</div>
-								
-								<div id="chatContact" class="tabcontent">
-								  <div    style= "padding: 7px 20px 20px 20px;">
-									<ul  class="pjtList" style="   padding:5px 20px; ">
-										<li class="department-item "  >
-								          
-								            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">연락처연락처</span>
+							
+							<div style="padding: 0 20px; margin: 10px 0;">
+								<input id="chatInput" type="text" class="searchInput" placeholder="이름, 채팅방명 검색" autocomplete="off" name="name" required />
+							</div>
+							
+							<div id="chatting" class="tabcontent" >
+								<div  style= "padding: 7px 20px 20px 20px;">
+									<ul  class="pjtList scroll" style="   padding:5px 20px; ">
+										<li class="department-item " >
+								            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">채팅채팅</span>
 								        </li>
 									</ul>
 								</div>
-								</div>
-								
 							</div>
-						 </article>
-                
+							
+							<div id="chatContact" class="tabcontent">
+							  <div    style= "padding: 7px 20px 20px 20px;">
+								<ul  class="pjtList" style="   padding:5px 20px; ">
+									<li class="department-item "  >
+							          
+							            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">연락처연락처</span>
+							        </li>
+								</ul>
+							</div>
+							</div>
+							
+						</div>
+					 </article>
 				</div>
 				
 	<!-- ●●● 알림 팝업 ●●●================================-->

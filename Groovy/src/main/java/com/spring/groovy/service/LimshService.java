@@ -27,25 +27,21 @@ public class LimshService implements InterLimshService {
 	public List<EmployeeVO> showEmployeeList() {
 
 		List<EmployeeVO> empvoList = dao.showEmployeeList();
-	    /*  
+	    
 	      if(empvoList != null) {
 	         
-	         String phone = "";
 	         String email = "";
 	
 	         for(EmployeeVO empvo : empvoList) {
 	            try {
-	               phone = aes.decrypt(empvo.getPhone());
 	               email = aes.decrypt(empvo.getEmail());
 	            } catch(UnsupportedEncodingException | GeneralSecurityException e) {
 	               e.printStackTrace();
 	            }
 	            
-	            empvo.setPhone(phone);
 	            empvo.setEmail(email);
 	         }
 	      }
-	   */   
 	      return empvoList;
 	}
 	
@@ -55,25 +51,21 @@ public class LimshService implements InterLimshService {
 	public List<EmployeeVO> searchEmp(Map<String, String> paraMap) {
 
 		List<EmployeeVO> empvoList = dao.searchEmp(paraMap);
-	/*	
+
 		if(empvoList != null) {
 	         
-         String phone = "";
          String email = "";
 
          for(EmployeeVO empvo : empvoList) {
             try {
-               phone = aes.decrypt(empvo.getPhone());
                email = aes.decrypt(empvo.getEmail());
             } catch(UnsupportedEncodingException | GeneralSecurityException e) {
                e.printStackTrace();
             }
             
-            empvo.setPhone(phone);
             empvo.setEmail(email);
          }
       }
-	*/	
 		return empvoList;
 	}
 
@@ -84,22 +76,17 @@ public class LimshService implements InterLimshService {
 
 		EmployeeVO empvo = dao.showEmpProfile(pk_empnum);
 		
-	/*	
 		if(empvo != null) {
-			String phone = "";
 			String email = "";
 			
 			try {
-				phone = aes.decrypt(empvo.getPhone());
 				email = aes.decrypt(empvo.getEmail());
 			} catch(UnsupportedEncodingException | GeneralSecurityException e) {
 				e.printStackTrace();
 			}
             
-			empvo.setPhone(phone);
 			empvo.setEmail(email);
 		}
-	*/	
 		return empvo;
 	}
 
@@ -120,25 +107,19 @@ public class LimshService implements InterLimshService {
 
 		List<EmployeeVO> empvoListByDept = dao.getEmpListByDept(pk_deptnum);
 		
-		/*  
 	      if(empvoListByDept != null) {
 	         
-	         String phone = "";
 	         String email = "";
 	
 	         for(EmployeeVO empvo : empvoListByDept) {
 	            try {
-	               phone = aes.decrypt(empvo.getPhone());
 	               email = aes.decrypt(empvo.getEmail());
 	            } catch(UnsupportedEncodingException | GeneralSecurityException e) {
 	               e.printStackTrace();
 	            }
-	            
-	            empvo.setPhone(phone);
 	            empvo.setEmail(email);
 	         }
 	      }
-	   */   
 		
 		return empvoListByDept;
 	}
@@ -146,26 +127,33 @@ public class LimshService implements InterLimshService {
 
 	// 1:1 채팅 직원 정보 가져오기(select)
 	@Override
-	public EmployeeVO getEmp(String name) {
+	public EmployeeVO getEmp(String pk_empnum) {
 
-		EmployeeVO empvo = dao.getEmp(name);
+		EmployeeVO empvo = dao.getEmp(pk_empnum);
 
 		if(empvo != null) {
-			String phone = "";
 			String email = "";
 			
 			try {
-				phone = aes.decrypt(empvo.getPhone());
 				email = aes.decrypt(empvo.getEmail());
 			} catch(UnsupportedEncodingException | GeneralSecurityException e) {
 				e.printStackTrace();
 			}
             
-			empvo.setPhone(phone);
 			empvo.setEmail(email);
 		}
 		
 		return empvo;
+	}
+
+
+	// 채팅방 생성하기(insert)
+	@Override
+	public int createChat(Map<String, String> paraMap) {
+
+		int n = dao.createChat(paraMap);
+		
+		return n;
 	}
 
 

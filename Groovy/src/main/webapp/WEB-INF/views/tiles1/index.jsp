@@ -145,14 +145,20 @@
 		
 		// 단체 채팅방 개설
 		$("button#groupchat").click(function() {
-			var openchatConfirm = confirm("프로젝트 채팅방을 개설하시겠습니까?\n프로젝트 참여자가 모두 참여하는 채팅방입니다.");
+			var openchatConfirm = confirm("프로젝트 채팅방을 개설하시겠습니까?\n현재 접속중인 직원 모두가 참여하는 채팅방입니다.");
 			
 			if(openchatConfirm) {
 				const url = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
 		        const popup_name = "multichat";
 		        const option = "width = 450, height = 650, top = 300, left = 600";
 				
-				window.open(url, popup_name, option);
+				window.open("", popup_name, option);
+				
+				const frm = document.openGroupChatFrm;
+				frm.target = popup_name;
+				frm.action = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
+				frm.method = "get";
+				frm.submit();
 			}
 		});
 		
@@ -261,7 +267,50 @@
 		}); */
 		
 		
+		///////////////////////////////////////////////////////////////////
 		
+		// @@@@ 웹소켓 연결 @@@@ //
+		// 웹브라우저의 주소창의 포트까지 가져옴
+		const url = window.location.host;
+	//	alert("url : " + url);
+		// url : 221.155.187.235:9090
+		
+		// '/' 부터 오른쪽에 있는 모든 경로
+		const pathname = window.location.pathname;
+	//	alert("pathname : " + pathname);
+		// pathname : /board/chatting/multichat.action
+		
+		// "전체 문자열".lastIndexOf("검사할 문자"); 
+		const appCtx = pathname.substring(0, pathname.lastIndexOf("/"));
+	//	alert("appCtx : " + appCtx);
+		// appCtx : /groovy/chatting
+		
+		const root = url + appCtx;
+	//	alert("root : " + root);
+		// root : 172.30.1.42:9090/groovy
+		
+		// 웹소켓통신을 하기 위해서는 http://을 사용하는 것이 아니라 ws://을 사용해야 한다.
+		// "/multichatstart.action"에 대한 것은 /WEB-INF/spring/config/websocketContext.xml 파일에 있는 내용이다.
+		const wsUrl = "ws://" + root + "/websocketConnectEmp.groovy";
+	//	alert("wsUrl : " + wsUrl);
+		// wsUrl : ws://221.155.187.235:9090/board/websocketConnectEmp.groovy
+		
+		const websocket = new WebSocket(wsUrl);
+		// 즉, const websocket = new WebSocket(ws://221.155.187.235:9090/board/chatting/websocketConnectEmp.groovy); 이다.
+		
+		// === 웹소켓에 최초로 연결이 되었을 경우에 실행되어지는 콜백함수 정의하기 === //
+	   	websocket.onopen = function() {
+	   		
+	   	};
+		
+		// === 메시지 수신시 콜백함수 정의하기 === //
+	   	websocket.onmessage = function(event) {
+	   		
+	   		// event.data는 수신되어진 메시지이다.
+	        if(event.data.substr(0,1)=="<" && event.data.substr(event.data.length-1)==">") { 
+	            $("div#connectEmp").html(event.data);
+	        }
+	   	};
 		
 	}); // end of $(document).ready(function() {})
 	
@@ -308,11 +357,18 @@
 			success:function(json) {
 				$('div#showEmpProfileModal').modal('hide');
 				
-				var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+			//	var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+			//	var url = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
 	            var popup_name = "openChat";
 	            var option = "width = 450, height = 650, top = 300, left = 600";
 				
-				window.open(url, popup_name, option);
+				window.open("", popup_name, option);
+				
+				const frm = document.openPersonalChatFrm;
+				frm.target = popup_name;
+				frm.action = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy?name=" + json.name;
+				frm.method = "get";
+				frm.submit();
 			},
 			error: function(request, status, error) {
             	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -456,7 +512,7 @@
 	</div>
 </div>
  --%>
-<div id="content" style="display: flex;">
+<div id="content" style="display: flex; margin-top: 50px;">
 	<div style="margin: auto; width: 90%;">
 		<div class="row">
 			<div id="home_board" class="col-lg-9">
@@ -627,13 +683,14 @@
 		  	</div>
 		  	
 			<%-- 프로젝트 참여자 목록 --%>
-			<div id="memberlist" class="col-lg-3" style="position: fixed; right: 30px; top: 216px; width: 350px;">
+			<div id="memberlist" class="col-lg-3" style="position: fixed; right: 30px; top: 130px; width: 350px;">
 				<div class="row">
 					<div class="col-lg-6"><h6 style="display: inline-block; margin-left: 5px;">참여자<span class="text-muted ml-2">${requestScope.empvoList.size()}</span></h6></div>
 					<div class="col-lg-6" align="right"><a id="showAllEmployee" data-toggle="modal" data-target="#showAllEmpModal">전체보기</a></div>
 				</div>
 				<div class="card mb-3">
-					<div class="card-body scrollover" style="padding-bottom: 0; height: 550px; overflow: auto; overflow-x: hidden;">
+					<div class="card-body scrollover" style="padding-bottom: 0; height: 500px; overflow: auto; overflow-x: hidden;">
+				    <%--  	
 				    	<c:forEach var="deptvo" items="${requestScope.deptvoList}" varStatus="status">
 				    	<div>
 				    		<a id="dept" class="text-muted" data-toggle="collapse" href="#${deptvo.deptnameeng.replaceAll(' ', '')}" aria-expanded="false" aria-controls="${deptvo.deptnameeng.replaceAll(' ', '')}">${deptvo.deptnamekor}</a>
@@ -642,6 +699,8 @@
 				    	</div>
 				    	<div class="collapse dept" id="${deptvo.deptnameeng.replaceAll(' ', '')}"></div>
 				    	</c:forEach>
+				  	--%>
+				    	<div id="connectEmp"></div>
 				  	</div>
 				  	<div class="card-footer" align="center" style="padding: 0; height: 50px;">
 				  		<table class="w-100 h-100">
@@ -768,4 +827,3 @@
 		
 	</div>
 </div>
-

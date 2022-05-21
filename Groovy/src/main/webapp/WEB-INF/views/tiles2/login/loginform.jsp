@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ page import="java.net.InetAddress" %>    
+    
 <%
-	String ctxPath = request.getContextPath();
+   	String ctxPath = request.getContextPath();
+
+	InetAddress inet = InetAddress.getLocalHost();
+	String serverIP = inet.getHostAddress();
+	
+	int portnumber = request.getServerPort();
+	
+	String serverName = "http://" + serverIP + ":" + portnumber;
 %>
 
 
@@ -95,7 +105,7 @@
 	    }
 		
 		const frm = document.loginFrm;
-		frm.action = "<%= ctxPath%>/loginEnd.groovy",
+		frm.action = "<%= serverName %><%= ctxPath%>/loginEnd.groovy",
 		frm.method = "POST";
 		frm.submit();
 		

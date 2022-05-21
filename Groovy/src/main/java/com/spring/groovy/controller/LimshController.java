@@ -211,11 +211,28 @@ public class LimshController {
 	
 	// 그룹채팅 띄우기
 	@RequestMapping(value="/chatting/multichat.groovy", method={RequestMethod.GET})
-   	public String requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response) {
+   	public ModelAndView requiredLogin_multichat(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
    		
-		System.out.println("1번");
+		String pk_empnum = request.getParameter("pk_empnum");
+		String bool = request.getParameter("isPersonalChat");
 		
-   		return "chatting/multichat.tiles2";
+		boolean isPersonalChat = false;
+		if(bool.equals("true")) {
+			isPersonalChat = true;
+		}
+		
+	//	System.out.println("isPersonalChat => " + isPersonalChat);
+	//	System.out.println("pk_empnum => " + pk_empnum);
+		
+		EmployeeVO empvo = service.getEmp(pk_empnum);
+		
+		mav.addObject("pk_empnum", pk_empnum);
+		mav.addObject("isPersonalChat", isPersonalChat);
+		mav.addObject("empvo", empvo);
+		
+		mav.setViewName("chatting/multichat.tiles2");
+		
+   		return mav;
    	}
 /*	
 	@RequestMapping(value="/writeBoardModal.groovy")

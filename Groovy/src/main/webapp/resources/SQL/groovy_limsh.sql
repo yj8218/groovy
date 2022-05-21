@@ -35,9 +35,11 @@ order by fk_spotnum desc;
 drop table tbl_chatroom purge;
 create table tbl_chatroom
 (chatroomSeq    number        not null
-,fk_empnum         varchar2(40)  not null
+,receiver         varchar2(40)  not null
+,sender           varchar2(40)  not null
 ,constraint PK_tbl_chatroom primary key(chatroomSeq)
-,constraint FK_tbl_chatroom foreign key(fk_empnum) references tbl_employee(pk_empnum)
+,constraint FK_tbl_chatroom_receiver foreign key(receiver) references tbl_employee(pk_empnum)
+,constraint FK_tbl_chatroom_sender foreign key(sender) references tbl_employee(pk_empnum)
 );
 
 drop sequence seq_chatroom;

@@ -1,35 +1,49 @@
 package com.spring.chatting.websockethandler;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
 import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.service.InterLimshService;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler {
-//**--start
-	@Autowired //Type에 따라 알아서 Bean을 주입해준다.
-	private InterLimshService service;
 	
-	// 채팅방 목록 <방번호, ArrayList<session>>이 들어간다.
-	private Map<String, ArrayList<WebSocketSession>> RoomList = new ConcurrentHashMap<String, ArrayList<WebSocketSession>>();
+	@Bean
+	public ServletServerContainerFactoryBean createWebSocketContainer() {
+		ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
+		container.setMaxTextMessageBufferSize(500000);
+		container.setMaxBinaryMessageBufferSize(500000);
+		return container;
+	}
 	
-	// session, 방번호가 들어간다.
-	private Map<WebSocketSession, String> sessionList = new ConcurrentHashMap<WebSocketSession, String>();
-	
-	private static int i;
-//**--end	
 	// === 웹소켓서버에 연결한 클라이언트 사용자들을 저장하는 리스트 === //
 	private List<WebSocketSession> connectedUsers = new ArrayList<>();
+	
+	// === <loginuser.getPk_empnum(), wsession.getId()> === //
+	private Map<Object, Object> connectedUsersId = new HashMap<>();
+	
+	// 웹소켓에서 파일 전송하기
+	private static final String FILE_UPLOAD_PATH = "C:/";	// 파일 업로드 경로
+	static int fileUploadIdx = 0;
+	static String fileUploadSession = "";
 	
 	// init-method
 	public void init() throws Exception {}
@@ -43,8 +57,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	@Override		
 	public void afterConnectionEstablished(WebSocketSession wsession) throws Exception {
 		
-		System.out.println("2번");
-		
 		// >>> 파라미터 WebSocketSession wsession은 웹소켓서버에 접속한 클라이언트 사용자임. <<<
 		
 		// 웹소켓서버에 접속한 클라이언트의 IP Address 얻어오기
@@ -55,22 +67,11 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
             	--> VM arguments 속에 맨 뒤에
             	--> 한칸 띄우고 -Djava.net.preferIPv4Stack=true을 추가한다.  
 		*/
-//**--start
-		System.out.println(wsession.getId() + "연결 성공 => 총 접속 인원 : " + (++i) + "명");
-//**--end		
-		System.out.println("====> 웹채팅확인용 : " + wsession.getId() + "님이 접속했습니다.");
+
+	//	System.out.println("====> 웹채팅확인용 : " + wsession.getId() + "님이 접속했습니다.");
         // ====> 웹채팅확인용 : 0님이 접속했습니다. 
         // ====> 웹채팅확인용 : 1님이 접속했습니다.
         // wsession.getId() 는 자동증가되는 고유한 숫자로 나옴.
-           
-    //  System.out.println("====> 웹채팅확인용 : " + "연결 컴퓨터명 : " + wsession.getRemoteAddress().getHostName());
-        // ====> 웹채팅확인용 : 연결 컴퓨터명 : 221.155.187.235
-           
-    //  System.out.println("====> 웹채팅확인용 : " + "연결 컴퓨터명 : " + wsession.getRemoteAddress().getAddress().getHostName());
-        // ====> 웹채팅확인용 : 연결 컴퓨터명 : 221.155.187.235
-           
-      System.out.println("====> 웹채팅확인용 : " + "연결 IP : " + wsession.getRemoteAddress().getAddress().getHostAddress()); 
-        // ====> 웹채팅확인용 : 연결 IP : 221.155.187.235
 		
 		connectedUsers.add(wsession);
 		
@@ -96,6 +97,11 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
             // "loginuser" 은 HttpSession에 저장된 키 값으로 로그인 되어진 사용자이다.
             
             connectingUserName += loginuser.getName()+" "; 
+            
+        //    System.out.println("loginuser.getPk_empnum() => " + loginuser.getPk_empnum());
+        //    System.out.println("webSocketSession.getId() => " + webSocketSession.getId());
+            
+            connectedUsersId.put(loginuser.getPk_empnum(), webSocketSession.getId());
         }// end of for--------------------
         
         connectingUserName += "」";
@@ -121,31 +127,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	public void handleTextMessage(WebSocketSession wsession, TextMessage message) throws Exception {
 		// >>> 파라미터 WebSocketSession wsession은  웹소켓서버에 접속한 클라이언트임. <<<
         // >>> 파라미터 TextMessage message 은  클라이언트 사용자가 웹소켓서버로 보낸 웹소켓 메시지임. <<<
-        
-        // Spring에서 WebSocket 사용시 먼저 HttpSession에 저장된 값들을 읽어와서 사용하기
-        /*
-                           먼저 /webapp/WEB-INF/spring/config/websocketContext.xml 파일에서
-        	websocket:handlers 태그안에 websocket:handshake-interceptors에
-            HttpSessionHandshakeInterceptor를 추가해주면 
-            WebSocketHandler 클래스를 사용하기 전에, 
-                           먼저 HttpSession에 저장되어진 값들을 읽어 들여, WebSocketHandler 클래스에서 사용할 수 있도록 처리해준다. 
-        */
 		
 		Map<String, Object> map = wsession.getAttributes();
-		EmployeeVO loginuser = (EmployeeVO)map.get("loginuser");  
+		EmployeeVO loginuser = (EmployeeVO)map.get("loginuser");
         // "loginuser" 은 HttpSession에 저장된 키 값으로 로그인 되어진 사용자이다.
         
-     //   System.out.println("====> 웹채팅확인용 : 로그인ID : " + loginuser.getUserid());
-        // ====> 웹채팅확인용 : 로그인ID : limsh
-        
         MessageVO messageVO = MessageVO.convertMessage(message.getPayload());
-        /* 
-        	파라미터 message 는  클라이언트 사용자가 웹소켓서버로 보낸 웹소켓 메시지임
-			message.getPayload() 은  클라이언트 사용자가 보낸 웹소켓 메시지를 String 타입으로 바꾸어주는 것이다.
-			/Board/src/main/webapp/WEB-INF/views/tiles1/chatting/multichat.jsp 파일에서 
-       		클라이언트가 보내준 메시지는 JSON 형태를 뛴 문자열(String) 이므로 이 문자열을 Gson을 사용하여 MessageVO 형태의 객체로 변환시켜서 가져온다.
-        */
-        
+
    //   System.out.println("~~~~ 확인용 messageVO.getMessage() => " + messageVO.getMessage());
         // ~~~~ 확인용 messageVO.getMessage() => 채팅방에 <span style='color: red;'>입장</span>했습니다
         
@@ -163,9 +151,12 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
         
         for(WebSocketSession webSocketSession : connectedUsers) {
         	
+        //	System.out.println(messageVO.getType());
+        	
         	if("all".equals(messageVO.getType())) {
         		// 채팅할 대상이 "전체" 일 경우
                 // 메시지를 자기자신을 뺀 나머지 모든 사용자들에게 메시지를 보냄.
+        		
         		if(!wsession.getId().equals(webSocketSession.getId())) {
         			// wsession 은 메시지를 보낸 클라이언트임.
                     // webSocketSession 은 웹소켓서버에 연결된 모든 클라이언트중 하나임.
@@ -179,22 +170,17 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
         	}
         	else { // 채팅할 대상이 "전체"가 아닌 특정대상(귓속말대상웹소켓.getId())인 경우
         		
-        		String ws_id = webSocketSession.getId();
-        		// webSocketSession 은 웹소켓서버에 연결한 모든 클라이언트중 하나이며, 그 클라이언트의 웹소켓의 고유한 id 값을 알아오는 것임. 
+        		String ws_id = (String)connectedUsersId.get(messageVO.getTo());
         		
-        		if(messageVO.getTo().equals(ws_id)) {
-        			// messageVO.getTo() 는 클라이언트가 보내온 귓속말대상웹소켓.getId() 임.
-        			
-        			webSocketSession.sendMessage(
-            			new TextMessage("<span style='display: none;'>"+wsession.getId()+"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>" +loginuser.getName()+ "</span>]<br><div style='background-color: white; display: inline-block; max-width: 60%; padding: 7px; border-radius: 15%; word-break: break-all; color: red;'>"+ messageVO.getMessage() +"</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>")
-            																																																																									/* word-break: break-all; 은 공백없이 영어로만 되어질 경우 해당구역을 빠져나가므로 이것을 막기위해서 사용한다. */
-        			);						
-        			
-        			break;
-        			// 지금의 특정대상(지금은 귓속말대상 웹소켓(id)은 1개이므로
-        			// 특정대상(지금은 귓속말대상 웹소켓 id임)에게만 메시지를 보내고 break;를 한다.
+        	//	System.out.println("확인용 ws_id => " + ws_id);
+        	
+        		if(webSocketSession.getId().equals(ws_id) && !wsession.getId().equals(webSocketSession.getId())) {
+	        		webSocketSession.sendMessage(
+	        			new TextMessage("<span style='display: none;'>"+wsession.getId()+"</span>&nbsp;[<span style='font-weight:bold; cursor:pointer;' class='loginuserName'>" +loginuser.getName()+ "</span>]<br><div style='background-color: white; display: inline-block; max-width: 60%; padding: 7px; border-radius: 15%; word-break: break-all; color: red;'>"+ messageVO.getMessage() +"</div> <div style='display: inline-block; padding: 20px 0 0 5px; font-size: 7pt;'>"+currentTime+"</div> <div>&nbsp;</div>")
+	        																																																																									/* word-break: break-all; 은 공백없이 영어로만 되어질 경우 해당구역을 빠져나가므로 이것을 막기위해서 사용한다. */
+	    			);
+	        		break;
         		}
-        		
         	}
         }
 	}
@@ -249,5 +235,52 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
         ///// ===== 접속을 끊을시 접속자명단을 알려주기 위한 것 끝 ===== /////
         
     }
+	
+	
+	// 파일 전송을 위한 메소드
+	@Override
+	public void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+		//바이너리 메시지 발송
+		ByteBuffer byteBuffer = message.getPayload();
+		String fileName = "test.jpg";
+		File dir = new File(FILE_UPLOAD_PATH);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		File file = new File(FILE_UPLOAD_PATH, fileName);
+		FileOutputStream out = null;
+		FileChannel outChannel = null;
+		try {
+			byteBuffer.flip(); //byteBuffer를 읽기 위해 세팅
+			out = new FileOutputStream(file, true); //생성을 위해 OutputStream을 연다.
+			outChannel = out.getChannel(); //채널을 열고
+			byteBuffer.compact(); //파일을 복사한다.
+			outChannel.write(byteBuffer); //파일을 쓴다.
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(out != null) {
+					out.close();
+				}
+				if(outChannel != null) {
+					outChannel.close();
+				}
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		byteBuffer.position(0); //파일을 저장하면서 position값이 변경되었으므로 0으로 초기화한다.
+		//파일쓰기가 끝나면 이미지를 발송한다.
+		for (WebSocketSession webSocketSession : connectedUsers) {
+			try {
+			webSocketSession.sendMessage(new BinaryMessage(byteBuffer));
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+        }// end of for------------------------------------------
+	}
 	
 }
