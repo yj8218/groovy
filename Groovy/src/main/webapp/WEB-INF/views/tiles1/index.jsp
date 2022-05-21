@@ -6,7 +6,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <% String ctxPath = request.getContextPath(); %>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone" rel="stylesheet"/>
 <style type="text/css">
 
 	body {background-color: #f2f2f2;}
@@ -108,15 +117,16 @@
 
 
 /*  글한개보기 css 시작*/	
-
+ /*  ///////// */
+ 
  
  div.showBoardDetail{ 
  	width: 674px;
-    height: 100%;
+    /* height: 100%; */
     min-height: auto;
-    max-height: 100%;
+    max-height: max-content;
     position: absolute;
-    top: -20px;
+    top: -30px;
     bottom: 0;
     right: -20px;
     z-index: 2;
@@ -126,14 +136,14 @@
     border-left: 1px solid #ccc;
         border: 1px solid #ccc;
     box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
-    
+    display:block;
     font-size: 14px;
     font-weight: 400;
  }
   
   div.showBoardDetail div.card-header{
   	overflow: hidden;
-    padding: 12px 20px;
+    padding: 10px 20px;
     height: 45px;
     background: #fff;
     border-bottom: 1px solid #eee;
@@ -148,13 +158,13 @@
     margin: 0;
     padding: 0;
   }
-  div.showBoardDetail div.card-header h3 span {
+  div.showBoardDetail div.card-header h3 span.js-project-title-button {
  	 overflow: hidden;
    /*  display: inline-block; */
     max-width: 300px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    vertical-align: middle;
+   
    margin-left: 5px;
 
   }
@@ -164,6 +174,7 @@
         float: right;
     margin-top: 1px;
     position: absolute;
+    color: #333;
   }
   div.showBoardDetail div.card-header button.close span{
   /* font-family: icon-contents!important; */
@@ -173,6 +184,7 @@
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
+    
   }
   
   div.showBoardDetail div.card-body{
@@ -600,7 +612,7 @@ div.showBoardDetail span.memo-span a{
 div.showBoardDetail div.card-vote{
 display: block;
 margin: 30px 0 0;
-    padding: 30px 0 18px 0;
+    padding: 35px 0 15px 0;
     border-top: 1px solid #eee;
     text-align: center;
     font-size: 0;
@@ -692,7 +704,7 @@ color: #555;
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 div.showBoardDetail li.card-footer-li{
@@ -782,11 +794,56 @@ display: inline-block;
     font-size: 14px;
     font-family: Roboto;
     color: #999;
+        margin-left: 5px;
 }			                     
 
 div.showBoardDetail div.comment-writer-menu{
 float: right;
 }
+
+
+div.showBoardDetail button.card-edit{
+margin: 0;
+    padding: 0;
+font-size: 14px;
+    color: #999;
+    cursor: pointer;
+     display: inline-block;
+   border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
+   
+}
+div.showBoardDetail button.card-delete{
+margin: 0;
+    padding: 0;
+    display: inline-block;
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    
+    border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
+    margin-left: 5px;
+   
+}
+
+
+
+
+
+
+
+
+
+
 
 div.showBoardDetail button.comment-edit{
 margin: 0;
@@ -817,7 +874,23 @@ margin: 0;
         font-family: inherit;
             line-height: normal;
     margin: 0;
+    margin-left: 5px;
    
+}
+
+div.showBoardDetail button.comment-cancell{
+margin: 0;
+    padding: 0;
+font-size: 14px;
+    color: #999;
+    cursor: pointer;
+     display: inline-block;
+   border-radius: 0;
+    border: 0;
+    background-color: transparent;
+        font-family: inherit;
+            line-height: normal;
+    margin: 0;
 }
 
 			                   
@@ -836,15 +909,27 @@ word-break: break-all;
 
 
 div.showBoardDetail div.card-footer2{
-overflow: hidden;
-    padding: 14px 30px;
-    
-        position: sticky;
-    bottom: 0;
-    margin: 0;
-    background: #faf9f9;
-    
-    box-shadow: 0 -2px 6px rgb(0 0 0 / 6%);
+  overflow: hidden;
+  padding: 14px 30px;
+  
+  position: sticky;
+  bottom: 0;
+  margin: 0;
+  background: #faf9f9;
+ /*  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06); */
+}
+
+
+div.showBoardDetail div.card-footer2.sticky {
+  position: sticky;
+  bottom: 0;
+  margin: 0;
+  background: #faf9f9;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+}
+
+div.showBoardDetail div.card-footer2 {
+  cursor: default;
 }
 
 
@@ -897,27 +982,50 @@ position: relative;
 
 }
 
-div.showBoardDetail div.comment-writer-text{
-width: 100%;
-    padding: 11px 60px 11px 20px;
-    min-height: 44px;
-    background: #fff;
-    border: 1px solid #ddd;
-  
-    border-radius: 4px;
-   
-    box-sizing: border-box;
-    color: #555;
-    word-break: break-all;
-    white-space: pre-wrap;
-    cursor: text;
+div.showBoardDetail div.comment-writer-text[contenteditable]{
+ width: 100%;
+  padding: 11px 60px 11px 20px;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #555;
+  word-break: break-all;
+  white-space: pre-wrap;
+  cursor: text;
 }
 
-div.showBoardDetail div.comment-writer-text:before {
+div.showBoardDetail input.comment-writer-text{
+ width: 100%;
+  padding: 11px 60px 11px 20px;
+  min-height: 44px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #555;
+  word-break: break-all;
+  white-space: pre-wrap;
+  cursor: text;
+}
+
+div.showBoardDetail div.comment-writer-text[contenteditable]:empty:before{
 	    display: block;
     content: attr(placeholder);
     color: #999;
 }
+
+
+div.showBoardDetail div.comment-writer-text[contenteditable=true]:hover,
+div.showBoardDetail div.comment-writer-text[contenteditable=true]:focus {
+  border-color: #555;
+  -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 
 div.showBoardDetail div.card-content-map{
 width:100%;
@@ -982,11 +1090,11 @@ text-underline-offset : 2px;
 }
 
 div.showBoardDetail h3.card-title i{
- background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-density.svg')!important;
-    width: 20px;
-    height: 20px;
+
+    /* width: 20px;
+    height: 20px; */
     display: inline-block;
-   filter: invert(17%) sepia(70%) saturate(15%) hue-rotate(316deg) brightness(90%) contrast(94%);
+
       vertical-align: middle;
 }
 
@@ -1025,6 +1133,10 @@ color: #00b695;
     font-size: 15px;
     
     line-height: 19px;
+    
+        position: relative;
+    display: flex;
+    cursor: pointer;
 }
 
 div.showBoardDetail span.noCnt{
@@ -1033,6 +1145,9 @@ div.showBoardDetail span.noCnt{
         
     font-size: 15px;
         line-height: 19px;
+        
+        display: flex;
+         cursor: pointer;
 }
 div.showBoardDetail span.undefinedCnt{
   margin-left: 55px;
@@ -1040,6 +1155,9 @@ div.showBoardDetail span.undefinedCnt{
       
     font-size: 15px;
         line-height: 19px;
+        
+        display: flex;
+         cursor: pointer;
 }
 
 div.showBoardDetail span.yesCnt span{
@@ -1060,25 +1178,264 @@ line-height: 19px;
 }
 
 
-div.showBoardDetail div.voteTotalCnt em{
+div.showBoardDetail div.vote-group em{
     margin-left: 2px;
     font-weight: 700;
     font-size: 16px;
        font-style: normal;
 }
 
+
+
+div.showBoardDetail div.vote-group{
+    position: relative;
+  /*   display: flex; */
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    
+  /*   padding: 14.5px 30px; */
+    background: #fff;
+
+}
+
+
+div.showBoardDetail div.vote-yes-group{
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+div.showBoardDetail ul.vote-yes-ul{
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+   /*  top: 50px; */
+    right: 390px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #00b695;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    max-width: 200px;
+   max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #00b695;
+        
+         display: none;
+         
+         overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}
+div.showBoardDetail ul.vote-yes-ul::-webkit-scrollbar {
+    display: none;
+}
+
+div.showBoardDetail ul.vote-yes-ul li{
+display: block;
+    position: relative;
+}
+
+div.showBoardDetail div.vote-no-group{
+   display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+div.showBoardDetail ul.vote-no-ul li{
+display: block;
+    position: relative;
+}
+
+div.showBoardDetail ul.vote-no-ul{
+      overflow: hidden;
+    position: absolute;
+    z-index: 1;
+   /*  top: 50px; */
+    right: 300px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #fb2a2a;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    max-width: 200px;
+    max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #fb2a2a;
+
+ display: none;
+ 
+ overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+div.showBoardDetail ul.vote-no-ul::-webkit-scrollbar {
+    display: none;
+}
+
+div.showBoardDetail div.vote-undefined-group{
+   display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+div.showBoardDetail ul.vote-undefined-ul{
+      overflow: hidden;
+    position: absolute;
+    z-index: 1;
+   /*  top: 50px; */
+    right: 210px;
+  /*   background: transparent; */
+  background:#fff;
+    border: 1px solid #777;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    max-width: 200px;
+   max-height: 200px;
+    text-align: left;
+        border-radius: 6px;
+        color: #777;
+        
+        display: none;
+
+overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+div.showBoardDetail ul.vote-undefined-ul::-webkit-scrollbar {
+    display: none;
+}
+
+div.showBoardDetail ul.vote-undefined-ul li{
+display: block;
+    position: relative;
+}
+
+div.showBoardDetail ul.vote-undefined-ul li div, div.showBoardDetail ul.vote-no-ul li div, div.showBoardDetail ul.vote-yes-ul li div{
+font-size: 13px;
+
+}
+
+
+div.showBoardDetail input.comment-writer-text:hover,div.showBoardDetail input.comment-writer-text:focus {
+	
+	border: 1px solid #6449fc  !important;
+}
+
+
+div.comment-text-area input.comment-writer-text{
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+
+div.showBoardDetail div.comment-header{
+padding: 10px 30px 0 30px;
+   /*  border-top: 1px solid #ddd; */
+}
+
+
+h3.card-title i span {
+ position: relative;
+}
+
+
+
+
+/* 댓글 페이징 */
+div.comment-header ul{
+list-style: none;
+padding: 0;
+margin: 0;
+text-align: center;
+
+}
+div.comment-header ul li{
+display: inline;
+color: #6449fc;
+font-size: 15px;
+font-weight: 600;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+div.comment-header ul li.numberli{
+padding-left: 7px;
+padding-right: 7px;
+}
+div.comment-header ul li.numberli:last-child{
+padding-right: 15px;
+}
+
+div.comment-header ul li a{
+
+color: #555;
+font-size: 14px;
+font-weight: 600;
+    cursor: pointer;
+
+}
+
+div.comment-header ul li span{
+position: relative;
+top:6.5px;
+padding: 0;
+margin: 0;
+}
 /* 글한개보기 css 끝 */
 	
 </style>
 
 <script type="text/javascript">
-
+/* 	$('.modal').on('hidden.bs.modal', function (e) {
+		$(this).find('form')[0].reset();
+	}); 
+	 */
+	
 	$(document).ready(function() {
-		
+		 <%-- === #166. 스마트 에디터 구현 시작 === --%>
+	 	//전역변수
+	 	<%--
+	    var obj = [];
+	    
+	    //스마트에디터 프레임생성
+	    nhn.husky.EZCreator.createInIFrame({
+	        oAppRef: obj,
+	        elPlaceHolder: "content",
+	        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
+	        htParams : {
+	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+	            bUseToolbar : true,            
+	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+	            bUseVerticalResizer : true,    
+	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+	            bUseModeChanger : true,
+	        },
+	        fOnAppLoad: function(){
+	        	$("iframe").css("width","100%").css("height","300px");
+	        }
+	    });
+	    
+	     --%>
+
 		
 		 $("div.showBoardDetail").hide();
 		<%-- === #166. 스마트 에디터 구현 시작 === --%>
-	 	//전역변수
+	 	<%-- //전역변수
 	    var obj = [];
 	    
 	    //스마트에디터 프레임생성
@@ -1099,14 +1456,34 @@ div.showBoardDetail div.voteTotalCnt em{
 	        	editBoardModal();
 	        	
 	        } 
+	    }); --%>
+		
+	    $(document).on("click", "div.card-header button.close", function(){
+			$("div.showBoardDetail").empty();
+			$("div.showBoardDetail").hide();
+		});
+	    
+	    $("div.showBoardDetail").hide();
+		
+
+		
+	    $('#writeBoardModal').on('show.bs.modal', function (e) {
+	    	
+			  
+			  
+		 });
+	    
+	    $('#writeBoardModal').on('hidden.bs.modal', function (e) {
+	    	$("#content").empty();
 	    });
 		
-		
+	    
+	    
 		showEmpByDept();
 		
 		goReadBoard();
 		
-		goViewComment(1);
+		//goViewComment(1);
 		
 		$("table.tblEmpList tr:last-child").css({'border-bottom':'none'});
 		
@@ -1254,12 +1631,23 @@ div.showBoardDetail div.voteTotalCnt em{
 		
 		
  // === 댓글 입력후 엔터하기 === //
-$("input#commentContent").keydown(function(key){
-	if(key.keyCode == 13){
-		goAddComment();
+//$("input#commentContent").keydown(function(key){
+$(document).on('keyup', 'input#commentContent', function (event) {
+
+	if(event.keyCode == 13){
+		goAddComment(fk_board_seq);
 		
 	}
 });
+		
+$(document).on('keyup', 'form.comment-writer-container input.comment-writer-text', function (event) {
+	if(event.keyCode == 13){ 
+		const fk_board_seq = $("input.boardno").val();
+
+		commentAdd(fk_board_seq);
+	}
+});
+
 		 
 		
 		
@@ -1268,64 +1656,62 @@ $("input#commentContent").keydown(function(key){
 	}); // end of $(document).ready(function() {})
 	
 	
-	$('.modal').on('hidden.bs.modal', function (e) {
-		$(this).find('form')[0].reset();
-	}); 
 	
 	
-	function showEmpByDept() {
-		
-		const length = ${requestScope.empvoList.size()};
-	}
+	
+function showEmpByDept() {
+	
+	const length = ${requestScope.empvoList.size()};
+}
 	
 
-	// 프로필을 보여주는 메소드
-	function showEmpProfile(pk_empnum) {
-		
-		$.ajax({
-			url:"<%= ctxPath %>/showEmpProfile.groovy",
-			data:{"pk_empnum":pk_empnum},
-			dataType:"JSON",
-			success:function(json) {
-				$('div#showAllEmpModal').modal('hide');
-				$('div#showEmpProfileModal').modal();
-				
-				$("div#showEmpProfileModal .modal-header").css({'background-image':'url("<%= ctxPath %>/resources/images/프로필사진/'+json.emppicturename+'")',
-																'background-repeat':'no-repeat',
-																'background-size':'100%'});
-				$("div#empName").html(json.name);
-				$("td#email").html(json.email);
-				$("td#phone").html(json.phone);
-				$("button#goChat").attr("onClick", "openPersonalChat('" + pk_empnum + "');");
-			},
-			error: function(request, status, error) {
-            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-		}); // $.ajax({})
-	}
+// 프로필을 보여주는 메소드
+function showEmpProfile(pk_empnum) {
 	
-	// 개인 채팅을 활성화하는 메소드
-	function openPersonalChat(pk_empnum) {
-		
-		$.ajax({
-			url:"<%= ctxPath %>/openPersonalChat.groovy",
-			type:"GET",
-			data:{"pk_empnum":pk_empnum},
-			dataType:"JSON",
-			success:function(json) {
-				$('div#showEmpProfileModal').modal('hide');
-				
-				var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
-	            var popup_name = "openChat";
-	            var option = "width = 450, height = 650, top = 300, left = 600";
-				
-				window.open(url, popup_name, option);
-			},
-			error: function(request, status, error) {
-            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-		}); // $.ajax({})
-	}
+	$.ajax({
+		url:"<%= ctxPath %>/showEmpProfile.groovy",
+		data:{"pk_empnum":pk_empnum},
+		dataType:"JSON",
+		success:function(json) {
+			$('div#showAllEmpModal').modal('hide');
+			$('div#showEmpProfileModal').modal();
+			
+			$("div#showEmpProfileModal .modal-header").css({'background-image':'url("<%= ctxPath %>/resources/images/프로필사진/'+json.emppicturename+'")',
+															'background-repeat':'no-repeat',
+															'background-size':'100%'});
+			$("div#empName").html(json.name);
+			$("td#email").html(json.email);
+			$("td#phone").html(json.phone);
+			$("button#goChat").attr("onClick", "openPersonalChat('" + pk_empnum + "');");
+		},
+		error: function(request, status, error) {
+           	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+           }
+	}); // $.ajax({})
+}
+	
+// 개인 채팅을 활성화하는 메소드
+function openPersonalChat(pk_empnum) {
+	
+	$.ajax({
+		url:"<%= ctxPath %>/openPersonalChat.groovy",
+		type:"GET",
+		data:{"pk_empnum":pk_empnum},
+		dataType:"JSON",
+		success:function(json) {
+			$('div#showEmpProfileModal').modal('hide');
+			
+			var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+            var popup_name = "openChat";
+            var option = "width = 450, height = 650, top = 300, left = 600";
+			
+			window.open(url, popup_name, option);
+		},
+		error: function(request, status, error) {
+           	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+           }
+	}); // $.ajax({})
+}
 	
 	
 	  
@@ -1402,23 +1788,24 @@ $("input#commentContent").keydown(function(key){
 							html +=  "</tr>";
 							html +=  "</tbody>";
 							
-							html += '<tbody id="commentDisplay'+item.pk_board_seq+'"></tbody>';
+							html += '<tbody id="commentDisplay'+item.pk_board_seq+'"></tbody>'; /* <ul class="card-footer-group"></ul> */
 							
 							html +=  "</table> 	";
 							html +=  "</div>";
 							
-							
+							/* html+= "<div><ul class='card-footer-group'></ul></div>" ; */
+								
 							html +=  "<div class='card-footer' align='center'>";
 							html +=  " <form name='addCommentFrm' id='addCommentFrm'><i class='far fa-user-circle'></i>";
 							html +=  '<input type="hidden" name="fk_board_seq" id="fk_board_seq" value="'+item.pk_board_seq+'" />';
-							html +=  "<input type='text' id='commentContent'  class='form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
+							html +=  "<input type='text' id='commentContent'  class='form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
 							
 							
  		/* 					html +=  '<input type="hidden" name="fk_empnum" id="fk_empnum" value="'+${sessionScope.loginuser.pk_empnum}+'" />';
 							html +=  '<input type="hidden" name="cmt_name" id="cmt_name" value="'+'${sessionScope.loginuser.name}'+'" />';  */
 							html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
 							html +=  "<input type='file' id='commentAttach' style='display: none;'/>";
-							html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment()" >댓글쓰기 확인</button>';/* style="display:none;" */
+							/* html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment()" >댓글쓰기 확인</button>'; *//* style="display:none;" */
 							html +=  "</form></div></div>";
 							
 						
@@ -1456,10 +1843,11 @@ $("input#commentContent").keydown(function(key){
 	  
 	  
 	// === 페이징 처리 안한 글목록 읽어오기  === //
-	  function goReadBoardList() {
+	  function goReadBoardList(currentShowPageNo) {
 		  
 		  $.ajax({
 			  url:"<%= request.getContextPath()%>/readBoard.groovy",
+			  data:{"currentShowPageNo":currentShowPageNo},
 			  dataType:"json",
 			  success:function(json){
 				  
@@ -1504,7 +1892,11 @@ $("input#commentContent").keydown(function(key){
 					   });
 					  
 						html +=  "</tbody>";
-						html += '<tbody id="commentDisplay"></tbody>';
+						html += '<tbody id="commentDisplay">';
+						
+							//commentShow(item.pk_board_seq);
+						
+						html += '</tbody>';
 						html +=  "</table> 	";
 						html +=  "</div>";
 						html +=  "</div>";
@@ -1515,6 +1907,7 @@ $("input#commentContent").keydown(function(key){
 					  goViewComment(index , item.pk_board_seq) ;
 					   */
 					 
+					  makeBoardPageBar();
 					  
 					  
 				  }
@@ -1573,201 +1966,238 @@ function goBoardView(pk_board_seq) {
          success:function(json) {
         	 
         var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
-         let html = "";
+        var regdate = moment(json.map.B_REGDATE).format('YYYY-MM-DD HH:mm'); 
+        let html = "";
 
-		         html += '<div class="card-header">';
-		         html += '<h3 class="card-title">';
-		         html += '<i></i>'; 
-		/*          html += '<span class="js-project-title-button">'+json.map.LGCATGONAME+'-'+json.map.SMCATGONAME+'</span>'; <!-- 대분류캘린더-소분류캘린더 --> */
-		         html += '</h3>';
-		         html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-		         html += '<span aria-hidden="true">&times;</span>';
-		         html += '</button>';
-		         html += '</div>';
-		   	
-		         html += '<div class="card-body">';
-		         html += '<div class="card-scroll">';
-		 		
-		         html += '<div class="card-body-top">';
-		   	 		
-		         html += '<div class="card-author">';
-		         html += '<span class="card-profileImg"></span>';/*  프로필이미지  */
-		         html += '<dl class="card-author-info">';
-		         html += '<dt>';
-		         html += '<strong class="author-name"> ['+json.map.deptnamekor+' : '+json.map.spotnamekor+'] '+json.map.name+'</strong>';/* <!-- 작성자이름 -->	 */   		
-		         html += '<span class="author-date">'+json.map.b_regDate+'</span>'; /* <!-- 작성시간 --> */
-		         html += '</dt>';
-		         html += '</dl>';
-		         html += '</div>';
-		   	 			
+         html += '<div class="card-header">';
+         html += '<h3 class="card-title">';
+         html += '<i><span class="material-icons-outlined"> bookmark_border </span></i>';/* <!-- 아이콘 --> */
+         html += '<span class="js-project-title-button">게시글-'+pk_board_seq+'</span>';/*  <!-- 대분류캘린더-소분류캘린더 --> */
+         html += '</h3>';
+         html += '<button type="button" class="close">';
+         html += '<span class="material-icons-outlined"> close </span>';
+         html += '</button>';
+         html += '</div>';
+   	
+         html += '<div class="card-body">';
+         html += '<div class="card-scroll">';
+ 		
+         html += '<div class="card-body-top">';
+   	 		
+         html += '<div class="card-author">';
+         html += '<span class="card-profileImg">';
+         
+      /*    if(json.map.EMPPICTURENAME != null){ */
+         	html += '<a style="margin-right: 5px;"><img style="height:40px; width:40px;      border-radius: 16px;" class="writer-photo" src="<%= ctxPath%>/resources/images/프로필사진/'+json.map.EMPPICTURENAME+'"  alt="icon-writerprofile"  /></a>';
+        /*  } */
+         
+         html += '</span>';/* <!-- 프로필이미지 --> */
+         html += '<dl class="card-author-info">';
+         html += '<dt>';
+         html += '<strong class="author-name"> ['+json.map.DEPTNAMEKOR+' : '+json.map.SPOTNAMEKOR+'] '+json.map.NAME+'</strong>';/* <!-- 작성자이름 -->	  */  		
+         html += '<span class="author-date">'+regdate+'</span>';/* <!-- 작성시간 --> */
+         html += '</dt>';
+         html += '</dl>';
+         html += '</div>';
+   	 			
+         html += '<div>';
+         
+ 				
+         if('${sessionScope.loginuser.pk_empnum}' == json.map.FK_EMPNUM){
+        	 html += '<div class="card-option">';
+        
+         html += '<button type="button" class="card-edit" onclick="editBoardModal('+pk_board_seq+')">수정</button>';
+         html += '<button type="button" class="card-delete" onclick="delBoard('+pk_board_seq+')">삭제</button>';
+         html += '</div>';
+         }
+        
+         html += '</div>';
+         
+         html += '</div>';
+  
+         html += '<div class="card-body-bottom">';
+         /*         html += '<div class="card-schedule-date">';
+          html += '<strong class="card-month" style="color:'+json.map.COLOR+'">'+miniCalendarYM+'</strong><strong class="card-day" style="background-color:'+json.map.COLOR+'">'+miniCalendarDD+'</strong>';<!-- 미니달력 --> 
+         html += '</div>';*/
+         html += '<div class="card-schedule-title-area">';
+         html += '<h4 class="card-schedule-title">'+json.map.B_SUBJECT+'</h4>'; /* <!-- 제목 --> */
+         html += '<div class="card-schedule-day">';
+/*          html += '<span class="card-schedule-startDate">'+startdate+' ('+startdate_day+'), '+startdate_time+'</span>'; <!-- 시작일 -->
+         html += '<span class="card-schedule-endDate">'+enddate+' ('+enddate_day+'), '+enddate_time+'</span>'; <!-- 종료일 --> */
+         html += '</div>';
+         html += '</div>';
+         html += '</div>';
+ 		
+         html += '<div class="card-container">';
+         html += '<div class="card-content">';
+ 				
+         html += '<div class="card-content2">';
+         html += '<ul class="card-content-group">';	
+ 				
+         html += '<li>';
+         html += '<div class="card-content-title"><i class="icon-text"></i></div>';
+         html += '<div class="card-content-memo">';
+         html += '<span class="memo-span"><div>'+json.map.B_CONTENT+'</div></span>';
+         html += '</div>';
+         html += '</li>';
+      /*    if(json.map.ADDRESSNAME != "-"){
+	         html += '<li>';
+	         html += '<div class="card-content-title"><i class="icon-place"></i></div>';
+	         html += '<div class="card-content-place">';
+	         html += '<span class="place-span"><div>';
+	        	 if(json.map.PLACENAME != "-"){
+	        		html += json.map.PLACENAME+' : ';
+	        	 }
+		         if(json.map.ADDRESSNAME != "-"){
+		        	 html +=json.map.ADDRESSNAME;
+	        	 }
+		         if(json.map.PLACEPHONE != "-"){
+		        	 html +=' 번호 : '+json.map.PLACEPHONE;
+	        	 }
+		         html +='</div><a  href="'+json.map.PLACEURL+'" target="_blank">상세보기</a></span>';
+	         html += '</div>';
+	         html += '</li>'; 
+	         
+	         html += '<li>';
+	         html += '<div class="card-content-title"></div>';
+	         html += '<div class="card-content-map" id="card-content-map">';
+	         html += '</div>';
+	         html += '</li>';
+         }		*/
+         if(json.map.B_ORGFILENAME != null){
+	         html += '<li>';
+	         html += '<div class="card-content-title"><i class="icon-file-download"></i></div>';
+	         html += '<div class="card-content-download">';
+	         html += '<span class="download-span"><a href="<%= ctxPath%>/downloadfile.groovy?pk_board_seq='+json.map.PK_BOARD_SEQ+'">'+json.map.B_ORGFILENAME+'</a></span>';
+	         html += '</div>';
+	         html += '</li>';
+	         
+         }
+         /* 
+         if(json.map.JOINUSER != "-"){
+	         html += '<li>';
+	         html += '<div class="card-content-title"><i class="icon-share"></i></div>';
+	         html += '<div class="card-content-share">';
+	         html += '<span class="share-span"><div>'+json.map.JOINUSER+'</div></span>';
+	         html += '</div>';
+	         html += '</li>';
+	         
+         }
+          */
+
+         html += '</ul>';
+         html += '</div>';
+ 			/* 		
+		 if(json.map.VOTE == 1){/* 참석유무 *//*
+			 html += '<div class="card-vote">';
+			 
+		        html += '<div class="vote-group">';			
 		         html += '<div>';
-		         html += '<div class="card-option">';
-		 				
-		         html += '<button class="card-option-btn"></button>';
-		 						
-		         html += '<ul class="card-option-ul">';
-		         html += '<li class="card-option-li" data-code="modify">';
-		         html += '<a href="#"> <i class="icon-edit"></i>수정</a>';
-		         html += '</li>';
-		         html += '<li class="card-option-li" data-code="delete">';
-		         html += '<a href="#"> <i class="icon-delete"></i>삭제</a>';
-		         html += '</li>';
-		         html += '</ul>';
-		         html += '</div>';
-		         html += '</div>';
-		         html += '</div>';
-		  
-		         html += '<div class="card-body-bottom">';
-		         html += '<div class="card-schedule-date">';
-		/*          html += '<strong class="card-month" style="color:'+json.map.COLOR+'">'+miniCalendarYM+'</strong><strong class="card-day" style="background-color:'+json.map.COLOR+'">'+miniCalendarDD+'</strong>';<!-- 미니달력 --> */
-		         html += '</div>';
-		         html += '<div class="card-schedule-title-area">';
-		         html += '<h4 class="card-schedule-title">'+json.map.b_subject+'</h4>';/*  <!-- 제목 --> */
-		         html += '<div class="card-schedule-day">';
-		       /*   html += '<span class="card-schedule-startDate">'+startdate+' ('+startdate_day+'), '+startdate_time+'</span>'; <!-- 시작일 -->
-		         html += '<span class="card-schedule-endDate">'+enddate+' ('+enddate_day+'), '+enddate_time+'</span>'; <!-- 종료일 --> */
-		         html += '</div>';
-		         html += '</div>';
-		         html += '</div>';
-		 		
-		         html += '<div class="card-container">';
-		         html += '<div class="card-content">';
-		 				
-		         html += '<div class="card-content2">';
-		         html += '<ul class="card-content-group">';	
-		 				
-		         html += '<li>';
-		         html += '<div class="card-content-title"><i class="icon-text"></i></div>';
-		         html += '<div class="card-content-memo">';
-		         html += '<span class="memo-span"><div>'+json.map.b_content+'</div></span>';
-		         html += '</div>';
-		         html += '</li>';
-		        /*  if(json.map.ADDRESSNAME != "-"){
-			         html += '<li>';
-			         html += '<div class="card-content-title"><i class="icon-place"></i></div>';
-			         html += '<div class="card-content-place">';
-			         html += '<span class="place-span"><div>';
-			        	 if(json.map.PLACENAME != "-"){
-			        		html += json.map.PLACENAME+' : ';
-			        	 }
-				         if(json.map.ADDRESSNAME != "-"){
-				        	 html +=json.map.ADDRESSNAME;
-			        	 }
-				         if(json.map.PLACEPHONE != "-"){
-				        	 html +=' 번호 : '+json.map.PLACEPHONE;
-			        	 }
-				         html +='</div><a  href="'+json.map.PLACEURL+'" target="_blank">상세보기</a></span>';
-			         html += '</div>';
-			         html += '</li>';
-			         
-			         html += '<li>';
-			         html += '<div class="card-content-title"></div>';
-			         html += '<div class="card-content-map" id="card-content-map">';
-			         html += '</div>';
-			         html += '</li>';
-		         }		 */
-		         if(json.b_orgfilename != "-"){
-			         html += '<li>';
-			         html += '<div class="card-content-title"><i class="icon-file-download"></i></div>';
-			         html += '<div class="card-content-download">';
-			         html += '<span class="download-span"><a href="<%= ctxPath%>/downloadfile.groovy?pk_board_seq='+json.map.pk_board_seq+'">'+json.map.b_orgfilename+'</a></span>';
-			         html += '</div>';
-			         html += '</li>';
-			         
-		         }
-		        /*  if(json.map.JOINUSER != "-"){
-			         html += '<li>';
-			         html += '<div class="card-content-title"><i class="icon-share"></i></div>';
-			         html += '<div class="card-content-share">';
-			         html += '<span class="share-span"><div>'+json.map.JOINUSER+'</div></span>';
-			         html += '</div>';
-			         html += '</li>';
-			         
-		         } */
 		         
-		
+		         
+		         html += '<div class="vote-yes-group">';
+		         html += '<span class="yesCnt">';
+			     html += '<span>참석</span><em>0</em>';
+			   
+			     html += '</span>';
+		         html += '<ul class="vote-yes-ul">';
 		         html += '</ul>';
+		         
 		         html += '</div>';
-		 		/* 			
-				 if(json.map.VOTE == 1){/* 참석유무 */
-				/*	 
-		
-			         html += '<div class="card-vote">';
-			         
-			         html += '<div class="voteTotalCnt">';
-				     html += '<span class="yesCnt">';
-				     html += '<span>참석</span><em>0</em>';
-				     html += '</span>';
-				     
-					 html += '<span class="noCnt">';
-					 html += '<span>불참</span><em>0</em>';
-					 
-					 html += '</span>';
-					 
-					 html += '<span class="undefinedCnt">';
-					 html += '<span>미정</span><em>0</em>';
-					 html += '</span>';
-					 html += '</div>';
-			         
-			         
-			         
-			         html += '<button class="vote-btn-yes" onclick="voteYesAdd('+json.map.PK_SCHEDULENO+')">참석</button>';
-			         html += '<button class="vote-btn-no" onclick="voteNoAdd('+json.map.PK_SCHEDULENO+')">불참</button>';
-			         html += '<button class="vote-btn-undefined" onclick="voteUndefinedAdd('+json.map.PK_SCHEDULENO+')">미정</button>';
-			         html += '</div>';		
-				 }		 */	
+		         
+		         html += '<div class="vote-no-group">';
+		         html += '<span class="noCnt">';
+				 html += '<span>불참</span><em>0</em>';
+
+				 html += '</span>';
+		         html += '<ul class="vote-no-ul">';
+		         html += '</ul>';
+
 		         html += '</div>';
+		         
+		         html += '<div class="vote-undefined-group">';
+		         html += '<span class="undefinedCnt">';
+				 html += '<span>미정</span><em>0</em>';
+				
+				 html += '</span>';	
+		         html += '<ul class="vote-undefined-ul">';
+		         html += '</ul>';
+
 		         html += '</div>';
-		 		
-		         html += '<div class="card-footer">';
-		         html += '<ul class="card-footer-group">';
-		 				
-		         html += '<li class="card-footer-li">';
-		 			               
-		         html += '<div class="comment-user-profile">';
-		         html += '<span class="comment-user-profile-span"></span>';
+		         
+		         
+		         
 		         html += '</div>';
-		 			            
-		         html += '<div class="comment-container">';
-		         html += '<div class="comment-user-area">';
-		         html += '<div class="comment-user">';
-		         html += '<span class="comment-user-name">김영준</span>';
-		         html += '<span class="comment-user-position"></span>';
-		         html += '<span class="record-date">2022-05-14 07:26</span>'; 
+		         
 		         html += '</div>';
-		 			                    
-		         html += '<div class="comment-writer-menu">';
-		         html += '<button type="button" class="comment-edit">수정</button>';
-		         html += '<button type="button" class="comment-delete">삭제</button>';
-		         html += '</div>'; 
-		         html += '</div>';
-		 			                
-		         html += '<div class="comment-content">';
-		         html += '<div class="comment-text-area">';
-			     html += '<div class="comment-text"><div>댓글</div></div>';
-			 	 html += '</div>';	
-		         html += '</div>'; 
-		         html += '</div>';
-		
-			     html += '</li>'; 
-				 html += '</ul>';
-				 html += '</div>';
-		
-				 html += '<div class="card-footer2">';
-				 html += '<div class="comment-writer-profile">';
-				 html += '<span class="comment-writer-profile-span"></span>';
-				 html += '</div>';
-		
-		         html += '<form class="comment-writer-container">';
-		         html += '<fieldset>';
-			     html += '<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>';
-				 html += '<input type="hidden" class="comment-upload-input">';
-				 html += '</fieldset>';                     
-				 html += '</form>';
-		         html += '</div>';
+			 
+
+		         
+	         html += '<button class="vote-btn-yes" onclick="voteYesAdd('+json.map.PK_SCHEDULENO+')">참석</button>';
+	         html += '<button class="vote-btn-no" onclick="voteNoAdd('+json.map.PK_SCHEDULENO+')">불참</button>';
+	         html += '<button class="vote-btn-undefined" onclick="voteUndefinedAdd('+json.map.PK_SCHEDULENO+')">미정</button>';
+	         html += '</div>';		
+		 }			 */
+         html += '</div>';
+         html += '</div>';
+ 		
+         html += '<div class="card-footer">';
+         /* html += '<div class="comment-header"></div>'; */
+         
+         html += '<ul class="card-footer-group">';
+ 	/* 			
+         html += '<li class="card-footer-li">';
+ 			               
+         html += '<div class="comment-user-profile">';
+         html += '<span class="comment-user-profile-span"></span>';
+         html += '</div>';
+ 			            
+         html += '<div class="comment-container">';
+         html += '<div class="comment-user-area">';
+         html += '<div class="comment-user">';
+         html += '<span class="comment-user-name">김영준</span>';
+         html += '<span class="comment-user-position"></span>';
+         html += '<span class="record-date">2022-05-14 07:26</span>'; 
+         html += '</div>';
+ 			                    
+         html += '<div class="comment-writer-menu">';
+         html += '<button type="button" class="comment-edit">수정</button>';
+         html += '<button type="button" class="comment-delete">삭제</button>';
+         html += '</div>'; 
+         html += '</div>';
+ 			                
+         html += '<div class="comment-content">';
+         html += '<div class="comment-text-area">';
+	     html += '<div class="comment-text"><div>댓글</div></div>';
+	 	 html += '</div>';	
+         html += '</div>'; 
+         html += '</div>';
+
+	     html += '</li>'; 
+	     
+	      */
+		 html += '</ul>';
+		 html += '<div class="comment-header"></div>';
+		 html += '</div>';
+
+		 html += '<div class="card-footer2">';
+		 html += '<div class="comment-writer-profile">';
+		 html += '<span class="comment-writer-profile-span"><a style="margin-right: 5px;"><img style="height:40px; width:40px;      border-radius: 16px;" class="writer-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-writerprofile"  /></a></span>';
+		 html += '</div>';
+
+         html += '<form class="comment-writer-container">';
+         html += '<fieldset>';
+	  /*    html += '<div class="comment-writer-text" contenteditable="true" placeholder="줄바꿈 Shift + Enter / 입력 Enter 입니다."></div>'; */
+		 html += '<input type="text" class="comment-writer-text"  placeholder="댓글등록은 Enter키 입니다.">';
+		 html += '<input type="text" style="display:none;">';
+		/*  html += '<input type="hidden" class="boardno">'; */
+		 html += '</fieldset>';                     
+		 html += '</form>';
+         html += '</div>';
 		        	 
 		        /*  <div class="card showBoardDetail"> */
-		         
+		 
+         $(".boardno").val(pk_board_seq);      
       
         /* 
          if(json.map.ADDRESSNAME != "-"){
@@ -1776,6 +2206,8 @@ function goBoardView(pk_board_seq) {
          } */
         
          $("div.showBoardDetail").html(html);
+         commentShow(pk_board_seq,1);
+         
          $("div.showBoardDetail").show();
 
          ////////////////////
@@ -1807,15 +2239,15 @@ function goBoardView(pk_board_seq) {
 		  
 		 // alert(b_orgfilename);
 		  
-		  document.getElementById("smarteditor2").value = orgin_content_text;
+		  document.getElementById("b_content").value = orgin_content_text;
 		 
 		  /////////
-		
+		/* 
 			  
 			  $('.modal').on('hidden.bs.modal', function (e) {
 					$(this).find('form')[0].reset();
 				}); 
-				
+				 */
 		
 		  
 		  
@@ -1824,7 +2256,7 @@ function goBoardView(pk_board_seq) {
 	  
 	  
 	  // 특정 글을 삭제하는 함수
-	    function delBoard(pk_board_seq) {
+	    function delBoard(pk_board_seq){
 	       
 	       const bool = confirm("정말로 댓글을 삭제하시겠습니까?");
 	    //  console.log("bool => " + bool); // bool => true , bool => false
@@ -1858,7 +2290,7 @@ function goBoardView(pk_board_seq) {
 	  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~댓글구역~~~~~~~~~~~~~	    
 	 	// == 댓글쓰기 == 
-	    function goAddComment() {
+	    function goAddComment(){
 	  	  
 	  	  const commentContent = $("input#commentContent").val().trim();
 	  	  if(commentContent == "") {
@@ -1878,7 +2310,7 @@ function goBoardView(pk_board_seq) {
 	    }// end of function goAddWrite() {}--------------------
 	    
 	    // == 파일첨부가 없는 댓글쓰기 
-	    function goAddWrite_noAttach() {
+	    function goAddWrite_noAttach(){
 	  	  
 	  	  <%--
 	  	      // 보내야할 데이터를 선정하는 또 다른 방법
@@ -1908,7 +2340,7 @@ function goBoardView(pk_board_seq) {
 	  			 else {
 	  			  	console.log("댓글작성완료");
 	  				 // goReadComment();  // 페이징 처리 안한 댓글 읽어오기
-	  			     goViewComment(1); // 페이징 처리한 댓글 읽어오기
+	  			     //goViewComment(1); // 페이징 처리한 댓글 읽어오기
 	  			 }
 	  			 
 	  			 $("input#commentContent").val("");
@@ -1953,7 +2385,7 @@ function goBoardView(pk_board_seq) {
 	  			 }
 	  			 else {
 	  			  // goReadComment();  // 페이징 처리 안한 댓글 읽어오기
-	  			     goViewComment(1); // 페이징 처리한 댓글 읽어오기
+	  			     //goViewComment(1); // 페이징 처리한 댓글 읽어오기
 	  			 }
 	  			 
 	  			 $("input#commentContent").val("");
@@ -2034,12 +2466,505 @@ function goBoardView(pk_board_seq) {
 		    }// end of function goViewComment(currentShowPageNo) {}-------------------------
 		   --%>
 		  ///////////
+
+
+function commentAdd(fk_board_seq){
+	
+	   const content = $("input.comment-writer-text").val();
+	 
+	   $.ajax({
+		   url:"<%= ctxPath%>/boardCommentAdd.groovy",
+		   type:"POST",
+		   data:{"fk_board_seq":fk_board_seq,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+			   "name":"${sessionScope.loginuser.name}",
+			   "content":content },
+		   dataType:"JSON", 
+		   success:function(json){
+			   
+		  	if(json.n == 1){
+		  		$("input.comment-writer-text").val("");
+		  		commentShow(fk_board_seq,1);   
+		  	}else{
+		  		alert("댓글쓰기 실패");
+		  	}
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+} // end of function commentAdd(fk_board_seq) {}---------------
+
+
+
+function commentShow(fk_board_seq, currentShowPageNo){
+	
+	   $.ajax({
+		   url:"<%= ctxPath%>/boardCommentShow.groovy",
+		   type:"GET",
+		   data:{"fk_board_seq":fk_board_seq,
+			   "currentShowPageNo":currentShowPageNo},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+			  
+	  			if(json.length>0){
+	  				
+	  				let html = ""
+					   $.each(json, function(index, item) {
+						   var regdate = moment(item.regdate).format('YYYY-MM-DD HH:mm');
+					 
+						     html += '<li class="card-footer-li" id="commentid-'+item.pk_cmt_seq+'">';
+ 			               
+					         html += '<div class="comment-user-profile">';
+					         html += '<span class="comment-user-profile-span"><a style="margin-right: 5px;"><img style="height:40px; width:40px;      border-radius: 16px;" class="writer-photo" src="<%= ctxPath%>/resources/images/프로필사진/'+item.emppicturename+'"  alt="icon-writerprofile"  /></a></span>';
+					         html += '</div>';
+					 			            
+					         html += '<div class="comment-container">';
+					         html += '<div class="comment-user-area">';
+					         html += '<div class="comment-user">';
+					         html += '<span class="comment-user-name">['+item.deptnamekor+' : '+item.spotnamekor+'] '+item.name+'</span>';
+					         html += '<span class="comment-user-position"></span>';
+					         html += '<span class="record-date">'+regdate+'</span>'; 
+					         html += '</div>';
+					 		if('${sessionScope.loginuser.pk_empnum}' == item.fk_empnum){
+					 			 html += '<div class="comment-writer-menu">';
+						         html += '<button type="button" class="comment-edit" onclick="commentEdit('+fk_board_seq+','+item.pk_cmt_seq+')">수정</button>';
+						         html += '<button type="button" class="comment-delete" onclick="commentDel('+fk_board_seq+','+item.pk_cmt_seq+')">삭제</button>';
+						         html += '</div>'; 
+					 		}
+					        
+					         
+					         html += '</div>';
+					 			                
+					         html += '<div class="comment-content">';
+					         html += '<div class="comment-text-area">';
+						     html += '<div class="comment-text"><div>'+item.content+'</div></div>';
+						 	 html += '</div>';	
+					         html += '</div>'; 
+					         html += '</div>';
+
+						     html += '</li>'; 
+					   });
+					   $("ul.card-footer-group").html(html);
+					   
+					   makeCommentPageBar(fk_board_seq, currentShowPageNo);
+	  			}
+
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+
+
+
+function commentEdit(fk_board_seq,pk_cmt_seq){
+	
+   let html ="";
+   html += '<input type="text" class="comment-writer-text"  placeholder="입력 Enter 입니다.">';
+   html += '<input type="text" style="display:none;">';
+   const backuptext = $("li#commentid-"+pk_cmt_seq+" div.comment-text div").text();
+
+   $("li#commentid-"+pk_cmt_seq+" div.comment-text-area").html(html);
+   $("li#commentid-"+pk_cmt_seq+" input.comment-writer-text").val(backuptext);
+  
+   $("div.card-footer2").hide();
+   
+   html ="";
+   html += '<button type="button" class="comment-cancell" onclick="commentEditCancell('+fk_board_seq+')">취소</button>';
+   $("li#commentid-"+pk_cmt_seq+" div.comment-writer-menu").html(html);
+   
+   
+	$(document).on('keyup', 'li#commentid-'+pk_cmt_seq+' input.comment-writer-text', function (event) {
+		if(event.keyCode == 13){ 
+			 const contentEdit = $("li#commentid-"+pk_cmt_seq+" input.comment-writer-text").val();
+			 
+			 $.ajax({
+				   url:"<%= ctxPath%>/boardCommentEdit.groovy",
+				   type:"POST",
+				   data:{"fk_board_seq":fk_board_seq,
+					   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+					   "pk_cmt_seq":pk_cmt_seq,
+					   "content":contentEdit},
+				   dataType:"JSON", 
+				   success:function(json) {
+					   
+				  	if(json.n == 1){
+				  		   alert("댓글수정 성공");
+				  		 commentShow(fk_board_seq,1); 
+						   $("div.card-footer2").show();
+				  	}else{
+				  		alert("댓글수정 실패");
+				  	}
+					   
+			 
+				   },
+				   error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				   }
+			   });	
+			 
+
+		}
+	});
+	
+   
+
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+function commentDel(fk_board_seq,pk_cmt_seq){
+	
+	   $.ajax({
+		   url:"<%= ctxPath%>/boardCommentDel.groovy",
+		   type:"POST",
+		   data:{"fk_board_seq":fk_board_seq,
+			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+			   "pk_cmt_seq":pk_cmt_seq},
+		   dataType:"JSON", 
+		   success:function(json) {
+			   
+		  	if(json.n == 1){
+		  		   alert("댓글삭제 성공");
+		  		 commentShow(fk_board_seq,1);   
+		  	}else{
+		  		alert("댓글삭제 실패");
+		  	}
+			   
+	 
+		   },
+		   error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		   }
+	   });	   
+	   
+}// end of function goLikeDislikeCount()-------------------
+
+
+function commentEditCancell(fk_board_seq){
+	
+	commentShow(fk_board_seq,1); 
+    $("div.card-footer2").show();
+}
 	    
+
+//////////
+
+function makeCommentPageBar(fk_board_seq, currentShowPageNo) {
+
+<%-- === 원글에 대한 댓글의 totalPage 수를 알아오려고 한다. ===  --%>
+$.ajax({
+  url:"<%= ctxPath%>/getBoardCommentTotalPage.groovy",
+  data:{"fk_board_seq":fk_board_seq,
+	    "sizePerPage":"3"},
+  type:"GET",
+  dataType:"JSON",
+  success:function(json){
+	 //  console.log("확인용 댓글의 전체페이지수 : " + json.totalPage);
+	 
+	 if(json.totalPage > 0) {
+		 // 댓글이 있는 경우 
+		 
+		 const totalPage = json.totalPage;
+		 
+		 let pageBarHTML = "<ul>";
+		 
+		 const blockSize = 5;
+	//	 const blockSize = 2;
+		 
+		// blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수 이다.
+		/*
+		                 1 2 3 4 5 6 7 8 9 10  [다음][마지막]           -- 1개블럭
+		   [맨처음][이전]  11 12 13 14 15 16 17 18 19 20  [다음][마지막]   -- 1개블럭
+		   [맨처음][이전]  21 22 23
+		*/
+		 
+		 let loop = 1;
+		 /*
+	    	loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	     */
+	    
+
+	     if(typeof currentShowPageNo == "string") {
+	    	 currentShowPageNo = Number(currentShowPageNo);
+	     }
+	     
+	     // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
+	     let pageNo = Math.floor( (currentShowPageNo - 1)/blockSize ) * blockSize + 1;
+	     /*
+	       currentShowPageNo 가 3페이지 이라면 pageNo 는 1 이 되어야 한다.
+	       ((3 - 1)/10) * 10 + 1;
+	       ( 2/10 ) * 10 + 1;
+	       ( 0.2 ) * 10 + 1;
+	       Math.floor( 0.2 ) * 10 + 1;  // 소수부가 있을시 Math.floor(0.2) 은 0.2 보다 작은 최대의 정수인 0을 나타낸다.
+	       0 * 10 + 1 
+	       1
+	       
+	       currentShowPageNo 가 11페이지 이라면 pageNo 는 11 이 되어야 한다.
+	       ((11 - 1)/10) * 10 + 1;
+	       ( 10/10 ) * 10 + 1;
+	       ( 1 ) * 10 + 1;
+	       Math.floor( 1 ) * 10 + 1;  // 소수부가 없을시 Math.floor(1) 은 그대로 1 이다.
+	       1 * 10 + 1
+	       11
+	       
+	       currentShowPageNo 가 20페이지 이라면 pageNo 는 11 이 되어야 한다.
+	       ((20 - 1)/10) * 10 + 1;
+	       ( 19/10 ) * 10 + 1;
+	       ( 1.9 ) * 10 + 1;
+	       Math.floor( 1.9 ) * 10 + 1;  // 소수부가 있을시 Math.floor(1.9) 은 1.9 보다 작은 최대의 정수인 1을 나타낸다.
+	       1 * 10 + 1
+	       11
+	    
+	       
+		    1  2  3  4  5  6  7  8  9  10  -- 첫번째 블럭의 페이지번호 시작값(pageNo)은 1 이다.
+		    11 12 13 14 15 16 17 18 19 20  -- 두번째 블럭의 페이지번호 시작값(pageNo)은 11 이다.
+		    21 22 23 24 25 26 27 28 29 30  -- 세번째 블럭의 페이지번호 시작값(pageNo)은 21 이다.
+		    
+		    currentShowPageNo         pageNo
+		   ----------------------------------
+		         1                      1 = ((1 - 1)/10) * 10 + 1
+		         2                      1 = ((2 - 1)/10) * 10 + 1
+		         3                      1 = ((3 - 1)/10) * 10 + 1
+		         4                      1
+		         5                      1
+		         6                      1
+		         7                      1 
+		         8                      1
+		         9                      1
+		         10                     1 = ((10 - 1)/10) * 10 + 1
+		        
+		         11                    11 = ((11 - 1)/10) * 10 + 1
+		         12                    11 = ((12 - 1)/10) * 10 + 1
+		         13                    11 = ((13 - 1)/10) * 10 + 1
+		         14                    11
+		         15                    11
+		         16                    11
+		         17                    11
+		         18                    11 
+		         19                    11 
+		         20                    11 = ((20 - 1)/10) * 10 + 1
+		         
+		         21                    21 = ((21 - 1)/10) * 10 + 1
+		         22                    21 = ((22 - 1)/10) * 10 + 1
+		         23                    21 = ((23 - 1)/10) * 10 + 1
+		         ..                    ..
+		         29                    21
+		         30                    21 = ((30 - 1)/10) * 10 + 1
+		         
+		*/
+	     
+		// === [맨처음][이전] 만들기 === //
+		pageBarHTML += "<li class='firstli'><a href='javascript:commentShow(\""+fk_board_seq+"\",\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
+		pageBarHTML += "<li class='previousli'><a href='javascript:commentShow(\""+fk_board_seq+"\",\""+(pageNo-1)+"\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
+		
+		if(pageNo != 1) {
+			
+			
+		}
+		
+		while( !(loop > blockSize || pageNo > totalPage) ) {
+			
+			if(pageNo == currentShowPageNo) {
+				pageBarHTML += "<li class='numberli'>"+pageNo+"</li>";  
+			}
+			else {
+				pageBarHTML += "<li class='numberli'><a href='javascript:commentShow(\""+fk_board_seq+"\",\""+pageNo+"\")'>"+pageNo+"</a></li>"; 
+			}
+			
+			loop++;
+			pageNo++;
+			
+		}// end of while-----------------------
+		
+		
+		// === [다음][마지막] 만들기 === //
+		if( pageNo <= totalPage ) {
+
+
+			
+		}
+		pageBarHTML += "<li class='nextli'><a href='javascript:commentShow(\""+fk_board_seq+"\",\""+pageNo+"\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
+		pageBarHTML += "<li class='lastli'><a href='javascript:commentShow(\""+fk_board_seq+"\",\""+totalPage+"\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>"; 
+		 
+		pageBarHTML += "</ul>";
+		 
+		$("div.comment-header").html(pageBarHTML);
+	 }// end of if(json.totalPage > 0){}-------------------------------
+	  
+  },
+  error: function(request, status, error){
+		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+  }    
+});
+
+}// end of function makeCommentPageBar(currentShowPageNo) {}--------------------
+
+
+//////////
+
+function makeBoardPageBar(currentShowPageNo) {
+	
+	<%-- === 원글에 대한 댓글의 totalPage 수를 알아오려고 한다. ===  --%>
+	$.ajax({
+	url:"<%= ctxPath%>/getBoardTotalPage.groovy",
+	data:{"sizePerPage":"10"},
+	type:"GET",
+	dataType:"JSON",
+	success:function(json){
+	//  console.log("확인용 댓글의 전체페이지수 : " + json.totalPage);
+	
+	if(json.totalPage > 0) {
+	 // 댓글이 있는 경우 
+	 
+	 const totalPage = json.totalPage;
+	 
+	 let pageBarHTML = "<ul>";
+	 
+	 const blockSize = 10;
+	//	 const blockSize = 2;
+	 
+	// blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 개수 이다.
+	/*
+	                 1 2 3 4 5 6 7 8 9 10  [다음][마지막]           -- 1개블럭
+	   [맨처음][이전]  11 12 13 14 15 16 17 18 19 20  [다음][마지막]   -- 1개블럭
+	   [맨처음][이전]  21 22 23
+	*/
+	 
+	 let loop = 1;
+	 /*
+		loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[ 지금은 10개(== blockSize) ] 까지만 증가하는 용도이다.
+	 */
+	
+	
+	 if(typeof currentShowPageNo == "string") {
+		 currentShowPageNo = Number(currentShowPageNo);
+	 }
+	 
+	 // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
+	 let pageNo = Math.floor( (currentShowPageNo - 1)/blockSize ) * blockSize + 1;
+	 /*
+	   currentShowPageNo 가 3페이지 이라면 pageNo 는 1 이 되어야 한다.
+	   ((3 - 1)/10) * 10 + 1;
+	   ( 2/10 ) * 10 + 1;
+	   ( 0.2 ) * 10 + 1;
+	   Math.floor( 0.2 ) * 10 + 1;  // 소수부가 있을시 Math.floor(0.2) 은 0.2 보다 작은 최대의 정수인 0을 나타낸다.
+	   0 * 10 + 1 
+	   1
+	   
+	   currentShowPageNo 가 11페이지 이라면 pageNo 는 11 이 되어야 한다.
+	   ((11 - 1)/10) * 10 + 1;
+	   ( 10/10 ) * 10 + 1;
+	   ( 1 ) * 10 + 1;
+	   Math.floor( 1 ) * 10 + 1;  // 소수부가 없을시 Math.floor(1) 은 그대로 1 이다.
+	   1 * 10 + 1
+	   11
+	   
+	   currentShowPageNo 가 20페이지 이라면 pageNo 는 11 이 되어야 한다.
+	   ((20 - 1)/10) * 10 + 1;
+	   ( 19/10 ) * 10 + 1;
+	   ( 1.9 ) * 10 + 1;
+	   Math.floor( 1.9 ) * 10 + 1;  // 소수부가 있을시 Math.floor(1.9) 은 1.9 보다 작은 최대의 정수인 1을 나타낸다.
+	   1 * 10 + 1
+	   11
+	
+	   
+	    1  2  3  4  5  6  7  8  9  10  -- 첫번째 블럭의 페이지번호 시작값(pageNo)은 1 이다.
+	    11 12 13 14 15 16 17 18 19 20  -- 두번째 블럭의 페이지번호 시작값(pageNo)은 11 이다.
+	    21 22 23 24 25 26 27 28 29 30  -- 세번째 블럭의 페이지번호 시작값(pageNo)은 21 이다.
+	    
+	    currentShowPageNo         pageNo
+	   ----------------------------------
+	         1                      1 = ((1 - 1)/10) * 10 + 1
+	         2                      1 = ((2 - 1)/10) * 10 + 1
+	         3                      1 = ((3 - 1)/10) * 10 + 1
+	         4                      1
+	         5                      1
+	         6                      1
+	         7                      1 
+	         8                      1
+	         9                      1
+	         10                     1 = ((10 - 1)/10) * 10 + 1
+	        
+	         11                    11 = ((11 - 1)/10) * 10 + 1
+	         12                    11 = ((12 - 1)/10) * 10 + 1
+	         13                    11 = ((13 - 1)/10) * 10 + 1
+	         14                    11
+	         15                    11
+	         16                    11
+	         17                    11
+	         18                    11 
+	         19                    11 
+	         20                    11 = ((20 - 1)/10) * 10 + 1
+	         
+	         21                    21 = ((21 - 1)/10) * 10 + 1
+	         22                    21 = ((22 - 1)/10) * 10 + 1
+	         23                    21 = ((23 - 1)/10) * 10 + 1
+	         ..                    ..
+	         29                    21
+	         30                    21 = ((30 - 1)/10) * 10 + 1
+	         
+	*/
+	 
+	// === [맨처음][이전] 만들기 === //
+	pageBarHTML += "<li class='firstli'><a href='javascript:goReadBoardList(\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
+	pageBarHTML += "<li class='previousli'><a href='javascript:goReadBoardList(\""+(pageNo-1)+"\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
+	
+	if(pageNo != 1) {
+		
+		
+	}
+	
+	while( !(loop > blockSize || pageNo > totalPage) ) {
+		
+		if(pageNo == currentShowPageNo) {
+			pageBarHTML += "<li class='numberli'>"+pageNo+"</li>";  
+		}
+		else {
+			pageBarHTML += "<li class='numberli'><a href='javascript:goReadBoardList(\""+pageNo+"\")'>"+pageNo+"</a></li>"; 
+		}
+		
+		loop++;
+		pageNo++;
+		
+	}// end of while-----------------------
+	
+	
+	// === [다음][마지막] 만들기 === //
+	if( pageNo <= totalPage ) {
+	
+	
+		
+	}
+	pageBarHTML += "<li class='nextli'><a href='javascript:goReadBoardList(\""+pageNo+"\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
+	pageBarHTML += "<li class='lastli'><a href='javascript:goReadBoardList(\""+totalPage+"\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>"; 
+	 
+	pageBarHTML += "</ul>";
+	 
+	$("div.comment-header").html(pageBarHTML);
+	}// end of if(json.totalPage > 0){}-------------------------------
+	
+	},
+	error: function(request, status, error){
+	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	}    
+	});
+
+}// end of function makeCommentPageBar(currentShowPageNo) {}--------------------
+
+
 	    
 	    
 </script>
 
-<div id="content" style="display: flex;">
+<div id="top_content" style="display: flex;">
 	<div style="margin: auto; width: 90%;">
 		<div class="row">
 			<div id="home_board" class="col-lg-9">
@@ -2303,3 +3228,4 @@ function goBoardView(pk_board_seq) {
 	</div>
 </div>
 
+<input type="hidden" class="boardno"/>	
