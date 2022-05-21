@@ -66,17 +66,14 @@ li:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 	border: solid 1px #9966FF;
 	cursor: pointer;
-	
-	
 }
 #fileLayerUl{
 	font-size: 11pt;
 }
 .colsize1{width: 45%;}
-.colsize2{width: 100px;}
-
-#empOption{
-}
+.colsize2{width: 110px;}
+.colsize3{width: 20px;}
+.colsize4{width: 90px;}
 
 select{
 	width: 100px;
@@ -98,9 +95,6 @@ select{
 }
 input{
 	width: 80px;
-}
-th, td{
-	padding: 7px 0 0 9px;
 }
 #orderby{
 	height: 50px;
@@ -132,36 +126,147 @@ a#goSearch:hover{
 	margin: 5px 0;
 	vertical-align: middle;
 	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
-	
+}
+.commuteList_nocursor{
+	margin: 5px 0;
+	vertical-align: middle;
+	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
 }
 .commuteList:hover{
 	cursor: pointer;
 	background-color: rgba(153, 102, 255, 0.1);  
 }
+.commuteList_nocursor:hover{
+	background-color: rgba(153, 102, 255, 0.1);  
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
+	// 뷰단에 값을 고정시키기 위함
+	$("select[name='dept']").val( '${requestScope.dept}' );
+	$('input#date_start').val('${requestScope.date_start}');
+	$('input#date_end').val('${requestScope.date_end}');
+	$("select[name='search_item']").val( '${requestScope.search_item}' );
+	$("input#search_value").val( '${requestScope.search_value}' );
+	$("select#select_order").val('${requestScope.select_order}');
+
 	
+	// select#select_order 선택시 재정렬
+	$("select#select_order").bind("change", function(){
+		
+		goSearch();
+		
+	})// end of $("select#select_order").bind("change", function(){
+	
+	
+	// === 전체 datepicker 옵션 일괄 설정하기 ===  
+		$(function() {
+      		$.datepicker.setDefaults({
+		    	  dateFormat: 'yy-mm-dd'  //Input Display Format 변경
+		          ,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		          ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+		          ,changeYear: true        //콤보박스에서 년 선택 가능
+		          ,changeMonth: true       //콤보박스에서 월 선택 가능                
+		          ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
+		          ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+		          ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+		          ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+		          ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트             
+	  });
+	
+	    //input을 datepicker로 선언
+	    $("input#date_start").datepicker();                    
+	    $("input#date_end").datepicker();
+	      
+	    // startday의 초기값을 오늘 날짜로 설정
+	    $('input#startday').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+	
+	});// end of $(function() 
 });
 
 // function declaration
-function getOneCommuteInfo(pk_empnum){
+function showOneCommuteStatusByAjax(pk_empnum, name){
 	
-	const url = "<%= ctxPath%>/showOneCommuteStatus.groovy?pk_empnum="+pk_empnum;
+	$.ajax({
+		url:"<%=ctxPath%>/showOneCommuteStatusByAjax.groovy",
+		data:{"pk_empnum":pk_empnum },
+		type:"POST",
+		dataType:"JSON",
+		success:function(json){
+			
+			let html = "";
+			
+			if (json.OneCommuteStatus != null) {// 보여줄 결과값이 존재한다면
+					
+				$("#OneName").text(name);
+				$.each(json.OneCommuteStatus, function(index, item){
+					if(item.endwork == null){
+						item.endwork = "-"	
+					}
+					if(item.TODAYWORKEDTIME == null){
+						item.TODAYWORKEDTIME = "-"	
+					}
+					
+					html += "<tr class='commuteList_nocursor' >";
+				
+					html += "<td class='tcenter' style='width:100px; padding:10px 0;'>"+(index+1)+"</td>"
+					html += "<td class='tcenter' style='width:165px;'>"+item.TODAY+"</td>"
+					html += "<td class='tcenter' style='width:156px;'>"+item.startwork+"</td>"
+					html += "<td class='tcenter' style='width:156px;'>"+item.endwork+"</td>"
+					html += "<td class='tcenter' style='width:156px;'>"+item.TODAYWORKEDTIME+"</td>"
+					
+					html += "<td class='tcenter' style='width:120px;'>"+item.LATE+"</td>"
+					html += "<td class='tcenter' style='width:120px;'>"+item.EARLY_ENDCHECK+"</td>"
+					html += "<td class='tcenter' style='width:120px;'>"+item.NO_ENDCHECK+"</td>"
+					html += "<td class='tcenter' style='width:120px;'>"+item.NO_WORKDAY+"</td>"
+					html += "</tr>"
+				
+				});
+			}
+			
+			$("span#oneCommuteStatusResult").html(html);
 	
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	window.open(url, "showOneCommuteStatus",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-	
-
+		},
+		error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+	});// end of $.ajax 
 	
 }// end of function getOneEmpInfo()
 
+
+function goSearch(){
+	$("span#dateCheckResult").html("");
+	$("span#searchCheckResult").html("");
+	
+	const date_start = $("input#date_start").val();
+	const date_end = $("input#date_end").val();
+	
+	const regExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+	
+	if(date_start.trim() != "" || date_end.trim() != "" ){ // 둘중에 하나라도 날짜 입력값이 있으면
+		if( !regExp.test(date_start) || !regExp.test(date_end) ){
+			$("span#dateCheckResult").html("형식에 맞게 날짜를 입력해주세요(예: yyyy-mm-dd)");
+			return;
+		}
+		else if(date_start > date_end){
+			$("span#dateCheckResult").html("마지막일은 시작일보다 이후여야 합니다.");
+			return;
+		}
+	}
+	
+	const search_value = $("input#search_value").val();
+	if(search_value.trim() != "" && $("select[name='search_item']").val() == ""){// 검색입력값은 입력했는데, 기준을 고르지 않았을때
+		$("span#searchCheckResult").html("검색기준을 선택해주세요");
+		return;
+	}
+	
+	const frm = document.searchFrm;
+	frm.method = "GET";
+	frm.action = "worktime.groovy"; // 자기자신한테 간다.
+	frm.submit();
+	
+}// end of function goSearch()
 
 </script>
 
@@ -169,160 +274,167 @@ function getOneCommuteInfo(pk_empnum){
 <div class="container-md" style="margin-top: 45px;">
 <div class="project-detail-top clearfix">
 
-<%--
-TBL_EMPLOYEE 에서
-EMPNUM          v     NUMBER(10)    
-NAME            v     VARCHAR2(20)  
-PHONE           v     VARCHAR2(200) 
-EMAIL           v     VARCHAR2(200) 
-FK_VSTATUS      d     NUMBER(1)     휴가상태(0,1)
-EMPPICTURENAME  v     VARCHAR2(20)  직원사진
+<form name="searchFrm">
+	<table id="tbl_viewEmp">
+		
+		<tr >
+			<th>부서선택</th>
+			<td>
+				<select name="dept">
+					<option value="">부서</option>
+					<c:forEach var="dept" items="${requestScope.departments }">
+						<option class="op" value="${dept.pk_deptnum }">${dept.deptnamekor }</option>
+					
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		
+		<tr >
+			<th>근무기간</th>
+			<td>
+				<input type="text" class="date" name="date_start" id="date_start" placeholder="시작일">&nbsp;~&nbsp;
+				<input type="text" class="date" name="date_end" id="date_end" placeholder="마지막일">
+				<span id="dateCheckResult"></span>
+			</td>
+		</tr>
+		
+		<tr >
+			<th style="width: 100px;">검색</th>
+			<td >
+				<select name="search_item">
+					<option class="op" value="">검색조건</option>
+					<option class="op" value="name">이름</option>
+					<option class="op" value="pk_empnum">사번</option>
+				</select>
+				<div class="input-group ml-2" id="search" >
+				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			 		<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+				</svg>
+					<input id="search_value" name="search_value" type="text" placeholder="입력" autocomplete="off" maxlength="20" class="bnone" >			
+				</div>
+			</td>
+		</tr>
+		
+		<tr >
+			<th></th>
+			<td>
+				<a id="goSearch" onclick="goSearch()" >조회하기</a>
+			</td>
+		</tr>
+		
+	</table>
 
-TBL_DEPARTMENT 에서
-DEPTNAMEKOR 부서이름
-
-TBL_SPOT에서
-SPOTNAMEKOR 직위이름
-
-TBL_VACATION 에서
-PK_VSTATUS	휴가상태
-VTYPE		휴가종류
-
-검색조건
-부서별
-직위별
-사번기준
- --%> 
-
-		<table id="tbl_viewEmp">
-			
-			<tr >
-				<th>부서선택</th>
-				<td>
-					<select>
-						<option >부서</option>
-						<option class="op">부서1</option>
-						<option class="op">부서2</option>
-					</select>
-				</td>
-			</tr>
-			
-			<tr >
-				<th>기간조회</th>
-				<td>
-					<input type="text" value="시작일">&nbsp;~&nbsp;
-					<input type="text" value="마지막일">
-				</td>
-			</tr>
-			
-			<tr >
-				<th style="width: 100px;">검색</th>
-				<td >
-					<select>
-						<option class="op">검색조건</option>
-						<option class="op">이름</option>
-						<option class="op">사번</option>
-					</select>
-					<div class="input-group ml-2" id="search" >
-					<!-- 돋보기 이미지, 나중에 이미지 다운받고 i 태그로 바꾸기 -->
-					<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-				 		<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-					</svg>
-						<input type="text" placeholder="입력" autocomplete="off" maxlength="20" class="bnone" >			
-					</div>
-				</td>
-			</tr>
-			
-			<tr >
-				<th></th>
-				<td>
-					<a id="goSearch" onclick="" >조회하기</a>
-				</td>
-			</tr>
-			
-		</table>
-	
 	<div id="orderby">
 		<div>
-			<select id="select_order">
-				<option class="op">최근등록순</option>
-				<option class="op">사번순</option>
-				<option class="op">이름순</option>
-				<option class="op">근무일수순</option>
+			<select id="select_order" name="select_order">
+				<option class="op" value="" selected>최근등록순</option>
+				<option class="op" value="total_late desc">지각많은순</option>
+				<option class="op" value="total_early_endcheck desc">조기퇴근많은순</option>
+				<option class="op" value="total_no_endcheck desc">퇴근미체크많은순</option>
+				<option class="op" value="total_no_workday desc">결근많은순</option>
+				<option class="op" value="totalworkingdays desc">근무일수많은순</option>
+				<option class="op" value="totalworkedtime desc">근무시간많은순</option>
 			</select>
 		</div>
 	</div>
+</form>
+
+<h2 class="mb-5">근무통계</h2>
+<table id="tbl_result" class="tcenter">
+	<tr id="fileItemTapLi">
+		<th colspan="1"  ></th>
+		<th colspan="4" style="border: solid 1px gray;">이름/부서</th>
+		<th colspan="4" style="border: solid 1px gray;">근태</th>
+		<th colspan="2" style="border: solid 1px gray;">근무</th>
+	</tr>
+	<tr id="fileItemTapLi">	
+		<th class="" style="width: 72px; padding: 10px 0;">번호</th>
+		
+		<th class="" style="width: 142px;">사원번호</th>
+		<th class="" style="width: 67px;">이름</th>
+		<th class="" style="width: 67px;">부서</th>
+		<th class="" style="width: 107px;">재직구분</th>
+		
+		<th class="" style="width: 87px;">지각</th>
+		<th class="" style="width: 87px;">조기퇴근</th>
+		<th class="" style="width: 87px;">퇴근미체크</th>
+		<th class="" style="width: 87px;">결근</th>
+		
+		<th class="" style="width: 142px;">총 근무일수</th>
+		<th class="" style="width: 162px;">총 근무시간</th>
+	</tr>
 	
-	<h2 class="mb-5">근무통계</h2>
-	<table id="tbl_result" class="tcenter">
-		<tr id="fileItemTapLi">
+	<c:if test="${empty requestScope.commuteStatusInfo }">
+		<tr class="" >
+			<td colspan="12">근무통계 조회결과가 없습니다.</td>
+		</tr>
+	</c:if>
+	
+	<c:if test="${not empty requestScope.commuteStatusInfo }">
+		<c:forEach var="InfoMap" items="${requestScope.commuteStatusInfo }" varStatus="status">
+	
+		<tr class="commuteList" onclick="showOneCommuteStatusByAjax('${InfoMap.pk_empnum}','${InfoMap.name}')" data-toggle="modal" data-target="#oneCommuteStatusInfo">
+			<td style="padding: 10px 0;">${status.count }</td>
+			<td>${InfoMap.pk_empnum }</td>
+			<td>${InfoMap.name }</td>
+			<td>${InfoMap.deptnamekor }</td>
+			<td>${InfoMap.resignationstatus }</td>
+			<td>${InfoMap.total_late }</td>
+			<td>${InfoMap.total_early_endcheck }</td>
+			<td>${InfoMap.total_no_endcheck }</td>
+			<td>${InfoMap.total_no_workday }</td>
+			<td>${InfoMap.totalworkingdays}</td>
+			<td>${InfoMap.totalworkedtime}</td>
+		</tr>
+	
+		</c:forEach>
+	</c:if>
+</table>
+	
+<%-- 페이지바 보여주는 곳! --%>
+<div align="center" id="pageBar" >
+	${requestScope.pageBar }
+</div>
+
+<%-- 관리자가 보는 개인 근태관리 모달창 --%>
+<div class="modal" id="oneCommuteStatusInfo">
+	<div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel"><span id="OneName"></span>님의 근태관리</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <table class="tcenter" style="width: 100%;">
+		<tr id="fileItemTapLi" >
 			<th colspan="1" ></th>
-			<th colspan="4" style="border: solid 1px gray;">이름/부서</th>
+			<th colspan="4" style="border: solid 1px gray;">출퇴근기록</th>
 			<th colspan="4" style="border: solid 1px gray;">근태</th>
-			<th colspan="2" style="border: solid 1px gray;">근무</th>
 		</tr>
-		<tr id="fileItemTapLi">	
-			<th class="colsize2">번호</th>
-			<th class="colsize2">사원번호</th>
-			<th class="colsize2">이름</th>
-			<th class="colsize2">부서</th>
-			<th class="colsize2">재직구분</th>
-			<th class="colsize2">지각</th>
-			<th class="colsize2">조기퇴근</th>
-			<th class="colsize2">퇴근미체크</th>
-			<th class="colsize2">결근</th>
-			<th class="colsize2">근무일수</th>
-			<th class="colsize2">근무시간</th>
+		<tr id="fileItemTapLi" style="font-size: 19px;">	
+			<th class="" style="width: 70px;">번호</th>
+			<th class="" style="width: 110px;">근무날짜</th>
+			<th class="" style="width: 110px;">출근시각</th>
+			<th class="" style="width: 110px;">퇴근시각</th>
+			<th class="" style="width: 110px;">근무시간</th>
+			<th class="" style="width: 80px;">지각</th>
+			<th class="" style="width: 80px;">조기퇴근</th>
+			<th class="" style="width: 80px;">퇴근미체크</th>
+			<th class="" style="width: 80px;">결근</th>
 		</tr>
 		
-		<!--  ++ 관리자로 로그인 했을때만 볼수있게 처리 -->
-		<c:if test="${empty requestScope.commuteStatusInfo }">
-			<tr class="" >
-				<td colspan="12">근무통계 조회결과가 없습니다.</td>
-			</tr>
-		</c:if>
-		
-		<c:if test="${not empty requestScope.commuteStatusInfo }">
-			<c:forEach var="InfoMap" items="${requestScope.commuteStatusInfo }" varStatus="status">
-		
-			<tr class="commuteList" onclick="getOneCommuteInfo('${InfoMap.pk_empnum}')">
-				<td>${status.count }</td>
-				<td>${InfoMap.pk_empnum }</td>
-				<td>${InfoMap.name }</td>
-				<td>${InfoMap.deptnamekor }</td>
-				<td>${InfoMap.resignationstatus }</td>
-				<td>${InfoMap.total_late }</td>
-				<td>${InfoMap.total_early_endcheck }</td>
-				<td>${InfoMap.total_no_endcheck }</td>
-				<td>${InfoMap.total_no_workday }</td>
-				<td>${InfoMap.totalworkingdays}</td>
-				<td>${InfoMap.totalworkedtime}</td>
-			</tr>
-		
-			</c:forEach>
-		</c:if>
 	</table>
+		<!--  여기 조회값 들어옴 -->
+		<span id="oneCommuteStatusResult" ></span>
 	
-        
-<%--	
-	<c:if test="${not empty boardvo}">
-	++ 반복문
---%>
-		
-	
-	
-		
-		
-	
-<%--		
-	</c:if>
---%>
-<%-- 
-	<c:if test="${empty boardvo}">
-		<div style="padding: 50px 0; font-size: 16pt; color: red;">존재하지 않습니다.</div>
-	</c:if>
---%>
-	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </div>

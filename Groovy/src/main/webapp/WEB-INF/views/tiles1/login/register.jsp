@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
 	String ctxPath = request.getContextPath();
+	Date date = new Date() ;
+	SimpleDateFormat today = new SimpleDateFormat("yyyyMMdd-");
 %>   
 
 
@@ -81,6 +86,7 @@
 
 <script type="text/javascript">	
 	$(document).ready(function(){
+		
 		$("span.error").hide();
 		$("input#name").focus();
 		
@@ -185,7 +191,6 @@
 				$target.focus();
 				$("span#phonecheckResult").html("");
 				
-				
 			}
 			else{ // 국번이 정규표현식에 통과시 
 				$("form.registerFrm :input").prop("disabled", false);
@@ -202,11 +207,10 @@
 	        	    	  
 	       	    	      // 휴대폰번호 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
 	           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
-	           	    		  $("span#phonecheckResult").html($("input#phone").val() +" 은 이미 사용중인 휴대폰번호입니다").css("color","orange");
-	           	    		  $("input#phone").val("");
+	           	    		  $("span#phonecheckResult").html($("input#phone").val()+" 은 이미 사용중인 휴대폰번호입니다").css("color","orange");
 	           	    	  }
 	           	    	  else { // 중복아닌경우
-	           	    		  $("span#phonecheckResult").html($("input#phone").val() +" 은 사용가능한 휴대폰번호입니다").css("color","green");
+	           	    		  $("span#phonecheckResult").html($("input#phone").val()+" 은 사용가능한 휴대폰번호입니다").css("color","green");
 	           	    		  b_flagphoneduplicateClick = true;
 	           	    	  }	  
 	        	      },
@@ -219,67 +223,48 @@
 			}
 		});
 		
-		
-		// 4. 부서 선택시 사원번호(아이디)와 초기비밀번호 자동입력
-		// 부서는 사원번호(아이디)가 유효성검사를 통과하기 위해서 반드시 선택해야하므로, 부서 선택에 유효성검사를 또 하지 않는다.
-		// 6. 초기비밀번호는 자동으로 입력되므로 유효성검사를 하지 않는다.
-		$("select#fk_deptnum").change(function(){
-			
-			const $target = $(this);
-		//	alert($target.val());
-			
-		    $("input#deptnumOfEmpnum").val($target.val()+"-");
-		    $("input#pwd").val($target.val()+"-");
-			
-		});// -------------------------------------------------
-		
+		// 6. 초기비밀번호는 자동으로 입력되고 수정불가하므로 유효성검사를 하지 않는다.
 		
 		// 5. 사원번호 입력칸 유효성검사(+중복검사)
 		$("img#empnumCheck").click(function(){
 		  
 			b_flagEmpnumduplicateClick = true;
+			const pk_empnum = $("input#pk_empnum").val() ; 
 			
-			const pk_empnum = $("input#deptnumOfEmpnum").val() + $("input#pk_empnum").val() ; // 입력된 전체 사원번호
+			const regExp = new RegExp(/^20[0-9]{6}-[0-9]{2}$/g); 
 			
-			if($("input#deptnumOfEmpnum").val() == ""){ // 부서선택을 안해서 부서번호칸에 아무것도 안들어있을때
-				$("span#empnumcheckResult").html("부서를 먼저 선택하세요.").css("color","orange");
+		 	const bool = regExp.test(pk_empnum);
+			
+			if(!bool){ // 형식에 안맞을때
+				$("span#empnumcheckResult").html("형식에 맞게 사원번호를 입력해주세요.(예: 20220512-01)").css("color","orange");
+				$("input#pk_empnum").val("<%=today.format(date) %>");
 			}
-			else{ // 부서 선택해서 부서번호칸에 값이 들어오고나서 사원번호 중복검사
-				if(!Number($("input#pk_empnum").val())){ // 사원번호칸에 문자열이 들어왔을 때
-					$("span#empnumcheckResult").html("사원번호는 숫자만 입력해주세요.").css("color","orange");
-					$("input#pk_empnum").val("");
-				}
-				else{// 사원번호칸에 숫자를 제대로 입력했을 때
-					// (+중복검사) ajax
-					$.ajax({
-		        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
-		        	      data:{"checkColumn":"pk_empnum",
-		        	    	  "checkValue":pk_empnum},
-		        	      success:function(text){
-		        	    	  
-		        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
-		        	    	  
-		        	    	  let s_deptnum = $("input#pk_empnum").val();
-		        	    	  const dash = s_deptnum.indexOf('-'); // 없으면 -1
-		        	    	  s_deptnum = s_deptnum.substring(0,dash);
-		        	    	  
-		       	    	      // 입력된 전체 사원번호 -> true 면 중복된거고, false 면 중복안된것
-		           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
-		           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 이미 사용중인 사원번호입니다").css("color","orange");
-		           	    		  $("input#pk_empnum").val("");
-		           	    	  }
-		           	    	  else { // 중복아닌경우
-		           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 사용가능한 사원번호입니다").css("color","green");
-		           	    	  	  $("input#pwd").val(pk_empnum);	
-		           	    	  	  $("input#total_pk_empnum").val(pk_empnum);
-		           	    	  }	  
-		        	      },
-		        	      error:function(request, status, error){
-		        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		        	      }
-		          	});// end of ajax
-				}
+			else{// 사원번호칸에 숫자를 제대로 입력했을 때
+				// (+중복검사) ajax
+				$.ajax({
+	        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+	        	      data:{"checkColumn":"pk_empnum",
+	        	    	  "checkValue":pk_empnum},
+	        	      success:function(text){
+	        	    	  
+	        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
+	        	    	  
+	       	    	      // 입력된 전체 사원번호 -> true 면 중복된거고, false 면 중복안된것
+	           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
+	           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 이미 사용중인 사원번호입니다").css("color","orange");
+	           	    		  $("input#pk_empnum").val("<%=today.format(date) %>");
+	           	    	  }
+	           	    	  else { // 중복아닌경우
+	           	    		  $("span#empnumcheckResult").html($("input#pk_empnum").val() +" 은 사용가능한 사원번호입니다").css("color","green");
+	           	    	  	  $("input#pwd").val(pk_empnum);	
+	           	    	  }	  
+	        	      },
+	        	      error:function(request, status, error){
+	        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        	      }
+	          	});// end of ajax
 			}
+			
 	     });// end of $("img#empnumCheck").click(function(){
 		
 		
@@ -366,10 +351,6 @@
               ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
               ,changeYear: true        //콤보박스에서 년 선택 가능
               ,changeMonth: true       //콤보박스에서 월 선택 가능                
-              ,showOn: "both"          //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-              ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-              ,buttonImageOnly: true   //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-              ,buttonText: "선택"       //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
               ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
               ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
               ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
@@ -391,7 +372,6 @@
       	// 사원번호 값이 변경되면, 등록하기 버튼 클릭시 "사원번호중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
 		$("input#pk_empnum").bind("change", function(){
 			b_flagEmpnumduplicateClick = false;
-			$("input#total_pk_empnum").val(""); // 제출할 사원번호값도 초기화한다.
 		});
   
 		// 이메일 값이 변경되면, 등록하기 버튼 클릭시 "이메일중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
@@ -421,7 +401,11 @@
 				return; // 종료
 			}
 			
-			// 부서는 사원번호와 초기비밀번호를 입력하려면 반드시 선택해야하므로 검사를 따로 하지 않는다.
+			// 4. 부서 유효성검사
+			if($("select#fk_deptnum").val() == ""){
+				alert("부서를 선택해주세요");
+				return; // 종료
+			}
 			
 			// 7. 직위 유효성검사
 			if($("select#fk_spotnum").val() == ""){
@@ -473,31 +457,7 @@
 
 
 <div class="container">
-<%--
-EMPNUM          v     NUMBER(10)    
-PWD             v     VARCHAR2(200) 
-NAME            v     VARCHAR2(20)  
-ADDRESS              VARCHAR2(100) 
-detailaddress        VARCHAR2(100) 
-detailaddress         VARCHAR2(100) 
-POSTCODE             VARCHAR2(20)  
-PHONE           v     VARCHAR2(200) 
-EMAIL           v     VARCHAR2(200) 
-BIRTHDAY        v     DATE          
-GENDER          v     VARCHAR2(10)  
-REGISTERDAY     d     DATE          가입일자
-STARTDAY        v     DATE          입사일자
-RESIGNATIONSTATUS  d  NUMBER(1)     퇴사상태(0,1)
-RESIGNATIONDAY       DATE          퇴사일자
-FK_VSTATUS      d     NUMBER(1)     휴가상태(0,1)
-FK_DEPTNUM      v     NUMBER        부서번호
-FK_SPOTNUM      v     NUMBER        직위번호
-EMPPICTURENAME  v     VARCHAR2(20)  직원사진
-SALARY          v     NUMBER(20) 	월급
- --%> 
- 
- 
-   
+
    <h1 align="center">사원 등록</h1>
        <form name="registerFrm"
 	  		enctype="multipart/form-data" >
@@ -533,12 +493,11 @@ SALARY          v     NUMBER(20) 	월급
 	     </select>
 	     <span class="error">부서를 선택해주세요.</span>
                   
+                  
          <br><br>
          <%-- 5. 사원번호(아이디) --%>
          <span class="title">사원번호(아이디)</span><br>
-         <input type="text" class="requiredInfo" id="deptnumOfEmpnum" placeholder="부서를 먼저 선택하세요."  required readonly>
-         <input type="text" class="requiredInfo" id="pk_empnum"  maxlength="20" required placeholder="사원번호(아이디)">
-         <input type="hidden" class="requiredInfo" id="total_pk_empnum" name="pk_empnum" maxlength="20" required placeholder="사원번호(아이디)">
+         <input type="text" class="requiredInfo" id="pk_empnum" name="pk_empnum" maxlength="20" value="<%=today.format(date) %>" required placeholder="사원번호(아이디)">
          <!-- 사원번호(아이디)중복체크 -->
 	     <img id="empnumCheck" src="<%=ctxPath%>/resources/images/common/b_id_check.gif" style="vertical-align: middle;" />
 	     <span id="empnumcheckResult"></span>
