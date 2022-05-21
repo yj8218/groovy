@@ -71,7 +71,7 @@ select.search {
 			const pk_documentnum = $target.parent().children(".pk_documentnum").text();
 			const apl_no = $target.parent().children("td.deptnamekor").children("input.apl_no").val();
 			
-			location.href="<%= ctxPath%>/selectOneMyDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum+"&gobackURL="+gobackURL;
+			location.href="<%= ctxPath%>/selectOneAdminDocument.groovy?apl_no="+apl_no+"&pk_documentnum="+pk_documentnum+"&gobackURL="+gobackURL;
 																						
 		}); 
 		
@@ -112,7 +112,7 @@ select.search {
 					<th class="">번호</th>
 					<th class="">문서번호</th>
 					<th class="">결재문서</th>
-					<th class="">결재부서</th>
+					<th class="">결재요청</th>
 					<th class="">결재일</th>
 					<th class="">승인여부</th>
 				</tr>
@@ -130,7 +130,7 @@ select.search {
 							<td>${appList.rno }</td>
 							<td class="pk_documentnum">${appList.pk_documentnum }</td>
 							<td class="apl_name">${appList.apl_name }</td>
-							<td class="deptnamekor">${appList.deptnamekor }<input class="apl_no" type='hidden'  value='${appList.apl_no }'/></td>
+							<td class="deptnamekor">${appList.name }<input class="apl_no" type='hidden'  value='${appList.apl_no }'/></td>
 							<td>${appList.writeday }</td>
 							<c:if test="${appList.status == 0 }">
 								<td>승인대기</td>
