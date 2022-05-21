@@ -126,7 +126,7 @@
     min-height: auto;
     max-height: max-content;
     position: absolute;
-    top: -30px;
+    top: -20px;
     bottom: 0;
     right: -20px;
     z-index: 2;
@@ -1750,7 +1750,7 @@ function openPersonalChat(pk_empnum) {
 						   	  
 						   	  
 						   	html +=  "<td align='right'>"
-						   	html +=  "<i class='fas fa-thumbtack'></i>";
+						 /*   	html +=  "<i class='fas fa-thumbtack'></i>"; */
 						   	html +=  "<i style='padding:3px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
 						   	html +=  "<div class='dropdown-menu'>";
 						   <%-- 	html +=  "  	<a class='dropdown-item' href='<%=ctxPath%>/editBoard.groovy?pk_board_seq="+item.pk_board_seq+"'><i class='far fa-board-alt'></i>수정</a>"; --%>
@@ -1775,7 +1775,7 @@ function openPersonalChat(pk_empnum) {
 						   	html +=   '<tr><td  colspan="2"><i class="fas fa-paperclip"></i><a id="write_file'+index+'" href="<%= ctxPath%>/downloadfile.groovy?pk_board_seq='+item.pk_board_seq+'">'+item.b_orgfilename+'</a></td>  </tr>';
 							}
 							//alert(item.b_orgfilename);
-						   	
+					/* 	   	
 						   	html +=  "<tr>";
 						    html +=  "<td style='width: 50%;'>";
 							html +=  "<i class='far fa-meh-blank' data-toggle='dropdown'></i>좋아요&nbsp;&nbsp;&nbsp;";
@@ -1788,10 +1788,10 @@ function openPersonalChat(pk_empnum) {
 							html +=  "<a class='dropdown-item' href=''><i class='far fa-grin-hearts'></i><span>감사해요</span></a>";
 							html +=  "</div>";
 							html +=  "<i class='far fa-bookmark'></i>북마크";
-							/* html +=  "<i class='fas fa-bookmark'></i> 북마크 설정했을때"; */
+							html +=  "<i class='fas fa-bookmark'></i> 북마크 설정했을때";
 							html +=  "</td>";
 							html +=  "<td align='right'>댓글(댓글수) / 읽음(조회수)</td>";
-							html +=  "</tr>";
+							html +=  "</tr>"; */
 							html +=  "</tbody>";
 							
 							html += '<tbody id="commentDisplay'+item.pk_board_seq+'"></tbody>'; /* <ul class="card-footer-group"></ul> */
@@ -1804,14 +1804,14 @@ function openPersonalChat(pk_empnum) {
 							html +=  "<div class='card-footer' align='center'>";
 							html +=  " <form name='addCommentFrm' id='addCommentFrm'><i class='far fa-user-circle'></i>";
 							html +=  '<input type="hidden" name="fk_board_seq" id="fk_board_seq" class="fk-board-seq" value="'+item.pk_board_seq+'" />';
-							html +=  "<input type='text' id='commentContent"+item.pk_board_seq+"'  class='comment-Content comment-writer-text form-control' style='display: inline-block; width: 90%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
+							html +=  "<input type='text' id='commentContent"+item.pk_board_seq+"'  class='comment-Content comment-writer-text form-control' style='display: inline-block; width: 80%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
 							
 							
  		/* 					html +=  '<input type="hidden" name="fk_empnum" id="fk_empnum" value="'+${sessionScope.loginuser.pk_empnum}+'" />';
 							html +=  '<input type="hidden" name="cmt_name" id="cmt_name" value="'+'${sessionScope.loginuser.name}'+'" />';  */
-							html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
-							html +=  "<input type='file' id='commentAttach' style='display: none;'/>";
-						    html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment('+item.pk_board_seq+')" >댓글쓰기 확인</button>'; /* style="display:none;" */
+							/* html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
+							html +=  "<input type='file' id='commentAttach' style='display: none;'/>"; */
+						    html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment('+item.pk_board_seq+')" >댓글달기</button>'; /* style="display:none;" */
 							html +=  "</form></div></div><div id='feedpaging'></div>";
 							
 							/* commentShow(item.pk_board_seq,1); */
@@ -1885,7 +1885,7 @@ function openPersonalChat(pk_empnum) {
 					  $.each(json, function(index, item){
 	
 						   	html +=  "<tr id='tablehover' style='cursor: pointer;' onclick='javascript:goBoardView("+item.pk_board_seq+")'>";
-						   	html +=  "<td id='list_seq"+index+"'  >"+ (json.length - index)+ "</td>";
+						   	html +=  "<td id='list_seq"+index+"'  style='text-align: center;'>"+ (json.length - index)+ "</td>";
 						   	html +=  "<td id='list_subject"+index+"'  ><span class='list_subject' >"+ item.b_subject+"</span>"; 
 						   	${boardvo.subject}
 						    <%-- === 첨부파일이 있는 경우 === --%> 
@@ -1894,8 +1894,8 @@ function openPersonalChat(pk_empnum) {
 							}
 							html += "</td>";
 						   	
-						   	html +=  "<td id='list_writer"+index+"' >"+ item.name + "</td>";
-						   	html +=  "<td id='list_date"+index+"' >"+ item.b_regDate + "</td>";
+						   	html +=  "<td id='list_writer"+index+"' style='text-align: center;' >"+ item.name + "</td>";
+						   	html +=  "<td id='list_date"+index+"'  style='text-align: center;'>"+ item.b_regDate + "</td>";
 						   	html +=  "</tr>";
 						   	
 					   });
