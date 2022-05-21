@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>결재대기문서 내역보기</title>
+<title>결재완료문서 내역보기</title>
 
 <style type="text/css">
 
@@ -131,7 +131,13 @@ th#right {
 	
 	$(document).ready(function(){
 		
-$("div#app_opinion_chk").hide();
+		if($("td.reference").text() == "") {
+			
+			$("table#reference").hide();
+		} 
+		
+		
+		$("div#app_opinion_chk").hide();
 		
 		let pk_documentnum = $("td.pk_documentnum").text();
 		$("input[name='pk_documentnum']").val(pk_documentnum);
@@ -198,7 +204,7 @@ $("div#app_opinion_chk").hide();
 				<c:forEach var="appList" items="${requestScope.approverList }">
 				<c:if test="${appList.app_status eq '0' }">	
 					<tr>
-						<td>${appList.fk_empnum }</td>
+						<td class="reference">${appList.fk_empnum }</td>
 						<td>${appList.name }</td>
 						<td>${appList.spotnamekor }</td>
 					</tr>

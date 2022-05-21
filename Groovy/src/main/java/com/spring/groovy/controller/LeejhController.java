@@ -896,6 +896,76 @@ public class LeejhController {
 	
 	
 	
+	
+	// ==== #168. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일 업로드 ==== //
+	@RequestMapping(value="/image/multiplePhotoUpload.groovy", method= {RequestMethod.POST} )
+	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
+		
+		/*
+		   1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
+		   >>>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
+		        우리는 WAS 의 webapp/resources/photo_upload 라는 폴더로 지정해준다.
+		*/
+		
+		// WAS 의 webapp 의 절대경로를 알아와야 한다.
+		HttpSession session = request.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "resources"+File.separator+"photo_upload";
+		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
+		
+	//	System.out.println("~~~~ 확인용 path => " + path);
+		// ~~~~ 확인용  webapp 의 절대경로 => C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\photo_upload 
+		
+		File dir = new File(path);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		try {
+			String filename = request.getHeader("file-name"); // 파일명(문자열)을 받는다 - 일반 원본파일명
+			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
+			
+			/*
+			    [참고]
+			    HttpServletRequest의 getHeader() 메소드를 통해 클라이언트 사용자의 정보를 알아올 수 있다. 
+	
+				request.getHeader("referer");           // 접속 경로(이전 URL)
+				request.getHeader("user-agent");        // 클라이언트 사용자의 시스템 정보
+				request.getHeader("User-Agent");        // 클라이언트 브라우저 정보 
+				request.getHeader("X-Forwarded-For");   // 클라이언트 ip 주소 
+				request.getHeader("host");              // Host 네임  예: 로컬 환경일 경우 ==> localhost:9090    
+			*/
+			
+		//	System.out.println(">>> 확인용 filename ==> " + filename);
+			// >>> 확인용 filename ==> berkelekle%EB%8B%A8%EA%B0%80%EB%9D%BC%ED%8F%AC%EC%9D%B8%ED%8A%B803.jpg 
+			
+			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
+			
+			String newFilename = fileManager.doFileUpload(is, filename, path);
+			
+			String ctxPath = request.getContextPath(); //  /board
+			
+			String strURL = "";
+			strURL += "&bNewLine=true&sFileName="+newFilename; 
+			strURL += "&sWidth=";
+			strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+			
+			// === 웹브라우저 상에 사진 이미지를 쓰기 === //
+			PrintWriter out = response.getWriter();
+			out.print(strURL);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	// ===  조직도  === //
 	/* @ResponseBody */
 	@RequestMapping(value = "/orgChart.groovy")
@@ -943,7 +1013,7 @@ public class LeejhController {
 	
 	
 	
-	
+		
 		
 		
 		// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
@@ -951,9 +1021,45 @@ public class LeejhController {
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readBoard(HttpServletRequest request) {
 		
+			String fk_board_seq = request.getParameter("fk_board_seq");
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
+			//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
+			String BcurrentShowPageNo = request.getParameter("BcurrentShowPageNo");
+			System.out.println("페이징"+fk_board_seq);
+			System.out.println("페이징2"+BcurrentShowPageNo);
+			
+			
+			if(BcurrentShowPageNo == null) {
+				BcurrentShowPageNo = "1";
+			}
+			int sizePerPage =10;
+			int startRno = ((Integer.parseInt(BcurrentShowPageNo) - 1) * sizePerPage) + 1;
+			int endRno = startRno + sizePerPage - 1;
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("startRno",String.valueOf(startRno));
+			paraMap.put("endRno",String.valueOf(endRno));
+		
+			
+			/*
+			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+		//	List<Map<String,String>> listMap = service.commentShow(paraMap);
+			
+			
+			BoardVO boardvoo = new BoardVO();
+			String fk_board_seq = boardvoo.getPk_board_seq();
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_board_seq", fk_board_seq);
+			
+			List<Map<String, String>> cmtList = service.commentShow(paraMap);
+			*/
 			
 			List<BoardVO> boardList = service.getBoardList();
+			
 			
 			JSONArray jsonArr = new JSONArray();  // []
 			
@@ -982,6 +1088,19 @@ public class LeejhController {
 				}// end of for---------------------
 			}
 			
+			
+			
+			//댓글용
+			/*
+			if( cmtList != null ) {
+				for( Map<String, String> cmtListMap: cmtList ) {
+					JSONObject jsonObj = new JSONObject();
+					jsonObj.put("fk_board_seq", cmtListMap.get("fk_board_seq"));
+					
+					jsonArr.put(jsonObj);
+				}// end of for---------------------
+			}
+			*/
 			return jsonArr.toString();
 		}
 		
@@ -991,6 +1110,11 @@ public class LeejhController {
 		public ModelAndView editBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
 		
 			String pk_board_seq = request.getParameter("pk_board_seq");
+			
+			//	String content = boardvo.getContent();
+		     //	content = content.replaceAll("\r\n", "<br/>");
+		     //	boardvo.setContent(content);
+		      
 			
 			mav.setViewName("board/editBoardModal.tiles2");
 			//  /WEB-INF/views/tiles1/board/add.jsp 파일을 생성한다.
@@ -1426,57 +1550,15 @@ public class LeejhController {
 			
 		}
 		
-		/*
+//////////////////////////////////////////////
+		
+		
 		//글 한개 조회해오기
 		@ResponseBody
-		@RequestMapping(value ="/getU.groovy", produces="text/plain;charset=UTF-8")
-		public String g(HttpServletRequest request ) {
+		@RequestMapping(value ="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
+		public String goBoardView(HttpServletRequest request ) {
 			
-			String pk_empnum = request.getParameter("pk_empnum"); // 한명의 사원 사번 받아옴
-
-			// 한명의 사원 상세정보 가져오기
-			EmployeeVO user = service.getUserInfo(pk_empnum);
-			
-			JSONObject jsonObj = new JSONObject();
-			
-			jsonObj.put("pk_empnum", user.getPk_empnum());
-			jsonObj.put("name", user.getName());
-			jsonObj.put("birthday", user.getBirthday());
-			jsonObj.put("gender", user.getGender());
-			jsonObj.put("age", user.getAge());
-
-			jsonObj.put("postcode", user.getPostcode());
-			jsonObj.put("address", user.getAddress());
-			jsonObj.put("detailaddress", user.getDetailaddress());
-			
-			jsonObj.put("phone", user.getPhone());
-			
-			try {
-				jsonObj.put("email", aes.decrypt(user.getEmail()));
-			} catch (JSONException | UnsupportedEncodingException | GeneralSecurityException e) {
-				e.printStackTrace();
-			}
-			
-			jsonObj.put("deptnamekor", user.getDeptnamekor());
-			jsonObj.put("spotnamekor", user.getSpotnamekor());
-			
-			jsonObj.put("startday", user.getStartday());
-			jsonObj.put("resignationstatus", user.getResignationstatus());
-			jsonObj.put("resignationday", user.getResignationday());
-			jsonObj.put("fk_vstatus", user.getFk_vstatus());
-			jsonObj.put("salary", user.getSalary());
-			
-			jsonObj.put("emppicturename", user.getEmppicturename());
-			return jsonObj.toString();
-		}
-		*/
-		/*
-		// === 일정상세보기 ===
-		@ResponseBody
-		@RequestMapping(value="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
-		public String detailSchedule(HttpServletRequest request) {
-			
-			String pk_board_seq = request.getParameter("pk_board_seq");
+			String pk_board_seq = request.getParameter("pk_board_seq"); // 한명의 사원 사번 받아옴
 			
 			// 검색하고 나서 취소 버튼 클릭했을 때 필요함
 			String listgobackURL_board = request.getParameter("listgobackURL_board");
@@ -1498,15 +1580,204 @@ public class LeejhController {
 				
 			} catch (NumberFormatException e) {
 				//mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
-				return gobackURL_detailSchedule;
+				return gobackURL_detailBoard;
 			}
-			
-			
-			
-			
-			
 		}
-		*/
+	
+		
+		
+		
+		// 글 댓글쓰기 
+		@ResponseBody
+		@RequestMapping(value ="/boardCommentAdd.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentAdd(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String name = request.getParameter("name");
+			String content = request.getParameter("content");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("name", name);
+			paraMap.put("content", content);
+			
+			
+			
+			//댓글쓰기에 첨부파일이 없는 경우
+			int n = 0;
+			try {
+				n = service.commentAdd(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+	
+		//댓글 읽어오기
+		@ResponseBody
+		@RequestMapping(value ="/boardCommentShow.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+		public String commentShow(HttpServletRequest request) {
+			
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String currentShowPageNo = request.getParameter("currentShowPageNo");
+			System.out.println("페이징"+fk_board_seq);
+			System.out.println("페이징2"+currentShowPageNo);
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			int sizePerPage = 3;
+			int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+			int endRno = startRno + sizePerPage - 1;
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("startRno",String.valueOf(startRno));
+			paraMap.put("endRno",String.valueOf(endRno));
+		
+			
+			
+			List<Map<String,String>> listMap = service.commentShow(paraMap);
+			
+
+			JSONArray jsonArr = new JSONArray();
+		 	for(Map<String, String> map :listMap) {
+		 		JSONObject jsObj = new JSONObject();
+				jsObj.put("fk_board_seq", map.get("FK_BOARD_SEQ"));
+				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+				jsObj.put("regdate", map.get("CMT_REGDATE"));
+				jsObj.put("name", map.get("CMT_NAME"));
+				jsObj.put("content", map.get("CMT_CONTENT"));
+				jsObj.put("emppicturename", map.get("EMPPICTURENAME"));
+				jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
+				jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
+				jsObj.put("pk_cmt_seq", map.get("PK_CMT_SEQ"));
+				
+				
+				jsonArr.put(jsObj);
+		 	}
+
+			return jsonArr.toString();
+	
+		}
+		
+		// === #132.  원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+		@ResponseBody
+		@RequestMapping(value ="/getBoardCommentTotalPage.groovy", method = {RequestMethod.GET})
+		public String getCommentTotalPage(HttpServletRequest request) {
+				
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String sizePerPage = request.getParameter("sizePerPage");
+			System.out.println("페이징3"+fk_board_seq);
+			System.out.println("페이징4"+sizePerPage);
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("sizePerPage",sizePerPage);
+		
+			int totalPage = service.getCommentTotalPage(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("totalPage",totalPage);
+			
+		
+			return jsonObj.toString();
+			
+		}//end of public String getCommentTotalPage(HttpServletRequest request)
+	
+		// === #132.  원게시물  totalPage 알아오기(ajax로 처리)
+		@ResponseBody
+		@RequestMapping(value ="/getBoardTotalPage.groovy", method = {RequestMethod.GET})
+		public String getBoardTotalPage(HttpServletRequest request) {
+				
+			//String fk_board_seq = request.getParameter("fk_board_seq");
+			String sizePerPage = request.getParameter("sizePerPage");
+			//System.out.println("페이징3"+fk_board_seq);
+			System.out.println("페이징4"+sizePerPage);
+			Map<String, String> paraMap = new HashMap<>();
+			//paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("sizePerPage",sizePerPage);
+		
+			int totalPage = service.getBoardTotalPage(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("totalPage",totalPage);
+			
+		
+			return jsonObj.toString();
+			
+		}//end of public String getCommentTotalPage(HttpServletRequest request)
+
+		
+		
+		@ResponseBody
+		@RequestMapping(value ="/boardCommentEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentEdit(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String pk_cmt_seq = request.getParameter("pk_cmt_seq");
+			String content = request.getParameter("content");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("pk_cmt_seq", pk_cmt_seq);
+			paraMap.put("content", content);
+			
+			
+			int n = 0;
+			try {
+				n = service.commentEdit(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value ="/boardCommentDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+		public String commentDel(HttpServletRequest request) {
+			String fk_empnum = request.getParameter("fk_empnum");
+			String fk_board_seq = request.getParameter("fk_board_seq");
+			String pk_cmt_seq = request.getParameter("pk_cmt_seq");
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("fk_empnum", fk_empnum);
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("pk_cmt_seq", pk_cmt_seq);
+			
+			
+			int n = 0;
+			try {
+				n = service.commentDel(paraMap);
+			} catch (Throwable e) {
+				//e.printStackTrace();
+			}
+		
+
+			JSONObject jsonObj = new JSONObject();//
+			
+			jsonObj.put("n", n);//{"n":1}
+			return jsonObj.toString();//"{"n":1}"
+	
+		}
+		
+		
 		
 	
 }//end of public class LeejhController

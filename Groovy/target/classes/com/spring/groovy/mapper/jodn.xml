@@ -502,8 +502,14 @@
 				on A.fk_deptnum = E.PK_DEPTNUM
 				join tbl_spot F
 				on F.PK_SPOTNUM = A.fK_SPOTNUM
-				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0'
-				order by writeday desc
+				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0' 
+		        <if test="fk_documentnumArr != null">
+			        and C.pk_documentnum in
+			        <foreach collection="fk_documentnumArr" index="i" open="(" separator="," close=")">
+			           '${fk_documentnumArr[i]}'
+			        </foreach>
+			    </if>
+				order by C.writeday desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}	
@@ -521,7 +527,14 @@
 		on A.fk_deptnum = E.PK_DEPTNUM
 		join tbl_spot F
 		on F.PK_SPOTNUM = A.fK_SPOTNUM
-		where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0'
+		where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0' 
+		<if test="fk_documentnumArr != null">
+	        and C.pk_documentnum in
+	        <foreach collection="fk_documentnumArr" index="i" open="(" separator="," close=")">
+	           '${fk_documentnumArr[i]}'
+	        </foreach>
+	    </if>
+		order by C.writeday desc
 	</select>
 	
 	
@@ -729,12 +742,118 @@
 	</delete>
 	
 	
+	<!-- 차트용 직원조회하기 -->
+	<select id="getAllEmployeeList" resultType="com.spring.groovy.model.EmployeeVO">
+		select deptnamekor, name, spotnamekor
+		from TBL_EMPLOYEE A
+		join TBL_DEPARTMENT B
+		on A.fk_deptnum = B.pk_deptnum
+		join tbl_spot C
+		on A.fk_spotnum = C.pk_spotnum
+		order by fk_spotnum
+	</select>
+	
+	<resultMap type="HashMap" id="adminApprovalMap">
+		<result property="rno"   					column="rno"      				javaType="String" />
+		<result property="pk_documentnum"   		column="pk_documentnum"      	javaType="String" />
+		<result property="writeday"   				column="writeday"    			javaType="String" />
+		<result property="apl_name"       			column="apl_name"      			javaType="String" />	
+		<result property="fk_empnum"       			column="fk_empnum"      		javaType="String" />	
+		<result property="name"       				column="name"     			 	javaType="String" />	
+		<result property="deptnamekor"   			column="deptnamekor" 			javaType="String" />	
+		<result property="spotnamekor"       		column="spotnamekor"     		javaType="String" />	
+		<result property="apl_no"       			column="apl_no"     			javaType="String" />	
+		<result property="status"       			column="status"     			javaType="String" />	
+	</resultMap>	
+	<!-- 관리자 결재 페이지 조회  -->
+	<select id="adminApprovalList" parameterType="HashMap" resultMap="adminApprovalMap">
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		from
+		(	
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			from 
+			(
+				select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+				, status
+				from TBL_APPROVALDOCUMENT C
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				<if test="searchValue != null and searchValue != '' ">
+					where status = #{searchValue}
+				</if>
+				order by writeday desc
+			)
+		)	 
+		where rno between #{startRno} and #{endRno}		
+	</select>
+	<select id="getAdminApprovalTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from TBL_APPROVALDOCUMENT C
+		join TBL_APPROVAL D
+		on C.FK_APL_NO = D.apl_no
+		join tbl_employee A
+		on C.fk_empnum = A.pk_empnum
+		join tbl_department E
+		on A.fk_deptnum = E.PK_DEPTNUM
+		join tbl_spot F
+		on F.PK_SPOTNUM = A.fK_SPOTNUM
+		order by writeday desc
+	</select>
+	
+	<!-- 내 직책 번호 받아오기 -->
+	<select id="getSpotnum" parameterType="String" resultType="int">
+		select pk_spotnum
+		from TBL_EMPLOYEE A
+		join TBL_DEPARTMENT B
+		on A.fk_deptnum = B.pk_deptnum
+		join tbl_spot C
+		on A.fk_spotnum = C.pk_spotnum
+		where pk_empnum = #{fk_empnum}
+	</select>	
 	
 	
-	
-	
-	
-		
+	<!-- 문서별 직책번호 받아오기 -->
+	<resultMap type="HashMap" id="getAppLineListMap">
+		<result property="fk_documentnum"  	column="fk_documentnum"   javaType="String" />	
+		<result property="minSpotnum"       column="minSpotnum"       javaType="String" />	
+	</resultMap>	
+	<select id="getAppLineList" parameterType="String" resultMap="getAppLineListMap">
+		select M.fk_documentnum as fk_documentnum, M.minSpotnum as minSpotnum
+		from 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+		    from tbl_approvalPerson A
+		    join tbl_approvalDocument B
+		    on A.fk_documentnum = B.pk_documentnum
+		    join tbl_employee C
+		    on A.fk_empnum = C.pk_empnum
+		    join tbl_spot D
+		    on C.fk_spotnum = D.pk_spotnum
+		    where app_status = '1' and  APPYN = '0'
+		    group by fk_documentnum
+		) M
+		join 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+		    from tbl_approvalPerson AA
+		    join tbl_approvalDocument BB
+		    on AA.fk_documentnum = BB.pk_documentnum
+		    join tbl_employee CC
+		    on AA.fk_empnum = CC.pk_empnum
+		    join tbl_spot DD
+		    on CC.fk_spotnum = DD.pk_spotnum
+		    where app_status = '1' and  APPYN = '0'
+		    and pk_empnum = #{fk_empnum}
+		    group by fk_documentnum
+		) T
+		on T.fk_documentnum = M.fk_documentnum
+	</select>
 		
 
 

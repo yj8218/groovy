@@ -231,6 +231,45 @@ public class LeejhService implements InterLeejhService {
 		return map;
 	}
 
+	//댓글추가
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = dao.commentAdd(paraMap);
+		return n;
+	}
+	
+	//댓글보기
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.commentShow(paraMap);
+		return listMap;
+	}
+	//원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = dao.getCommentTotalPage(paraMap);
+		return totalPage;
+	}
+	//댓글수정
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = dao.commentEdit(paraMap);
+		return n;
+	}
+	//댓글삭제
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = dao.commentDel(paraMap);
+		return n;
+	}
+
+	@Override
+	// === #115. 총 게시물 건수(totalCount) 구하기 - 
+	public int getBoardTotalPage(Map<String, String> paraMap) {
+		int n = dao.getBoardTotalPage(paraMap);
+		return n;
+	}
+
 
 
 

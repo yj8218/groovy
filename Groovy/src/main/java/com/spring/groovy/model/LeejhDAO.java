@@ -216,8 +216,46 @@ public class LeejhDAO implements InterLeejhDAO {
 	//맵으로 게시글 가져오기   
 	@Override
 	public Map<String, String> boardView(String pk_board_seq) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Map<String,String> map = sqlsession.selectOne("leejh.boardView", pk_board_seq);
+		return map;
+	}
+
+	//댓글추가
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = sqlsession.insert("leejh.commentAdd", paraMap);
+		return n; 
+	}
+	//댓글보기
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = sqlsession.selectList("leejh.commentShow", paraMap);
+		return listMap;
+	}
+	//원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = sqlsession.selectOne("leejh.getCommentTotalPage", paraMap);
+		return totalPage;
+	}
+	//댓글수정
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.commentEdit", paraMap);
+		return n;
+	}
+	//댓글삭제
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = sqlsession.update("leejh.commentDel", paraMap);
+		return n;
+	}
+	// === #115. 총 게시물 건수(totalCount) 구하기 - 
+	@Override
+	public int getBoardTotalPage(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("leejh.getBoardTotalPage", paraMap);
+		return n;
 	}
 
 
