@@ -388,6 +388,28 @@ public class JodnService implements InterJodnService {
 		return str_vacationdate;
 	}
 
+	// 주말을 제외한 휴가일
+	@Override
+	public int getVacationDay(Map<String, String> paraMap) {
+		int n = dao.getVacationDay(paraMap);
+		return n;
+	}
+
+	// 신청자의 남은 휴가일 구해오기
+	@Override
+	public Map<String, String> getMyVacation(Map<String, String> paraMap) {
+		Map<String, String> myVacationMap = dao.getMyVacation(paraMap);
+		return myVacationMap;
+	}
+
+	// 휴가일 차감하기
+	@Override
+	public void vacationdayUpdate(Map<String, String> paraMap) {
+		dao.vacationdayUpdate(paraMap);
+	}
+
+	
+
 
 
 

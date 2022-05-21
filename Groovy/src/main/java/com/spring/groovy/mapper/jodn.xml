@@ -863,5 +863,36 @@
 		from tbl_employee
 		where pk_empnum = #{fk_empnum}
 	</select>
+	
+	
+	
+	<!-- 주말을 제외한 휴가일 가져오기 -->
+	<select id="getVacationDay" parameterType="HashMap" resultType="int" >
+		SELECT SUM(DECODE(TO_CHAR(TO_DATE(#{startdate},'YYYY-MM-DD')+LV-1,'DY'),'토',0,'일',0,1)) as vacationdate
+		FROM (
+		SELECT LEVEL LV
+		FROM DUAL
+		CONNECT BY LEVEL &lt;= TO_DATE(#{enddate},'YYYY-MM-DD')-TO_DATE(#{startdate},'YYYY-MM-DD')+1
+		)
+	</select>
+	
+	<!-- 신청자의 남은 휴가일 알아오기 -->
+	<resultMap type="HashMap" id="getMyVacationMap">
+		<result property="vacationdate"  	column="vacationdate"     javaType="String" />	
+		<result property="fk_empnum"        column="fk_empnum"        javaType="String" />	
+	</resultMap>	
+	<select id="getMyVacation" parameterType="HashMap" resultMap="getMyVacationMap">
+		select vacationdate, fk_empnum
+		from TBL_APPROVALDOCUMENT A
+		join TBL_EMPLOYEE B
+		on A.fk_empnum = B.pk_empnum
+		where pk_documentnum = #{pk_documentnum}
+	</select>
+
+	<!-- 휴가일 차감하기 -->
+	<update id="vacationdayUpdate" parameterType="HashMap">
+		UPDATE TBL_EMPLOYEE SET vacationdate = #{vacationday} WHERE pk_empnum = #{V_fk_empnum}
+	</update>
+
 
 </mapper>

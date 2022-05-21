@@ -1151,7 +1151,7 @@ public class JodnController {
 			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 			
 			String pageBar = "<ul style='list-style: none;'>";
-			String url = request.getContextPath()+"/myApproval.groovy";
+			String url = request.getContextPath()+"/waitApproval.groovy";
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
@@ -1306,9 +1306,82 @@ public class JodnController {
 				// 남은 결재자가 없는 경우 문서상태변경
 				x = service.app_success_NApprover(paraMap);
 				
+		//		System.out.println("확인용 apl_no =>"+ apl_no);
+				
 				if("5".equals(apl_no)) {
 					
 					Map<String,String> vacationMap = service.selectVacationDocument(paraMap);
+					String vstartdate = vacationMap.get("vstartdate");
+					String venddate = vacationMap.get("venddate");
+					String pk_vstatus = vacationMap.get("pk_vstatus");
+					
+					// 휴가신청에서 연차인지 아닌지 알아오기
+					if("1".equals(pk_vstatus)) {
+						
+							String startdate = vstartdate.substring(0, 10);
+							String enddate = venddate.substring(0, 10);
+//							System.out.println("확인용 startdate =>" + startdate );
+//							System.out.println("확인용 enddate =>" + enddate );
+							
+							String str_starthour = vstartdate.substring(11, 13);
+							String str_endhour = venddate.substring(11, 13);
+//							System.out.println("확인용 str_starthour =>" + str_starthour );
+//							System.out.println("확인용 str_endhour =>" + str_endhour );
+							
+							paraMap.put("startdate", startdate);
+							paraMap.put("enddate", enddate);
+							
+							// 주말을 제외한 휴가일 가져오기
+							int vacationdate = service.getVacationDay(paraMap);
+							Map<String,String> myVacationMap = service.getMyVacation(paraMap);
+							String str_myVacation = myVacationMap.get("vacationdate");
+							String V_fk_empnum = myVacationMap.get("fk_empnum");
+							paraMap.put("V_fk_empnum", V_fk_empnum);
+							
+//							System.out.println("str_myVacation => " + str_myVacation);
+							
+							int myVacation = Integer.parseInt(str_myVacation);
+							
+							int starthour = Integer.parseInt(str_starthour);
+							int endhour = Integer.parseInt(str_endhour);
+							int timegap = 0;
+//							System.out.println("확인용 myVacation =>" + myVacation );
+//							System.out.println("확인용 starthour =>" + starthour );
+//							System.out.println("확인용 endhour =>" + endhour );
+							
+							if(starthour < 9 ) {
+								starthour = starthour + 12;
+							}
+							if(endhour < 9) {
+								endhour = endhour + 12;
+							}
+
+//							System.out.println("확인용 starthour =>" + starthour );
+//							System.out.println("확인용 endhour =>" + endhour );
+							
+							
+							if(startdate.equals(enddate) && endhour-starthour < 9) {
+								vacationdate = 0;
+								timegap = endhour - starthour;
+//								System.out.println("확인용 timegap =>" + timegap );
+							}
+							
+							if(startdate.equals(enddate) && starthour == 9 && endhour == 18) {
+								vacationdate = 1;
+							}
+							
+							
+							int vacationday = (myVacation - (vacationdate*8))-timegap;
+//							System.out.println("확인용 vacationday =>" + vacationday );
+//							System.out.println("확인용 timegap =>" + timegap );
+//							System.out.println("확인용 vacationdate =>" + vacationdate );
+							
+							paraMap.put("vacationday", Integer.toString(vacationday));
+							
+							service.vacationdayUpdate(paraMap);
+					
+					}
+					
 					
 				}
 				
@@ -1439,7 +1512,7 @@ public class JodnController {
 			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 			
 			String pageBar = "<ul style='list-style: none;'>";
-			String url = request.getContextPath()+"/myApproval.groovy";
+			String url = request.getContextPath()+"/endApproval.groovy";
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
@@ -1626,7 +1699,7 @@ public class JodnController {
 			int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 			
 			String pageBar = "<ul style='list-style: none;'>";
-			String url = request.getContextPath()+"/myApproval.groovy";
+			String url = request.getContextPath()+"/referenceApproval.groovy";
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
