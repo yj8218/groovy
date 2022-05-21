@@ -95,7 +95,4 @@ public interface InterKimyjDAO {
 
 	List<Map<String, String>> selectVacationlist();
 
-	
-	
-
 }//end of public interface InterKimyjDAO

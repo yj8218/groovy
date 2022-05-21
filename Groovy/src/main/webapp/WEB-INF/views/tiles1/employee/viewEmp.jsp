@@ -161,7 +161,6 @@ $(document).ready(function(){
 		goSearch();
 		
 	})// end of $("select#select_order").bind("change", function(){
-
 	
 	
 	// === 전체 datepicker 옵션 일괄 설정하기 ===  
@@ -174,10 +173,6 @@ $(document).ready(function(){
           ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
           ,changeYear: true        //콤보박스에서 년 선택 가능
           ,changeMonth: true       //콤보박스에서 월 선택 가능                
-          ,showOn: "both"          //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-          ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-          ,buttonImageOnly: true   //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-          ,buttonText: "선택"       //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
           ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
           ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
@@ -193,8 +188,6 @@ $(document).ready(function(){
 	    $('input#startday').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
 	
 	});// end of $(function() 
-	
-	
 	
 });
 
@@ -226,8 +219,6 @@ function goSearch(){
 		return;
 	}
 	
-	
-	
 	const frm = document.searchFrm;
 	frm.method = "GET";
 	frm.action = "viewEmp.groovy"; // 자기자신한테 간다.
@@ -245,7 +236,7 @@ function getOneEmpInfo(pk_empnum){
 		type:"GET",
 		dataType:"JSON",
 		success:function(json){
-	//		alert(json.emppicturename);
+			
 			const imgUrl = "<%=ctxPath %>/resources/images/프로필사진/"+json.emppicturename;
 			$("#empImg").attr("src", imgUrl);
 
@@ -274,7 +265,7 @@ function getOneEmpInfo(pk_empnum){
 			$("span#m_spotnamekor").html(json.spotnamekor);
 			
 			$("span#m_startday").html(json.startday);
-			
+
 			
 			if(json.resignationstatus == 0){
 				$("span#m_resignationstatus").html("재직");
@@ -290,18 +281,13 @@ function getOneEmpInfo(pk_empnum){
 				$("span#m_resignationstatus").html("휴가중");
 			}
 			
-			
 			$("span#m_salary").html(json.salary.toLocaleString('en'));
-			
 			
 		},
 		error: function(request, status, error){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
           }
 	});// end of $.ajax
-	
-	
-	
 	
 }// end of function getOneEmpInfo()
 
@@ -313,30 +299,6 @@ function getOneEmpInfo(pk_empnum){
 <div class="container-md" style="margin-top: 45px;">
 <div class="project-detail-top clearfix">
 
-<%--
-TBL_EMPLOYEE 에서
-EMPNUM          v     NUMBER(10)    
-NAME            v     VARCHAR2(20)  
-PHONE           v     VARCHAR2(200) 
-EMAIL           v     VARCHAR2(200) 
-FK_VSTATUS      d     NUMBER(1)     휴가상태(0,1)
-EMPPICTURENAME  v     VARCHAR2(20)  직원사진
-
-TBL_DEPARTMENT 에서
-DEPTNAMEKOR 부서이름
-
-TBL_SPOT에서
-SPOTNAMEKOR 직위이름
-
-TBL_VACATION 에서
-PK_VSTATUS	휴가상태
-VTYPE		휴가종류
-
-검색조건
-부서별
-직위별
-사번기준
- --%> 
 
     <form name="searchFrm">
 		<table id="tbl_viewEmp">
@@ -390,7 +352,6 @@ VTYPE		휴가종류
 						<option class="op" value="pk_empnum">사번</option>
 					</select>
 					<div class="input-group ml-2" id="search" >
-					<!-- 돋보기 이미지, 나중에 이미지 다운받고 i 태그로 바꾸기 -->
 					<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 				 		<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 					</svg>
@@ -437,7 +398,7 @@ VTYPE		휴가종류
 			<th class="colsize1">이메일</th>
 		</tr>
 		
-		<!--  ++ 관리자로 로그인 했을때만 볼수있게 처리 -->
+		
 		<c:if test="${empty requestScope.emps }">
 			<tr class="" >
 				<td colspan="12">조회결과가 없습니다.</td>
@@ -466,7 +427,6 @@ VTYPE		휴가종류
 				</tr>
 			</c:forEach>
 			
-			
 		</c:if>
 		
 	</table>
@@ -475,12 +435,7 @@ VTYPE		휴가종류
 	<div align="center" id="pageBar" >
 		${requestScope.pageBar }
 	</div>
-        
-<%--	
-	<c:if test="${not empty boardvo}">
-	++ 반복문
---%>
-		
+
 
 <!-- 모달팝업 -->
 <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -528,21 +483,6 @@ VTYPE		휴가종류
   </div>
 </div>
 	
-	
-		
-		
-	
-<%--		
-	</c:if>
---%>
-<%-- 
-	<c:if test="${empty boardvo}">
-		<div style="padding: 50px 0; font-size: 16pt; color: red;">존재하지 않습니다.</div>
-	</c:if>
---%>
-	
-
-
 </div>
 </div>
 
