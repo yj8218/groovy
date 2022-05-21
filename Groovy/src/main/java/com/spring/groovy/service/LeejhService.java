@@ -165,8 +165,8 @@ public class LeejhService implements InterLeejhService {
 
 	// 글 list로 읽어오기 
 	@Override
-	public List<BoardVO> getBoardList() {
-		List<BoardVO> boardList = dao.getBoardList(); 
+	public List<BoardVO> getBoardList(Map<String, String> paraMap) {
+		List<BoardVO> boardList = dao.getBoardList(paraMap); 
 		return boardList;
 	}
 
@@ -266,8 +266,8 @@ public class LeejhService implements InterLeejhService {
 	@Override
 	// === #115. 총 게시물 건수(totalCount) 구하기 - 
 	public int getBoardTotalPage(Map<String, String> paraMap) {
-		int n = dao.getBoardTotalPage(paraMap);
-		return n;
+		int totalPage = dao.getBoardTotalPage(paraMap);
+		return totalPage;
 	}
 
 
