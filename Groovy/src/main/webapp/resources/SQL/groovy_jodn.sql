@@ -799,7 +799,35 @@ select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_na
 
 
 
-
+select M.fk_documentnum, M.minSpotnum
+from 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson A
+    join tbl_approvalDocument B
+    on A.fk_documentnum = B.pk_documentnum
+    join tbl_employee C
+    on A.fk_empnum = C.pk_empnum
+    join tbl_spot D
+    on C.fk_spotnum = D.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    group by fk_documentnum
+) M
+join 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson AA
+    join tbl_approvalDocument BB
+    on AA.fk_documentnum = BB.pk_documentnum
+    join tbl_employee CC
+    on AA.fk_empnum = CC.pk_empnum
+    join tbl_spot DD
+    on CC.fk_spotnum = DD.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    and pk_empnum = '20170222-01'
+    group by fk_documentnum
+) T
+on T.fk_documentnum = M.fk_documentnum
 
 
 
@@ -818,4 +846,39 @@ on F.PK_SPOTNUM = A.fK_SPOTNUM
 where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0' and status = '0' 
 order by C.writeday desc
 
+-------------------------
+delete from tbl_employee
+where pk_empnum in ('001-01','2-001','001-02','1-33')
 
+
+select CONSTRAINT_NAME, TABLE_NAME, R_CONSTRAINT_NAME
+from user_constraints
+where R_CONSTRAINT_NAME = 'TBL_EMPLOYEE_PK' 
+
+
+
+
+alter table tbl_employee
+add constraint primary key
+foreign key (fk_empnum)
+references  tbl_employee(pk_empnum)
+on delete cascade
+
+ALTER TABLE tbl_employee
+ADD CONSTRAINT primary key
+  FOREIGN KEY (fk_empnum)
+  REFERENCES tbl_employee(pk_empnum)
+  ON DELETE CASCADE;
+
+
+select CONSTRAINT_NAME, TABLE_NAME, R_CONSTRAINT_NAME
+from user_constraints
+where R_CONSTRAINT_NAME = 'TBL_EMPLOYEE_PK' 
+
+select *
+from tbl_employee
+
+delete from TBL_COMMUTE_STATUS
+where fk_empnum in ('001-01','2-001','001-02','1-33')
+
+commit;
