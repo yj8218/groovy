@@ -159,6 +159,9 @@ public interface InterJodnDAO {
 	// 문서별 직급번호 받아오기
 	List<Map<String, String>> getAppLineList(String fk_empnum);
 
+	// 남은 휴가 일수 알아오기
+	String getVacationdate(String fk_empnum);
+
 	
 	
 	

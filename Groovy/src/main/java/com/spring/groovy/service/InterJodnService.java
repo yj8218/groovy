@@ -167,6 +167,9 @@ public interface InterJodnService {
 	// 문서별 직급번호 받아오기
 	List<Map<String, String>> getAppLineList(String fk_empnum);
 
+	// 남은 휴가일수 받아오기
+	String getVacationdate(String fk_empnum);
+
 
 
 	

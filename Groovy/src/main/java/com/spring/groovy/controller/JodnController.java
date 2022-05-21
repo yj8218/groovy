@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.groovy.annotation.NoLogging;
 import com.spring.groovy.common.FileManager;
 import com.spring.groovy.common.MyUtil;
 import com.spring.groovy.model.*;
@@ -237,7 +235,7 @@ public class JodnController {
 			
 		} else {
 			
-			String message = "휴가신청에 실패했습니다.";
+			String message = "출장비신청에 실패했습니다.";
 			String loc = "javascript:history.back()";
 			
 			mav.addObject("message",message);
@@ -386,12 +384,26 @@ public class JodnController {
 	
 	// 휴가 신청
 	@RequestMapping(value="/vacationEdit.groovy")
-	public ModelAndView vacationEdit(ModelAndView mav) {
+	public ModelAndView vacationEdit(ModelAndView mav, HttpSession session) {
+		
+		EmployeeVO loginuser = (EmployeeVO) session.getAttribute("loginuser");
+		
+		String fk_empnum = loginuser.getPk_empnum();
+		String name = loginuser.getName();
+		
+		String str_vacationdate = service.getVacationdate(fk_empnum);
 		
 		List<String> vacationTypeList = service.vacationType();
 		
-	//	System.out.println(vacationType.toString());
+		int vacationdate = Integer.parseInt(str_vacationdate);
 		
+	//	System.out.println(vacationType.toString());
+		int day = vacationdate/8;
+		int hour = vacationdate%8;
+		
+		mav.addObject("day", Integer.toString(day));
+		mav.addObject("hour", Integer.toString(hour));
+		mav.addObject("name", name);
 		mav.addObject("vacationTypeList", vacationTypeList);
 		
 		mav.setViewName("board/vacationEdit.tiles1");
@@ -732,8 +744,10 @@ public class JodnController {
 		
 		paraMap.put("arr_reference_chk", arr_reference_chk);
 		paraMap.put("pk_documentnum", pk_documentnum);
-		
-		int n = service.referenceList(paraMap);
+		int n = 0;
+		if(arr_reference_chk.length != 0) {
+			n = service.referenceList(paraMap);
+		}
 		
 //		System.out.println("확인용 n =>"+n);
 		
@@ -1084,7 +1098,6 @@ public class JodnController {
 //		
 //		 	
 			
-			
 			Map<String, Object> paraMap = new HashMap<>();
 			paraMap.put("fk_empnum", fk_empnum);
 			paraMap.put("fk_documentnumArr", fk_documentnumArr);
@@ -1274,12 +1287,14 @@ public class JodnController {
 			
 			String pk_documentnum = request.getParameter("pk_documentnum");
 			String opinion = request.getParameter("opinion");
+			String apl_no = request.getParameter("apl_no");
 			
 			Map<String,String> paraMap = new HashMap<>();
 			paraMap.put("fk_empnum", fk_empnum);
 			paraMap.put("pk_documentnum", pk_documentnum);
 			paraMap.put("opinion", opinion);
-
+			paraMap.put("apl_no", apl_no);
+			
 			// 결재승인하기
 			int n = service.app_success(paraMap);
 			
@@ -1290,6 +1305,11 @@ public class JodnController {
 			if(n==1 && count==0) {
 				// 남은 결재자가 없는 경우 문서상태변경
 				x = service.app_success_NApprover(paraMap);
+				
+				if("5".equals(apl_no)) {
+					
+				}
+				
 			}
 			
 			if(n==1 && count!=0) {

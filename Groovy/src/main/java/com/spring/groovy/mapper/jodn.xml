@@ -503,7 +503,7 @@
 				join tbl_spot F
 				on F.PK_SPOTNUM = A.fK_SPOTNUM
 				where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0' 
-		        <if test="fk_documentnumArr != null">
+		        <if test="fk_documentnumArr != null and fk_documentnumArr.length != 0">
 			        and C.pk_documentnum in
 			        <foreach collection="fk_documentnumArr" index="i" open="(" separator="," close=")">
 			           '${fk_documentnumArr[i]}'
@@ -528,7 +528,7 @@
 		join tbl_spot F
 		on F.PK_SPOTNUM = A.fK_SPOTNUM
 		where B.fk_empnum = #{fk_empnum} and B.app_status = '1' and APPYN = '0' and status = '0' 
-		<if test="fk_documentnumArr != null">
+		<if test="fk_documentnumArr != null and fk_documentnumArr.length != 0">
 	        and C.pk_documentnum in
 	        <foreach collection="fk_documentnumArr" index="i" open="(" separator="," close=")">
 	           '${fk_documentnumArr[i]}'
@@ -856,5 +856,12 @@
 	</select>
 		
 
+
+	<!-- 남은휴가일수 알아오기 -->
+	<select id="getVacationdate" parameterType="String" resultType="String">
+		select nvl(vacationdate, 0) as vacationdate
+		from tbl_employee
+		where pk_empnum = #{fk_empnum}
+	</select>
 
 </mapper>

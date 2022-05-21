@@ -369,6 +369,7 @@ button.btn_wait {
 				<textarea style="width: 100%; height: 100px; margin-bottom: 40px; background-color: #faf9f9;; " name="opinion"></textarea>
 				<br>
 				<input type="hidden" name="pk_documentnum" />
+				<input type="hidden" name="apl_no" />
 			</form>
 			<button class="btn_wait" onclick="javascript:location.href='<%= ctxPath%>${requestScope.gobackURL}'">확인</button>
 			<button class="btn_wait" type="button" onclick="app_fail()">반려하기</button>

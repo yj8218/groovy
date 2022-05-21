@@ -771,10 +771,14 @@ join
 on T.fk_documentnum = M.fk_documentnum
 
 
-select *
+select nvl(vacationdate, 0) as vacationdate
 from tbl_employee
+where pk_empnum = '20200902-01'
 
+update tbl_employee set VACATIONDATE = '104' where fk_spotnum = '7'
 
+select *
+from tbl_spot
 
 select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
 				from TBL_APPROVALPERSON B
@@ -882,3 +886,27 @@ delete from TBL_COMMUTE_STATUS
 where fk_empnum in ('001-01','2-001','001-02','1-33')
 
 commit;
+
+select *
+from TBL_APPROVALDOCUMENT
+
+select vstartdate
+from TBL_VACATIONLIST
+where PK_DOCUMENTNUM = '20220519143458552'
+
+select venddate
+from TBL_VACATIONLIST
+where PK_DOCUMENTNUM = '20220519143458552'
+
+-- 날짜 차이 구하기
+SELECT SUM(1) -- "총날수"
+,SUM(DECODE(TO_CHAR(TO_DATE('20061201','YYYYMMDD')+LV-1,'DY'),'토',0,'일',0,1)) --"토/일 제외날수"
+FROM (
+SELECT LEVEL LV
+FROM DUAL
+CONNECT BY LEVEL<=TO_DATE('20061220','YYYYMMDD')-TO_DATE('20061201','YYYYMMDD')+1
+)
+
+
+
+

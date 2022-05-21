@@ -22,7 +22,6 @@ public class JodnService implements InterJodnService {
 	@Autowired
 	private InterJodnDAO dao;
 	@Autowired
-	private AES256 aes;
 	/////////////////////////////////////////////////////
 	
 	// 결재 종류 가져오기
@@ -380,6 +379,13 @@ public class JodnService implements InterJodnService {
 	public List<Map<String, String>> getAppLineList(String fk_empnum) {
 		List<Map<String,String>> appLineList = dao.getAppLineList(fk_empnum);
 		return appLineList;
+	}
+
+	// 남은 휴가 일수 알아오기
+	@Override
+	public String getVacationdate(String fk_empnum) {
+		String str_vacationdate = dao.getVacationdate(fk_empnum);
+		return str_vacationdate;
 	}
 
 
