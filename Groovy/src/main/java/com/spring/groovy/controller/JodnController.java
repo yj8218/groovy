@@ -1308,6 +1308,8 @@ public class JodnController {
 				
 				if("5".equals(apl_no)) {
 					
+					Map<String,String> vacationMap = service.selectVacationDocument(paraMap);
+					
 				}
 				
 			}
