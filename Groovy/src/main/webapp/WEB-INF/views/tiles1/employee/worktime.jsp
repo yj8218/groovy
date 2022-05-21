@@ -66,8 +66,6 @@ li:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 	border: solid 1px #9966FF;
 	cursor: pointer;
-	
-	
 }
 #fileLayerUl{
 	font-size: 11pt;
@@ -76,9 +74,6 @@ li:hover{
 .colsize2{width: 110px;}
 .colsize3{width: 20px;}
 .colsize4{width: 90px;}
-
-#empOption{
-}
 
 select{
 	width: 100px;
@@ -131,10 +126,17 @@ a#goSearch:hover{
 	margin: 5px 0;
 	vertical-align: middle;
 	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
-	
+}
+.commuteList_nocursor{
+	margin: 5px 0;
+	vertical-align: middle;
+	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
 }
 .commuteList:hover{
 	cursor: pointer;
+	background-color: rgba(153, 102, 255, 0.1);  
+}
+.commuteList_nocursor:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 }
 </style>
@@ -158,24 +160,18 @@ $(document).ready(function(){
 	
 	
 	// === 전체 datepicker 옵션 일괄 설정하기 ===  
-	//     한번의 설정으로 $("input#fromDate"), $('input#toDate')의 옵션을 모두 설정할 수 있다.
 		$(function() {
-      //모든 datepicker에 대한 공통 옵션 설정
-      $.datepicker.setDefaults({
-    	  dateFormat: 'yy-mm-dd'  //Input Display Format 변경
-          ,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-          ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-          ,changeYear: true        //콤보박스에서 년 선택 가능
-          ,changeMonth: true       //콤보박스에서 월 선택 가능                
-          ,showOn: "both"          //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-          ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-          ,buttonImageOnly: true   //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-          ,buttonText: "선택"       //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-          ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
-          ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
-          ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-          ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-          ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트             
+      		$.datepicker.setDefaults({
+		    	  dateFormat: 'yy-mm-dd'  //Input Display Format 변경
+		          ,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+		          ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+		          ,changeYear: true        //콤보박스에서 년 선택 가능
+		          ,changeMonth: true       //콤보박스에서 월 선택 가능                
+		          ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
+		          ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+		          ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+		          ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+		          ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트             
 	  });
 	
 	    //input을 datepicker로 선언
@@ -210,9 +206,8 @@ function showOneCommuteStatusByAjax(pk_empnum, name){
 					if(item.TODAYWORKEDTIME == null){
 						item.TODAYWORKEDTIME = "-"	
 					}
-				
 					
-					html += "<tr class='commuteList'  >";
+					html += "<tr class='commuteList_nocursor' >";
 				
 					html += "<td class='tcenter' style='width:100px; padding:10px 0;'>"+(index+1)+"</td>"
 					html += "<td class='tcenter' style='width:165px;'>"+item.TODAY+"</td>"
@@ -227,9 +222,7 @@ function showOneCommuteStatusByAjax(pk_empnum, name){
 					html += "</tr>"
 				
 				});
-				
 			}
-			
 			
 			$("span#oneCommuteStatusResult").html(html);
 	
@@ -238,18 +231,6 @@ function showOneCommuteStatusByAjax(pk_empnum, name){
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
           }
 	});// end of $.ajax 
-	
-	<%--
-	// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
-	const pop_width = 900;
-	const pop_height = 800;
-	const pop_left = Math.ceil( ((window.screen.width)-pop_width)/2 ); 
-	const pop_top = Math.ceil( ((window.screen.height)-pop_height)/2 );
-	
-	window.open(url, "showOneCommuteStatus",
-			   	"left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height );
-	
---%>
 	
 }// end of function getOneEmpInfo()
 
@@ -327,7 +308,6 @@ function goSearch(){
 					<option class="op" value="pk_empnum">사번</option>
 				</select>
 				<div class="input-group ml-2" id="search" >
-				<!-- 돋보기 이미지, 나중에 이미지 다운받고 i 태그로 바꾸기 -->
 				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 			 		<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 				</svg>

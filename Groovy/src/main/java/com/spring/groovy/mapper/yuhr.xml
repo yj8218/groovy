@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- ==== #29. mapper 기본설정 ==== -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="yuhr">
 	
 	<!-- // 부서명을 가져오기 위함  -->
@@ -179,7 +177,7 @@
 	
 	<insert id="status_late" parameterType="String">
 		 insert into tbl_commute_status(pk_commute_statusnum, fk_empnum, late)
-		values(commute_statusseq.nextval, #{pk_empnum}, late + 1)
+		values(commute_statusseq.nextval, #{pk_empnum}, 1)
 	</insert>
 	
 	<select id="isClickedStartBtn" parameterType="String" resultType="int">
@@ -348,7 +346,7 @@
 	</resultMap>
 	
 	
-	<select id="showOneCommuteStatus" parameterType="String" resultMap="oneCommuteStatusMap">
+	<select id="showOneCommuteStatus" parameterType="HashMap" resultMap="oneCommuteStatusMap">
 		select c.fk_empnum
 		     , to_char(startwork, 'hh24:mi:ss') as startwork
 		     , to_char(endwork, 'hh24:mi:ss') as endwork
@@ -360,6 +358,9 @@
 		left JOIN totalworkedtimecalc T
 		on c.fk_empnum = T.FK_EMPNUM
 		where C.fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(today, 'yyyy-mm-dd')
+		<if test="date_start != '' ">
+			and to_char(today, 'yyyy-mm-dd') between #{date_start} and #{date_end}
+		</if>
 	</select>
 	
 	<select id="getCommuteTotalCount" parameterType="HashMap" resultType="int">
@@ -408,7 +409,16 @@
 		)	
 	</select>
 	
+	<resultMap type="HashMap" id="worktimeMap">
+		<result property="startwork" 		column="startwork" 			javaType="String" />
+		<result property="endwork" 		column="endwork" 			javaType="String" />
+	</resultMap>
 	
+	<select id="getStartWorkTime" parameterType="String" resultMap="worktimeMap">
+		select to_char(startwork, 'hh24:mi:ss') as startwork, to_char(endwork, 'hh24:mi:ss') as endwork
+		from tbl_commute
+		where to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and fk_empnum = #{login_empnum}
+	</select>
 	
 	
 </mapper>

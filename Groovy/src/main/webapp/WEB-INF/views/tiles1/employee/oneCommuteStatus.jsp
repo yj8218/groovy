@@ -136,11 +136,43 @@ a#goSearch:hover{
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	// === 전체 datepicker 옵션 일괄 설정하기 ===  
+	$(function() {
+  		$.datepicker.setDefaults({
+	    	  dateFormat: 'yy-mm-dd'  //Input Display Format 변경
+	          ,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	          ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+	          ,changeYear: true        //콤보박스에서 년 선택 가능
+	          ,changeMonth: true       //콤보박스에서 월 선택 가능                
+	          ,yearSuffix: "년"         //달력의 년도 부분 뒤에 붙는 텍스트
+	          ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+	          ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+	          ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+	          ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트             
+  });
+
+    //input을 datepicker로 선언
+    $("input#date_start").datepicker();                    
+    $("input#date_end").datepicker();
+      
+    // startday의 초기값을 오늘 날짜로 설정
+    $('input#startday').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후)
+
+});// end of $(function() 
 });
 
 // function declaration
-
+function goSearch() {
+	
+	// 날짜입력 유효성검사
+	
+	// 전송
+	const frm = document.dataFrm;
+	frm.action = "<%= ctxPath%>/showOneCommuteStatus.groovy"; 
+	frm.method = "POST";
+	frm.submit();
+	
+}
 
 </script>
 
@@ -150,24 +182,23 @@ $(document).ready(function(){
 
 
 
+		<form name="dataFrm">
 		<table id="tbl_viewEmp" >
-			
 			<tr >
 				<th>기간조회</th>
 				<td>
-					<input type="text" value="시작일">&nbsp;~&nbsp;
-					<input type="text" value="마지막일">
+					<input type="text" id="date_start" name="date_start" placeholder="시작일">&nbsp;~&nbsp;
+					<input type="text" id="date_end" name="date_end" placeholder="마지막일">
 				</td>
 			</tr>
-			
 			<tr >
 				<th></th>
 				<td>
-					<a id="goSearch" onclick="" >조회하기</a>
+					<a id="goSearch" onclick="goSearch()" >조회하기</a>
 				</td>
 			</tr>
-			
 		</table>
+		</form>		
 	
 	<div id="orderby">
 		<div>
@@ -177,7 +208,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 	
-	<h2 class="mb-5">${requestScope.pk_empnum }님의 근태관리</h2>
+	<h2 class="mb-5">${requestScope.loginuser.name }님의 근태관리</h2>
 	<table id="tbl_result" class="tcenter" >
 		<tr id="fileItemTapLi">
 			<th colspan="1" ></th>
@@ -196,11 +227,16 @@ $(document).ready(function(){
 			<th class="colsize3">결근</th>
 		</tr>
 		
+		<c:if test="${empty requestScope.OneCommuteStatus }">
+			<tr class="commuteList">
+				<td colspan="9">근태 기록이 없습니다.</td>
+			</tr>
+		</c:if>
 		
 		<c:if test="${not empty requestScope.OneCommuteStatus }">
 			<c:forEach var="OneInfoMap" items="${requestScope.OneCommuteStatus }" varStatus="status">
 		
-			<tr class="commuteList" onclick="getOneCommuteInfo('${InfoMap.pk_empnum}')">
+			<tr class="commuteList">
 				<td>${status.count }</td>
 				<td>${OneInfoMap.TODAY }</td>
 				<td>${OneInfoMap.startwork }</td>
@@ -215,27 +251,6 @@ $(document).ready(function(){
 			</c:forEach>
 		</c:if>
 	</table>
-	
-        
-<%--	
-	<c:if test="${not empty boardvo}">
-	++ 반복문
---%>
-		
-	
-	
-		
-		
-	
-<%--		
-	</c:if>
---%>
-<%-- 
-	<c:if test="${empty boardvo}">
-		<div style="padding: 50px 0; font-size: 16pt; color: red;">존재하지 않습니다.</div>
-	</c:if>
---%>
-	
 
 
 </div>

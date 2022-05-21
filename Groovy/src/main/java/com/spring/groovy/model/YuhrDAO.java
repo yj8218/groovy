@@ -1,14 +1,7 @@
 package com.spring.groovy.model;
 
-
-import java.awt.Desktop;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +9,6 @@ import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import com.spring.groovy.common.AES256;
@@ -53,7 +45,6 @@ public class YuhrDAO implements InterYuhrDAO {
 		String checkValue = paraMap.get("checkValue");
 			
 		try {
-			
 			if("email".equalsIgnoreCase(paraMap.get("checkColumn")) ) { // 이메일일 때는 암호화해서 중복검사한다.
 				paraMap.put("checkValue", aes.encrypt(checkValue) );
 			//	System.out.println("확인용  checkValue  ===>" +  paraMap.get("checkValue") );
@@ -83,7 +74,6 @@ public class YuhrDAO implements InterYuhrDAO {
 		System.out.println(email);
 		
 		try {
-			
 //			empVo.setPhone(aes.encrypt(phone)); // 연락처 (AES-256 암호화/복호화 대상)
 			empVo.setEmail(aes.encrypt(email)); // 이메일 (AES-256 암호화/복호화 대상)
 			
@@ -100,24 +90,21 @@ public class YuhrDAO implements InterYuhrDAO {
 	public List<EmployeeVO> getEmps(Map<String, String> paraMap) {
 		
 		List<EmployeeVO> emps = sqlsession.selectList("yuhr.getEmps", paraMap);
-	/*	
+		
 		try {
 			for(EmployeeVO emp : emps) {
 				
 				String email = emp.getEmail();
 				
-				// 전부 다 암호화 되어있어야하는데, 되어있는것도 있고 안되어있는 것도 있다.
-				System.out.println("확인용 email 1 " + email);
 				email = aes.decrypt(email);
 				
-				System.out.println("확인용 email 2 " + email);
 				emp.setEmail(email);
 			}
 		
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		} 
-	*/	
+		
 		return emps;
 	}
 
@@ -204,8 +191,8 @@ public class YuhrDAO implements InterYuhrDAO {
 
 	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
 	@Override
-	public List<Map<String, String>> showOneCommuteStatus(String pk_empnum) {
-		List<Map<String, String>> OneCommuteStatus = sqlsession.selectList("yuhr.showOneCommuteStatus", pk_empnum);
+	public List<Map<String, String>> showOneCommuteStatus(Map<String, String> paraMap) {
+		List<Map<String, String>> OneCommuteStatus = sqlsession.selectList("yuhr.showOneCommuteStatus", paraMap);
 		return OneCommuteStatus;
 	}
 
@@ -221,6 +208,13 @@ public class YuhrDAO implements InterYuhrDAO {
 	public List<String> getEmpsNoWorkToday() {
 		List<String> empsNoWorkToday = sqlsession.selectList("yuhr.getEmpsNoWorkToday");
 		return empsNoWorkToday;
+	}
+
+	// 출석 한 시각 알아오기
+	@Override
+	public Map<String, String> getStartWorkTime(String login_empnum) {
+		Map<String, String> startWorkTime = sqlsession.selectOne("yuhr.getStartWorkTime", login_empnum);
+		return startWorkTime;
 	}
 
 

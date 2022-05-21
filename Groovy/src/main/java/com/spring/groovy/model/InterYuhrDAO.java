@@ -57,13 +57,16 @@ public interface InterYuhrDAO {
 	int todayworkedtime(String pk_empnum);
 
 	// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
-	List<Map<String, String>> showOneCommuteStatus(String pk_empnum);
+	List<Map<String, String>> showOneCommuteStatus(Map<String, String> paraMap);
 
 	// 조회한 조건에 따른 총 근태의 수
 	int getCommuteTotalCount(Map<String, String> paraMap);
 
 	// 오늘 휴무 아닌데 출근 안한 사원들의 empnum
 	List<String> getEmpsNoWorkToday();
+
+	// 출석 한 시각 알아오기
+	Map<String, String> getStartWorkTime(String login_empnum);
 
 
 }//end of public interface InterYuhrDAO
