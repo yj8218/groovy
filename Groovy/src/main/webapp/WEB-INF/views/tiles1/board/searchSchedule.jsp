@@ -78,8 +78,8 @@
 		    
 		$("tr.infoSchedule").click(function(){
 		//	console.log($(this).html());
-			var scheduleno = $(this).children(".scheduleno").text();
-			goDetail(scheduleno);
+			var pk_scheduleno = $(this).children(".pk_scheduleno").text();
+			goDetail(pk_scheduleno);
 		});
 		
 		// 검색 할 때 엔터를 친 경우
@@ -103,13 +103,13 @@
 	
 	// ~~~~~~~ Function Declartion ~~~~~~~
 	
-	function goDetail(scheduleno){
+	function goDetail(pk_scheduleno){
 		var frm = document.goDetailFrm;
-		frm.scheduleno.value = scheduleno;
+		frm.pk_scheduleno.value = pk_scheduleno;
 		
 		frm.method="get";
-		frm.action="<%= ctxPath%>/schedule/detailSchedule.action";
-		frm.submit();
+		frm.action="<%= ctxPath%>/detailSchedule.groovy";
+		//frm.submit();
 	} // end of function goDetail(scheduleno){}-------------------------- 
 			
 
@@ -133,7 +133,7 @@
 		
 		var frm = document.searchScheduleFrm;
         frm.method="get";
-        frm.action="<%= ctxPath%>/schedule/searchSchedule.action";
+        frm.action="<%= ctxPath%>/searchSchedule.groovy";
         frm.submit();
 	}
 
@@ -141,7 +141,7 @@
 
 <div style="margin-left: 80px; width: 88%;">
 	<div>
-		<h3 style="display: inline-block;">일정 검색결과</h3>&nbsp;&nbsp;<a href="<%= ctxPath%>/schedule/scheduleManagement.action"><span>◀캘린더로 돌아가기</span></a>
+		<h3 style="display: inline-block;">일정 검색결과</h3>&nbsp;&nbsp;<a href="<%= ctxPath%>/scheduleManagement.groovy"><span>◀캘린더로 돌아가기</span></a>
 
 		<div id="searchPart" style="float: right; margin-top: 50px;">
 			<form name="searchScheduleFrm">
@@ -167,7 +167,7 @@
 						<option value="15">15</option>
 						<option value="20">20</option>
 					</select>&nbsp;&nbsp;
-					<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}"/>
+					<input type="hidden" name="fk_empnum" value="${sessionScope.loginuser.pk_empnum}"/>
 					<button type="button" class="btn_normal" style="display: inline-block;" onclick="goSearch()">검색</button>
 				</div>
 			</form>
@@ -194,7 +194,7 @@
 			<c:if test="${not empty requestScope.scheduleList}">
 				<c:forEach var="map" items="${requestScope.scheduleList}">
 					<tr class="infoSchedule">
-						<td style="display: none;" class="scheduleno">${map.SCHEDULENO}</td>
+						<td style="display: none;" class="pk_scheduleno">${map.PK_SCHEDULENO}</td>
 						<td>${map.STARTDATE} - ${map.ENDDATE}</td>
 						<td>${map.LGCATGONAME} - ${map.SMCATGONAME}</td>
 						<td>${map.NAME}</td>  <%-- 캘린더 작성자명 --%>
@@ -211,7 +211,7 @@
 </div>
 
 <form name="goDetailFrm"> 
-   <input type="hidden" name="scheduleno"/>
+   <input type="hidden" name="pk_scheduleno"/>
    <input type="hidden" name="listgobackURL_schedule" value="${requestScope.listgobackURL_schedule}"/>
 </form> 
       

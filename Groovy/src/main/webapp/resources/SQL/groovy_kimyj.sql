@@ -1,17 +1,63 @@
-select  VL.vstartdate, VL.venddate, VL.vinfo, E.pk_empnum, E.name, V.VTYPE,
-from
-TBL_VACATIONLIST VL
-JOIN TBL_EMPLOYEE E
-ON E.PK_EMPNUM = VL.FK_EMPNUM
-JOIN TBL_APPROVALDOCUMENT AD
-ON E.PK_EMPNUM = AD.FK_EMPNUM
-JOIN TBL_VACATION V
-ON V.PK_VSTATUS = VL.FK_VSTATUS
-JOIN tbl_spot S
-ON E.fk_spotnum = S.pk_spotnum
-JOIN tbl_department D
-ON E.fk_deptnum = D.pk_deptnum
-where AD.STATUS = '3' and AD.FK_APL_NO = 5;
+select M.fk_documentnum, M.minSpotnum
+from 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson A
+    join tbl_approvalDocument B
+    on A.fk_documentnum = B.pk_documentnum
+    join tbl_employee C
+    on A.fk_empnum = C.pk_empnum
+    join tbl_spot D
+    on C.fk_spotnum = D.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    group by fk_documentnum
+) M
+
+join 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson AA
+    join tbl_approvalDocument BB
+    on AA.fk_documentnum = BB.pk_documentnum
+    join tbl_employee CC
+    on AA.fk_empnum = CC.pk_empnum
+    join tbl_spot DD
+    on CC.fk_spotnum = DD.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    and pk_empnum = '20170222-01'
+    group by fk_documentnum
+) T
+on T.fk_documentnum = M.fk_documentnum
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+---------------------
+
+		select  VL.pk_documentnum, VL.vstartdate, VL.venddate, VL.vinfo, E.pk_empnum, E.name, V.vtype, S.spotnamekor, D.deptnamekor
+		from
+		tbl_vacationlist VL
+		join tbl_employee E
+		on E.pk_empnum = VL.fk_empnum
+		join tbl_approvaldocument AD
+		on E.pk_empnum = AD.fk_empnum
+		join tbl_vacation V
+		on V.pk_vstatus = VL.fk_vstatus
+		join tbl_spot S
+		ON E.fk_spotnum = S.pk_spotnum
+		join tbl_department D
+		on E.fk_deptnum = D.pk_deptnum
+		where AD.status = '3' and AD.fk_apl_no = 5
 
 
 
