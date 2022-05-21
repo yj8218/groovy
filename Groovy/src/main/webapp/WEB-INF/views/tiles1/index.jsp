@@ -1407,30 +1407,6 @@ margin: 0;
 	 */
 	
 	$(document).ready(function() {
-		 <%-- === #166. 스마트 에디터 구현 시작 === --%>
-	 	//전역변수
-	 	<%--
-	    var obj = [];
-	    
-	    //스마트에디터 프레임생성
-	    nhn.husky.EZCreator.createInIFrame({
-	        oAppRef: obj,
-	        elPlaceHolder: "content",
-	        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
-	        htParams : {
-	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseToolbar : true,            
-	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : true,    
-	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseModeChanger : true,
-	        },
-	        fOnAppLoad: function(){
-	        	$("iframe").css("width","100%").css("height","300px");
-	        }
-	    });
-	    
-	     --%>
 
 	     // === 댓글 입력후 엔터하기 === //
 			//$("input#commentContent").keydown(function(key){
@@ -1445,29 +1421,6 @@ margin: 0;
 			});
 				
 		 $("div.showBoardDetail").hide();
-		<%-- === #166. 스마트 에디터 구현 시작 === --%>
-	 	<%-- //전역변수
-	    var obj = [];
-	    
-	    //스마트에디터 프레임생성
-	    nhn.husky.EZCreator.createInIFrame({
-	        oAppRef: obj,
-	        elPlaceHolder: "smarteditor2",
-	        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
-	        htParams : {
-	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseToolbar : true,            
-	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : true,    
-	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseModeChanger : true,
-	        },
-	         fOnAppLoad: function(){
-	        	$("iframe").css("width","100%").css("height","300px");
-	        	editBoardModal();
-	        	
-	        } 
-	    }); --%>
 		
 	    $(document).on("click", "div.card-header button.close", function(){
 			$("div.showBoardDetail").empty();
@@ -1911,11 +1864,6 @@ function openPersonalChat(pk_empnum) {
 						html +=  "</div>";
 						
 					  $("div#feedAllbox").html(html); 
-					  /* 
-					  
-					  goViewComment(index , item.pk_board_seq) ;
-					   */
-					  
 					  
 				  }
 				  else {
@@ -1936,32 +1884,6 @@ function openPersonalChat(pk_empnum) {
 		  });
 		  
 	  }// end of function goReadComment(){}--------------------------
-	  <%-- 
-	// 선택글 한개 보여주는 메소드
-	function goBoardView(pk_board_seq) {
-		
-		$.ajax({
-			url:"<%= ctxPath %>/goBoardView.groovy",
-			data:{"pk_board_seq":pk_board_seq},
-			dataType:"JSON",
-			success:function(json) {
-				$('div#showAllEmpModal').modal('hide');
-				$('div#showEmpProfileModal').modal();
-				
-				$("div#showEmpProfileModal .modal-header").css({'background-image':'url("<%= ctxPath %>/resources/images/프로필사진/'+json.emppicturename+'")',
-																'background-repeat':'no-repeat',
-																'background-size':'100%'});
-				$("div#empName").html(json.name);
-				$("td#email").html(json.email);
-				$("td#phone").html(json.phone);
-				$("button#goChat").attr("onClick", "openPersonalChat('" + pk_empnum + "');");
-			},
-			error: function(request, status, error) {
-            	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-		}); // $.ajax({})
-	}
-	   --%>
 	  
 //자세히보기
 function goBoardView(pk_board_seq) {
@@ -2023,14 +1945,9 @@ function goBoardView(pk_board_seq) {
          html += '</div>';
   
          html += '<div class="card-body-bottom">';
-         /*         html += '<div class="card-schedule-date">';
-          html += '<strong class="card-month" style="color:'+json.map.COLOR+'">'+miniCalendarYM+'</strong><strong class="card-day" style="background-color:'+json.map.COLOR+'">'+miniCalendarDD+'</strong>';<!-- 미니달력 --> 
-         html += '</div>';*/
          html += '<div class="card-schedule-title-area">';
          html += '<h4 class="card-schedule-title">'+json.map.B_SUBJECT+'</h4>'; /* <!-- 제목 --> */
          html += '<div class="card-schedule-day">';
-/*          html += '<span class="card-schedule-startDate">'+startdate+' ('+startdate_day+'), '+startdate_time+'</span>'; <!-- 시작일 -->
-         html += '<span class="card-schedule-endDate">'+enddate+' ('+enddate_day+'), '+enddate_time+'</span>'; <!-- 종료일 --> */
          html += '</div>';
          html += '</div>';
          html += '</div>';
@@ -2047,30 +1964,7 @@ function goBoardView(pk_board_seq) {
          html += '<span class="memo-span"><div>'+json.map.B_CONTENT+'</div></span>';
          html += '</div>';
          html += '</li>';
-      /*    if(json.map.ADDRESSNAME != "-"){
-	         html += '<li>';
-	         html += '<div class="card-content-title"><i class="icon-place"></i></div>';
-	         html += '<div class="card-content-place">';
-	         html += '<span class="place-span"><div>';
-	        	 if(json.map.PLACENAME != "-"){
-	        		html += json.map.PLACENAME+' : ';
-	        	 }
-		         if(json.map.ADDRESSNAME != "-"){
-		        	 html +=json.map.ADDRESSNAME;
-	        	 }
-		         if(json.map.PLACEPHONE != "-"){
-		        	 html +=' 번호 : '+json.map.PLACEPHONE;
-	        	 }
-		         html +='</div><a  href="'+json.map.PLACEURL+'" target="_blank">상세보기</a></span>';
-	         html += '</div>';
-	         html += '</li>'; 
-	         
-	         html += '<li>';
-	         html += '<div class="card-content-title"></div>';
-	         html += '<div class="card-content-map" id="card-content-map">';
-	         html += '</div>';
-	         html += '</li>';
-         }		*/
+
          if(json.map.B_ORGFILENAME != null){
 	         html += '<li>';
 	         html += '<div class="card-content-title"><i class="icon-file-download"></i></div>';
@@ -2080,71 +1974,10 @@ function goBoardView(pk_board_seq) {
 	         html += '</li>';
 	         
          }
-         /* 
-         if(json.map.JOINUSER != "-"){
-	         html += '<li>';
-	         html += '<div class="card-content-title"><i class="icon-share"></i></div>';
-	         html += '<div class="card-content-share">';
-	         html += '<span class="share-span"><div>'+json.map.JOINUSER+'</div></span>';
-	         html += '</div>';
-	         html += '</li>';
-	         
-         }
-          */
 
          html += '</ul>';
          html += '</div>';
- 			/* 		
-		 if(json.map.VOTE == 1){/* 참석유무 *//*
-			 html += '<div class="card-vote">';
-			 
-		        html += '<div class="vote-group">';			
-		         html += '<div>';
-		         
-		         
-		         html += '<div class="vote-yes-group">';
-		         html += '<span class="yesCnt">';
-			     html += '<span>참석</span><em>0</em>';
-			   
-			     html += '</span>';
-		         html += '<ul class="vote-yes-ul">';
-		         html += '</ul>';
-		         
-		         html += '</div>';
-		         
-		         html += '<div class="vote-no-group">';
-		         html += '<span class="noCnt">';
-				 html += '<span>불참</span><em>0</em>';
 
-				 html += '</span>';
-		         html += '<ul class="vote-no-ul">';
-		         html += '</ul>';
-
-		         html += '</div>';
-		         
-		         html += '<div class="vote-undefined-group">';
-		         html += '<span class="undefinedCnt">';
-				 html += '<span>미정</span><em>0</em>';
-				
-				 html += '</span>';	
-		         html += '<ul class="vote-undefined-ul">';
-		         html += '</ul>';
-
-		         html += '</div>';
-		         
-		         
-		         
-		         html += '</div>';
-		         
-		         html += '</div>';
-			 
-
-		         
-	         html += '<button class="vote-btn-yes" onclick="voteYesAdd('+json.map.PK_SCHEDULENO+')">참석</button>';
-	         html += '<button class="vote-btn-no" onclick="voteNoAdd('+json.map.PK_SCHEDULENO+')">불참</button>';
-	         html += '<button class="vote-btn-undefined" onclick="voteUndefinedAdd('+json.map.PK_SCHEDULENO+')">미정</button>';
-	         html += '</div>';		
-		 }			 */
          html += '</div>';
          html += '</div>';
  		
@@ -2362,19 +2195,7 @@ function goBoardView(pk_board_seq) {
 	    
 	    // ==== #169. 파일첨부가 있는 댓글쓰기 ==== // 
 	    function goAddWrite_withAttach() {
-	  	  <%-- === ajax로 파일을 업로드할때 가장 널리 사용하는 방법 ==> ajaxForm === //
-	  		   === 우선 ajaxForm 을 사용하기 위해서는 jquery.form.min.js 이 있어야 하며
-	  		       /WEB-INF/tiles/layout/layout-tiles1.jsp 와 
-	  		       /WEB-INF/tiles/layout/layout-tiles2.jsp 에 기술해 두었다. 
-	  	  --%>
-	  	  
-	  	  <%--
-	  	      // 보내야할 데이터를 선정하는 또 다른 방법
-	  		  // jQuery에서 사용하는 것으로써,
-	  		  // form태그의 선택자.serialize(); 을 해주면 form 태그내의 모든 값들을 name값을 키값으로 만들어서 보내준다. 
-	  		  const queryString = $("form[name=addWriteFrm]").serialize();
-	  	  --%>
-	  	  
+	
 	  	  const queryString = $("form[name=addCommentFrm]").serialize();
 	  	  
 	  	  $("form[name=addCommentFrm]").ajaxForm({
@@ -2408,8 +2229,7 @@ function goBoardView(pk_board_seq) {
 	    }// end of function goAddWrite_noAttach() {}--------------------------
 	    
 	    
-	    ////////////////////
-		 <%--  
+<%--
 		  // === #127. Ajax로 불러온 댓글내용을  페이징 처리 하기  === //
 		    function goViewComment(currentShowPageNo, index ) {
 		  	  
@@ -2419,16 +2239,7 @@ function goBoardView(pk_board_seq) {
 		  			    "currentShowPageNo":currentShowPageNo},
 		  		  dataType:"JSON",
 		  		  success:function(json){
-		  			  // 첨부파일 기능이 없을 시
-		  			  // [{"name":"서영학","regDate":"2022-04-27 15:03:36","content":"열세번째 댓글 입니다."},{"name":"서영학","regDate":"2022-04-27 15:03:28","content":"열두번째 댓글 입니다."},{"name":"서영학","regDate":"2022-04-27 15:03:23","content":"열한번째 댓글 입니다."}] 
-		  			  // 또는
-		  			  // [] 
-		  			  
-		  			  // 첨부파일 기능이 추가된 경우
-		  			  // [{"fileName":"202205030921151062130006872565.jpg","fileSize":"71317","name":"엄정화","regDate":"2022-05-03 09:21:16","content":"첨부파일 추가 연습2","seq":"6","orgFilename":"berkelekle심플라운드01.jpg"},{"fileName":" ","fileSize":" ","name":"엄정화","regDate":"2022-05-02 16:04:06","content":"파일첨부 연습 1","seq":"3","orgFilename":" "},{"fileName":" ","fileSize":" ","name":"엄정화","regDate":"2022-05-02 15:17:39","content":"ㅎㅎ","seq":"1","orgFilename":" "}]
-		  			  // 또는 
-		  			  // []
-		  			  
+		  		
 		  			  
 		  			  let html = "";
 		  			  if(json.length > 0) {
@@ -2625,7 +2436,7 @@ function commentEdit(fk_board_seq,pk_cmt_seq){
    
 
 	   
-}// end of function goLikeDislikeCount()-------------------
+}// end of function  commentEdit(fk_board_seq,pk_cmt_seq){
 
 function commentDel(fk_board_seq,pk_cmt_seq){
 	
