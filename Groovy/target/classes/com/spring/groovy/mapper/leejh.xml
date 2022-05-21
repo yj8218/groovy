@@ -474,5 +474,15 @@
 		where fk_board_seq = #{fk_board_seq}
     </select> 
     
+    
+    <!-- === #117. 총 게시물 건수(totalCount) 구하기 - 검색이 있을때 와 검색이 없을때로 나뉜다. === -->
+    <select id="getBoardTotalCount" parameterType="HashMap" resultType="int">
+	    select count(*)
+		from tbl_board
+		where b_status = 1
+		<if test='searchType != ""'>
+		and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+		</if>
+    </select> 
 	
 </mapper>

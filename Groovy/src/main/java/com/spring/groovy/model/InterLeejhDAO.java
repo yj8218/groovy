@@ -79,6 +79,8 @@ public interface InterLeejhDAO {
 	//댓글삭제
 	int commentDel(Map<String, String> paraMap);
 
+	int getBoardTotalPage(Map<String, String> paraMap);
+
 	
 
 }//end of public interface InterLeejhDAO

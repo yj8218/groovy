@@ -1020,10 +1020,33 @@ public class LeejhController {
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readBoard(HttpServletRequest request) {
-		
+		/*
+			String fk_board_seq = request.getParameter("fk_board_seq");
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
+			//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
+			String currentShowPageNo = request.getParameter("currentShowPageNo");
+			
+			if(currentShowPageNo == null) {
+				currentShowPageNo = "1";
+			}
+			int sizePerPage =10;
+			int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+			int endRno = startRno + sizePerPage - 1;
+			
+			Map<String, String> paraMap = new HashMap<String, String>();
+			
+			paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("startRno",String.valueOf(startRno));
+			paraMap.put("endRno",String.valueOf(endRno));
+		
+			*/
+			
+		//	List<Map<String,String>> listMap = service.commentShow(paraMap);
 			
 			List<BoardVO> boardList = service.getBoardList();
+
+			
+			
 			
 			JSONArray jsonArr = new JSONArray();  // []
 			
@@ -1641,8 +1664,30 @@ public class LeejhController {
 			return jsonObj.toString();
 			
 		}//end of public String getCommentTotalPage(HttpServletRequest request)
+	
+		// === #132.  원게시물  totalPage 알아오기(ajax로 처리)
+		@ResponseBody
+		@RequestMapping(value ="/getBoardTotalPage.groovy", method = {RequestMethod.GET})
+		public String getBoardTotalPage(HttpServletRequest request) {
+				
+			String pk_board_seq = request.getParameter("fk_board_seq");
+			String sizePerPage = request.getParameter("sizePerPage");
+			//System.out.println("페이징3"+fk_board_seq);
+			System.out.println("페이징4"+sizePerPage);
+			Map<String, String> paraMap = new HashMap<>();
+			//paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("sizePerPage",sizePerPage);
 		
+			int totalPage = service.getBoardTotalPage(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("totalPage",totalPage);
+			
 		
+			return jsonObj.toString();
+			
+		}//end of public String getCommentTotalPage(HttpServletRequest request)
+
 		
 		
 		@ResponseBody

@@ -88,19 +88,19 @@
 	    //스마트에디터 프레임생성
 	    nhn.husky.EZCreator.createInIFrame({
 	        oAppRef: obj,
-	        elPlaceHolder: "content",
+	        elPlaceHolder: "b_content",
 	        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
 	        htParams : {
 	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseToolbar : true,            
 	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : true,    
+	            bUseVerticalResizer : false,    
 	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseModeChanger : true,
-	        },
+	        }/* ,
 	        fOnAppLoad: function(){
 	        	$("iframe").css("width","100%").css("height","300px");
-	        }
+	        } */
 	    });
 		    
 		    
@@ -116,7 +116,7 @@
 			$('table')[0].reset();
 		});
 		 */
-		
+		/* 
 		
 		$("div.addTask").click(function() {
 			let html = "";
@@ -150,7 +150,7 @@
 			$("tr#removeTr").remove();
 		});
 		
-		
+		 */
 
 
 		    
@@ -169,7 +169,7 @@
 			  
 			  <%-- === 스마트 에디터 구현 시작 === --%>
 			 	//id가 content인 textarea에 에디터에서 대입
-		        obj.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+		        obj.getById["b_content"].exec("UPDATE_CONTENTS_FIELD", []);
 			  <%-- === 스마트 에디터 구현 끝 === --%>
 			  
 			  // 글제목 유효성 검사
@@ -181,7 +181,7 @@
 			  
 			  // 글내용 유효성 검사(스마트에디터 사용 안 할시)
 			
-			  const content = $("textarea#content").val().trim();
+			  const content = $("textarea#b_content").val().trim();
 			  if(content == "") {
 				  alert("글내용을 입력하세요!!");
 				  return;
@@ -190,7 +190,7 @@
 			
 			<%-- === 스마트에디터 구현 시작 === --%>
 			// 스마트에디터 사용시 무의미하게 생기는 p태그 제거
-			 var contentval = $("textarea#content").val();
+			 var contentval = $("textarea#b_content").val();
 			        
 	        // === 확인용 ===
 	        // alert(contentval); // content에 내용을 아무것도 입력치 않고 쓰기할 경우 알아보는것.
@@ -204,7 +204,7 @@
 	        }
 		        
 		     // 스마트에디터 사용시 무의미하게 생기는 p태그 제거하기
-		        contentval = $("textarea#content").val().replace(/<p><br><\/p>/gi, "<br>"); //<p><br></p> -> <br>로 변환
+		        contentval = $("textarea#b_content").val().replace(/<p><br><\/p>/gi, "<br>"); //<p><br></p> -> <br>로 변환
 		     /*    
 		                대상문자열.replace(/찾을 문자열/gi, "변경할 문자열");
 		        ==> 여기서 꼭 알아야 될 점은 나누기(/)표시안에 넣는 찾을 문자열의 따옴표는 없어야 한다는 점입니다. 
@@ -217,7 +217,7 @@
 		        contentval = contentval.replace(/(<\/p><br>|<p><br>)/gi, "<br><br>"); //</p><br>, <p><br> -> <br><br>로 변환
 		        contentval = contentval.replace(/(<p>|<\/p>)/gi, ""); //<p> 또는 </p> 모두 제거시
 		    
-		        $("textarea#content").val(contentval);
+		        $("textarea#b_content").val(contentval);
 		     
 		     // alert(contentval);
 			 <%-- === 스마트에디터 구현 끝 === --%>
@@ -292,7 +292,7 @@
 				    			</tr>
 				    			<tr>
 									<td>
-										<textarea style="width: 100%; height: 350px;" name="b_content" id="content" placeholder="내용을 입력하세요" ></textarea>
+										<textarea style="width: 100%; height: 350px;" name="b_content" id="b_content" placeholder="내용을 입력하세요" ></textarea>
 									</td>
 				    			</tr>
 				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>
@@ -319,6 +319,7 @@
 				    	</form>
 				  	</div>
 				  	<%-- Tab panes(업무) --%>
+				  	<!-- 
 				  	<div class="tab-pane container py-3" id="task">
 				    	<form name="taskFrm">
 				    		<table class="w-100">
@@ -366,8 +367,9 @@
 				    			</tr>
 			    			</table>
 				    	</form>
-				  	</div>
+				  	</div> -->
 				  	<%-- Tab panes(일정) --%>
+				  	<!-- 
 				  	<div class="tab-pane container py-3" id="schedule">
 				    	<form name="scheduleFrm">
 				    		<table class="w-100">
@@ -378,8 +380,9 @@
 				    			</tr>
 			    			</table>
 				    	</form>
-				  	</div>
+				  	</div> -->
 				  	<%-- Tab panes(할일) --%>
+				  	<!-- 
 				  	<div class="tab-pane container py-3" id="todo">
 				    	<form name="todoFrm">
 				    		<table class="w-100">
@@ -396,6 +399,8 @@
 			    			</table>
 				    	</form>
 				  	</div>
+				  	 -->
+				  	
 			  	</div>
 			</div>
 			<!-- Modal footer -->

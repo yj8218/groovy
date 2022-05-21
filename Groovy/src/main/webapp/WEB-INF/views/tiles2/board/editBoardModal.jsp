@@ -95,7 +95,7 @@
 	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseToolbar : true,            
 	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : true,    
+	            bUseVerticalResizer : false,    
 	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseModeChanger : true,
 	        }
@@ -154,39 +154,6 @@
 			$('table')[0].reset();
 		});
 		 */
-		
-		
-		$("div.addTask").click(function() {
-			let html = "";
-			
-			html += "<tr>"
-				  + "	<td>"
-				  + "		<div class='mt-3'>"	
-				  + "			<i class='far fa-calendar'></i>"
-				  + "			<a style='text-decoration: underline;'>시작일 추가</a>"
-				  + "		</div>"	
-				  + "	</td>"
-				  + "</tr>"
-				  + "<tr>"
-				  + "	<td>"
-				  + "		<div class='mt-3'>"	
-				  + "			<i class='far fa-calendar'></i>"
-				  + "			<a style='text-decoration: underline;'>마감일 추가</a>"
-				  + "		</div>"	
-				  + "	</td>"
-				  + "</tr>"
-				  + "<tr>"
-				  + "	<td>"
-				  + "		<div class='mt-3'>"	
-				  + "			<i class='far fa-flag'></i>"
-				  + "			<a style='text-decoration: underline;'>우선순위 추가</a>"
-				  + "		</div>"	
-				  + "	</td>"
-				  + "</tr>"
-			      
-			$("tbody#addTr").after(html);
-			$("tr#removeTr").remove();
-		});
 		
 		
 

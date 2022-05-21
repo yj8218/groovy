@@ -263,6 +263,13 @@ public class LeejhService implements InterLeejhService {
 		return n;
 	}
 
+	@Override
+	// === #115. 총 게시물 건수(totalCount) 구하기 - 
+	public int getBoardTotalPage(Map<String, String> paraMap) {
+		int n = dao.getBoardTotalPage(paraMap);
+		return n;
+	}
+
 
 
 

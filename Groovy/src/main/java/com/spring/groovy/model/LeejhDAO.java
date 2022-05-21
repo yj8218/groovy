@@ -251,6 +251,12 @@ public class LeejhDAO implements InterLeejhDAO {
 		int n = sqlsession.update("leejh.commentDel", paraMap);
 		return n;
 	}
+	// === #115. 총 게시물 건수(totalCount) 구하기 - 
+	@Override
+	public int getBoardTotalPage(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("leejh.getBoardTotalPage", paraMap);
+		return n;
+	}
 
 
 

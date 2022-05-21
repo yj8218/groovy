@@ -92,6 +92,8 @@ public interface InterLeejhService {
 	//댓글삭제
 	int commentDel(Map<String, String> paraMap);
 
+	int getBoardTotalPage(Map<String, String> paraMap);
+
 	
 
 	
