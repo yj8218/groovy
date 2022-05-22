@@ -181,7 +181,7 @@
   }
   
   
-  div.showBoardDetail div.card-scroll{
+  div.showBoardDetail div.card-scroll tbody.card-scroll{
   	max-height: calc(100vh - 78px);
     overflow-y: auto;
     overflow-x: hidden;

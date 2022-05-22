@@ -300,7 +300,7 @@ function openPersonalChat(pk_empnum) {
 						 	
 						  
 							//html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
-							html += "<div class='card mb-4 feedAll'>";
+							html += "<div class='card mb-4 feedAll' style='max-height:800px;'>";
 							
 							html += "<div class='card-body'>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
@@ -334,7 +334,7 @@ function openPersonalChat(pk_empnum) {
 						   
 						   	html +=  "</tr>";
 						   	html +=  "</thead>";
-						   	html +=  "<tbody>";
+						   	html +=  "<tbody class='card-scroll' >";
 						   	html +=  "<tr>";
 						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.pk_board_seq+ item.b_subject + "</td>";
 						   	html +=  "</tr>";
