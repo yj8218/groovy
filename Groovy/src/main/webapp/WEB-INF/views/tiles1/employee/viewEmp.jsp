@@ -63,8 +63,6 @@ li:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 	border: solid 1px #9966FF;
 	cursor: pointer;
-	
-	
 }
 #fileLayerUl{
 	font-size: 11pt;
@@ -98,8 +96,11 @@ th, td{padding: 7px 0 0 9px;}
 }
 #select_order{width: 130px;}
 #tbl_viewEmp{
-	width: 65%; 
-	border: solid 2px #9966FF;
+	width: 50%; 
+	border-radius: 10px;
+	border-style: hidden;
+	box-shadow: 0 0 0 3px #6449fc;
+	background-color: rgba(204, 204, 255, 0.1);  
 }
 #goSearch{
 	border: solid 1px #9966FF;
@@ -130,7 +131,7 @@ a{
 	margin: 5px 0;
 	vertical-align: middle;
 	border-bottom: solid 1px rgba(200, 200, 200, 0.3);
-	
+	height: 45px;
 }
 .empList:hover{
 	cursor: pointer;
@@ -138,6 +139,43 @@ a{
 }
 .bgColor{
 	background-color: rgba(153, 102, 255, 0.1);
+}
+div#pageBar{
+	width: 70%; 
+	margin: 20px auto 150px auto; 
+}
+li:hover{
+   background-color: rgba(153, 102, 255, 0.1);  
+   border: solid 1px #9966FF;
+   cursor: pointer;
+   text-decoration: none;
+}
+.li_w70{
+   display:inline-block; 
+   width:70px; 
+   font-size:14pt;
+}
+.li_w60{
+   display:inline-block; 
+   width:60px; 
+   font-size:14pt;
+}
+.li_w30{
+   display:inline-block; 
+   width:30px; 
+   font-size:14pt;
+}
+a {
+   color: #6449fc; 
+   text-decoration: none;
+}
+a:hover{
+   text-decoration: none;
+}
+.li_border{
+	border: solid 1px #6449fc; 
+	border-radius: 5px;
+	margin: 0 2px;
 }
 </style>
 
@@ -302,10 +340,9 @@ function getOneEmpInfo(pk_empnum){
 
     <form name="searchFrm">
 		<table id="tbl_viewEmp">
-			
 			<tr >
-				<th>선택조건</th>
-				<td>
+				<th class="pad">선택조건</th>
+				<td class="pad">
 					<select name="dept">
 						<option value="">부서</option>
 						<c:forEach var="dept" items="${requestScope.departments }">
@@ -324,8 +361,8 @@ function getOneEmpInfo(pk_empnum){
 			</tr>
 			
 			<tr>
-				<th>입사기간</th>
-				<td>
+				<th class="pad">입사기간</th>
+				<td class="pad">
 				<input type="text" class="date" name="date_start" id="date_start" placeholder="시작일">&nbsp;~&nbsp;
 				<input type="text" class="date" name="date_end" id="date_end" placeholder="마지막일">
 				<span id="dateCheckResult"></span>
@@ -333,8 +370,8 @@ function getOneEmpInfo(pk_empnum){
 			</tr>
 			
 			<tr>
-				<th>재직여부</th>
-				<td>
+				<th class="pad">재직여부</th>
+				<td class="pad">
 					<select name="resign_status">
 						<option value="">재직구분</option>
 						<option class="op" value="0">재직</option>
@@ -344,8 +381,8 @@ function getOneEmpInfo(pk_empnum){
 			</tr>
 			
 			<tr >
-				<th style="width: 100px; ">검색</th>
-				<td>
+				<th class="pad" style="width: 100px; ">검색</th>
+				<td class="pad">
 					<select name="search_item">
 						<option class="op" value="">검색기준</option>
 						<option class="op" value="name">이름</option>
@@ -362,12 +399,11 @@ function getOneEmpInfo(pk_empnum){
 			</tr>
 			
 			<tr >
-				<th></th>
-				<td>
+				<th class="pad"></th>
+				<td class="pad">
 					<a id="goSearch" onclick="goSearch()" >조회하기</a>
 				</td>
 			</tr>
-			
 		</table>
 		
 	<div id="orderby">
@@ -387,21 +423,21 @@ function getOneEmpInfo(pk_empnum){
 	<h2>관리자 전용 사원조회</h2>
 	<table id="tbl_result" class="tcenter">
 		<tr id="fileItemTapLi">	
-			<th class="colsize2">번호</th>
-			<th class="colsize1">사원번호</th>
-			<th class="colsize2">이름</th>
-			<th class="colsize2">부서</th>
-			<th class="colsize2">직급</th>
-			<th class="colsize2">재직구분</th>
-			<th class="colsize1">입사일</th>
-			<th class="colsize1">연락처</th>
-			<th class="colsize1">이메일</th>
+			<th class="colsize2 pad">번호</th>
+			<th class="colsize1 pad">사원번호</th>
+			<th class="colsize2 pad">이름</th>
+			<th class="colsize2 pad">부서</th>
+			<th class="colsize2 pad">직급</th>
+			<th class="colsize2 pad">재직구분</th>
+			<th class="colsize1 pad">입사일</th>
+			<th class="colsize1 pad">연락처</th>
+			<th class="colsize1 pad">이메일</th>
 		</tr>
 		
 		
 		<c:if test="${empty requestScope.emps }">
 			<tr class="" >
-				<td colspan="12">조회결과가 없습니다.</td>
+				<td class="pad" colspan="12">조회결과가 없습니다.</td>
 			</tr>
 		</c:if>
 		
@@ -409,20 +445,20 @@ function getOneEmpInfo(pk_empnum){
 			<c:forEach var="emp" items="${requestScope.emps }" varStatus="status">
 				<tr class="empList"  onclick="getOneEmpInfo('${emp.pk_empnum}')" 
 					data-toggle="modal" data-target="#exampleModal">
-					<td>${(10 * (requestScope.currentShowPageNo-1))+ status.count }</td>
-					<td>${emp.pk_empnum }</td>
-					<td>${emp.name }</td>
-					<td>${emp.deptnamekor }</td>
-					<td>${emp.spotnamekor }</td>
+					<td class="pad">${(10 * (requestScope.currentShowPageNo-1))+ status.count }</td>
+					<td class="pad">${emp.pk_empnum }</td>
+					<td class="pad">${emp.name }</td>
+					<td class="pad">${emp.deptnamekor }</td>
+					<td class="pad">${emp.spotnamekor }</td>
 					<c:if test="${emp.resignationstatus == 0 }">
-						<td>재직</td>
+						<td class="pad">재직</td>
 					</c:if>
 					<c:if test="${emp.resignationstatus != 0 }">
-						<td>퇴사</td>
+						<td class="pad">퇴사</td>
 					</c:if>
-					<td>${emp.startday }</td>
-					<td>${emp.phone }</td>
-					<td>${emp.email }</td>
+					<td class="pad">${emp.startday }</td>
+					<td class="pad">${emp.phone }</td>
+					<td class="pad">${emp.email }</td>
 					
 				</tr>
 			</c:forEach>
@@ -451,7 +487,7 @@ function getOneEmpInfo(pk_empnum){
       <div class="modal-body" >
       <div style="padding-left: 40px;">
        		<img id="empImg" style=" width:140px; height:160px;">
-     		<div style="float: right; margin: 0 185px 0 10px; border: solid 1px gray; border-radius: 10px; padding: 10px 15px;">
+     		<div style="display:inline-block; float:right; width: 400px; height: auto; margin: 0 22% 0 10px; border: solid 1px gray; border-radius: 10px; padding: 10px 15px;">
 	      		<div class="m_div">사원번호 : <span id="m_pk_empnum" ></span></div>
 	      		<div class="m_div">이름 : <span id="m_name" ></span></div>
 	      		<div class="m_div">생년월일 : <span id="m_birthday"></span></div>

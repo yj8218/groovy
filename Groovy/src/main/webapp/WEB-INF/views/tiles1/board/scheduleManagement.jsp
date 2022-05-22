@@ -35,7 +35,6 @@
 <!-- 개인CSS -->
 <link href='<%=ctxPath %>/resources/css/kimyj/kimyj.css' rel='stylesheet' />
 <style type="text/css">
-
 </style>
 
 <script type="text/javascript">
@@ -1667,7 +1666,9 @@ function detailSchedule(pk_scheduleno) {
             html += '<div class="card-scroll">';
             html += '<div class="card-body-top">';
             html += '<div class="card-author">';
-            html += '<span class="card-profileImg"></span>';  
+            html += '<span class="card-profileImg">';
+            html += '<img class="card-myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="icon-myprofile">';
+            html += '</span>';  
             html += '<dl class="card-author-info">';
             html += '<dt>';
             html += '<strong class="author-name"> [' + json.map.DEPTNAMEKOR + ' : ' + json.map.SPOTNAMEKOR + '] ' + json.map.NAME + '</strong>'; 
@@ -1802,7 +1803,9 @@ function detailSchedule(pk_scheduleno) {
             html += '</div>';
             html += '<div class="card-footer2">';
             html += '<div class="comment-writer-profile">';
-            html += '<span class="comment-writer-profile-span"></span>';
+            html += '<span class="comment-writer-profile-span">';
+            html += '<img class="card-myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="icon-myprofile">';
+            html += '</span>';
             html += '</div>';
             html += '<form class="comment-writer-container">';
             html += '<fieldset>';
@@ -2152,7 +2155,7 @@ function voteUndefinedUser(fk_scheduleno) {
                 $("span.undefinedCnt").on('click');
                 $.each(json, function(index, item) {
                     html += '<li>';
-                    html += '<div>' + item.name + '(' + item.c + ')</div>';
+                    html += '<div>' + item.name + '(' + item.fk_empnum+ ')</div>';
                     html += '</div>';
                     html += '</li>';
                 });
@@ -2300,7 +2303,7 @@ function commentAdd(fk_scheduleno) {
 
 // 댓글 보여주기
 function commentShow(fk_scheduleno, currentShowPageNo) {
-
+ 
     $.ajax({
         url: "<%= ctxPath%>/commentShow.groovy",
         type: "GET",
@@ -2321,7 +2324,9 @@ function commentShow(fk_scheduleno, currentShowPageNo) {
                     html += '<li class="card-footer-li" id="commentid-' + item.commentseq + '">';
 
                     html += '<div class="comment-user-profile">';
-                    html += '<span class="comment-user-profile-span"></span>';
+                    html += '<span class="comment-user-profile-span">';
+                    html += '<img class="card-myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/'+item.emppicturename+'" alt="icon-myprofile">';
+                    html += '</span>';
                     html += '</div>';
 
                     html += '<div class="comment-container">';
@@ -2422,10 +2427,10 @@ function makeCommentPageBar(fk_scheduleno, currentShowPageNo) {
 
                 // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
                 let pageNo = Math.floor((currentShowPageNo - 1) / blockSize) * blockSize + 1;
-
+				
                 // === [맨처음][이전] 만들기 === //
-                pageBarHTML += "<li class='firstli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"1\")'><span class='material-icons'> keyboard_double_arrow_left </span></a></li>";
-                pageBarHTML += "<li class='previousli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + (pageNo - 1) + "\")'><span class='material-icons'> keyboard_arrow_left </span></a></li>";
+                pageBarHTML += "<li class='firstli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"1\")'></a></li>";
+                pageBarHTML += "<li class='previousli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + (pageNo - 1) + "\")'></a></li>";
 
                 if (pageNo != 1) {}
 
@@ -2445,8 +2450,8 @@ function makeCommentPageBar(fk_scheduleno, currentShowPageNo) {
 
                 // === [다음][마지막] 만들기 === //
                 if (pageNo <= totalPage) {}
-                pageBarHTML += "<li class='nextli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + pageNo + "\")'><span class='material-icons'> keyboard_arrow_right </span></a></li>";
-                pageBarHTML += "<li class='lastli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + totalPage + "\")'><span class='material-icons'> keyboard_double_arrow_right </span></a></li>";
+                pageBarHTML += "<li class='nextli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + pageNo + "\")'></a></li>";
+                pageBarHTML += "<li class='lastli'><a href='javascript:commentShow(\"" + fk_scheduleno + "\",\"" + totalPage + "\")'></a></li>";
 
                 pageBarHTML += "</ul>";
 
@@ -2565,6 +2570,11 @@ function scheduleEdit(pk_scheduleno) {
             $("#modal_addSchedule input#vote").val(json.map.VOTE);
             $("#modal_addSchedule input.eidt_pk_scheduleno").val(pk_scheduleno);
 
+            if(json.map.PK_LGCATGONO == 2){
+            	$("input#joinUserName").prop('readonly', true);
+    		   	$("input#joinUserName").attr("placeholder", "사내 캘린더는 공유자가 필요없습니다.");
+            }
+            
             if (json.map.VOTE == 1) {
                 $("#modal_addSchedule input#vote").prop("checked", true);
             } else {
@@ -2583,7 +2593,7 @@ function scheduleEdit(pk_scheduleno) {
                 showMap2(json.map.ADDRESSNAME);
 
             }
-            if (json.map.JOINUSER != "공유자가 없습니다.") {
+            if (json.map.JOINUSER != "-") {
 
                 let arr = json.map.JOINUSER.split(',');
                 $.each(arr, function(index, item) {

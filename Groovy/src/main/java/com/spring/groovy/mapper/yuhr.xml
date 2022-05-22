@@ -347,19 +347,29 @@
 	
 	
 	<select id="showOneCommuteStatus" parameterType="HashMap" resultMap="oneCommuteStatusMap">
-		select c.fk_empnum
-		     , to_char(startwork, 'hh24:mi:ss') as startwork
-		     , to_char(endwork, 'hh24:mi:ss') as endwork
-		     , to_char(TODAY, 'yyyy-mm-dd') as today, TODAYWORKEDTIME, LATE, EARLY_ENDCHECK, NO_ENDCHECK, NO_WORKDAY
-		     , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
-		from tbl_commute C
-		join tbl_commute_status S
-		on c.fk_empnum = s.fk_empnum
-		left JOIN totalworkedtimecalc T
-		on c.fk_empnum = T.FK_EMPNUM
-		where C.fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(today, 'yyyy-mm-dd')
-		<if test="date_start != '' ">
-			and to_char(today, 'yyyy-mm-dd') between #{date_start} and #{date_end}
+		select fk_empnum, startwork, endwork, today, TODAYWORKEDTIME
+		 	 , LATE, EARLY_ENDCHECK, NO_ENDCHECK, NO_WORKDAY, totalworkedtime
+		from
+		(
+			select row_number() over(order by today desc) AS rno
+		 		 , c.fk_empnum
+			     , to_char(startwork, 'hh24:mi:ss') as startwork
+			     , to_char(endwork, 'hh24:mi:ss') as endwork
+			     , to_char(TODAY, 'yyyy-mm-dd') as today, TODAYWORKEDTIME, LATE, EARLY_ENDCHECK, NO_ENDCHECK, NO_WORKDAY
+			     , TOTALWORKED_DAY||'일'|| ASTOTALWORKED_HH||'시'|| TOTALWORKED_MI||'분'|| TOTALWORKED_SS||'초' as totalworkedtime
+			from tbl_commute C
+			join tbl_commute_status S
+			on c.fk_empnum = s.fk_empnum
+			left JOIN totalworkedtimecalc T
+			on c.fk_empnum = T.FK_EMPNUM
+			where C.fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(today, 'yyyy-mm-dd')
+			<if test="date_start != '' ">
+				and to_char(today, 'yyyy-mm-dd') between #{date_start} and #{date_end}
+			</if>
+		)
+		where 1=1
+		<if test="startRno != ''">
+		and rno between #{startRno} and #{endRno}
 		</if>
 	</select>
 	
@@ -420,5 +430,12 @@
 		where to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and fk_empnum = #{login_empnum}
 	</select>
 	
-	
+	<select id="getTotalCountByOne" resultType="int" parameterType="HashMap">
+		select count(*)
+		from tbl_commute
+		where fk_empnum = #{pk_empnum}
+		<if test="date_start != ''">
+		and to_char(startwork, 'yyyy-mm-dd') between #{date_start} and #{date_end} 
+		</if>
+	</select>
 </mapper>
