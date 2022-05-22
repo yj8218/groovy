@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ page import="java.net.InetAddress" %>    
+    
 <%
-	String ctxPath = request.getContextPath();
+   	String ctxPath = request.getContextPath();
+
+	InetAddress inet = InetAddress.getLocalHost();
+	String serverIP = inet.getHostAddress();
+	
+	int portnumber = request.getServerPort();
+	
+	String serverName = "http://" + serverIP + ":" + portnumber;
 %>
 
 
@@ -58,6 +68,7 @@
 	//Function Declaration
 	function func_Login(){
 		const pk_empnum = $("input#pk_empnum").val().trim(); 
+	//	alert(pk_empnum);
 	    const pwd = $("input#pwd").val().trim(); 
 	    
 	    
@@ -94,7 +105,7 @@
 	    }
 		
 		const frm = document.loginFrm;
-		frm.action = "<%= ctxPath%>/loginEnd.groovy",
+		frm.action = "<%= serverName %><%= ctxPath%>/loginEnd.groovy",
 		frm.method = "POST";
 		frm.submit();
 		
@@ -115,9 +126,9 @@
          
             <input type="password" id="pwd" class="LOGIN" name="pwd" size="30" placeholder="비밀번호"><br><br>
          </div>
-         <div id = "link" style="text-align:right;">
+         <div id = "link">
             <!-- <a href="">사원번호 찾기</a>&nbsp; -->
-            <a href="<%= ctxPath%>/findpwd.groovy" >비밀번호 찾기</a>&nbsp;
+            <a href="<%= ctxPath%>/findpwd.groovy">비밀번호 찾기</a>&nbsp;
            <!--  <a href="">회원가입</a><br> -->
          </div>
          <div id = "loginbutton">

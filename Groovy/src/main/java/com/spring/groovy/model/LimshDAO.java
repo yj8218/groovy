@@ -67,11 +67,21 @@ public class LimshDAO implements InterLimshDAO {
 
 	// 1:1 채팅 직원 정보 가져오기(select)
 	@Override
-	public EmployeeVO getEmp(String name) {
+	public EmployeeVO getEmp(String pk_empnum) {
 
-		EmployeeVO empvo = sqlsession.selectOne("limsh.getEmp", name);
+		EmployeeVO empvo = sqlsession.selectOne("limsh.getEmp", pk_empnum);
 		
 		return empvo;
+	}
+
+
+	// 채팅방 생성하기(insert)
+	@Override
+	public int createChat(Map<String, String> paraMap) {
+
+		int n = sqlsession.insert("limsh.createChat", paraMap);
+		
+		return n;
 	}
 
 

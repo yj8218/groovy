@@ -20,7 +20,11 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+			<!-- <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value> -->
+			<!-- 위의 <param-value> 부분을 주석처리하고서 아래와 같이 해야 한다. -->
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml,
+						 /WEB-INF/spring/config/websocketContext.xml
+			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

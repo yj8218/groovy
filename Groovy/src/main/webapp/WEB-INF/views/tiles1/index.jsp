@@ -1,11 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="java.net.InetAddress" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<% String ctxPath = request.getContextPath(); %>
+<%
+   	String ctxPath = request.getContextPath();
+
+	InetAddress inet = InetAddress.getLocalHost();
+	String serverIP = inet.getHostAddress();
+	
+	int portnumber = request.getServerPort();
+	
+	String serverName = "http://" + serverIP + ":" + portnumber;
+%>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -87,11 +99,20 @@
 		
 		// 단체 채팅방 개설
 		$("button#groupchat").click(function() {
-			var openchatConfirm = confirm("프로젝트 채팅방을 개설하시겠습니까?\n프로젝트 참여자가 모두 참여하는 채팅방입니다.");
+			var openchatConfirm = confirm("프로젝트 채팅방을 개설하시겠습니까?\n현재 접속중인 직원 모두가 참여하는 채팅방입니다.");
 			
 			if(openchatConfirm) {
-				alert("프로젝트 참여자 모두와 단체 채팅하기 => 팝업창");
-				openChat();
+				const url = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
+		        const popup_name = "multichat";
+		        const option = "width = 450, height = 650, top = 300, left = 600";
+				
+				window.open("", popup_name, option);
+				
+				const frm = document.openGroupChatFrm;
+				frm.target = popup_name;
+				frm.action = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
+				frm.method = "get";
+				frm.submit();
 			}
 		});
 		
@@ -194,7 +215,50 @@
 		});
 		
 		
+		///////////////////////////////////////////////////////////////////
 		
+		// @@@@ 웹소켓 연결 @@@@ //
+		// 웹브라우저의 주소창의 포트까지 가져옴
+		const url = window.location.host;
+	//	alert("url : " + url);
+		// url : 221.155.187.235:9090
+		
+		// '/' 부터 오른쪽에 있는 모든 경로
+		const pathname = window.location.pathname;
+	//	alert("pathname : " + pathname);
+		// pathname : /board/chatting/multichat.action
+		
+		// "전체 문자열".lastIndexOf("검사할 문자"); 
+		const appCtx = pathname.substring(0, pathname.lastIndexOf("/"));
+	//	alert("appCtx : " + appCtx);
+		// appCtx : /groovy/chatting
+		
+		const root = url + appCtx;
+	//	alert("root : " + root);
+		// root : 172.30.1.42:9090/groovy
+		
+		// 웹소켓통신을 하기 위해서는 http://을 사용하는 것이 아니라 ws://을 사용해야 한다.
+		// "/multichatstart.action"에 대한 것은 /WEB-INF/spring/config/websocketContext.xml 파일에 있는 내용이다.
+		const wsUrl = "ws://" + root + "/websocketConnectEmp.groovy";
+	//	alert("wsUrl : " + wsUrl);
+		// wsUrl : ws://221.155.187.235:9090/board/websocketConnectEmp.groovy
+		
+		const websocket = new WebSocket(wsUrl);
+		// 즉, const websocket = new WebSocket(ws://221.155.187.235:9090/board/chatting/websocketConnectEmp.groovy); 이다.
+		
+		// === 웹소켓에 최초로 연결이 되었을 경우에 실행되어지는 콜백함수 정의하기 === //
+	   	websocket.onopen = function() {
+	   		
+	   	};
+		
+		// === 메시지 수신시 콜백함수 정의하기 === //
+	   	websocket.onmessage = function(event) {
+	   		
+	   		// event.data는 수신되어진 메시지이다.
+	        if(event.data.substr(0,1)=="<" && event.data.substr(event.data.length-1)==">") { 
+	            $("div#connectEmp").html(event.data);
+	        }
+	   	};
 		
 		/////////////////////////////////////////
 		
@@ -229,7 +293,7 @@ function showEmpByDept() {
 }
 	
 
-// 프로필을 보여주는 메소드
+//프로필을 보여주는 메소드
 function showEmpProfile(pk_empnum) {
 	
 	$.ajax({
@@ -249,12 +313,12 @@ function showEmpProfile(pk_empnum) {
 			$("button#goChat").attr("onClick", "openPersonalChat('" + pk_empnum + "');");
 		},
 		error: function(request, status, error) {
-           	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-           }
+        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
 	}); // $.ajax({})
 }
 	
-// 개인 채팅을 활성화하는 메소드
+//개인 채팅을 활성화하는 메소드
 function openPersonalChat(pk_empnum) {
 	
 	$.ajax({
@@ -265,15 +329,22 @@ function openPersonalChat(pk_empnum) {
 		success:function(json) {
 			$('div#showEmpProfileModal').modal('hide');
 			
-			var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+		//	var url = "<%= ctxPath %>/openPersonalChatEnd.groovy?name=" + json.name;
+		//	var url = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy";
             var popup_name = "openChat";
             var option = "width = 450, height = 650, top = 300, left = 600";
 			
-			window.open(url, popup_name, option);
+			window.open("", popup_name, option);
+			
+			const frm = document.openPersonalChatFrm;
+			frm.target = popup_name;
+			frm.action = "<%= serverName %><%= ctxPath %>/chatting/multichat.groovy?name=" + json.name;
+			frm.method = "get";
+			frm.submit();
 		},
 		error: function(request, status, error) {
-           	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-           }
+        	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
 	}); // $.ajax({})
 }
 	
@@ -302,7 +373,7 @@ function openPersonalChat(pk_empnum) {
 							//html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
 							html += "<div class='card mb-4 feedAll' style='max-height:800px;'>";
 							
-							html += "<div class='card-body'>";
+							html += "<div class='card-body' style='max-height:700px; overflow:auto; '>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 							html +=  "<thead>";
 							html +=  "<tr>";
@@ -334,9 +405,11 @@ function openPersonalChat(pk_empnum) {
 						   
 						   	html +=  "</tr>";
 						   	html +=  "</thead>";
-						   	html +=  "<tbody class='card-scroll' >";
+
+						   	html +=  "<tbody >";
+
 						   	html +=  "<tr>";
-						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.pk_board_seq+ item.b_subject + "</td>";
+						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.b_subject + "</td>";
 						   	html +=  "</tr>";
 						   	html +=  "<tr style='border-top: solid 1px lightgray; border-bottom: solid 1px lightgray; height: 150px;'>";
 						   	html +=  "<td id='write_content"+index+"' colspan='2'>"+ item.b_content + "</td>";
@@ -1420,7 +1493,7 @@ $.ajax({
 					</div><!-- 글쓰기 Modal 끝 -->
 				
 					<!-- 글피드 보기  -->
-					<a type="button" onclick="goReadBoard(1)">글피드보기</a><a type="button"  onclick="goReadBoardList(1)">글목록보기</a>
+					<a type="button" onclick="goReadBoard(1)"><i class="far fa-window-restore"></i>글피드보기</a><a type="button"  onclick="goReadBoardList(1)"><i class="fas fa-th-list"></i>글목록보기</a>
 					<div id="feedAllbox"></div>
 					<!-- <div id="paging-feed"></div> -->
 					<div id="paging-list"></div>
@@ -1429,13 +1502,14 @@ $.ajax({
 		  	</div>
 		  	
 			<%-- 프로젝트 참여자 목록 --%>
-			<div id="memberlist" class="col-lg-3" style="position: fixed; right: 30px; top: 216px; width: 350px;">
+			<div id="memberlist" class="col-lg-3" style="position: fixed; right: 30px; top: 130px; width: 350px;">
 				<div class="row">
 					<div class="col-lg-6"><h6 style="display: inline-block; margin-left: 5px;">참여자<span class="text-muted ml-2">${requestScope.empvoList.size()}</span></h6></div>
 					<div class="col-lg-6" align="right"><a id="showAllEmployee" data-toggle="modal" data-target="#showAllEmpModal">전체보기</a></div>
 				</div>
 				<div class="card mb-3">
-					<div class="card-body scrollover" style="padding-bottom: 0; height: 550px; overflow: auto; overflow-x: hidden;">
+					<div class="card-body scrollover" style="padding-bottom: 0; height: 500px; overflow: auto; overflow-x: hidden;">
+				    <%--  	
 				    	<c:forEach var="deptvo" items="${requestScope.deptvoList}" varStatus="status">
 				    	<div>
 				    		<a id="dept" class="text-muted" data-toggle="collapse" href="#${deptvo.deptnameeng.replaceAll(' ', '')}" aria-expanded="false" aria-controls="${deptvo.deptnameeng.replaceAll(' ', '')}">${deptvo.deptnamekor}</a>
@@ -1444,6 +1518,8 @@ $.ajax({
 				    	</div>
 				    	<div class="collapse dept" id="${deptvo.deptnameeng.replaceAll(' ', '')}"></div>
 				    	</c:forEach>
+				  	--%>
+				    	<div id="connectEmp"></div>
 				  	</div>
 				  	<div class="card-footer" align="center" style="padding: 0; height: 50px;">
 				  		<table class="w-100 h-100">
