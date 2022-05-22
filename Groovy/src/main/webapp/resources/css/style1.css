@@ -4,7 +4,7 @@
 
 #mycontainer   { padding:20px; }
 #myheader      { display: flex; position: relative; }
-#mycontent      { position: relative; top:60px; padding-left:230px; }
+#mycontent      { position: relative; /* top:60px; */ padding-left:230px; }
 #myfooter      { display: flex; min-height:120px; position: relative; top:60px; background-color:#555555; margin-bottom: 70px;}
    
 #myheader a {text-decoration:none;}
@@ -31,7 +31,7 @@
 	background-color: #111;
 	overflow: scroll;
 	-ms-overflow-style: none;
-	padding-top: 60px;
+	/* padding-top: 60px; */
 	color: white;
 }
 
@@ -103,7 +103,7 @@ div.sidenav   #myheader > div.pt-5.sidenav > div.accord > a{
 }
   
 div.sidenav  .borderline{
-	border-top: solid 0.8px #595959; 
+	/* border-top: solid 0.8px #595959;  */
 }
   
 div.sidenav i{
@@ -219,15 +219,18 @@ div.nav_right a  i{
 .header-form-popup {
   display: none;
   position: fixed;
-  top: 60px;  
-  right: 0;
+  /* top: 60px;   */
+  top:0px;
+  right: 0px;
+  left: 230px;
   z-index: 9;
-  width: 400px;
+  width: 300px;
   bottom:auto;
   height: 100%;
   background-color: white;
   -webkit-box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
   box-shadow: -10px 10px 15px rgb(0 0 0 / 4%);
+  color: black;
 }
 
 /* Add styles to the form container */
@@ -339,10 +342,11 @@ input.searchInput{
 	color: #6449fc;
     font-size: 13px;
     font-weight: 700;
-    padding: 0 70px 0 38px; 
+  /*   padding: 0 70px 0 38px;  */
     border: 1px solid #ddd; 
     height: 34px; 
     border-radius: 4px;
+    padding-left: 30px;
     
 }
 
