@@ -553,7 +553,7 @@ public class YuhrController {
 		mav.addObject("pk_empnum", pk_empnum);
 		mav.addObject("WorkTime", WorkTime);
 		
-		mav.setViewName("employee/commutebutton.tiles1");
+		mav.setViewName("index.tiles1");
 		
 		return mav;
 	}

@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 결재 내역보기</title>
+<title>관리자 결재 내역보기</title>
 
 <style type="text/css">
 
@@ -170,7 +170,7 @@ table#app_opinion td {
 <body>
 
 	<div id="container">
-		<div style="font-size: 20px; font-weight: bold; margin: 20px 0;">내 결재 정보 상세 보기</div>
+		<div style="font-size: 20px; font-weight: bold; margin: 20px 0;">관리자 모든 결재 정보 상세 보기</div>
 			<table id="approver">
 				<tr>
 					<th colspan="5" class="first"> 결재자 </th>

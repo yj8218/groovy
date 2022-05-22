@@ -34,14 +34,11 @@
 			$("div.showBoardDetail").empty();
 			$("div.showBoardDetail").hide();
 		});
-	    
-	    $("div.showBoardDetail").hide();
-	    
-
-		
 	    $('#writeBoardModal').on('show.bs.modal', function (e) {
-	    	
-			  
+	    	$("div.showBoardDetail").hide();
+		 });
+	    $('#editBoardModal').on('show.bs.modal', function (e) {
+	    	$("div.showBoardDetail").hide();
 			  
 		 });
 	    
@@ -302,8 +299,8 @@ function openPersonalChat(pk_empnum) {
 						  
 						 	
 						  
-							html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
-							html += "<div class='card mb-4 feedAll' onclick='goBoardView(\""+item.pk_board_seq+"\",1)'>";
+							//html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
+							html += "<div class='card mb-4 feedAll'>";
 							
 							html += "<div class='card-body'>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
@@ -321,9 +318,9 @@ function openPersonalChat(pk_empnum) {
 						   <%-- 	html +=  "  	<a class='dropdown-item' href='<%=ctxPath%>/editBoard.groovy?pk_board_seq="+item.pk_board_seq+"'><i class='far fa-board-alt'></i>수정</a>"; --%>
 						   if('${sessionScope.loginuser.pk_empnum}' == item.fk_empnum){
 								html +=  "<td align='right'>";
-							   html +=  "<i style='padding:3px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
+							   html +=  "<i style='padding:10px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
 							   html +=  "<div class='dropdown-menu'>";
-							   html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer;'><i class='far fa-board-alt'></i>수정</a>";
+							   html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer; '><i class='far fa-edit'></i>수정</a>";
 							   html +=  "  	<a class='dropdown-item' onclick='delBoard("+item.pk_board_seq+")' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
 							   html +=  "</div>";
 								html +=  "</td>";
@@ -373,36 +370,17 @@ function openPersonalChat(pk_empnum) {
 							
 							html +=  "</table> 	";
 							html +=  "</div>";
+							 
+							html +=  "<div class='card-footer' height: 300px; align='center' style=' cursor:pointer;' onclick='goBoardView(\""+item.pk_board_seq+"\",1)'>";
 							
-							 html+= "<div><ul class='commentDisplay"+item.pk_board_seq+"'></ul></div>" ;
-								
-							html +=  "<div class='card-footer' align='center'>";
-							html +=  " <form name='addCommentFrm' ><i class='far fa-user-circle'></i>";
-							html +=  '<input type="text" name="fk_board_seqq"  class="fkboardseq"  value="'+item.pk_board_seq+'" />';
-							html +=  "<input type='text' id='comment-Content"+index+"'  class='comment-Content form-control' style='display: inline-block; width: 80%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
-							
-							
- 		/* 					html +=  '<input type="hidden" name="fk_empnum" id="fk_empnum" value="'+${sessionScope.loginuser.pk_empnum}+'" />';
-							html +=  '<input type="hidden" name="cmt_name" id="cmt_name" value="'+'${sessionScope.loginuser.name}'+'" />';  */
-							/* html +=  "<label class='btn_inputFile' for='inputFile'><i class='fas fa-paperclip ml-2'></i></label>";
-							html +=  "<input type='file' id='commentAttach' style='display: none;'/>"; */
-						    html +=  '<button type="button" class="btn btn-dark btn-sm mr-3" onclick="goAddComment('+item.pk_board_seq+')" >댓글달기</button>'; /* style="display:none;" */
-							html +=  "</form></div></div>";
-							
-							
+							html +=  "상세보기</div>";
+							 
+							html += "</div>";
 							
 							 
-							
-								
-						  /* 
-						  
-						  goViewComment(index , item.pk_board_seq) ;
-						   */
-							
-							  const fkboardseq = $("input[name=fk_board_seqq]").val();
-							  console.log(fkboardseq);
 					   });
-					
+					  const fkboardseq = $("input[name=fk_board_seqq]").val();
+					  console.log(fkboardseq);
 					  /* commentShow(item.pk_board_seq,1); */
 						//$("div#feedAllbox").html(html);
 					
@@ -442,7 +420,7 @@ function openPersonalChat(pk_empnum) {
 	  
 	// === 리스트형 게시판 읽어오기  === //
 	  function goReadBoardList(BcurrentShowPageNo) {
-		  
+		  $("div.showBoardDetail").hide();
 		  $.ajax({
 			  url:"<%= request.getContextPath()%>/readBoardList.groovy",
 			  type:"GET",
@@ -701,7 +679,7 @@ function goBoardView(pk_board_seq) {
 	
 	  // 특정 글을 수정하는 함수
 	  function editBoardModal(index, pk_board_seq){
-		  
+		  $("div.showBoardDetail").hide();
 		  //input 안에 원래 데이터 요소들을 넣어요~~
 		  
 		  const orgin_subject_text = $("td#write_subject"+index).text(); 
@@ -1595,11 +1573,7 @@ $.ajax({
 		
 		
 <!-- 카드 -->
-<div class="card showBoardDetail" style="position: relative;">
-
-
-  	
-</div>
+<div class="card showBoardDetail" style="position: fixed;right: 30px; top:20px;"></div>
 		
 		
 		
