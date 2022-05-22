@@ -98,9 +98,9 @@ public class YuhrService implements InterYuhrService {
 
 	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
 	@Override
-	public int isClickedStartBtn(String pk_empnum) {
-		int n = dao.isClickedStartBtn(pk_empnum);
-		return n;
+	public Map<String, Integer> isClickedBtn(String pk_empnum) {
+		Map<String, Integer> isClicked = dao.isClickedBtn(pk_empnum);
+		return isClicked;
 	}
 
 	// tbl_commute 오늘의 자기 행에 퇴근 update

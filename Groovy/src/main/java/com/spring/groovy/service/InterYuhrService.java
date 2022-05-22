@@ -38,7 +38,7 @@ public interface InterYuhrService {
 	void status_late(String pk_empnum);
 
 	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
-	int isClickedStartBtn(String pk_empnum);
+	Map<String, Integer> isClickedBtn (String pk_empnum);
 
 	// tbl_commute 오늘의 자기 행에 퇴근 update
 	int endWork(String pk_empnum);

@@ -180,8 +180,14 @@
 		values(commute_statusseq.nextval, #{pk_empnum}, 1)
 	</insert>
 	
-	<select id="isClickedStartBtn" parameterType="String" resultType="int">
-		select count(*)
+	<resultMap type="HashMap" id="isClickedBtnMap">
+		<result property="countStart" 			column="countStart" 				javaType="int" />
+		<result property="countEnd" 			column="countEnd" 					javaType="int" />
+	</resultMap>
+	
+	
+	<select id="isClickedBtn" parameterType="String" resultMap="isClickedBtnMap">
+	   	select count(startwork) as countStart, count(endwork) as countEnd
 	   	from tbl_commute
 	   	where fk_empnum = #{pk_empnum} and to_char(startwork, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
 	</select>
