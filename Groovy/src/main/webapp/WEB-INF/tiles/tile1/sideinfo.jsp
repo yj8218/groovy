@@ -1944,10 +1944,10 @@ function createJSTree(jsondata) {
 		'plugins' : ["wholerow","search", "themes","types"],
 		 "types" : {
              "default": {
-                 "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
-                 <!--icon을 원하는 이미지로 만들때-->
+                 <%-- "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
+                 <!--icon을 원하는 이미지로 만들때--> --%>
              }
-         }
+         },
 
 		'core' : {
 		    'data' :  jsondata
