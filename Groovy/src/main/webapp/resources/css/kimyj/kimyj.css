@@ -498,7 +498,8 @@ div#modal_addSchedule div.subject-div {
 }
 
 div#modal_addSchedule div.subject-div {
-    width: 93%;
+   /*  width: 93%; */
+   width: 90%;
 }
 
 div#modal_addSchedule div.color-div {
