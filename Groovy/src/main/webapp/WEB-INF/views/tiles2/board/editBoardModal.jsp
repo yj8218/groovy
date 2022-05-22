@@ -83,91 +83,15 @@
 	$(document).ready(function() {
 		
 
-		//전역변수
-	    var obj = [];
-	    
-	    //스마트에디터 프레임생성
-	    nhn.husky.EZCreator.createInIFrame({
-	        oAppRef: obj,
-	        elPlaceHolder: "content2",
-	        sSkinURI: "<%= request.getContextPath() %>/resources/smarteditor/SmartEditor2Skin.html",
-	        htParams : {
-	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseToolbar : true,            
-	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : false,    
-	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseModeChanger : true,
-	        }
-		}); 
-		
-		<%-- === #166. 스마트 에디터 구현 시작 === --%>
-	 	<%-- 
-		//전역변수
-	    var obj = [];
-	    
-	    //스마트에디터 프레임생성
-	    nhn.husky.EZCreator.createInIFrame({
-	        oAppRef: obj,
-	        elPlaceHolder: "smarteditor2",
-	        sSkinURI: "<%= ctxPath%>/resources/smarteditor/SmartEditor2Skin.html",
-	        htParams : {
-	            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseToolbar : true,            
-	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseVerticalResizer : true,    
-	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseModeChanger : true,
-	        },
-	         fOnAppLoad: function(){
-	        	$("iframe").css("width","100%").css("height","300px");
-	        } 
-	    }); --%>
-	    
-		
 		
 		$('#editBoardModal').on('show.bs.modal', function (e) {
 			
 		}); 
 	
-		    
-		
-	      
 
-		    
-		    <%-- === 스마트 에디터 구현 끝 === --%>
-	    
-	   // editBoardModal(index, pk_board_seq);
-	 //   editBoardModal(pk_board_seq);
-	   
-	    /* 
-	    
-		$("textarea").keydown(function() {
-			const content = $(this);
-			content[0].style.height = 'auto';
-			
-			const contentHeight = content.prop('scrollHeight');
-			content.css('height', contentHeight);
-		}); */
-		/* 
-		$(document).on("click", ".my_close", function() {
-			$('table')[0].reset();
-		});
-		 */
-		
-		
-
-		  
-		    
-		  
-		  
-		  
-				
 		//완료버튼
 	    $("button#btnEditEnd").click(function(){
-	        //id가 content인 textarea에 에디터에서 대입
-	        obj.getById["content2"].exec("UPDATE_CONTENTS_FIELD", []);
-	      
+	        
 	        // 유효성 검사 생략
 	        //폼 submit
 	        const frm = document.editFrm;
