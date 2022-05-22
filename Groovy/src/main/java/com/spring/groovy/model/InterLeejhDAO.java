@@ -54,20 +54,4 @@ public interface InterLeejhDAO {
 	// 글 list로 읽어오기 
 	List<BoardVO> getBoardList();
 
-	//글 삭제하기
-	int del(Map<String, String> paraMap);
-	//댓글추가하기
-	int addComment(CommentVO commentvo);
-	//댓글목록 출력하기
-//	List<CommentVO> getCommentListPaging(Map<String, String> paraMap);
-	
-	// 파일첨부 없는 경우 글 수정
-	int edit_board(Map<String, String> paraMap);
-	// 파일첨부 있는 경우 글 수정
-	int edit_board_withFile(Map<String, String> paraMap);
-	//맵으로 게시글 가져오기   
-	Map<String, String> boardView(String pk_board_seq);
-
-	
-
 }//end of public interface InterLeejhDAO

@@ -21,7 +21,10 @@ public interface InterLimshDAO {
 	List<EmployeeVO> getEmpListByDept(String pk_deptnum);
 
 	// 1:1 채팅 직원 정보 가져오기(select)
-	EmployeeVO getEmp(String name);
+	EmployeeVO getEmp(String pk_empnum);
+
+	// 채팅방 생성하기(insert)
+	int createChat(Map<String, String> paraMap);
 	
 
 }//end of public interface InterLimshDAO

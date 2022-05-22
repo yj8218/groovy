@@ -51,7 +51,6 @@ div#myProfileCard div.card-body ul li span {
 }
 
 </style>
-
 <script type="text/javascript">
 	let b_flagEmailDuplicateClick = false;
 	let b_flagEmailDuplicateClick2 = false;
@@ -63,16 +62,8 @@ div#myProfileCard div.card-body ul li span {
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myProfileCard').appendTo("body"); 
 
-
-	  	getUserInfo();
-		
-  		/* $('.modal').on('hidden.bs.modal', function (e) {
-			$(this).find('form')[0].reset();
-		}); 
-  		  */
-  		
+		getUserInfo();
 	});
-	
 	
 	
 	$(document).mouseup(function (e){
@@ -136,7 +127,6 @@ div#myProfileCard div.card-body ul li span {
 	}
 		
 	
-	
 	function OpenOrganizationForm() {
   		document.getElementById("myForm").style.display = "block";
 	}
@@ -172,17 +162,10 @@ div#myProfileCard div.card-body ul li span {
 	}
 	
 	function myProfileCard(){
-		//document.getElementById("myForm4").style.display = "none";
 		document.getElementById("myProfileCard").style.display = "block"; 
 		
 	}
 	
-	
-	function myProfileCard2(){
-		//document.getElementById("myProfileCard").style.display = "none"; 
-		$('#myProfileCard').modal('hide');
-		
-	}
 	
 	 //================================ ●●● 로그인한 유저 정보 불러오기 ●●●================================//
 	function getUserInfo(){
@@ -223,7 +206,7 @@ div#myProfileCard div.card-body ul li span {
 				
 				$("span#span_email").html(json.email);
 				$("td#td_email").html(json.email);
-				 
+				
 				// 부서 직위
 		/*		$("span#m_deptnamekor").html(json.deptnamekor);
 				$("span#m_spotnamekor").html(json.spotnamekor);
@@ -247,14 +230,14 @@ div#myProfileCard div.card-body ul li span {
 			
 	   	const origin_myphone = $("#td_phone").html();
 	   	//alert("testorigin:"+ origin_myphone);
-		const myphone = $("#td_phone").text();
-		//alert("test1:"+myphone); 
+			const myphone = $("#td_phone").text();
+			//alert("test1:"+myphone); 
 			
 		      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
 		      $('input[name=myphone]').attr('value',myphone);
 		      // "후기수정" 을 위한 엘리먼트 만들기 
 		      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
-		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK' onclick='isExistEmailCheck()'><span>확인</span></button></div>";
+		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
 		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
 		          
 		      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
@@ -305,7 +288,7 @@ div#myProfileCard div.card-body ul li span {
    
    	//================================ ●●● 이메일 수정 ●●●================================//
    	function emailEdit(pk_empnum){
-   		
+   	
 	   	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
 	   	
 	   	const origin_myemail = $("#td_email").html();
@@ -316,9 +299,9 @@ div#myProfileCard div.card-body ul li span {
 		      $("a#btn_emailEdit").hide(); // "후기수정" 글자 감추기
 		      $('input[name=myemail]').attr('value',myemail);
 		      // "후기수정" 을 위한 엘리먼트 만들기 
-		      let html = "<form name='editFrm' class='editFrm'><input id='edit_textarea' type='email' val='' name='myemail'  required placeholder='이메일' style='height: 25px; width: 200px'/><span id='emailCheck' class='error' style='color: red; font-size: 12px;'>올바른 이메일 형식이 아닙니다.</span>";
+		      let html = "<input id='edit_textarea' type='email' val='' name='myemail'  required placeholder='이메일' style='height: 25px; width: 200px'/><span id='emailCheck' style='color: red; font-size: 12px;'>올바른 이메일 형식이 아닙니다.</span>";
 		          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_OK'><span>확인</span></button></div>";
-		          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_NO'><span>취소</span></button></div></form>";  
+		          html += "<div style='display: inline-block; float:right;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnEmailUpdate_NO'><span>취소</span></button></div>";  
 		          
 		      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
 		     
@@ -326,33 +309,7 @@ div#myProfileCard div.card-body ul li span {
 		      $('input[name=myemail]').attr('value',myemail);
 		      $('span#emailCheck').hide();
 		      
-		      //isExistEmailCheck();
-		      //////////
-		      
-		      // 아이디가 email 제약 조건 
-			$("input#edit_textarea").blur(() => {
-				const $target = $(event.target);
-				
-		        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
-		        // 이메일 정규표현식 객체 생성
-			    
-		         const bool = regExp.test($target.val());  
-		        
-				if(!bool){ // !bool == false 이메일이 정규표현식에 위배된 경우
-					// 입력하지 않거나 공백만 입력했을 경우
-					
-				//	$target.next().show();
-				// 	또는
-					$target.parent().find(".error").show();
-					
-				} else {
-					// bool == true 이메일이 정규표현식에 맞는 경우
-					//	$target.next().hide();
-					// 	또는
-					$target.parent().find(".error").hide();
-				}
-			}); 
-		      ////////////
+		
 		      
 		      // 수정취소 버튼 클릭시 
 		      $("button#btnEmailUpdate_NO").click(function(){
@@ -388,160 +345,109 @@ div#myProfileCard div.card-body ul li span {
 		 	    		return; // 종료
 		 	    	}
 		     
-		 	    	
-		 			const $target = $("input#edit_textarea");
-		 			
-		 			// 이메일 정규표현식 객체 생성
-		 	        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
-		 			
-		 		 	const bool = regExp.test($target.val());
-		 			
-		 		 	if(!bool){ // 이메일 정규표현식에 위배시
-		 				$("form.editFrm :input").prop("disabled", true);
-		 				$target.prop("disabled",false);
-		 				
-		 			    $target.next().show();
-		 				$target.focus();
-		 				//$("span#emailCheck").show();
-		 				
-		 				b_flagemailduplicateClick = false;
-		 			}
-		 			else{ // 이메일정규표현식에 통과시
-		 				$("form.registerFrm :input").prop("disabled", false);
-		 				$target.next().hide();
-		 				
-		 				b_flagemailduplicateClick = true;
-		 				
-		 				$.ajax({
-		 	        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
-		 	        	      data:{"checkColumn":"email",
-		 	        	    	  "checkValue":$target.val()},
-		 	        	      success:function(text){
-		 	        	    	  
-		 	        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
-		 	        	    	  
-		 	       	    	      // 이메일 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
-		 	           	    
-							 	       	    	      
-		 	       	    	      if(json.isDuplicatedInfoVal) { // 중복인경우
-		 	       	    	    	  
-		 	       	    	  		 // 세션에 올라온 email 과 입력해준 email 이 같은 경우 (즉, 이메일을 새로이 변경하지 않고 그대로 사용할 경우)
-		 	       			         if( origin_myemail == $("input#edit_textarea").val() ) {
-		 	       			            alert($("input#edit_textarea").val()+" 은 사용가능합니다");
-		 	       			       		 emailEditEnd(new_email);
-		 	       			            
-		 	       			         }
-		 	       			         else { 
-		 	       			         // 이메일을 새로이 변경한 경우인데 입력한 email 이 이미 사용중 이라면
-		 	       			           alert($("input#edit_textarea").val()+" 은 이미 사용중이므로 사용불가 합니다.");
-		 	       			            $("input#edit_textarea").val("");
-		 	       			            
-		 	       			         }
-		 	       	    	    	  
-		 	           	    	  }
-		 	           	    	  else { // 중복아닌경우
-		 	           	    		  $("span#emailCheck").html($("input#edit_textarea").val() +" 은 사용가능한 이메일입니다").css("color","green");
-		 	           	    			emailEditEnd(new_email);
-		 	           	    	  
-		 	           	    	  }	  
-		 	        	      },
-		 	        	      error:function(request, status, error){
-		 	        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		 	        	      }
-		 	          	});// end of ajax
-		 			}
 		     
-		 		 	 
+				//////////////////////////////////				
+					const $target = $("input#edit_textarea");
+					
+					// 이메일 정규표현식 객체 생성
+			        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
+					
+				 	const bool = regExp.test($target.val());
+					
+				 	if(!bool){ // 이메일 정규표현식에 위배시
+						$("input#edit_textarea").prop("disabled", true);
+						$target.prop("disabled",false);
+						
+					    $target.next().show();
+						$target.focus();
+						$("span#emailCheck").html("");
+						
+						b_flagemailduplicateClick2 = false;
+					}
+					else{ // 이메일정규표현식에 통과시
+						$("input#edit_textarea").prop("disabled", false);
+						$target.next().hide();
+						
+						b_flagemailduplicateClick2 = true;
+						
+						$.ajax({
+			        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
+			        	      data:{"checkColumn":"email",
+			        	    	  "checkValue":$target.val()},
+			        	      success:function(text){
+			        	    	  
+			        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
+			        	    	  
+			       	    	      // 이메일 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
+			           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
+			           	    		  alert($("input#edit_textarea").val() +" 은 이미 사용중인 이메일입니다");
+			           	    		  $("input#edit_textarea").val("");
+			           	    	  }
+			           	    	  else { // 중복아닌경우
+			           	    		//alert($("input#edit_textarea").val() +" 은 사용가능한 이메일입니다");
+			           	    	  }	  
+			        	      },
+			        	      error:function(request, status, error){
+			        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			        	      }
+			          	});// end of ajax
+					}
+				
+				 	
+				 /* 	if(!b_flagemailduplicateClick2){// 이메일 중복확인 버튼을 클릭하지 않았을 때
+						alert("이메일 중복확인 버튼을 클릭하여 이메일 중복검사를 하세요");
+						return; // 종료
+					} */
+				 	
+		         /////////////////////////////////
+		 	     
 		     });   
 		         
-		      
-		  	
-		     	function emailEditEnd(new_email){
-		     	
-		  		$.ajax({
-		     	      url:"<%= ctxPath%>/myEmailEditEnd.groovy",
-		     	      data:{"pk_empnum":pk_empnum
-		  	                ,"myemail":$('input[name=myemail]').val()},
-		               dataType:"JSON",
-		               success:function(json) {
-		     	    	  
-		     	    	//  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
-		     	    	  
-		        	    	  if(json.isSuccess) {
-		        	    		  alert("변경되었습니다.")
-		  	            	  $("#td_email").html(new_email); 
-		  	            	  $("span#span_email").html(new_email); 
-		  	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
-		  	         		  
-		        	    	  }
-		        	    	  else { 
-		        	    		  alert("수정이 실패되었습니다.");
-		  	                  $("#td_email").html(origin_myemail); // 원래의 제품후기 엘리먼트로 복원하기
-		  	                  $("span#span_email").html(origin_myemail); 
-		  	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
-		        	    	  }	  
-		     	      },
-		     	      error:function(request, status, error){
-		     	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		     	    	 	
-		     	      }
-		       	});// end of ajax
-		       }
    	
    	}//end of function emailEdit(pk_empnum){}------------------
 
-   	 	//이메일 중복여부 검사하기
-	// 2. 이메일 입력칸 유효성검사 및 중복검사
-	/* function isExistEmailCheck() { */
-	$("img#emailCheck").click(function(){	
-		const $target = $("input#edit_textarea");
-		
-		// 이메일 정규표현식 객체 생성
-        const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
-		
-	 	const bool = regExp.test($target.val());
-		
-	 	if(!bool){ // 이메일 정규표현식에 위배시
-			$("form.editFrm :input").prop("disabled", true);
-			$target.prop("disabled",false);
-			
-		    $target.next().show();
-			$target.focus();
-			$("span#emailcheck").html("");
-			
-			b_flagemailduplicateClick = false;
-		}
-		else{ // 이메일정규표현식에 통과시
-			$("form.registerFrm :input").prop("disabled", false);
-			$target.next().hide();
-			
-			b_flagemailduplicateClick = true;
-			
-			$.ajax({
-        	      url:"<%= ctxPath%>/empDuplicatedCheck.groovy",
-        	      data:{"checkColumn":"email",
-        	    	  "checkValue":$target.val()},
-        	      success:function(text){
-        	    	  
-        	    	  const json = JSON.parse(text); // JSON 형식으로 되어진 문자열을 자바스크립트 객체로 변환
-        	    	  
-       	    	      // 이메일 중복검사 결과가 -> true 면 중복된거고, false 면 중복안된것
-           	    	  if(json.isDuplicatedInfoVal) { // 중복인경우
-           	    		  alert($("input#edit_textarea").val() +" 은 이미 사용중인 이메일입니다");
-           	    		  $("input#edit_textarea").val("");
-           	    	  }
-           	    	  else { // 중복아닌경우
-           	    		 alert($("input#edit_textarea").val() +" 은 사용가능한 이메일입니다");
-           	    	  }	  
-        	      },
-        	      error:function(request, status, error){
-        	    	  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-        	      }
-          	});// end of ajax
-		}
-     });// end of $("img#empnumCheck").click(function(){
-   	
-  
+   
+
+	//이메일 중복여부 검사하기
+ function isExistEmailCheck() {
+ 	
+ 	$("span#emailCheckResult").hide();
+ 	
+ 	b_flagEmailDuplicateClick = true;
+ 	// 가입하기 버튼을 클릭시 "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기위한 용도임.
+ 	
+ 	// 첫번째 방법
+ 	$.ajax({
+ 		url:"<%= ctxPath%>/myEmailEditEnd.groovy",
+ 		type:"post",
+ 		data:{"pk_empnum":pk_empnum
+            ,"myemail":$('input[name=myemail]').val()},
+ 		dataType:"json",
+ 		success:function(json) {
+ 			
+ 			const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
+ 	 			const bool = regExp.test($("input#email").val());  	
+ 	 			
+ 	 				if(json.isSuccess) {	// 입력한 $("input#email").val() 값이 이미 사용중이라면
+ 	 					alert("변경되었습니다.")
+  	            	  $("#td_email").html(new_email); // 원래의 제품후기 엘리먼트로 복원하기  
+  	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
+  	         		  $("span#span_email").html(new_email);
+ 	 				} else {	// 입력한 $("input#email").val() 값이 DB테이블(tbl_member)에 존재하지 않는 경우라면
+ 	 				 alert("수정이 실패되었습니다.");
+	                  $("#td_email").html(origin_myemail); // 원래의 제품후기 엘리먼트로 복원하기  
+	         		  $("a#btn_emailEdit").show(); // "후기수정" 글자 보여주기 
+ 	 				}
+ 			
+ 		},
+ 		error: function(request, status, error){
+ 			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+ 		}
+ 	});		
+ 	
+ }// end of function isExistEmailCheck() {}----------------------------------
+
+   
    
    	//================================ ●●● 주소 수정 ●●●================================//
    function addressEdit(pk_empnum){
@@ -709,9 +615,14 @@ div#myProfileCard div.card-body ul li span {
    	
    	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
    	var loginpwd = "${sessionScope.loginuser.pwd}";
+   	alert(loginpwd);
    	const origin_mypwd = $("#td_pwd").html();
+   	alert("testorigin:"+ origin_mypwd);
 		
-	 $("a#btn_pwdEdit").hide(); // "비밀번호 수정" 글자 감추기
+   	//const myemail = $("#td_email").text();
+		//alert("test1:"+myphone); 
+		
+	      $("a#btn_pwdEdit").hide(); // "비밀번호 수정" 글자 감추기
 	     
 	      // "비번수정" 을 위한 엘리먼트 만들기 
 	      let html = "<table><tr class=''>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</tr><tr>";
@@ -741,7 +652,7 @@ div#myProfileCard div.card-body ul li span {
 	 	   		const originpwd = $target.val();
 	 	   		
 	 	   		
-	 	   		ㅇ
+	 	   		
 	 	 	  	if(originpwd != loginpwd){ // 기존암호 확인값이 다른 경우
 	 	   			$target.prop("disabled",false);
 	 	   			$("input#originpwd").prop("disabled",false);
@@ -874,62 +785,62 @@ div#myProfileCard div.card-body ul li span {
    
    //================================ ●●● 연락처 수정 ●●●================================//
    function mobileEdit(pk_empnum){
-	   	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
-			
-	   	const origin_myphone = $("#td_phone").html();
-	   	//alert("testorigin:"+ origin_myphone);
-			const myphone = $("#td_phone").text();
-			//alert("test1:"+myphone); 
-			
-		      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
-		      $('input[name=myphone]').attr('value',myphone);
-		      // "후기수정" 을 위한 엘리먼트 만들기 
-		      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
-		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
-		          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
-		          
-		      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
-		     
-		      $("#td_phone").html(html); 
-		      $('input[name=myphone]').attr('value',myphone);
-		      // 수정취소 버튼 클릭시 
-		      $("button#btnPhoneUpdate_NO").click(function(){
-		         $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기  
-		         $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
-		      });
-		      
-		      // 수정완료 버튼 클릭시 
-		      $("button#btnPhoneUpdate_OK").click(function(){
-		         alert(pk_empnum); // 수정할 사원 번호 
-		         alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
-		         const new_phone = $('input[name=myphone]').val();
-		         
-		         $.ajax({
-		            url:"<%= ctxPath%>/myPhoneEditEnd.groovy",
-		            type:"POST",
-		            data:{"pk_empnum":pk_empnum
-		                ,"myphone":$('input[name=myphone]').val()},
-		            dataType:"JSON",
-		            success:function(json) { // {"n":1} 또는 {"n":0}
-		               if(json.isSuccess) {
-		            	  alert("변경되었습니다.")
-		            	  $("#td_phone").html(new_phone); 
-		            	  $("span#span_phone").html(new_phone); 
-		         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
-		               }
-		               else {
-		                  alert("수정이 실패되었습니다.");
-		                  $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기
-		                  $("span#span_phone").html(origin_myphone); 
-		         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
-		               }
-		            },
-		            error: function(request, status, error){
-		               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		            }   
-		         });
-		         
-		      });
+   	var pk_empnum = "${sessionScope.loginuser.pk_empnum}";
+		
+   	const origin_myphone = $("#td_phone").html();
+   	//alert("testorigin:"+ origin_myphone);
+		const myphone = $("#td_phone").text();
+		//alert("test1:"+myphone); 
+		
+	      $("a#btn_mobileEdit").hide(); // "후기수정" 글자 감추기
+	      $('input[name=myphone]').attr('value',myphone);
+	      // "후기수정" 을 위한 엘리먼트 만들기 
+	      let html = "<input id='edit_textarea' type='text' val='' name='myphone' required placeholder='연락처' style='height: 25px; width: 200px'/>";
+	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_OK'><span>확인</span></button></div>";
+	          html += "<div style='display: inline-block;  font-size: 12px; height: 25px; padding: 0;'><button type='button' class='btn btn-sm btn-outline-secondary' id='btnPhoneUpdate_NO'><span>취소</span></button></div>";  
+	          
+	      // 원래의 제품후기 엘리먼트에 위에서 만든 "후기수정" 을 위한 엘리먼트로 교체하기  
+	     
+	      $("#td_phone").html(html); 
+	      $('input[name=myphone]').attr('value',myphone);
+	      // 수정취소 버튼 클릭시 
+	      $("button#btnPhoneUpdate_NO").click(function(){
+	         $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기  
+	         $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+	      });
+	      
+	      // 수정완료 버튼 클릭시 
+	      $("button#btnPhoneUpdate_OK").click(function(){
+	         alert(pk_empnum); // 수정할 사원 번호 
+	         alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
+	         const new_phone = $('input[name=myphone]').val();
+	         
+	         $.ajax({
+	            url:"<%= ctxPath%>/myPhoneEditEnd.groovy",
+	            type:"POST",
+	            data:{"pk_empnum":pk_empnum
+	                ,"myphone":$('input[name=myphone]').val()},
+	            dataType:"JSON",
+	            success:function(json) { // {"n":1} 또는 {"n":0}
+	               if(json.isSuccess) {
+	            	  alert("변경되었습니다.")
+	            	  $("#td_phone").html(new_phone); 
+	            	  $("span#span_phone").html(new_phone); 
+	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+	               }
+	               else {
+	                  alert("수정이 실패되었습니다.");
+	                  $("#td_phone").html(origin_myphone); // 원래의 제품후기 엘리먼트로 복원하기
+	                  $("span#span_phone").html(origin_myphone); 
+	         		  $("a#btn_mobileEdit").show(); // "후기수정" 글자 보여주기 
+	               }
+	            },
+	            error: function(request, status, error){
+	               alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	            }   
+	         });
+	         
+	      });
 	   
    }//end of function updateMyReview(index, review_seq){}----------------------
 
@@ -962,10 +873,17 @@ div#myProfileCard div.card-body ul li span {
 
 
    }
-	
-	
-	
-</script>
+
+   
+	// 새 채팅(팝업창)
+	function openNewChat() {
+		const url = "<%= ctxPath %>/openNewChat.groovy";
+        const popup_name = "openNewChat";
+        const option = "width = 550, height = 650, top = 300, left = 600";
+		
+		window.open(url, popup_name, option);
+	}
+</script>	
  
  <!-- =================상단 네비게이션 시작 =====================-->
 <div class="header-header">
@@ -1005,7 +923,7 @@ div#myProfileCard div.card-body ul li span {
 								<!-- 조직도 리스트 -->
 							    <label for="name" style="font-size: 14px; margin-left:20px;"><b>그루비</b></label>
 								<div style="display:flex; padding: 0 20px; margin: 10px 0;">
-									<form><input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name phone deptnamekor" required></form>
+									<input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name phone deptnamekor" required>
 								</div>
 								
 								<!-- 조직도리스트 넣기 -->
@@ -1021,50 +939,49 @@ div#myProfileCard div.card-body ul li span {
                 <a class="iconbar" onclick=" OpenChatForm()" type="button" data-toggle="tooltip" data-placement="bottom" title="채팅"><i class="fas fa-comment"></i></a>
                 
                 <div class="header-form-popup" id="myForm2" >
-	                	<article action="" class="header-form-container">
-						    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
-							    <strong >채팅</strong>
-							    <button type="button" class="btn cancel" onclick="closeForm2()"><i class="fas fa-times icon-search"></i></button>
+                	<article action="" class="header-form-container">
+					    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
+						    <strong >채팅</strong>
+						    <button type="button" class="btn cancel" onclick="closeForm2()"><i class="fas fa-times icon-search"></i></button>
+						</div>
+						<div style="">
+							<div style="margin:0 20px; border-bottom: solid 1px  #ddd;">
+								<div class="tab" >
+									  <button class="tablinks " onclick="openChatTab(event, 'chatting')">채팅</button>
+									  <button class="tablinks" onclick="openChatTab(event, 'chatContact')">연락처</button>
+								</div>
+								<div style=" float:right;   top: -40px; position: relative;">
+									<button id="btnChat" onclick="openNewChat()"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat" />새 채팅</button>
+							    </div>
 							</div>
-							<div style="">
-								<div style="margin:0 20px; border-bottom: solid 1px  #ddd;">
-									<div class="tab" >
-										  <button class="tablinks " onclick="openChatTab(event, 'chatting')">채팅</button>
-										  <button class="tablinks" onclick="openChatTab(event, 'chatContact')">연락처</button>
-									</div>
-									<div style=" float:right;   top: -40px; position: relative;">
-										<button id="btnChat"><img class="pr-1" src="<%= ctxPath%>/resources/images/common/icon-chat.png"  alt="icon-chat"  />새 채팅</button>
-								    </div>
-								</div>
-								
-								<div style="padding: 0 20px; margin: 10px 0;">
-									<input id="chatInput" type="text" class="searchInput" placeholder="이름, 채팅방명 검색" autocomplete="off" name="name" required />
-								</div>
-								
-								<div id="chatting" class="tabcontent" >
-									<div  style= "padding: 7px 20px 20px 20px;">
-										<ul  class="pjtList scroll" style="   padding:5px 20px; ">
-											<li class="department-item " >
-									            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">채팅채팅</span>
-									        </li>
-										</ul>
-									</div>
-								</div>
-								
-								<div id="chatContact" class="tabcontent">
-								  <div    style= "padding: 7px 20px 20px 20px;">
-									<ul  class="pjtList" style="   padding:5px 20px; ">
-										<li class="department-item "  >
-								          
-								            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">연락처연락처</span>
+							
+							<div style="padding: 0 20px; margin: 10px 0;">
+								<input id="chatInput" type="text" class="searchInput" placeholder="이름, 채팅방명 검색" autocomplete="off" name="name" required />
+							</div>
+							
+							<div id="chatting" class="tabcontent" >
+								<div  style= "padding: 7px 20px 20px 20px;">
+									<ul  class="pjtList scroll" style="   padding:5px 20px; ">
+										<li class="department-item " >
+								            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">채팅채팅</span>
 								        </li>
 									</ul>
 								</div>
-								</div>
-								
 							</div>
-						 </article>
-                
+							
+							<div id="chatContact" class="tabcontent">
+							  <div    style= "padding: 7px 20px 20px 20px;">
+								<ul  class="pjtList" style="   padding:5px 20px; ">
+									<li class="department-item "  >
+							          
+							            <span style="cursor:pointer" class="group-tree-position-fix-type-1 department-name group-tree-position-fix-type-1">연락처연락처</span>
+							        </li>
+								</ul>
+							</div>
+							</div>
+							
+						</div>
+					 </article>
 				</div>
 				
 	<!-- ●●● 알림 팝업 ●●●================================-->
@@ -1151,7 +1068,7 @@ div#myProfileCard div.card-body ul li span {
 	        					
 	        				</li>
 	        				<li class="infoList"><a style="color: #555 !important ;"    onclick="getUserInfo()" href="" data-toggle="modal" data-target="#myProfileCard"><i class="far fa-user"></i> 내 프로필</a></li>
-	        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myProfileCard2" ><i class="fas fa-cog"></i> 환경설정</a></li>
+	        				<li class="infoList"><a style="color: #555 !important ;"  href="#"><i class="fas fa-cog"></i> 환경설정</a></li>
 	        				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
 	        				
 	        			</ul>
@@ -1164,14 +1081,13 @@ div#myProfileCard div.card-body ul li span {
         	
 	</nav>
 
-
 	<!-- ●●● 유저정보 팝업 => [유저프로필카드]  ●●●================================-->
 		<div class="modal animate" id="myProfileCard"  >
 			<div class="modal-dialogs"  >
       	    	<div class="card" id="headerCard" style="width:400px; display: block; ">
 
       	       		<div class="card " style="display: block; ">
-
+      	       		
 					   	<div style=" position: relative; ">
 						    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
 						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
@@ -1195,16 +1111,15 @@ div#myProfileCard div.card-body ul li span {
 					        	채팅
 					        	<i class="far fa-comments"></i>
 					        </button>
-					        <button class="btn-modi js-btn-modi btn-bottom" onclick="myProfileCard2()" data-toggle="modal" data-target="#myProfileCard2" style=" cursor: pointer;" >
+					        <button class="btn-modi js-btn-modi btn-bottom" onclick="myProfileCard()" data-toggle="modal" data-target="#myProfileCard2" style=" cursor: pointer;" >
 					       		정보수정
 					            <i class="far fa-address-card"></i>
 					        </button>
 					     </div>
-					     
-		  			</div> 
-				</div>
-		 	</div>
-		</div>
+					  </div> 
+        	    	</div>
+				  </div>
+				 </div>
 				  
 	<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
 	<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6);" >

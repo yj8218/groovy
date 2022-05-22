@@ -1,7 +1,6 @@
 package com.spring.groovy.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -195,7 +194,6 @@ public class LeejhController {
 
 	
 	// === 비밀번호 찾기 화면 메서드 === //
-	@NoLogging
 	@RequestMapping(value = "findpwd.groovy")
 	public ModelAndView findpwd(ModelAndView mav) {
 		mav.setViewName("login/findpwd.tiles2");
@@ -203,7 +201,6 @@ public class LeejhController {
 	}
 	
 	// === 비밀번호 찾기 인증번호 발송 메서드 === //
-	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/sendCodeEmail.groovy", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
 	public String sendCodeEmail(HttpServletRequest request) {
@@ -275,7 +272,6 @@ public class LeejhController {
 	}
 	
 	// === 인증번호 체크 메서드 === ///
-	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/checkCode.groovy", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
 	public String checkCode(HttpServletRequest request) {
@@ -309,7 +305,6 @@ public class LeejhController {
 	
 	
 	// === 새비밀번호 업데이트 메서드(update) === //
-	@NoLogging
 	@ResponseBody
 	@RequestMapping(value = "/newPwdUpdate.groovy", method = {RequestMethod.POST})
 	public String newPasswordUpdate(HttpServletRequest request) {
@@ -508,8 +503,6 @@ public class LeejhController {
 		return json;
 		
 	}
-	
-	
 	
 	// 이메일 수정
 	@ResponseBody
@@ -921,8 +914,8 @@ public class LeejhController {
 		for(Map<String,String> map : employeeChartList) {
 				JsonObject jsonObj = new JsonObject();  //얘도 소문자 ~ 하면 구글슨~
 				jsonObj.addProperty("name", 			map.get("name")); //put대신 addProperty
-				jsonObj.addProperty("id", 	    map.get("deptnamekor"));
-				jsonObj.addProperty("title",	    map.get("spotnamekor"));
+				jsonObj.addProperty("deptnamekor", 	    map.get("deptnamekor"));
+				jsonObj.addProperty("spotnamekor",	    map.get("spotnamekor"));
 				
 				/*
 				 [{"department_name":"Accounting","cnt":"2","percentage":"1.87"},{"department_name":"Administration","cnt":"1","percentage":".93"},{"department_name":"Executive","cnt":"3","percentage":"2.8"},{"department_name":"Finance","cnt":"6","percentage":"5.61"},{"department_name":"Human Resources","cnt":"1","percentage":".93"},{"department_name":"IT","cnt":"5","percentage":"4.67"},{"department_name":"Marketing","cnt":"2","percentage":"1.87"},{"department_name":"Public Relations","cnt":"1","percentage":".93"},{"department_name":"Purchasing","cnt":"6","percentage":"5.61"},{"department_name":"Sales","cnt":"34","percentage":"31.78"},{"department_name":"Shipping","cnt":"45","percentage":"42.06"},{"department_name":"부서없음","cnt":"1","percentage":".93"}]
@@ -946,10 +939,10 @@ public class LeejhController {
 	
 		
 		
-		// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
+		// === #90. 원게시물에 딸린 댓글들을 조회해오기(Ajax 로 처리) === //
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-		public String readBoard(HttpServletRequest request) {
+		public String readComment(HttpServletRequest request) {
 		
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
 			
@@ -975,30 +968,13 @@ public class LeejhController {
 				 	jsonObj.put("b_filename", boardvo.getB_filename());
 				 	jsonObj.put("b_orgfilename", boardvo.getB_orgfilename());
 				 	jsonObj.put("b_filesize", boardvo.getB_filesize());
-				 	jsonObj.put("emppicturename", boardvo.getEmppicturename());
-				 	jsonObj.put("deptnamekor", boardvo.getDeptnamekor());
-				 	jsonObj.put("spotnamekor", boardvo.getSpotnamekor());
+				 	
 					jsonArr.put(jsonObj);
 				}// end of for---------------------
 			}
 			
 			return jsonArr.toString();
 		}
-		
-		
-		// === #51. 게시판 글 수정 모달요청 === //
-		@RequestMapping(value="/editBoard.groovy")
-		public ModelAndView editBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-		
-			String pk_board_seq = request.getParameter("pk_board_seq");
-			
-			mav.setViewName("board/editBoardModal.tiles2");
-			//  /WEB-INF/views/tiles1/board/add.jsp 파일을 생성한다.
-		
-		    return mav;
-		}
-		
-		
 	
 
 		//글삭제

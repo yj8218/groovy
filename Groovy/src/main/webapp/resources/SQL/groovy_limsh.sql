@@ -1,7 +1,10 @@
-select pk_empnum, name, phone, email, emppicturename, emppicturefilename
-from tbl_employee
+select pk_empnum, name, phone, email, emppicturename, emppicturefilename, s.spotnamekor
+from tbl_employee E
+join tbl_spot S
+on E.fk_spotnum = S.pk_spotnum
 where resignationstatus = 0
-and not name like '%'||'관리'||'%';
+and not name like '%'||'관리'||'%'
+order by fk_deptnum asc, fk_spotnum desc;
 
 select name, phone, email, emppicturename, emppicturefilename, s.spotnamekor
 from tbl_employee E
@@ -28,3 +31,36 @@ select pk_empnum, name, phone, email, emppicturename, emppicturefilename, fk_spo
 from tbl_employee
 where fk_deptnum = 4
 order by fk_spotnum desc;
+
+drop table tbl_chatroom purge;
+create table tbl_chatroom
+(chatroomSeq    number        not null
+,receiver         varchar2(40)  not null
+,sender           varchar2(40)  not null
+,constraint PK_tbl_chatroom primary key(chatroomSeq)
+,constraint FK_tbl_chatroom_receiver foreign key(receiver) references tbl_employee(pk_empnum)
+,constraint FK_tbl_chatroom_sender foreign key(sender) references tbl_employee(pk_empnum)
+);
+
+drop sequence seq_chatroom;
+create sequence seq_chatroom
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+select *
+from tbl_chatroom;
+
+select name, phone, email, emppicturename, emppicturefilename, s.spotnamekor, d.deptnamekor
+from tbl_employee E
+join tbl_spot S
+on fk_spotnum = pk_spotnum
+join tbl_department D
+on e.fk_deptnum = d.pk_deptnum
+where resignationstatus = 0
+and not pk_spotnum = 0
+and (lower(name) like '%'||lower('총')||'%' or lower(deptnamekor) like '%'||lower('총')||'%')
+order by name asc;
