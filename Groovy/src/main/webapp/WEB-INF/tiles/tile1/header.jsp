@@ -122,6 +122,7 @@ width: 100px;
 </style>
 
 <script type="text/javascript">
+<%-- 
 	let b_flagEmailDuplicateClick = false;
 	let b_flagEmailDuplicateClick2 = false;
 	//  "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기 위한 용도이다.
@@ -1305,7 +1306,7 @@ width: 100px;
    }
 	// 출퇴근 관련(3) 끝 by 혜림  <<< //
 	
-	
+	 --%>
 </script>
  
  <!-- =================상단 네비게이션 시작 =====================-->

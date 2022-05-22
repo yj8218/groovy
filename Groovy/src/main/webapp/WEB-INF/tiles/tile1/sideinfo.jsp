@@ -291,7 +291,7 @@ let hour, min, sec;
 
 $(document).ready(function() {
 	
-	$('.modal-backdrop').last().css("z-index", "9999");
+	$('sidenav .modal-backdrop').last().css("z-index", "9999");
 	
     $('[data-toggle="tooltip"]').tooltip();
     $('#myProfileCard').appendTo("body");
@@ -299,7 +299,7 @@ $(document).ready(function() {
 
     getUserInfo();
 
-    $('.modal').on('hidden.bs.modal', function(e) {
+    $('sidenav .modal').on('hidden.bs.modal', function(e) {
         $(this).find('form')[0].reset();
         $(this).find('form[name="editFrm"]')[0].reset();
         $(this).find('form[name="registerFrm"]')[0].reset();
@@ -1849,17 +1849,17 @@ function getTimeFormatString() {
                         <tr>
                             <th>주소</th>
                             <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
-                            <td><a onclick="addressEdit(pk_empnum)" id="btn_addressEdit" type="button"><i class="far fa-edit"></i></a></td>
+                            <td><a onclick="addressEdit(${sessionScope.loginuser.pk_empnum})" id="btn_addressEdit" type="button"><i class="far fa-edit"></i></a></td>
                         </tr>
                         <tr class="myphone">
                             <th>연락처</th>
                             <td id="td_phone"></td>
-                            <td id="myphone2"><a id="btn_mobileEdit" onclick="mobileEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                            <td id="myphone2"><a id="btn_mobileEdit" onclick="mobileEdit(${sessionScope.loginuser.pk_empnum})" type="button"><i class="far fa-edit"></i></a></td>
                         </tr>
                         <tr>
                             <th>이메일</th>
                             <td id="td_email"></td>
-                            <td><a id="btn_emailEdit" onclick="emailEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                            <td><a id="btn_emailEdit" onclick="emailEdit(${sessionScope.loginuser.pk_empnum})" type="button"><i class="far fa-edit"></i></a></td>
                         </tr>
                         <tr>
                             <th>비밀번호</th>
@@ -1869,7 +1869,7 @@ function getTimeFormatString() {
                                     <tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를 포함해야 합니다.</span></tr>
                                 </table>
                             </td>
-                            <td><a id="btn_pwdEdit" onclick="pwdEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                            <td><a id="btn_pwdEdit" onclick="pwdEdit(${sessionScope.loginuser.pk_empnum})" type="button"><i class="far fa-edit"></i></a></td>
                         </tr>
                         <tr>
                             <th>부서</th>
@@ -1944,10 +1944,10 @@ function createJSTree(jsondata) {
 		'plugins' : ["wholerow","search", "themes","types"],
 		 "types" : {
              "default": {
-                 "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
-                 <!--icon을 원하는 이미지로 만들때-->
+                 <%-- "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
+                 <!--icon을 원하는 이미지로 만들때--> --%>
              }
-         }
+         },
 
 		'core' : {
 		    'data' :  jsondata

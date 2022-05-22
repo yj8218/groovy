@@ -68,7 +68,7 @@
 	//Function Declaration
 	function func_Login(){
 		const pk_empnum = $("input#pk_empnum").val().trim(); 
-		alert(pk_empnum);
+	//	alert(pk_empnum);
 	    const pwd = $("input#pwd").val().trim(); 
 	    
 	    
