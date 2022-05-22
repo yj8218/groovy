@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,7 +45,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	private Map<Object, Object> connectedUsersId = new HashMap<>();
 	
 	// 웹소켓에서 파일 전송하기
-	private static final String FILE_UPLOAD_PATH = "C:/";	// 파일 업로드 경로
+	String screenPath = System.getProperty("user.home");
+	private String FILE_UPLOAD_PATH = screenPath + "\\Desktop";	// 파일 업로드 경로
 	static int fileUploadIdx = 0;
 	static String fileUploadSession = "";
 	
@@ -241,9 +246,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	// 파일 전송을 위한 메소드
 	@Override
 	public void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		
+		Date now = new Date();
+		
+		String nowTime = sdf.format(now);
+		
 		//바이너리 메시지 발송
 		ByteBuffer byteBuffer = message.getPayload();
-		String fileName = "test.jpg";
+		String fileName = nowTime + ".jpg";
 		File dir = new File(FILE_UPLOAD_PATH);
 		if(!dir.exists()) {
 			dir.mkdirs();
@@ -271,12 +283,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		
 		byteBuffer.position(0); //파일을 저장하면서 position값이 변경되었으므로 0으로 초기화한다.
 		//파일쓰기가 끝나면 이미지를 발송한다.
+		
+		
 		for (WebSocketSession webSocketSession : connectedUsers) {
-			try {
-				webSocketSession.sendMessage(new BinaryMessage(byteBuffer));
-			} catch(IOException e) {
-				e.printStackTrace();
-			}
+			if (!session.getId().equals(webSocketSession.getId())) { 
+				try {
+					webSocketSession.sendMessage(new BinaryMessage(byteBuffer));
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+	        }
         }// end of for------------------------------------------
 	}
 	

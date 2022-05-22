@@ -134,7 +134,7 @@
                 const currentTime = ampm + hours + ":" + minutes;
 	   			
 	   			var url = URL.createObjectURL(new Blob([event.data]));
-	   			let html = "<div style='display: inline-block; max-width: 60%; float: right; padding: 7px; border-radius: 15%; word-break: break-all;'><img class='msgImg' src='" + url + "'></div> <div style='display: inline-block; float: right; padding: 20px 5px 0 0; font-size: 7pt;'>"+currentTime+"</div> <div style='clear: both;'>&nbsp;</div>";
+	   			let html = "<div style='display: inline-block; max-width: 60%; float: left; padding: 7px; border-radius: 15%; word-break: break-all;'><img class='msgImg' src='" + url + "'></div> <div style='display: inline-block; float: left; padding: 20px 5px 0 0; font-size: 7pt;'>"+currentTime+"</div> <div style='clear: both;'>&nbsp;</div>";
 	   			$("div#chatMessage").append(html);
 	            $("div#chatMessage").append("<br/>");
 	            $("div#chatMessage").scrollTop(99999999);
@@ -254,6 +254,42 @@
 				websocket.send(arrayBuffer); //파일 소켓 전송
 			};
 			fileReader.readAsArrayBuffer(file);
+			
+			// 위에서 자신이 보낸 메시지를 웹소켓으로 보낸 다음에 자신이 보낸 메시지 내용을 웹페이지에 보여지도록 한다.
+            const now = new Date();
+            let ampm = "오전 ";
+            let hours = now.getHours();
+            
+            if(hours > 12) {
+               hours = hours - 12;
+               ampm = "오후 ";
+            }
+            
+            if(hours == 0) {
+               hours = 12;
+            }
+            
+            if(hours == 12) {
+               ampm = "오후 ";
+            }
+            
+            let minutes = now.getMinutes();
+          	if(minutes < 10) {
+             	minutes = "0"+minutes;
+          	}
+          
+          	// 파일 전송하기
+            const currentTime = ampm + hours + ":" + minutes;
+   			
+   			var url = URL.createObjectURL(new Blob([file]));
+   			let html = "<div style='display: inline-block; max-width: 60%; float: right; padding: 7px; border-radius: 15%; word-break: break-all;'><img class='msgImg' src='" + url + "'></div> <div style='display: inline-block; float: right; padding: 20px 5px 0 0; font-size: 7pt;'>"+currentTime+"</div> <div style='clear: both;'>&nbsp;</div>";
+   			$("div#chatMessage").append(html);
+            $("div#chatMessage").append("<br/>");
+            $("div#chatMessage").scrollTop(99999999);
+            $("input#fileUpload").val("");
+            
+            $("#sidebar").hide();
+            $("#sidebar").removeClass("emphasized");
 		}); // end of $("#btnSendFile").click(function() {})
 		
 	}); // end of $(document).ready(function() {})
