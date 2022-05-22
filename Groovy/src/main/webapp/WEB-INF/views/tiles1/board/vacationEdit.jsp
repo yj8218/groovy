@@ -171,11 +171,11 @@ $(document).ready(function(){
 	
 	$('input.timepickerStart').timepicker({
      // timeFormat: 'HH:mm', 24시간 사용 시 
-		timeFormat: 'h:mm p',
+		timeFormat: 'hh:mm p',
 	    interval: 60,
-	    minTime: '9',
-	    maxTime: '6:00pm',
-	    defaultTime: '9',
+	    minTime: '09',
+	    maxTime: '06:00pm',
+	    defaultTime: '09',
 	    dynamic: false,
 	    dropdown: true,
 	    scrollbar: true
@@ -183,10 +183,10 @@ $(document).ready(function(){
 	
 	$('input.timepickerEnd').timepicker({
 	     // timeFormat: 'HH:mm', 24시간 사용 시 
-			timeFormat: 'h:mm p',
+			timeFormat: 'hh:mm p',
 		    interval: 60,
-		    minTime: '9',
-		    maxTime: '6:00pm',
+		    minTime: '09',
+		    maxTime: '06:00pm',
 		    defaultTime: '18',
 		    dynamic: false,
 		    dropdown: true,
