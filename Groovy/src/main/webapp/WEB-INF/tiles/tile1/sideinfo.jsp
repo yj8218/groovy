@@ -615,8 +615,8 @@ function mobileEdit(pk_empnum) {
 
     // 수정완료 버튼 클릭시 
     $("button#btnPhoneUpdate_OK").click(function() {
-        alert(pk_empnum); // 수정할 사원 번호 
-        alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
+        //alert(pk_empnum); // 수정할 사원 번호 
+        //alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
         const new_phone = $('input[name=myphone]').val();
 
         $.ajax({
@@ -1160,8 +1160,8 @@ function pwdEdit(pk_empnum) {
 
     // 수정완료 버튼 클릭시 
     $("button#btnPwdUpdate_OK").click(function() {
-        alert(pk_empnum); // 수정할 사원 번호 
-        alert($('input[name=mypwd]').val()); // 수정할 제품후기 내용
+        //alert(pk_empnum); // 수정할 사원 번호 
+        //alert($('input[name=mypwd]').val()); // 수정할 제품후기 내용
         const new_pwd = $('input[name=mypwd]').val();
 
 
@@ -1248,8 +1248,8 @@ function mobileEdit(pk_empnum) {
 
     // 수정완료 버튼 클릭시 
     $("button#btnPhoneUpdate_OK").click(function() {
-        alert(pk_empnum); // 수정할 사원 번호 
-        alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
+        //alert(pk_empnum); // 수정할 사원 번호 
+        //alert($('input[name=myphone]').val()); // 수정할 제품후기 내용
         const new_phone = $('input[name=myphone]').val();
 
         $.ajax({

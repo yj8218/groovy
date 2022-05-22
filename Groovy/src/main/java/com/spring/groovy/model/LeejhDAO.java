@@ -45,7 +45,18 @@ public class LeejhDAO implements InterLeejhDAO {
 	// === 비밀번호 찾기 시 입력한 이메일과 사원번호에  존재하는 사원정보에게 인증번호 발송 메서드 === //
 	@Override
 	public boolean sendCodeEmail(Map<String, String> paraMap) {
+		
+		String email = paraMap.get("email");
+
+		try {
+			paraMap.put("email", aes.encrypt(email) );
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
 		String employeeid = sqlsession.selectOne("leejh.sendCodeEmail", paraMap);
+		
+		
+		
 		boolean isExists = false;
 		
 		if(employeeid != null) {
