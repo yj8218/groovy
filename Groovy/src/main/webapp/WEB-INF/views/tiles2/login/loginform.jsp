@@ -103,9 +103,9 @@
 	    //	alert("아이디저장 체크를 해제 하셨네요");
 	    	localStorage.removeItem('keep');
 	    }
-		
+		<%-- <%= serverName %> --%>
 		const frm = document.loginFrm;
-		frm.action = "<%= serverName %><%= ctxPath%>/loginEnd.groovy",
+		frm.action = "<%= ctxPath%>/loginEnd.groovy",
 		frm.method = "POST";
 		frm.submit();
 		

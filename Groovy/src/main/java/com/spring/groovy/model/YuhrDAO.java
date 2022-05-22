@@ -153,9 +153,9 @@ public class YuhrDAO implements InterYuhrDAO {
 
 	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
 	@Override
-	public int isClickedStartBtn(String pk_empnum) {
-		int n = sqlsession.selectOne("yuhr.isClickedStartBtn",pk_empnum);
-		return n;
+	public Map<String, Integer> isClickedBtn(String pk_empnum) {
+		Map<String, Integer> isClicked = sqlsession.selectOne("yuhr.isClickedBtn",pk_empnum);
+		return isClicked;
 	}
 
 	// tbl_commute 오늘의 자기 행에 퇴근 update

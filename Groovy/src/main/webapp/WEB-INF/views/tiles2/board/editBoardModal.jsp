@@ -118,11 +118,11 @@
     	<div class="modal-content" style="height: 700px; ">
     		<!-- Modal header -->
 			<div class="modal-header" style="border:none;">
-				<h5 class="modal-title">글 수정</h5>
+				<h5 class="modal-title" style="font-weight: bold;">게시물 수정</h5>
 				<button type="button" class="close my_close" data-dismiss="modal" aria-label="Close">&times;</button>
 			</div>
 			<!-- Modal body -->
-			<div class="modal-body">
+			<div class="modal-body" >
 				
 				<div class="tab-content">
 					<%-- Tab panes(글) --%>
@@ -145,9 +145,9 @@
 										
 				    				</td>
 				    			</tr>
-				    			<tr>
+				    			<tr style="border-bottom: solid 1px lightgray;">
 									<td>
-										<textarea style="width: 100%; height: 350px;" name="b_content" id="content2"></textarea>
+										<textarea style="border:0px; width: 100%; height: 350px;" name="b_content" id="content2"></textarea>
 									</td>
 				    			</tr>
 				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>

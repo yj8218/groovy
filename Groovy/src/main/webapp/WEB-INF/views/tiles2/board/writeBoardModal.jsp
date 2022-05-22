@@ -134,11 +134,12 @@
     	<div class="modal-content" style="height: 700px; ">
     		<!-- Modal header -->
 			<div class="modal-header" style="border:none;">
-				<h5 class="modal-title">게시물 작성</h5>
+				<h5 class="modal-title" style="font-weight: bold;">게시물 작성</h5>
 				<button type="button" class="close my_close" data-dismiss="modal" aria-label="Close">&times;</button>
 			</div>
 			<!-- Modal body -->
-			<div class="modal-body">
+			<div class="modal-body" style="background-color:white;">
+			<!-- 
 				<ul class="nav tab_Modal">
 				  	<li class="nav-item w-25" align="center">
 				    	<a class="nav-link active" data-toggle="tab" href="div#text"> <i class="far fa-file-alt"></i>글</a>
@@ -152,7 +153,7 @@
 				  	<li class="nav-item w-25" align="center">
 				    	<a class="nav-link" data-toggle="tab" href="div#todo"><i class="far fa-check-square"></i>할일</a>
 				  	</li>
-				</ul>
+				</ul> -->
 				<div class="tab-content">
 					<%-- Tab panes(글) --%>
 				  	<div class="tab-pane container active py-3" id="text">
@@ -173,30 +174,30 @@
 										
 				    				</td>
 				    			</tr>
-				    			<tr>
+				    			<tr style="border-bottom: solid 1px lightgray;">
 									<td>
-										<textarea style="width: 100%; height: 612px;" name="b_content" id="smarteditor"></textarea>
+										<textarea style=" border:0px; width: 100%; height: 350px;" name="b_content" id="smarteditor"  placeholder="내용을 입력하세요" ></textarea>
 									</td>
 				    			</tr>
 				    			<%-- === #150. 파일첨부 타입 추가하기 === --%>
-								<tr>
-									<td>
+								<tr >
+									<td >
 										<input type="file" name="attach" /> 
 									</td>
 								</tr>
 								
 								<tr>
-									<td>
-										<input type="password" name="b_pw" id="pw" placeholder="글암호를 입력하세요." /> 
+									<td >
+										<input style="width: 300px;" type="password" name="b_pw" id="pw" placeholder="글암호를 입력하세요." /> 
 									</td>
 								</tr>
 								
 
 				    		</table>
 				    			<%-- === #143. 답변글쓰기가 추가된 경우 시작 === --%>
-								<input type="hidden" name="fk_seq" value="${requestScope.fk_seq}" />
-								<input type="hidden" name="groupno" value="${requestScope.groupno}" />
-								<input type="hidden" name="depthno" value="${requestScope.depthno}" />
+								<%-- <input style="heihgt:0px;" type="hidden" name="fk_seq" value="${requestScope.fk_seq}" />
+								<input style="heihgt:0px;" type="hidden" name="groupno" value="${requestScope.groupno}" />
+								<input style="heihgt:0px;" type="hidden" name="depthno" value="${requestScope.depthno}" /> --%>
 								<%-- ===  답변글쓰기가 추가된 경우 끝            === --%>
 								
 				    	</form>

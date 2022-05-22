@@ -621,7 +621,7 @@ public class YuhrController {
 	}
 		
 		
-	// 오늘 출석 찍었는지 로그인한 아이디로 검사해서 출근버튼 막을지 확인하는 용도
+	// 오늘 출근및퇴근 찍었는지 로그인한 아이디로 검사해서 출근및퇴근 버튼 막을지 확인하는 용도
 	@ResponseBody
 	@RequestMapping(value ="/isClickedStartBtn.groovy", method = {RequestMethod.POST})
 	public String isClickedStartBtn(HttpServletRequest request ) {
@@ -632,11 +632,13 @@ public class YuhrController {
 		
 		JSONObject jsonObj = new JSONObject();
 		
-		int n = service.isClickedStartBtn(pk_empnum);
+		Map<String, Integer> isClicked = service.isClickedBtn(pk_empnum);
+		int countStart = isClicked.get("countStart");
+		int countEnd = isClicked.get("countEnd");
 		
-		if(n==1) { // 출근 찍음
-			jsonObj.put("isClickedStartBtn", true); 
-		}
+		System.out.println("확인용 countStart =>"+countStart);
+		System.out.println("확인용 countEnd =>"+countEnd);
+		jsonObj.put("isClicked", isClicked);
 		
 		return jsonObj.toString();
 	}
