@@ -392,7 +392,6 @@ $(document).ready(function() {
         type: "POST",
         dataType: "JSON",
         success: function(json) {
-            	alert(json.isClicked);
             // 출근버튼 찍었으면 출근버튼 비활성화
             const isClicked = json.isClicked;
             
@@ -1335,7 +1334,6 @@ function startwork() {
                 type: "POST",
                 dataType: "JSON",
                 success: function(json) {
-                    	alert(json.isClicked);
                     	const isClicked = json.isClicked;
                     // 출근버튼 찍었으면 출근버튼 비활성화
                     if (isClicked.countStart == 1) { // 출근 찍은 경우
