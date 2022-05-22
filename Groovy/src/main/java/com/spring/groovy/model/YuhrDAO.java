@@ -70,8 +70,8 @@ public class YuhrDAO implements InterYuhrDAO {
 		String phone = empVo.getPhone();
 		String email = empVo.getEmail();
 		
-		System.out.println(phone);
-		System.out.println(email);
+	//	System.out.println(phone);
+	//	System.out.println(email);
 		
 		try {
 //			empVo.setPhone(aes.encrypt(phone)); // 연락처 (AES-256 암호화/복호화 대상)
@@ -95,7 +95,6 @@ public class YuhrDAO implements InterYuhrDAO {
 			for(EmployeeVO emp : emps) {
 				
 				String email = emp.getEmail();
-				
 				email = aes.decrypt(email);
 				
 				emp.setEmail(email);
@@ -104,7 +103,6 @@ public class YuhrDAO implements InterYuhrDAO {
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		} 
-		
 		return emps;
 	}
 
@@ -119,6 +117,17 @@ public class YuhrDAO implements InterYuhrDAO {
 	@Override
 	public EmployeeVO getOneEmp(String pk_empnum) {
 		EmployeeVO oneEmp = sqlsession.selectOne("yuhr.getOneEmp", pk_empnum);
+		
+		try {
+			String email = oneEmp.getEmail();
+			email = aes.decrypt(email);
+				
+			oneEmp.setEmail(email);
+		
+		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+			e.printStackTrace();
+		} 
+		
 		return oneEmp;
 	}
 
@@ -215,6 +224,13 @@ public class YuhrDAO implements InterYuhrDAO {
 	public Map<String, String> getStartWorkTime(String login_empnum) {
 		Map<String, String> startWorkTime = sqlsession.selectOne("yuhr.getStartWorkTime", login_empnum);
 		return startWorkTime;
+	}
+
+	// 조회한 조건에 따른 한 사원의 총 근태기록의 수
+	@Override
+	public int getTotalCountByOne(Map<String, String> paraMap) {
+		int totalCount = sqlsession.selectOne("yuhr.getTotalCountByOne", paraMap);
+		return totalCount;
 	}
 
 

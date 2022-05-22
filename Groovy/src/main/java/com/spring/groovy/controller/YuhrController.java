@@ -190,7 +190,12 @@ public class YuhrController {
 		
 		HttpSession session = request.getSession();
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		int spotnum = loginuser.getFk_spotnum();
+		
+		int spotnum = 1;
+		
+		if(loginuser != null) {
+			spotnum = loginuser.getFk_spotnum();
+		}
 		
 		if(spotnum != 0) {// 관리자의 spotnum 은 0
 			mav.addObject("message", "관리자만 들어올 수 있는 페이지입니다.");
@@ -287,17 +292,17 @@ public class YuhrController {
 			
 			// === [맨처음][이전] 만들기 === // 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo=1'>[맨처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo=1'>맨처음</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo-1)+"'>이전</a></li>";
 			}
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
 				
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; font-weight: bold; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				}
 				else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border'><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 				
 				loop++;
@@ -308,8 +313,8 @@ public class YuhrController {
 			// === [다음][마지막] 만들기 === // 
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo)+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo)+"'>다음</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?dept="+dept+"&spot="+spot+"&date_start="+date_start+"&date_end="+date_end+"&resign_status="+resign_status+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+totalPage+"'>마지막</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -479,18 +484,18 @@ public class YuhrController {
 			
 			// === [맨처음][이전] 만들기 === // 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo=1'>[맨처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo=1'>맨처음</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo-1)+"'>이전</a></li>";
 			}
 			
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
 				
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; font-weight: bold; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				}
 				else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border'><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 				
 				loop++;
@@ -501,8 +506,8 @@ public class YuhrController {
 			// === [다음][마지막] 만들기 === // 
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo)+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:14pt; '><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+(pageNo)+"'>다음</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?dept="+dept+"&date_start="+date_start+"&date_end="+date_end+"&search_item="+search_item+"&search_value="+search_value+"&currentShowPageNo="+totalPage+"'>마지막</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -525,6 +530,7 @@ public class YuhrController {
 			mav.addObject("search_item", search_item);
 			mav.addObject("search_value", search_value);
 			mav.addObject("select_order", select_order);
+			mav.addObject("currentShowPageNo", currentShowPageNo);
 						
 			mav.setViewName("employee/worktime.tiles1");
 		}
@@ -588,7 +594,7 @@ public class YuhrController {
 		HttpSession session = request.getSession();
 		
 		EmployeeVO loginuser = (EmployeeVO)session.getAttribute("loginuser");
-		System.out.println("~~ checkCommuteStatus 확인용 loginuser => " + loginuser);
+	//	System.out.println("~~ checkCommuteStatus 확인용 loginuser => " + loginuser);
 		
 		String pk_empnum = loginuser.getPk_empnum();
 		
@@ -600,12 +606,12 @@ public class YuhrController {
 		
 		// 지각한 경우 
 		if(!now.isBefore(fixedStartWTime)) {
-			System.out.println("지각");
+		//	System.out.println("지각");
 			// tbl_commute_status 에 지각 1 입력
 			service.status_late(pk_empnum);
 		}
 		else {
-			System.out.println("정상출근");
+		//	System.out.println("정상출근");
 			// tbl_commute_status 에 등록할 근태상황은 없다.
 		}
 		
@@ -658,12 +664,12 @@ public class YuhrController {
 		
 		// 조기퇴근인 경우
 		if(n == 1 && now.isBefore(fixedStartWTime)) {
-			System.out.println("조기퇴근");
+		//	System.out.println("조기퇴근");
 			// tbl_commute_status 에 조기퇴근 1 update
 			service.status_early_endcheck(pk_empnum);
 		}
 		else {// 정상퇴근인경우
-			System.out.println("정상퇴근");
+		//	System.out.println("정상퇴근");
 			// tbl_commute_status 에 등록할 근태상황은 없다.
 		}
 		
@@ -723,6 +729,90 @@ public class YuhrController {
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("date_start", date_start);
 		paraMap.put("date_end", date_end);
+		paraMap.put("pk_empnum", login_empnum);
+		
+		///
+		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
+		int totalCount = 0; 		// 총 게시물 개수
+		int sizePerPage = 5; 		// 한 페이지당 보여줄 게시물 개수
+		int currentShowPageNo = 0; 	// 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 한다.
+		int totalPage = 0; 			// 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+		
+		int startRno = 0; 	// 시작행 번호
+		int endRno = 0; 	// 끝행 번호
+		
+		// 조회한 조건에 따른 한 사원의 총 근태기록의 수
+		totalCount = service.getTotalCountByOne(paraMap);
+		totalPage = (int) Math.ceil((double)totalCount/sizePerPage);
+				
+		if(str_currentShowPageNo == null) {
+			// 게시판에 보여지는 초기화면
+			currentShowPageNo = 1;
+		}
+		else {
+			try {
+				currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+				
+				if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+					currentShowPageNo = 1;
+				}
+				
+			} catch (NumberFormatException e) {
+				currentShowPageNo = 1;
+			}
+			
+		}
+		
+		// 공식
+		startRno = ((currentShowPageNo -1) * sizePerPage) + 1;
+		endRno = startRno + sizePerPage -1;
+		
+		paraMap.put("startRno", String.valueOf(startRno));
+		paraMap.put("endRno", String.valueOf(endRno));
+		
+		
+		///////// 검색 조건에 따른 페이지바 보여주기 시작 ////////////////////////
+		int blockSize = 2; 
+		int loop = 1;
+		
+		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
+	      
+		String pageBar = "<ul style='list-style: none;'>";
+		String url = "showOneCommuteStatus.groovy";
+		
+		
+		// === [맨처음][이전] 만들기 === // 
+		if(pageNo != 1) {
+			pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?&date_start="+date_start+"&date_end="+date_end+"&currentShowPageNo=1'>맨처음</a></li>";
+			pageBar += "<li class='li_w60 li_border'><a href='"+url+"?&date_start="+date_start+"&date_end="+date_end+"&currentShowPageNo="+(pageNo-1)+"'>이전</a></li>";
+		}
+		
+		while( !(loop > blockSize || pageNo > totalPage) ) {
+			
+			if(pageNo == currentShowPageNo) {
+				pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
+			}
+			else {
+				pageBar += "<li class='li_w30 li_border'><a href='"+url+"?&date_start="+date_start+"&date_end="+date_end+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+			}
+			
+			loop++;
+			pageNo++;
+		}// end of while ----------
+		
+		
+		// === [다음][마지막] 만들기 === // 
+		
+		if(pageNo <= totalPage) {
+			pageBar += "<li class='li_w60 li_border'><a href='"+url+"?&date_start="+date_start+"&date_end="+date_end+"&currentShowPageNo="+(pageNo)+"'>다음</a></li>";
+			pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?&date_start="+date_start+"&date_end="+date_end+"&currentShowPageNo="+totalPage+"'>마지막</a></li>";
+		}
+		
+		pageBar += "</ul>";
+		mav.addObject("pageBar", pageBar);
+		
+		///////// 검색 조건에 따른 페이지바 보여주기 끝 ////////////////////////
+		
 		
 		String pk_empnum = "";
 		
@@ -738,9 +828,11 @@ public class YuhrController {
 		
 		mav.addObject("OneCommuteStatus", OneCommuteStatus);
 		mav.addObject("loginuser", loginuser);
+		mav.addObject("currentShowPageNo", currentShowPageNo);
 		
 		if(spotnum != 0  ) {// 사원으로 로그인 하고 
 			if(login_empnum.equals(pk_empnum)) {// 자신의 근태기록을 클릭한경우
+				
 				mav.setViewName("employee/oneCommuteStatus.tiles1");
 			}
 			else {// 다른 사람의 근태기록을 보려고 하는 경우
@@ -764,13 +856,14 @@ public class YuhrController {
 	public String showOneCommuteStatusByAjax(HttpServletRequest request ) {
 		
 		String pk_empnum = request.getParameter("pk_empnum");
-		System.out.println("확인용  => "+pk_empnum);
+	//	System.out.println("확인용  => "+pk_empnum);
 		JSONObject jsonObj = new JSONObject();
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
 		paraMap.put("date_start", "");
 		paraMap.put("date_end", "");
+		paraMap.put("startRno", "");
 		
 		// 한 사원의 출퇴근기록, 근태관리 기록을 다 가져온다
 		List<Map<String, String>> OneCommuteStatus = service.showOneCommuteStatus(paraMap);
