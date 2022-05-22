@@ -104,8 +104,11 @@ input{
 	width: 130px;
 }
 #tbl_viewEmp{
-	width: 45%; 
-	border: solid 2px #9966FF;
+	width: 50%; 
+	border-radius: 10px;
+	border-style: hidden;
+	box-shadow: 0 0 0 3px #6449fc;
+	background-color: rgba(204, 204, 255, 0.1); 
 }
 #goSearch{
 	border: solid 1px #9966FF;
@@ -139,6 +142,44 @@ a#goSearch:hover{
 .commuteList_nocursor:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 }
+div#pageBar{
+	width: 70%; 
+	margin: 20px auto 150px auto; 
+}
+li:hover{
+	background-color: rgba(153, 102, 255, 0.1);  
+	border: solid 1px #9966FF;
+	cursor: pointer;
+	text-decoration: none;
+}
+.li_w70{
+	display:inline-block; 
+	width:70px; 
+	font-size:14pt;
+}
+.li_w60{
+	display:inline-block; 
+	width:60px; 
+	font-size:14pt;
+}
+.li_w30{
+	display:inline-block; 
+	width:30px; 
+	font-size:14pt;
+}
+a {
+	color: #6449fc; 
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+}
+.li_border{
+	border: solid 1px #6449fc; 
+	border-radius: 5px;
+	margin: 0 2px;
+}
+
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -222,6 +263,11 @@ function showOneCommuteStatusByAjax(pk_empnum, name){
 					html += "</tr>"
 				
 				});
+			}
+			else{
+				html += "<tr class='commuteList_nocursor' >";
+				html += "<td colspan='9' class='tcenter' style='width:100px; padding:10px 0;'>조회된 근무기록 결과가 없습니다.</td>"
+				html += "</tr>"
 			}
 			
 			$("span#oneCommuteStatusResult").html(html);
@@ -375,7 +421,7 @@ function goSearch(){
 		<c:forEach var="InfoMap" items="${requestScope.commuteStatusInfo }" varStatus="status">
 	
 		<tr class="commuteList" onclick="showOneCommuteStatusByAjax('${InfoMap.pk_empnum}','${InfoMap.name}')" data-toggle="modal" data-target="#oneCommuteStatusInfo">
-			<td style="padding: 10px 0;">${status.count }</td>
+			<td style="padding: 10px 0;">${(5 * (requestScope.currentShowPageNo-1))+ status.count }</td>
 			<td>${InfoMap.pk_empnum }</td>
 			<td>${InfoMap.name }</td>
 			<td>${InfoMap.deptnamekor }</td>

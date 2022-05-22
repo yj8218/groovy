@@ -72,6 +72,9 @@ public interface InterYuhrService {
 
 	// 출석 한 시각 알아오기
 	Map<String, String> getStartWorkTime(String login_empnum);
+
+	// 조회한 조건에 따른 한 사원의 총 근태기록의 수
+	int getTotalCountByOne(Map<String, String> paraMap);
 	
 
 }//end of public interface InterYuhrService
