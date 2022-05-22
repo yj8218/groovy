@@ -127,7 +127,7 @@ public class YuhrService implements InterYuhrService {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = dateFormat.format(currentDate.getTime());
 
-		System.out.println("checkEndCommuteStatus Spring Scheduler 작동시간 => " + currentTime);
+	//	System.out.println("checkEndCommuteStatus Spring Scheduler 작동시간 => " + currentTime);
 		
 		try { 
 	         Desktop.getDesktop().browse(new URI("http://localhost:9090/groovy/checkEndCommuteStatus.groovy")); 
@@ -193,6 +193,13 @@ public class YuhrService implements InterYuhrService {
 	public Map<String, String> getStartWorkTime(String login_empnum) {
 		Map<String, String> startWorkTime = dao.getStartWorkTime(login_empnum);
 		return startWorkTime;
+	}
+
+	// 조회한 조건에 따른 한 사원의 총 근태기록의 수
+	@Override
+	public int getTotalCountByOne(Map<String, String> paraMap) {
+		int totalCount = dao.getTotalCountByOne(paraMap);
+		return totalCount;
 	}
 
 

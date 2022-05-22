@@ -15,14 +15,11 @@
 	div.container {
 		width: 100%;
 		margin: 0 auto;
-		
 	}
-	
 	form[name="registerFrm"] {
 		width: 586px;
 		margin: 0 auto;
 	}
-	
 	span.title {
 		display: inline-block;
 	    margin-bottom: 10px;
@@ -32,8 +29,6 @@
 	    font-weight: 700;
 	    text-align: left;
 	}
-
-	
 	input.requiredInfo {
 	    width: 586px;
 	    height: 52px;
@@ -45,41 +40,40 @@
 	    box-sizing: border-box;
 	    padding-left: 20px;
 	}
-	
 	div#agreeCheck {
 		margin-top: 20px;
 	}
-	
 	a.agree {
 		font-weight: bold;
 		color: #623ad6;
 	}
-	
 	a.agree:hover {
 		cursor: pointer;
 	}
-	
 	button.btn {
 		display: inline;
 	    color: #fff;
 	    text-align: center;
-	    background: #623ad6;
+	    background: #6449fc;
 	    height: 52px;
 	    width: 48%;
 	    -webkit-border-radius: 8px;
 	    border-radius: 8px;
 	    font-weight: 486px;
 	    font-size: 16px;
-	    
 	}	
 	
-	button#goRegister:hover {
+	button#goRegister:hover, #reset:hover {
 		font-weight: bold;
 		filter: brightness(90%);
 		cursor: pointer;
+		color: black;
+		background-color: rgba(153, 102, 255, 0.5);  
 	}
-	
 	div#registerBtn{padding: 70px 0 130px 0;}
+	.error{
+		color: orange;
+	}
 </style>
 
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 카카오 주소 api -->
@@ -219,7 +213,6 @@
 	        	      }
 	          	});// end of ajax
 	          	
-	          	
 			}
 		});
 		
@@ -283,7 +276,6 @@
 				
 				// Number 타입의 n_salary 를 submit() 하기 위함 
 				$("input#n_salary").val(Number(formatValue.replaceAll(',', '')) );
-				
 			}
 			
 			
@@ -367,6 +359,43 @@
           
 
   });// end of $(function() 
+		  
+		//10. 생일 유효성검사 //
+		$("input#birthday").bind("keyup", function(){
+			
+			const birthday = $(this).val(); 
+			
+			const regExp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/g); 
+		 	const bool = regExp.test(birthday);
+		 	
+		 	if(!bool){
+		 		$(this).next().show();
+		 	}
+		 	else{
+		 		$(this).next().hide();
+		 	}
+		});
+  
+		//12. 입사일자 유효성검사 //
+		$("input#startday").bind("keyup", function(){
+			
+			const startday = $(this).val(); 
+			
+			const regExp = new RegExp(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/g); 
+		 	const bool = regExp.test(startday);
+		 	
+		 	if(!bool){
+		 		$(this).next().show();
+		 	}
+		 	else{
+		 		$(this).next().hide();
+		 	}
+		});
+		
+		
+		
+		
+	
       ///////////////////////////////////////////////////////////////////
 		
       	// 사원번호 값이 변경되면, 등록하기 버튼 클릭시 "사원번호중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
@@ -377,7 +406,6 @@
 		// 이메일 값이 변경되면, 등록하기 버튼 클릭시 "이메일중복확인" 을 클릭했는지를 알아보기 위한 용도를 초기화한다
 		$("input#email").bind("change", function(){
 			b_flagemailduplicateClick = false;
-	//		$("input#email").val(""); // 제출할 이메일값도 초기화한다.
 		});
       
       
@@ -471,7 +499,7 @@
          <span class="title">이메일</span><br>
          <input type="email" class="requiredInfo" id="email" name="email" size="20" required placeholder="example@gmail.com" />
          <span class="error">이메일 형식에 맞게 입력해주세요.</span>
-         <img id="emailCheck" src="<%=ctxPath%>/resources/images/common/b_id_check.gif" style="vertical-align: middle;" />
+         <img id="emailCheck" src="<%=ctxPath%>/resources/images/common/중복확인버튼.png" style="vertical-align: middle; width: 70px; height: 30px; margin: 2px 2px;" />
 	     <span id="emailcheckResult"></span>
             
          <br><br>
@@ -499,7 +527,7 @@
          <span class="title">사원번호(아이디)</span><br>
          <input type="text" class="requiredInfo" id="pk_empnum" name="pk_empnum" maxlength="20" value="<%=today.format(date) %>" required placeholder="사원번호(아이디)">
          <!-- 사원번호(아이디)중복체크 -->
-	     <img id="empnumCheck" src="<%=ctxPath%>/resources/images/common/b_id_check.gif" style="vertical-align: middle;" />
+	     <img id="empnumCheck" src="<%=ctxPath%>/resources/images/common/중복확인버튼.png" style="vertical-align: middle; width: 70px; height: 30px; margin: 2px 2px;" />
 	     <span id="empnumcheckResult"></span>
 	             
          <br><br>
@@ -529,10 +557,10 @@
          <br><br>
          <%-- 9. 주소--%>
          <span class="title">주소</span><br>
-         <input type="text" class="requiredInfo" id="postcode" name="postcode" size="6" maxlength="5" required placeholder="우편번호" />&nbsp;&nbsp;
+         <input type="text" class="requiredInfo" id="postcode" name="postcode" size="6" maxlength="5" required placeholder="우편번호" />
          
          <%-- 우편번호 찾기 --%>
-         <img id="zipcodeSearch" src="<%=ctxPath %>/resources/images/common/b_zipcode.gif" style="vertical-align: middle;" />
+         <img id="zipcodeSearch" src="<%=ctxPath %>/resources/images/common/우편번호찾기.png" style="vertical-align: middle; width: 70px; height: 30px; margin: 2px 2px;" />
          <span class="error">우편번호 형식이 아닙니다.</span>
          
          <input type="text" class="requiredInfo" id="address" name="address" maxlength="20" size="40" required placeholder="주소" /><br/>
@@ -543,6 +571,7 @@
          <%-- 10. 생일--%>
          <span class="title">생일</span><br>
          <input type="text" class="requiredInfo" id="birthday" name="birthday" maxlength="20" required  placeholder="생일">
+         <span class="error">생일이 올바른 형식이 아닙니다.</span>
          
          <br><br>
          <%-- 11. 성별--%>
@@ -554,7 +583,7 @@
          <%-- 12. 입사일자--%>
          <span class="title">입사일자</span><br>
          <input type="text" class="requiredInfo" id="startday" name="startday" maxlength="20" required  placeholder="이름">
-         
+         <span class="error">입사일자가 올바른 형식이 아닙니다.</span>
          
          <br><br>
          <%-- 13. 사진 --%>
@@ -566,7 +595,7 @@
          
          <div id ="registerBtn">
             <button type="button" id="goRegister" class="btn">사원 등록</button>
-            <button type="reset" class="btn">사원 등록 취소</button>
+            <button type="reset" id="reset" class="btn">사원 등록 취소</button>
          </div>
       </form>
 </div>

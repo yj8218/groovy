@@ -162,6 +162,15 @@ public interface InterJodnDAO {
 	// 남은 휴가 일수 알아오기
 	String getVacationdate(String fk_empnum);
 
+	// 주말을 제외한 휴가일 가져오기
+	int getVacationDay(Map<String, String> paraMap);
+
+	// 신청자의 남은 휴가일 구해오기
+	Map<String, String> getMyVacation(Map<String, String> paraMap);
+
+	// 휴가일 차감하기
+	void vacationdayUpdate(Map<String, String> paraMap);
+
 	
 	
 	

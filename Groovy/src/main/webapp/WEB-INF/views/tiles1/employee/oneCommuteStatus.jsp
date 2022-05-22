@@ -93,7 +93,7 @@ select{
 input{
 	width: 80px;
 }
-th, td{
+.pad{
 	padding: 7px 0 0 3px;
 }
 #orderby{
@@ -104,8 +104,11 @@ th, td{
 	width: 130px;
 }
 #tbl_viewEmp{
-	width: 45%; 
-	border: solid 2px #9966FF;
+	width: 50%; 
+	border-radius: 10px;
+	border-style: hidden;
+	box-shadow: 0 0 0 3px #6449fc;
+	background-color: rgba(204, 204, 255, 0.1); 
 }
 #goSearch{
 	border: solid 1px #9966FF;
@@ -133,6 +136,45 @@ a#goSearch:hover{
 .commuteList:hover{
 	background-color: rgba(153, 102, 255, 0.1);  
 }
+div#pageBar{
+	width: 70%; 
+	margin: 20px auto 150px auto; 
+}
+li:hover{
+	background-color: rgba(153, 102, 255, 0.1);  
+	border: solid 1px #9966FF;
+	cursor: pointer;
+	text-decoration: none;
+}
+.li_w70{
+	display:inline-block; 
+	width:70px; 
+	font-size:14pt;
+}
+.li_w60{
+	display:inline-block; 
+	width:60px; 
+	font-size:14pt;
+}
+.li_w30{
+	display:inline-block; 
+	width:30px; 
+	font-size:14pt;
+}
+a {
+	color: #6449fc; 
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+}
+.li_border{
+	border: solid 1px #6449fc; 
+	border-radius: 5px;
+	margin: 0 2px;
+}
+
+
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -185,15 +227,15 @@ function goSearch() {
 		<form name="dataFrm">
 		<table id="tbl_viewEmp" >
 			<tr >
-				<th>기간조회</th>
-				<td>
+				<th class="pad">기간조회</th>
+				<td class="pad">
 					<input type="text" id="date_start" name="date_start" placeholder="시작일">&nbsp;~&nbsp;
 					<input type="text" id="date_end" name="date_end" placeholder="마지막일">
 				</td>
 			</tr>
 			<tr >
-				<th></th>
-				<td>
+				<th class="pad"></th>
+				<td class="pad">
 					<a id="goSearch" onclick="goSearch()" >조회하기</a>
 				</td>
 			</tr>
@@ -201,57 +243,59 @@ function goSearch() {
 		</form>		
 	
 	<div id="orderby">
-		<div>
-			<select id="select_order">
-				<option class="op">최근등록순</option>
-			</select>
+		<div> 
+		<%-- 다른 페이지들과 간격을 맞추기 위한 div --%>
 		</div>
 	</div>
 	
 	<h2 class="mb-5">${requestScope.loginuser.name }님의 근태관리</h2>
 	<table id="tbl_result" class="tcenter" >
-		<tr id="fileItemTapLi">
-			<th colspan="1" ></th>
-			<th colspan="4" style="border: solid 1px gray;">출퇴근기록</th>
-			<th colspan="4" style="border: solid 1px gray;">근태</th>
+		<tr id="fileItemTapLi" >
+			<th class="pad" colspan="1" ></th>
+			<th class="pad" colspan="4" style="border: solid 1px gray;">출퇴근기록</th>
+			<th class="pad" colspan="4" style="border: solid 1px gray;">근태</th>
 		</tr>
-		<tr id="fileItemTapLi">	
-			<th class="colsize3">번호</th>
-			<th class="colsize2">근무날짜</th>
-			<th class="colsize1">출근시각</th>
-			<th class="colsize1">퇴근시각</th>
-			<th class="colsize1">근무시간</th>
-			<th class="colsize3">지각</th>
-			<th class="colsize3">조기퇴근</th>
-			<th class="colsize3">퇴근미체크</th>
-			<th class="colsize3">결근</th>
+		<tr id="fileItemTapLi" >	
+			<th class="colsize3 pad">번호</th>
+			<th class="colsize2 pad">근무날짜</th>
+			<th class="colsize1 pad">출근시각</th>
+			<th class="colsize1 pad">퇴근시각</th>
+			<th class="colsize1 pad">근무시간</th>
+			<th class="colsize3 pad">지각</th>
+			<th class="colsize3 pad">조기퇴근</th>
+			<th class="colsize3 pad">퇴근미체크</th>
+			<th class="colsize3 pad">결근</th>
 		</tr>
 		
 		<c:if test="${empty requestScope.OneCommuteStatus }">
-			<tr class="commuteList">
-				<td colspan="9">근태 기록이 없습니다.</td>
+			<tr class="commuteList" >
+				<td colspan="9" class="pad">근태 기록이 없습니다.</td>
 			</tr>
 		</c:if>
 		
 		<c:if test="${not empty requestScope.OneCommuteStatus }">
 			<c:forEach var="OneInfoMap" items="${requestScope.OneCommuteStatus }" varStatus="status">
 		
-			<tr class="commuteList">
-				<td>${status.count }</td>
-				<td>${OneInfoMap.TODAY }</td>
-				<td>${OneInfoMap.startwork }</td>
-				<td>${OneInfoMap.endwork }</td>
-				<td>${OneInfoMap.TODAYWORKEDTIME }</td>
-				<td>${OneInfoMap.LATE }</td>
-				<td>${OneInfoMap.EARLY_ENDCHECK }</td>
-				<td>${OneInfoMap.NO_ENDCHECK }</td>
-				<td>${OneInfoMap.NO_WORKDAY }</td>
+			<tr class="commuteList" >
+				<td class="pad">${(5 * (requestScope.currentShowPageNo-1))+ status.count }</td>
+				<td class="pad">${OneInfoMap.TODAY }</td>
+				<td class="pad">${OneInfoMap.startwork }</td>
+				<td class="pad">${OneInfoMap.endwork }</td>
+				<td class="pad">${OneInfoMap.TODAYWORKEDTIME }</td>
+				<td class="pad">${OneInfoMap.LATE }</td>
+				<td class="pad">${OneInfoMap.EARLY_ENDCHECK }</td>
+				<td class="pad">${OneInfoMap.NO_ENDCHECK }</td>
+				<td class="pad">${OneInfoMap.NO_WORKDAY }</td>
 			</tr>
 		
 			</c:forEach>
 		</c:if>
 	</table>
 
+	<%-- 페이지바 보여주는 곳! --%>
+	<div align="center" id="pageBar" >
+		${requestScope.pageBar }
+	</div>
 
 </div>
 </div>

@@ -429,6 +429,26 @@ public class JodnDAO implements InterJodnDAO {
 		String str_vacationdate = sqlsession.selectOne("jodn.getVacationdate", fk_empnum);
 		return str_vacationdate;
 	}
+
+	// 주말을 제외한 휴가일 알아오기
+	@Override
+	public int getVacationDay(Map<String, String> paraMap) {
+		int n = sqlsession.selectOne("jodn.getVacationDay", paraMap);
+		return n;
+	}
+
+	// 신청자의 남은 휴가일 구해오기
+	@Override
+	public Map<String, String> getMyVacation(Map<String, String> paraMap) {
+		Map<String, String> myVacationMap = sqlsession.selectOne("jodn.getMyVacation", paraMap);
+		return myVacationMap;
+	}
+
+	// 휴가일 차감하기
+	@Override
+	public void vacationdayUpdate(Map<String, String> paraMap) {
+		sqlsession.update("jodn.vacationdayUpdate", paraMap);
+	}
 	
 
 

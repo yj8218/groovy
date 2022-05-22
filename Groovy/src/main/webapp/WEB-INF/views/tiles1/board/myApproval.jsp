@@ -54,6 +54,39 @@ select.search {
 	color: #6449FC;
 	margin-bottom: 20px;
 }
+li:hover{
+   background-color: rgba(153, 102, 255, 0.1);  
+   border: solid 1px #9966FF;
+   cursor: pointer;
+   text-decoration: none;
+}
+.li_w70{
+   display:inline-block; 
+   width:70px; 
+   font-size:14pt;
+}
+.li_w60{
+   display:inline-block; 
+   width:60px; 
+   font-size:14pt;
+}
+.li_w30{
+   display:inline-block; 
+   width:30px; 
+   font-size:14pt;
+}
+a {
+   color: #6449fc; 
+   text-decoration: none;
+}
+a:hover{
+   text-decoration: none;
+}
+.li_border{
+   border: solid 1px #6449fc; 
+   border-radius: 5px;
+   margin: 0 2px;
+}
 
 </style>
 
