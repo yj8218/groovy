@@ -289,11 +289,4 @@ public class KimyjService implements InterKimyjService {
 	}
 
 
-
-
-	
-
-
-
-
 }//end of public class KimyjService implements InterLeejhService

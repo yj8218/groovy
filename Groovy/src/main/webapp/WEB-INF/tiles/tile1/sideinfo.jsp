@@ -65,7 +65,7 @@
   	<div class="mb-3 side-header">
 	  <a href="<%=ctxPath%>/schedule/scheduleManagement.groovy"><i class="fas fa-house-user"></i>스케줄러</a>
 	  <a href="<%=ctxPath%>/showOneCommuteStatus.groovy"><i class="fas fa-tag"></i>내 근태관리</a>	
-	  <a href="<%=ctxPath%>/orgChart.groovy"><i class="fas fa-tag"></i>조직도</a>
+	  <a href="<%=ctxPath%>/employeeChart.groovy"><i class="fas fa-tag"></i>조직도</a>
 	  <a href="#contact"><i class="fas fa-ellipsis-v"></i>더보기</a>
 	</div>
 	
@@ -167,6 +167,9 @@
 					</li>
 					<li>
 						<a href="<%=ctxPath%>/worktime.groovy"><i class="fas fa-tag"></i>근태관리</a>
+					</li>
+					<li>
+						<a href="<%=ctxPath%>/adminApproval.groovy"><i class="fas fa-tag"></i>결재관리</a>
 					</li>
 					<li>
 						<a href="<%=ctxPath%>/commutebutton.groovy"><i class="fas fa-tag"></i>임시</a>

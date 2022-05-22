@@ -767,10 +767,10 @@
 	</resultMap>	
 	<!-- 관리자 결재 페이지 조회  -->
 	<select id="adminApprovalList" parameterType="HashMap" resultMap="adminApprovalMap">
-		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+		select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor, name
 		from
 		(	
-			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor, name
 			from 
 			(
 				select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no

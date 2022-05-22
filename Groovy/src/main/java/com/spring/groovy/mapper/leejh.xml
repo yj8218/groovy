@@ -480,9 +480,11 @@
 	    select count(*)
 		from tbl_board
 		where b_status = 1
+		<!-- 
 		<if test='searchType != ""'>
 		and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
 		</if>
+		 -->
     </select> 
 	
 </mapper>

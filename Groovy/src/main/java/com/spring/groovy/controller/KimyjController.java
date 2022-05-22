@@ -30,8 +30,8 @@ import com.spring.groovy.model.EmployeeVO;
 import com.spring.groovy.service.InterKimyjService;
 
 
-@Controller //bean + controller
-public class KimyjController {
+	@Controller //bean + controller
+	public class KimyjController {
 	
 	@Autowired //Type에 따라 알아서 Bean을 주입해준다.
 	private InterKimyjService service;
@@ -44,23 +44,21 @@ public class KimyjController {
 	public void getCurrentURL(HttpServletRequest request) {
 		HttpSession session= request.getSession();
 		session.setAttribute("goBackURL", MyUtil.getCurrentURL(request));	
+		
 	}//end of public void getCurrentURL(HttpServletRequest request)
 	
-	////////////////////////////////////////////////////////////////////////
-	
 	// === 일정관리 시작 페이지 ===
-	@RequestMapping(value="/schedule/scheduleManagement.groovy")
-	//public ModelAndView requiredLogin_showSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
+	@RequestMapping(value="/scheduleManagement.groovy")
 	public ModelAndView showSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
 				
 		mav.setViewName("board/scheduleManagement.tiles1");
 
 		return mav;
-	}
+	}//end of public ModelAndView showSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav)
 	
 	// === 사내 캘린더에 사내캘린더 소분류 추가하기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/addComCalendar.groovy",method = {RequestMethod.POST})
+	@RequestMapping(value="/addComCalendar.groovy",method = {RequestMethod.POST})
 	public String addComCalendar(HttpServletRequest request) throws Throwable {
 		
 		String com_smcatgoname = request.getParameter("com_smcatgoname");
@@ -76,12 +74,12 @@ public class KimyjController {
 		jsObj.put("n", n);
 		
 		return jsObj.toString();
-	}
+	}//end of public String addComCalendar(HttpServletRequest request) throws Throwable 
 	
 	
 	// === 내 캘린더에 내캘린더 소분류 추가하기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/addMyCalendar.groovy",method = {RequestMethod.POST})
+	@RequestMapping(value="/addMyCalendar.groovy",method = {RequestMethod.POST})
 	public String addMyCalendar(HttpServletRequest request) throws Throwable {
 		
 		String my_smcatgoname = request.getParameter("my_smcatgoname");
@@ -97,12 +95,12 @@ public class KimyjController {
 		jsObj.put("n", n);
 		
 		return jsObj.toString();
-	}
+	}//end of public String addMyCalendar(HttpServletRequest request) throws Throwable 
 	
 	
 	// === 사내 캘린더에서 사내캘린더 소분류  보여주기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/showCompanyCalendar.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")  
+	@RequestMapping(value="/showCompanyCalendar.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")  
 	public String showCompanyCalendar() {
 		
 		List<Calendar_small_category_VO> calendar_small_category_VO_CompanyList = service.showCompanyCalendar();
@@ -119,12 +117,12 @@ public class KimyjController {
 		}
 		
 		return jsonArr.toString();
-	}
+	}//end of public String showCompanyCalendar() 
 	
 	
 	// === 내 캘린더에서 내캘린더 소분류  보여주기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/showMyCalendar.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
+	@RequestMapping(value="/showMyCalendar.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
 	public String showMyCalendar(HttpServletRequest request) {
 		
 		String fk_empnum = request.getParameter("fk_empnum");
@@ -143,35 +141,15 @@ public class KimyjController {
 		}
 		
 		return jsonArr.toString();
-	}
-	
-	/*
-	// === 풀캘린더에서 날짜 클릭할 때 발생하는 이벤트(일정 등록창으로 넘어간다) ===
-	@RequestMapping(value="/schedule/insertSchedule.groovy",method = {RequestMethod.POST})
-	public ModelAndView insertSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
-		
-		// form 에서 받아온 날짜
-		String chooseDate = request.getParameter("chooseDate");
-		
-		JSONObject jsObj = new JSONObject();
-		jsObj.put("chooseDate", chooseDate);
-		
-		return jsObj.toString();
-		
-		mav.addObject("chooseDate", chooseDate);
-		mav.setViewName("board/insertSchedule.tiles1");
-		
-		return mav;
-	}
-	*/
+	}//end of public String showMyCalendar(HttpServletRequest request)
 	
 	// === 일정 등록시 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아오기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/selectSmallCategory.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
+	@RequestMapping(value="/selectSmallCategory.groovy",method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8") 
 	public String selectSmallCategory(HttpServletRequest request) {
 		String fk_lgcatgono = request.getParameter("fk_lgcatgono"); // 캘린더 대분류 번호
 		String fk_empnum = request.getParameter("fk_empnum");       // 사용자아이디
-		System.out.println(fk_empnum);
+		//System.out.println(fk_empnum);
 		
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("fk_lgcatgono", fk_lgcatgono);
@@ -191,12 +169,12 @@ public class KimyjController {
 		}
 		
 		return jsArr.toString();
-	}
+	}//end of ublic String selectSmallCategory(HttpServletRequest request)
 	
 	
 	// === 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/insertSchedule/searchJoinUserList.groovy", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/searchJoinUserList.groovy", produces="text/plain;charset=UTF-8")
 	public String searchJoinUserList(HttpServletRequest request) {
 		
 		String joinUserName = request.getParameter("joinUserName");
@@ -218,7 +196,7 @@ public class KimyjController {
 		
 		return jsonArr.toString();
 		
-	}
+	}//end of public String searchJoinUserList(HttpServletRequest request)
 	
 	
 	// === 일정 등록하기 ===
@@ -228,18 +206,18 @@ public class KimyjController {
 	//public String registerSchedule_end(Calendar_schedule_VO scheduleVO, HttpServletRequest mrequest ) {
 		
 		MultipartFile attach= scheduleVO.getAttach();
-		System.out.println("확인: "+attach);
+		//System.out.println("확인: "+attach);
 		String vote = scheduleVO.getVote();
-		System.out.println("확인: "+vote);
+		//System.out.println("확인: "+vote);
 		
 		
 		if(scheduleVO.getVote() == null) {
 			scheduleVO.setVote("0");
 		}
-		System.out.println("확인: "+vote);
+		//System.out.println("확인: "+vote);
 		
 		String Joinuser = scheduleVO.getJoinuser();
-		System.out.println("확인: "+Joinuser);
+		//System.out.println("확인: "+Joinuser);
 		if(!attach.isEmpty()) {//존재하는지 여부 파일첨부파일게시물 확인
 			/*
             1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
@@ -251,7 +229,7 @@ public class KimyjController {
 			HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/");
 			
-			System.out.println("root "+root);
+			//System.out.println("root "+root);
 			
 			String path = root + "resources"+File.separator+"download";
 			/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
@@ -260,7 +238,7 @@ public class KimyjController {
 			*/
 			
 			//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
-			System.out.println("path "+path);
+			//System.out.println("path "+path);
 			
 			//2. 파일첨부를 위한 변수의 설정및 값을 초기화 한후 파일 올리기
 			
@@ -275,11 +253,11 @@ public class KimyjController {
 				
 				String originalFilename = attach.getOriginalFilename();
 				//getOriginalFilename 첨부파일의 파일명(예: 강아지.png);
-				System.out.println("originalFilename "+originalFilename);
+				//System.out.println("originalFilename "+originalFilename);
 				
 				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 				//첨부된 파일을 업로드 하도록 하는 것이다.
-				System.out.println("newFileName "+newFileName);
+				//System.out.println("newFileName "+newFileName);
 				
 				
 				//2. boardvo에 fileName 값과 originalFilename, fileSize값 넣어주기
@@ -312,42 +290,38 @@ public class KimyjController {
 		jsonObj.put("n", n);//{"n":1}
 		return jsonObj.toString();//"{"n":1}"
 		
-	}
+	}//end of public String registerSchedule_end_withAttach(Calendar_schedule_VO scheduleVO, MultipartHttpServletRequest mrequest )
 	
 	
 	
 	// === 일정 등록하기 ===
-		@ResponseBody
-		@RequestMapping(value ="/registerSchedule_end_noAttach.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
-		public String registerSchedule_end_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) {
-		//public String registerSchedule_end(Calendar_schedule_VO scheduleVO, HttpServletRequest mrequest ) {
-			
-			if(scheduleVO.getVote() == null) {
-				scheduleVO.setVote("0");
-			}
-			int n = 0;
-			
-			try {
-				n = service.registerSchedule_end(scheduleVO);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
+	@ResponseBody
+	@RequestMapping(value ="/registerSchedule_end_noAttach.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+	public String registerSchedule_end_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) {
+
+		if(scheduleVO.getVote() == null) {
+			scheduleVO.setVote("0");
+		}
+		int n = 0;
 		
-			// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
-			JSONObject jsonObj = new JSONObject();//
-			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
-			
+		try {
+			n = service.registerSchedule_end(scheduleVO);
+		} catch (Throwable e) {
+			//e.printStackTrace();
 		}
 	
-	
-	
-	
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+	    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
+		JSONObject jsonObj = new JSONObject();//
+		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+		
+	}//end of public String registerSchedule_end_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request )
+
 	// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/selectSchedule.groovy", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/selectSchedule.groovy", produces="text/plain;charset=UTF-8")
 	public String selectSchedule(HttpServletRequest request) {
 		
 		// 등록된 일정 가져오기
@@ -378,13 +352,13 @@ public class KimyjController {
 		}
 		
 		return jsArr.toString();
-	}
+	}//end of public String selectSchedule(HttpServletRequest request)
 	
 	
 	
 	// === 일정상세보기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/detailSchedule.groovy", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/detailSchedule.groovy", produces="text/plain;charset=UTF-8")
 	public String detailSchedule(HttpServletRequest request) {
 		
 		String pk_scheduleno = request.getParameter("pk_scheduleno");
@@ -408,21 +382,16 @@ public class KimyjController {
 			return jsonObj.toString();//"{"n":1}"
 			
 		} catch (NumberFormatException e) {
-			//mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+			//mav.setViewName("redirect:/scheduleManagement.groovy");
 			return gobackURL_detailSchedule;
 		}
+
 		
-		
-		
-		
-		
-	}
-	
-	
+	}//end of public String detailSchedule(HttpServletRequest request) 
 	
 	// === 일정삭제하기 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/deleteSchedule.groovy", method = {RequestMethod.POST})
+	@RequestMapping(value="/deleteSchedule.groovy", method = {RequestMethod.POST})
 	public String deleteSchedule(HttpServletRequest request) throws Throwable {
 		
 		String pk_scheduleno = request.getParameter("pk_scheduleno");
@@ -433,12 +402,12 @@ public class KimyjController {
 		jsObj.put("n", n);
 			
 		return jsObj.toString();
-	}
+	}//end of public String deleteSchedule(HttpServletRequest request) throws Throwable
 	
 	
 	
 	// === 일정 수정하기 ===
-	@RequestMapping(value="/schedule/editSchedule.groovy", method = {RequestMethod.POST})
+	@RequestMapping(value="/editSchedule.groovy", method = {RequestMethod.POST})
 	public ModelAndView editSchedule(ModelAndView mav, HttpServletRequest request) {
 		
 		String pk_scheduleno= request.getParameter("pk_scheduleno");
@@ -469,17 +438,17 @@ public class KimyjController {
 				mav.setViewName("board/editSchedule.tiles1");
 			}
 		} catch (NumberFormatException e) {
-			mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+			mav.setViewName("redirect:/scheduleManagement.groovy");
 		}
 		
 		return mav;
 		
-	}
+	}//end of public ModelAndView editSchedule(ModelAndView mav, HttpServletRequest request)
 	
 	
 	
 	// === 일정 수정 완료하기 ===
-	@RequestMapping(value="/schedule/editSchedule_end.groovy", method = {RequestMethod.POST})
+	@RequestMapping(value="/editSchedule_end.groovy", method = {RequestMethod.POST})
 	public ModelAndView editSchedule_end(Calendar_schedule_VO svo, HttpServletRequest request, ModelAndView mav) {
 		
 		try {
@@ -487,7 +456,7 @@ public class KimyjController {
 			 
 			 if(n==1) {
 				 mav.addObject("message", "일정을 수정하였습니다.");
-				 mav.addObject("loc", request.getContextPath()+"/schedule/scheduleManagement.groovy");
+				 mav.addObject("loc", request.getContextPath()+"/scheduleManagement.groovy");
 			 }
 			 else {
 				 mav.addObject("message", "일정 수정에 실패하였습니다.");
@@ -497,17 +466,15 @@ public class KimyjController {
 			 mav.setViewName("msg");
 		} catch (Throwable e) {	
 			e.printStackTrace();
-			mav.setViewName("redirect:/schedule/scheduleManagement.groovy");
+			mav.setViewName("redirect:/scheduleManagement.groovy");
 		}
 			
 		return mav;
-	}
-	
-	
+	}//end of public ModelAndView editSchedule_end(Calendar_schedule_VO svo, HttpServletRequest request, ModelAndView mav)
 	
 	// === (사내캘린더 또는 내캘린더)속의  소분류 카테고리인 서브캘린더 삭제하기  === 	
 	@ResponseBody
-	@RequestMapping(value="/schedule/deleteSubCalendar.groovy", method = {RequestMethod.POST})
+	@RequestMapping(value="/deleteSubCalendar.groovy", method = {RequestMethod.POST})
 	public String deleteSubCalendar(HttpServletRequest request) throws Throwable {
 		
 		String pk_smcatgono = request.getParameter("pk_smcatgono");//수정필요
@@ -518,13 +485,11 @@ public class KimyjController {
 		jsObj.put("n", n);
 			
 		return jsObj.toString();
-	}
-	
-	
+	}//end of public String deleteSubCalendar(HttpServletRequest request) throws Throwable 
 	
 	// === (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기 === 
 	@ResponseBody
-	@RequestMapping(value="/schedule/editCalendar.groovy", method = {RequestMethod.POST})
+	@RequestMapping(value="/editCalendar.groovy", method = {RequestMethod.POST})
 	public String editComCalendar(HttpServletRequest request) throws Throwable {
 		
 		String pk_smcatgono = request.getParameter("pk_smcatgono");//수정필요
@@ -544,11 +509,11 @@ public class KimyjController {
 		jsObj.put("n", n);
 			
 		return jsObj.toString();
-	}
+	}//end of public String editComCalendar(HttpServletRequest request) throws Throwable
 	
 	
 	// === 검색 기능 === //
-	@RequestMapping(value="/schedule/searchSchedule.groovy", method = {RequestMethod.GET})
+	@RequestMapping(value="/searchSchedule.groovy", method = {RequestMethod.GET})
 	public ModelAndView searchSchedule(HttpServletRequest request, ModelAndView mav) { 
 		
 		List<Map<String,String>> scheduleList = null;
@@ -607,7 +572,7 @@ public class KimyjController {
 	    
 	    // 총 일정 검색 건수(totalCount)
 	    totalCount = service.getTotalCount(paraMap);
-	//  System.out.println("~~~ 확인용 총 일정 검색 건수 totalCount : " + totalCount);
+	    //System.out.println("~~~ 확인용 총 일정 검색 건수 totalCount : " + totalCount);
       
 	    totalPage = (int)Math.ceil((double)totalCount/sizePerPage); 
 
@@ -676,462 +641,444 @@ public class KimyjController {
 		mav.addObject("pageBar",pageBar);
 		
 		String listgobackURL_schedule = MyUtil.getCurrentURL(request);
-	//	System.out.println("~~~ 확인용 검색 listgobackURL_schedule : " + listgobackURL_schedule);
+		//System.out.println("~~~ 확인용 검색 listgobackURL_schedule : " + listgobackURL_schedule);
 		
 		mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
 		mav.addObject("scheduleList", scheduleList);
 		mav.setViewName("board/searchSchedule.tiles1");
 
 		return mav;
-	}
+	}//end of public ModelAndView searchSchedule(HttpServletRequest request, ModelAndView mav) 
 	
 	
-		//=== #171. 파일첨부가 있는 댓글쓰기(ajax로 처리) 댓글 보여주기
-		@ResponseBody
-		@RequestMapping(value ="/downloadComment.groovy")
-		public void downloadComment(HttpServletRequest request, HttpServletResponse response ) {
-				
-			String pk_scheduleno = request.getParameter("pk_scheduleno");//첨부파일이 잇는 글번호
-			//filename, orgfilename 가져와야한다.
+	//=== #171. 파일첨부가 있는 댓글쓰기(ajax로 처리) 댓글 보여주기
+	@ResponseBody
+	@RequestMapping(value ="/downloadComment.groovy")
+	public void downloadComment(HttpServletRequest request, HttpServletResponse response ) {
 			
-			response.setContentType("text/html; charset=UTF-8");
-			
-			PrintWriter out = null;
-			try {
-				//out = response.getWriter();
-				Integer.parseInt(pk_scheduleno);
-				Map<String,String> map = service.detailSchedule(pk_scheduleno);
-				//CommentVO commentvo = service.getCommentOne(seq);
-				if(map == null || (map != null&& map.get("FILENAME") == null) ) {
-					out = response.getWriter();
-					out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
-					return;
-				}else {//정상적으로 다운로드를 할경우
-					
-					String fileName = map.get("FILENAME");
-					//System.out.println("fileName"+fileName);
-					String orgFilename = map.get("ORGFILENAME");
-					//System.out.println("orgFilename"+orgFilename);
-					// 첨부파일이 저장되어 있는 WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
-		            // 이 경로는 우리가 파일첨부를 위해서 /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
-		            // WAS 의 webapp 의 절대경로를 알아와야 한다.
-					
-					HttpSession session = request.getSession();
-					String root = session.getServletContext().getRealPath("/");
-					
-					//System.out.println("root "+root);
-					
-					String path = root + "resources"+File.separator+"download";
-					/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
-					운영체제가 Windows 이라면 File.separator 는  "\" 이고,
-					운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
-					*/
-					
-					//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
-					//System.out.println("path "+path);
-					
-					//file 다운로드 하기
-					boolean flag = false;//file 다운로드 성공, 실패를 알려주는 용도
-					flag = fileManager.doFileDownload(fileName, orgFilename, path, response);
-					
-					if(!flag) {
-						out = response.getWriter();
-						out.println("<script type='text/javascript'>alert('파일다운로드가 실패했습니다.'); history.back();</script>");
-						return;
-					}
-					
-				}
-			}catch (NumberFormatException | IOException e) {
-				e.printStackTrace();
-					try {
-						out = response.getWriter();
-						out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>");
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+		String pk_scheduleno = request.getParameter("pk_scheduleno");//첨부파일이 잇는 글번호
+		//filename, orgfilename 가져와야한다.
+		
+		response.setContentType("text/html; charset=UTF-8");
+		
+		PrintWriter out = null;
+		try {
+			//out = response.getWriter();
+			Integer.parseInt(pk_scheduleno);
+			Map<String,String> map = service.detailSchedule(pk_scheduleno);
+			//CommentVO commentvo = service.getCommentOne(seq);
+			if(map == null || (map != null&& map.get("FILENAME") == null) ) {
+				out = response.getWriter();
+				out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
 				return;
+			}else {//정상적으로 다운로드를 할경우
+				
+				String fileName = map.get("FILENAME");
+				//System.out.println("fileName"+fileName);
+				String orgFilename = map.get("ORGFILENAME");
+				//System.out.println("orgFilename"+orgFilename);
+				// 첨부파일이 저장되어 있는 WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
+	            // 이 경로는 우리가 파일첨부를 위해서 /addEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
+	            // WAS 의 webapp 의 절대경로를 알아와야 한다.
+				
+				HttpSession session = request.getSession();
+				String root = session.getServletContext().getRealPath("/");
+				
+				//System.out.println("root "+root);
+				
+				String path = root + "resources"+File.separator+"download";
+				/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+				운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+				운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+				*/
+				
+				//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+				//System.out.println("path "+path);
+				
+				//file 다운로드 하기
+				boolean flag = false;//file 다운로드 성공, 실패를 알려주는 용도
+				flag = fileManager.doFileDownload(fileName, orgFilename, path, response);
+				
+				if(!flag) {
+					out = response.getWriter();
+					out.println("<script type='text/javascript'>alert('파일다운로드가 실패했습니다.'); history.back();</script>");
+					return;
+				}
+				
 			}
+		}catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+				try {
+					out = response.getWriter();
+					out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			return;
+		}
+		
+	}//end of public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) 	
+
+	@ResponseBody
+	@RequestMapping(value ="/voteYesAdd.groovy", method = {RequestMethod.POST})
+	public String voteYesAdd(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+
+		int n = 0;
+		try {
+			n = service.voteYesAdd(paraMap);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
 			
-		}//end of public void requiredLogin_download(HttpServletRequest request, HttpServletResponse response) 	
+		return jsObj.toString();
+	}//end of public String voteYesAdd(HttpServletRequest request)
+		
+	@ResponseBody
+	@RequestMapping(value ="/voteNoAdd.groovy", method = {RequestMethod.POST})
+	public String voteNoAdd(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		int n =0;
+		try {
+			n = service.voteNoAdd(paraMap);
+		} catch (Throwable e) {
 	
-		@ResponseBody
-		@RequestMapping(value ="/voteYesAdd.groovy", method = {RequestMethod.POST})
-		public String voteYesAdd(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-		
-			
-			int n = 0;
-			try {
-				n = service.voteYesAdd(paraMap);
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
-			
-			JSONObject jsObj = new JSONObject();
-			jsObj.put("n", n);
-				
-			return jsObj.toString();
+			//e.printStackTrace();
 		}
 		
-		@ResponseBody
-		@RequestMapping(value ="/voteNoAdd.groovy", method = {RequestMethod.POST})
-		public String voteNoAdd(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
 			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			int n =0;
-			try {
-				n = service.voteNoAdd(paraMap);
-			} catch (Throwable e) {
+		return jsObj.toString();
+	}//end of public String voteNoAdd(HttpServletRequest request)
 
-				//e.printStackTrace();
-			}
-			
-			JSONObject jsObj = new JSONObject();
-			jsObj.put("n", n);
-				
-			return jsObj.toString();
-		}
+	@ResponseBody
+	@RequestMapping(value ="/voteUndefinedAdd.groovy", method = {RequestMethod.POST})
+	public String voteUndefinedAdd(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
 		
-		@ResponseBody
-		@RequestMapping(value ="/voteUndefinedAdd.groovy", method = {RequestMethod.POST})
-		public String voteUndefinedAdd(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			
-			int n =0;
-			try {
-				n = service.voteUndefinedAdd(paraMap);
-			} catch (Throwable e) {
-
-				//e.printStackTrace();
-			}
-			
-			JSONObject jsObj = new JSONObject();
-			jsObj.put("n", n);
-				
-			return jsObj.toString();
-		}
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
 		
-		@ResponseBody
-		@RequestMapping(value ="/voteTotalLoginCnt.groovy", method = {RequestMethod.POST})
-		public String voteTotalLoginCnt(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			Map<String,String> map = service.voteTotalLoginCnt(paraMap);
-			
-			JSONObject jsObj = new JSONObject();
-			jsObj.put("map", map);
-				
-			return jsObj.toString();
-		}
 		
-		@ResponseBody
-		@RequestMapping(value ="/voteTotalCnt.groovy", method = {RequestMethod.POST})
-		public String voteTotalCnt(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			Map<String,String> map = service.voteTotalCnt(paraMap);
-			
-			JSONObject jsObj = new JSONObject();
-			jsObj.put("map", map);
-				
-			return jsObj.toString();
-		}
-		
-		@ResponseBody
-		@RequestMapping(value ="/voteYesUser.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String voteYesUser(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			List<Map<String,String>> listMap = service.voteYesUser(paraMap);
-			
-			JSONArray jsonArr = new JSONArray();
-		 	for(Map<String, String> map :listMap) {
-		 		JSONObject jsObj = new JSONObject();
-				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
-				jsObj.put("name", map.get("NAME"));
-				jsonArr.put(jsObj);
-		 	}
-
-			return jsonArr.toString();
-		}
-		
-		@ResponseBody
-		@RequestMapping(value ="/voteNoUser.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String voteNoUser(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			List<Map<String,String>> listMap = service.voteNoUser(paraMap);
-			
-			JSONArray jsonArr = new JSONArray();
-		 	for(Map<String, String> map :listMap) {
-		 		JSONObject jsObj = new JSONObject();
-				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
-				jsObj.put("name", map.get("NAME"));
-				jsonArr.put(jsObj);
-		 	}
-
-			return jsonArr.toString();
-		}
-		
-		@ResponseBody
-		@RequestMapping(value ="/voteUndefinedUser.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String voteUndefinedUser(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			
-			List<Map<String,String>> listMap = service.voteUndefinedUser(paraMap);
-			
-		 	JSONArray jsonArr = new JSONArray();
-		 	for(Map<String, String> map :listMap) {
-		 		JSONObject jsObj = new JSONObject();
-				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
-				jsObj.put("name", map.get("NAME"));
-				jsonArr.put(jsObj);
-		 	}
-
-			return jsonArr.toString();
-			
-		}
-		
-
-		@ResponseBody
-		@RequestMapping(value ="/commentAdd.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String commentAdd(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			String name = request.getParameter("name");
-			String content = request.getParameter("content");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			paraMap.put("name", name);
-			paraMap.put("content", content);
-			
-			
-			
-			//댓글쓰기에 첨부파일이 없는 경우
-			int n = 0;
-			try {
-				n = service.commentAdd(paraMap);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
-		
-
-			JSONObject jsonObj = new JSONObject();//
-			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
+		int n =0;
+		try {
+			n = service.voteUndefinedAdd(paraMap);
+		} catch (Throwable e) {
 	
+			//e.printStackTrace();
 		}
 		
-		@ResponseBody
-		@RequestMapping(value ="/commentShow.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
-		public String commentShow(HttpServletRequest request) {
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("n", n);
 			
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			String currentShowPageNo = request.getParameter("currentShowPageNo");
-			System.out.println("페이징"+fk_scheduleno);
-			System.out.println("페이징2"+currentShowPageNo);
-			if(currentShowPageNo == null) {
-				currentShowPageNo = "1";
-			}
-			int sizePerPage = 3;
-			int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
-			int endRno = startRno + sizePerPage - 1;
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			paraMap.put("startRno",String.valueOf(startRno));
-			paraMap.put("endRno",String.valueOf(endRno));
+		return jsObj.toString();
+	}//end of public String voteUndefinedAdd(HttpServletRequest request) 
+
+	@ResponseBody
+	@RequestMapping(value ="/voteTotalLoginCnt.groovy", method = {RequestMethod.GET})
+	public String voteTotalLoginCnt(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
 		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		Map<String,String> map = service.voteTotalLoginCnt(paraMap);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("map", map);
 			
-			
-			List<Map<String,String>> listMap = service.commentShow(paraMap);
-			
+		return jsObj.toString();
+	}//end of public String voteTotalLoginCnt(HttpServletRequest request)
 
-			JSONArray jsonArr = new JSONArray();
-		 	for(Map<String, String> map :listMap) {
-		 		JSONObject jsObj = new JSONObject();
-				jsObj.put("fk_scheduleno", map.get("FK_SCHEDULENO"));
-				jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
-				jsObj.put("regdate", map.get("REGDATE"));
-				jsObj.put("name", map.get("NAME"));
-				jsObj.put("content", map.get("CONTENT"));
-				jsObj.put("emppicturename", map.get("EMPPICTURENAME"));
-				jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
-				jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
-				jsObj.put("commentseq", map.get("COMMENTSEQ"));
-				
-				
-				jsonArr.put(jsObj);
-		 	}
+	@ResponseBody
+	@RequestMapping(value ="/voteTotalCnt.groovy", method = {RequestMethod.GET})
+	public String voteTotalCnt(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		Map<String,String> map = service.voteTotalCnt(paraMap);
+		
+		JSONObject jsObj = new JSONObject();
+		jsObj.put("map", map);
+			
+		return jsObj.toString();
+	}//end of public String voteTotalCnt(HttpServletRequest request)
 
-			return jsonArr.toString();
+	@ResponseBody
+	@RequestMapping(value ="/voteYesUser.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String voteYesUser(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		List<Map<String,String>> listMap = service.voteYesUser(paraMap);
+		
+		JSONArray jsonArr = new JSONArray();
+	 	for(Map<String, String> map :listMap) {
+	 		JSONObject jsObj = new JSONObject();
+			jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+			jsObj.put("name", map.get("NAME"));
+			jsonArr.put(jsObj);
+	 	}
 	
-		}
-		
-		// === #132.  원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
-		@ResponseBody
-		@RequestMapping(value ="/getCommentTotalPage.groovy", method = {RequestMethod.GET})
-		public String getCommentTotalPage(HttpServletRequest request) {
-				
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			String sizePerPage = request.getParameter("sizePerPage");
-			System.out.println("페이징3"+fk_scheduleno);
-			System.out.println("페이징4"+sizePerPage);
-			Map<String, String> paraMap = new HashMap<>();
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			paraMap.put("sizePerPage",sizePerPage);
-		
-			int totalPage = service.getCommentTotalPage(paraMap);
-			
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("totalPage",totalPage);
-			
-		
-			return jsonObj.toString();
-			
-		}//end of public String getCommentTotalPage(HttpServletRequest request)
-		
-		
-		
-		
-		@ResponseBody
-		@RequestMapping(value ="/commentEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String commentEdit(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			String commentseq = request.getParameter("commentseq");
-			String content = request.getParameter("content");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			paraMap.put("commentseq", commentseq);
-			paraMap.put("content", content);
-			
-			
-			int n = 0;
-			try {
-				n = service.commentEdit(paraMap);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
-		
+		return jsonArr.toString();
+	}//end of public String voteYesUser(HttpServletRequest request)
 
-			JSONObject jsonObj = new JSONObject();//
-			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
+	@ResponseBody
+	@RequestMapping(value ="/voteNoUser.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String voteNoUser(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		List<Map<String,String>> listMap = service.voteNoUser(paraMap);
+		
+		JSONArray jsonArr = new JSONArray();
+	 	for(Map<String, String> map :listMap) {
+	 		JSONObject jsObj = new JSONObject();
+			jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+			jsObj.put("name", map.get("NAME"));
+			jsonArr.put(jsObj);
+	 	}
 	
-		}
-		
-		
-		
-		
-		@ResponseBody
-		@RequestMapping(value ="/commentDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String commentDel(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String fk_scheduleno = request.getParameter("fk_scheduleno");
-			String commentseq = request.getParameter("commentseq");
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("fk_scheduleno", fk_scheduleno);
-			paraMap.put("commentseq", commentseq);
-			
-			
-			int n = 0;
-			try {
-				n = service.commentDel(paraMap);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
-		
+		return jsonArr.toString();
+	}//end of public String voteNoUser(HttpServletRequest request) 
 
-			JSONObject jsonObj = new JSONObject();//
-			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
+	@ResponseBody
+	@RequestMapping(value ="/voteUndefinedUser.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String voteUndefinedUser(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		
+		List<Map<String,String>> listMap = service.voteUndefinedUser(paraMap);
+		
+	 	JSONArray jsonArr = new JSONArray();
+	 	for(Map<String, String> map :listMap) {
+	 		JSONObject jsObj = new JSONObject();
+			jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+			jsObj.put("name", map.get("NAME"));
+			jsonArr.put(jsObj);
+	 	}
 	
+		return jsonArr.toString();
+		
+	}//end of public String voteUndefinedUser(HttpServletRequest request)
+
+
+	@ResponseBody
+	@RequestMapping(value ="/commentAdd.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String commentAdd(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		String name = request.getParameter("name");
+		String content = request.getParameter("content");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		paraMap.put("name", name);
+		paraMap.put("content", content);
+		
+		//댓글쓰기에 첨부파일이 없는 경우
+		int n = 0;
+		try {
+			n = service.commentAdd(paraMap);
+		} catch (Throwable e) {
+			//e.printStackTrace();
 		}
-		
-		
-		@ResponseBody
-		@RequestMapping(value ="/scheduleDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
-		public String scheduleDel(HttpServletRequest request) {
-			String fk_empnum = request.getParameter("fk_empnum");
-			String pk_scheduleno = request.getParameter("pk_scheduleno");
-			
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_empnum", fk_empnum);
-			paraMap.put("pk_scheduleno", pk_scheduleno);
-			
-
-			int n = 0;
-			try {
-				n = service.scheduleDel(paraMap);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
-		
-
-			JSONObject jsonObj = new JSONObject();//
-			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
 	
-		}
+		JSONObject jsonObj = new JSONObject();//
 		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+	
+	}//end of public String commentAdd(HttpServletRequest request) 
+
+	@ResponseBody
+	@RequestMapping(value ="/commentShow.groovy", method = {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String commentShow(HttpServletRequest request) {
+		
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		String currentShowPageNo = request.getParameter("currentShowPageNo");
+		if(currentShowPageNo == null) {
+			currentShowPageNo = "1";
+		}
+		int sizePerPage = 3;
+		int startRno = ((Integer.parseInt(currentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		paraMap.put("startRno",String.valueOf(startRno));
+		paraMap.put("endRno",String.valueOf(endRno));
 	
 
+		List<Map<String,String>> listMap = service.commentShow(paraMap);
+	
+		JSONArray jsonArr = new JSONArray();
+	 	for(Map<String, String> map :listMap) {
+	 		JSONObject jsObj = new JSONObject();
+			jsObj.put("fk_scheduleno", map.get("FK_SCHEDULENO"));
+			jsObj.put("fk_empnum", map.get("FK_EMPNUM"));
+			jsObj.put("regdate", map.get("REGDATE"));
+			jsObj.put("name", map.get("NAME"));
+			jsObj.put("content", map.get("CONTENT"));
+			jsObj.put("emppicturename", map.get("EMPPICTURENAME"));
+			jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
+			jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
+			jsObj.put("commentseq", map.get("COMMENTSEQ"));
+			
+			
+			jsonArr.put(jsObj);
+	 	}
+	
+		return jsonArr.toString();
+	
+	}//end of public String commentShow(HttpServletRequest request)
+
+	// === #132.  원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+	@ResponseBody
+	@RequestMapping(value ="/getCommentTotalPage.groovy", method = {RequestMethod.GET})
+	public String getCommentTotalPage(HttpServletRequest request) {
+			
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		String sizePerPage = request.getParameter("sizePerPage");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		paraMap.put("sizePerPage",sizePerPage);
+	
+		int totalPage = service.getCommentTotalPage(paraMap);
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("totalPage",totalPage);
+		
+	
+		return jsonObj.toString();
+		
+	}//end of public String getCommentTotalPage(HttpServletRequest request)
+
+
+	@ResponseBody
+	@RequestMapping(value ="/commentEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String commentEdit(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		String commentseq = request.getParameter("commentseq");
+		String content = request.getParameter("content");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		paraMap.put("commentseq", commentseq);
+		paraMap.put("content", content);
+		
+		
+		int n = 0;
+		try {
+			n = service.commentEdit(paraMap);
+		} catch (Throwable e) {
+			//e.printStackTrace();
+		}
+	
+	
+		JSONObject jsonObj = new JSONObject();//
+		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+	
+	}//end of public String commentEdit(HttpServletRequest request)
+
+	@ResponseBody
+	@RequestMapping(value ="/commentDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String commentDel(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String fk_scheduleno = request.getParameter("fk_scheduleno");
+		String commentseq = request.getParameter("commentseq");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("fk_scheduleno", fk_scheduleno);
+		paraMap.put("commentseq", commentseq);
+		
+		
+		int n = 0;
+		try {
+			n = service.commentDel(paraMap);
+		} catch (Throwable e) {
+			//e.printStackTrace();
+		}
+	
+	
+		JSONObject jsonObj = new JSONObject();//
+		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+	
+	}//end of public String commentDel(HttpServletRequest request)
+
+
+	@ResponseBody
+	@RequestMapping(value ="/scheduleDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
+	public String scheduleDel(HttpServletRequest request) {
+		String fk_empnum = request.getParameter("fk_empnum");
+		String pk_scheduleno = request.getParameter("pk_scheduleno");
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_empnum", fk_empnum);
+		paraMap.put("pk_scheduleno", pk_scheduleno);
+		
+	
+		int n = 0;
+		try {
+			n = service.scheduleDel(paraMap);
+		} catch (Throwable e) {
+			//e.printStackTrace();
+		}
+	
+	
+		JSONObject jsonObj = new JSONObject();//
+		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+
+	}//end of public String scheduleDel(HttpServletRequest request)
+	
 	@ResponseBody
 	@RequestMapping(value="/scheduleEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 	public String scheduleEdit(HttpServletRequest request) {
@@ -1149,176 +1096,158 @@ public class KimyjController {
 			
 		} catch (NumberFormatException e) {
 			jsonObj.put("message", "실패");
-			return jsonObj.toString();
+				return jsonObj.toString();
 		}
 			
-	}	
-		
+	}//end of 	public String scheduleEdit(HttpServletRequest request)
 	
-	
+
+
 	// === 일정 수정하기 ===
-		@ResponseBody
-		@RequestMapping(value ="/goEditSchedule_withAttach", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
-		public String goEditSchedule_withAttach(Calendar_schedule_VO scheduleVO, MultipartHttpServletRequest mrequest ) {
-		//public String registerSchedule_end(Calendar_schedule_VO scheduleVO, HttpServletRequest mrequest ) {
-			System.out.println("넘어옴 파일있음");
-			MultipartFile attach= scheduleVO.getAttach();
-			System.out.println("확인: "+attach);
-			String vote = scheduleVO.getVote();
-			System.out.println("확인: "+vote);
-			
-			
-			if(scheduleVO.getVote() == null) {
-				scheduleVO.setVote("0");
-			}
-			System.out.println("확인: "+vote);
-			
-			String Joinuser = scheduleVO.getJoinuser();
-			System.out.println("확인: "+Joinuser);
-			if(!attach.isEmpty()) {//존재하는지 여부 파일첨부파일게시물 확인
-				/*
-	            1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
-	            >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
-	                       우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
-	                       조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다. 
-	            //was webapp의 절대경로를 알아야한다.                           
-	            */
-				HttpSession session = mrequest.getSession();
-				String root = session.getServletContext().getRealPath("/");
-				
-				System.out.println("root "+root);
-				
-				String path = root + "resources"+File.separator+"download";
-				/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
-				운영체제가 Windows 이라면 File.separator 는  "\" 이고,
-				운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
-				*/
-				
-				//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
-				System.out.println("path "+path);
-				
-				//2. 파일첨부를 위한 변수의 설정및 값을 초기화 한후 파일 올리기
-				
-				String newFileName = "";//WAS(톰캣)의 디스크에 저장될 파일명
-				
-				byte[] bytes = null;//첨부파일의 내용물 담는것
-				
-				long fileSize = 0;//첨부파일의 크기
-				
-				try {
-					bytes = attach.getBytes();//첨부파일의 내용물 읽어온다.
-					
-					String originalFilename = attach.getOriginalFilename();
-					//getOriginalFilename 첨부파일의 파일명(예: 강아지.png);
-					System.out.println("originalFilename "+originalFilename);
-					
-					newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-					//첨부된 파일을 업로드 하도록 하는 것이다.
-					System.out.println("newFileName "+newFileName);
-					
-					
-					//2. boardvo에 fileName 값과 originalFilename, fileSize값 넣어주기
-					
-					scheduleVO.setFileName(newFileName);//WAS(톰캣)의 디스크에 저장될 파일명
-					scheduleVO.setOrgFilename(originalFilename);
-					//게시판 페이지에서 첨부된파일(강아지,png)을 보여줄때 사용
-					//또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용
-					fileSize = attach.getSize();//첨부파일의 크기(단위 바이트)
-					scheduleVO.setFileSize(String.valueOf(fileSize));
-					
-				}catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			}
-			
-			
-			int n = 0;
-			try {
-				n = service.editSchedule_end(scheduleVO);
-			} catch (Throwable e) {
-				//e.printStackTrace();
-			}
+	@ResponseBody
+	@RequestMapping(value ="/goEditSchedule_withAttach", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+	public String goEditSchedule_withAttach(Calendar_schedule_VO scheduleVO, MultipartHttpServletRequest mrequest ) {
+	//public String registerSchedule_end(Calendar_schedule_VO scheduleVO, HttpServletRequest mrequest ) {
 		
-			// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-		    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
-			JSONObject jsonObj = new JSONObject();//
+		MultipartFile attach= scheduleVO.getAttach();
+		String vote = scheduleVO.getVote();
+		
+		if(scheduleVO.getVote() == null) {
+			scheduleVO.setVote("0");
+		}
+		
+		String Joinuser = scheduleVO.getJoinuser();
+		if(!attach.isEmpty()) {//존재하는지 여부 파일첨부파일게시물 확인
+			/*
+	        1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+	        >>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
+	                   우리는 WAS의 webapp/resources/files 라는 폴더로 지정해준다.
+	                   조심할 것은  Package Explorer 에서  files 라는 폴더를 만드는 것이 아니다. 
+	        //was webapp의 절대경로를 알아야한다.                           
+	        */
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
 			
-			jsonObj.put("n", n);//{"n":1}
-			return jsonObj.toString();//"{"n":1}"
+			//System.out.println("root "+root);
+			
+			String path = root + "resources"+File.separator+"download";
+			/* File.separator 는 운영체제에서 사용하는 폴더와 파일의 구분자이다.
+			운영체제가 Windows 이라면 File.separator 는  "\" 이고,
+			운영체제가 UNIX, Linux 이라면  File.separator 는 "/" 이다. 
+			*/
+			
+			//path가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
+			//System.out.println("path "+path);
+			
+			//2. 파일첨부를 위한 변수의 설정및 값을 초기화 한후 파일 올리기
+			
+			String newFileName = "";//WAS(톰캣)의 디스크에 저장될 파일명
+			
+			byte[] bytes = null;//첨부파일의 내용물 담는것
+			
+			long fileSize = 0;//첨부파일의 크기
+			
+			try {
+				bytes = attach.getBytes();//첨부파일의 내용물 읽어온다.
+				
+				String originalFilename = attach.getOriginalFilename();
+				//getOriginalFilename 첨부파일의 파일명(예: 강아지.png);
+				//System.out.println("originalFilename "+originalFilename);
+				
+				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+				//첨부된 파일을 업로드 하도록 하는 것이다.
+				//System.out.println("newFileName "+newFileName);
+				
+				//2. boardvo에 fileName 값과 originalFilename, fileSize값 넣어주기
+				
+				scheduleVO.setFileName(newFileName);//WAS(톰캣)의 디스크에 저장될 파일명
+				scheduleVO.setOrgFilename(originalFilename);
+				//게시판 페이지에서 첨부된파일(강아지,png)을 보여줄때 사용
+				//또한 사용자가 파일을 다운로드 할때 사용되어지는 파일명으로 사용
+				fileSize = attach.getSize();//첨부파일의 크기(단위 바이트)
+				scheduleVO.setFileSize(String.valueOf(fileSize));
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 		}
 		
 		
+		int n = 0;
+		try {
+			n = service.editSchedule_end(scheduleVO);
+		} catch (Throwable e) {
+			//e.printStackTrace();
+		}
+	
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+	    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
+		JSONObject jsonObj = new JSONObject();//
 		
-		// === 일정 수정하기 ===
-			@ResponseBody
-			@RequestMapping(value ="/goEditSchedule_noAttach.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
-			public String goEditSchedule_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) {
-				System.out.println("넘어옴 파일없음");
-				if(scheduleVO.getVote() == null) {
-					scheduleVO.setVote("0");
-				}
-				int n = 0;
-				
-				try {
-					n = service.editSchedule_end(scheduleVO);
-				} catch (Throwable e) {
-					//e.printStackTrace();
-				}
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+		
+	}//end of public String goEditSchedule_withAttach(Calendar_schedule_VO scheduleVO, MultipartHttpServletRequest mrequest )
+
+
+
+	// === 일정 수정하기 ===
+	@ResponseBody
+	@RequestMapping(value ="/goEditSchedule_noAttach.groovy", method = {RequestMethod.POST},  produces="text/plain;charset=UTF-8")
+	public String goEditSchedule_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) {
+		
+		if(scheduleVO.getVote() == null) {
+			scheduleVO.setVote("0");
+		}
+		int n = 0;
+		
+		try {
+			n = service.editSchedule_end(scheduleVO);
+		} catch (Throwable e) {
+			//e.printStackTrace();
+		}
+	
+		// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+	    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
+		JSONObject jsonObj = new JSONObject();//
+		
+		jsonObj.put("n", n);//{"n":1}
+		return jsonObj.toString();//"{"n":1}"
+		
+	}//end of public String goEditSchedule_noAttach(Calendar_schedule_VO scheduleVO, HttpServletRequest request ) 
+
+	// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
+	@ResponseBody
+	@RequestMapping(value="/selectVacationlist.groovy", produces="text/plain;charset=UTF-8")
+	public String selectVacationlist(HttpServletRequest request) {
 			
-				// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
-			    // 이어서 회원의 포인트를 50점을 증가하도록 한다. (tbl_member 테이블에 point 컬럼의 값을 50 증가하도록 update 한다.) 
-				JSONObject jsonObj = new JSONObject();//
-				
-				jsonObj.put("n", n);//{"n":1}
-				return jsonObj.toString();//"{"n":1}"
-				
-			}
-	
-	
-	
-			// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
-			@ResponseBody
-			@RequestMapping(value="/selectVacationlist.groovy", produces="text/plain;charset=UTF-8")
-			public String selectVacationlist(HttpServletRequest request) {
-				System.out.println("확인");
-				//등록된 일정 가져오기
-				
-				//String fk_empnum = request.getParameter("fk_empnum");
-						
-				List<Map<String,String>> listMap = service.selectVacationlist();
-				
-				JSONArray jsArr = new JSONArray();
-				
-				if(listMap != null && listMap.size() > 0) {
-					
-					for(Map<String, String> map :listMap) {
-				 		JSONObject jsObj = new JSONObject();
-						jsObj.put("pk_documentnum", map.get("PK_DOCUMENTNUM"));
-						jsObj.put("vstartdate", map.get("VSTARTDATE"));
-						jsObj.put("venddate", map.get("VENDDATE"));
-						jsObj.put("vinfo", map.get("VINFO"));
-						jsObj.put("pk_empnum", map.get("PK_EMPNUM"));
-						jsObj.put("name", map.get("NAME"));
-						jsObj.put("vtype", map.get("VTYPE"));
-						jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
-						jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
-						
-						System.out.println(map.get("PK_DOCUMENTNUM"));
-						jsArr.put(jsObj);
-					}// end of for-------------------------------------
-				
-				}
-				
-				return jsArr.toString();
-				
-				
-				
+		List<Map<String,String>> listMap = service.selectVacationlist();
 		
-			}
+		JSONArray jsArr = new JSONArray();
 		
+		if(listMap != null && listMap.size() > 0) {
+			
+			for(Map<String, String> map :listMap) {
+		 		JSONObject jsObj = new JSONObject();
+				jsObj.put("pk_documentnum", map.get("PK_DOCUMENTNUM"));
+				jsObj.put("vstartdate", map.get("VSTARTDATE"));
+				jsObj.put("venddate", map.get("VENDDATE"));
+				jsObj.put("vinfo", map.get("VINFO"));
+				jsObj.put("pk_empnum", map.get("PK_EMPNUM"));
+				jsObj.put("name", map.get("NAME"));
+				jsObj.put("vtype", map.get("VTYPE"));
+				jsObj.put("spotnamekor", map.get("SPOTNAMEKOR"));
+				jsObj.put("deptnamekor", map.get("DEPTNAMEKOR"));
+				
+				
+				jsArr.put(jsObj);
+			}// end of for-------------------------------------
 		
+		}
 		
-	
+		return jsArr.toString();
+		
+	}//end of public String selectVacationlist(HttpServletRequest request)
+		
 }//end of public class KimyjController
