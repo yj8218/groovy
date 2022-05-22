@@ -139,7 +139,7 @@ div.sidenav .bottom-left {
 div.sidenav strong.user-name{
 	display: block;
     line-height: 21px;
-    color: #555;
+   /*  color: #555; */
     max-width: 140px;
     font-size: 15px;
     overflow: hidden;
@@ -152,9 +152,9 @@ div.sidenav li.infoList {
 
 	position: relative;
     min-height: 19px;
-    margin-top: 9px;
+    margin-top: 13px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
 }
 div.sidenav li.infoList:hover{
 	 font-weight: bold;
@@ -223,7 +223,7 @@ div.sidenav .layer_pop {
   	width: 220px;
     min-width: 218px;
     padding: 14px;
-    position: absolute;
+   /*  position: absolute; */
     top: 100px;
    /*  right: 30px; */
     background: #fff;
@@ -232,7 +232,13 @@ div.sidenav .layer_pop {
     border-radius: 8px;
     text-align: left;
     color: #555;
-    left: 4px;
+    left: 230px;
+    color: #f1f1f1 !important;
+    background-color: #2c2a34 !important;
+    border: solid 1px #595959;
+    border-radius: 0;
+    height: 210px;
+    
 
 }
 
@@ -241,7 +247,10 @@ div.sidenav .layer_pop {
 /* Add styles to the form container */
 div.sidenav .myinfo-container {
   padding: 5px; 
-  background-color: white;
+  /* background-color: white; */
+  height: 100%;
+  width: 100%;
+  color: #f1f1f1;
   
 }
 
@@ -263,6 +272,8 @@ div.sidenav .myprofile-photo{
     background-size: cover;
 
 }
+
+
 /* 헤더 사이드 수정 끝 */
 
 
@@ -279,7 +290,9 @@ let time = 0;
 let hour, min, sec;
 
 $(document).ready(function() {
-
+	
+	$('.modal-backdrop').last().css("z-index", "9999");
+	
     $('[data-toggle="tooltip"]').tooltip();
     $('#myProfileCard').appendTo("body");
 
@@ -1475,81 +1488,81 @@ function getTimeFormatString() {
 <!-- 사이드바 시작 -->
 <div class="sidenav" style="background-color:#2c2a34; ">
 
-	<div  align="center" class="mainlogo borderline" style=" color:white;  border-bottom: solid 0.8px #595959; "><a href="<%=ctxPath%>/index.groovy"><img src="<%= ctxPath%>/resources/images/common/로고그루비.png"  alt="로고"  /></a></div>
-	
-	<table style="border-bottom: solid 0.8px #595959; width: 100%; height: 85px; ">
-		<tr >
-			<td rowspan="2" style="padding-left: 20px; width: 45%;">
-				<a class="iconbar" onclick="OpenMyinfoForm()"  type="button" ><img class="myprofile-photo" style="width: 60px; height: 60px;" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  /></a>
-			</td>
-			<td style="font-size: 18px; padding-top: 5px;">
-				<span class="dept" style="color: #f1f1f1;">
-					<c:choose>
-						<c:when test="${sessionScope.loginuser.deptnamekor eq '임원'}">${sessionScope.loginuser.deptnamekor}진</c:when>
-						<c:when test="${sessionScope.loginuser.deptnamekor ne '임원'}">${sessionScope.loginuser.deptnamekor}부</c:when>
-					</c:choose>
-				</span>
-				<span class="spot" style="color: #f1f1f1;">
-					${sessionScope.loginuser.spotnamekor}
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td style="padding-bottom: 10px;">
-				<strong class="user-name" style="color: #f1f1f1; font-size:18px;" >${sessionScope.loginuser.name}</strong>
-			</td>
-		</tr>
-	</table>
-	
-	<div class="timer" style="border-bottom: solid 0.8px #595959; padding: 12px 0 ;">
-    	<table style="width: 100%">
-    		<tr>
-    			<td style="width: 40%">
-    				<button id="startBtn" onclick="javascript:startwork('${sessionScope.loginuser.pk_empnum}'); ">출근</button>
-    			</td>
-    			<td>
-    				<span id="span_start"><span id="time_startwork"></span></span>
-    			</td>
-    		<tr>
-    			<td style="width: 40%">
-    				<button id="endBtn" onclick="javascript:endwork('${sessionScope.loginuser.pk_empnum}'); ">퇴근</button>	
-    			</td>
-    			<td>
-    				<span id="span_end"><span id="time_endwork"></span></span>
-    			</td>
-    		<tr>
-    			<td style="width: 40%; text-align: center;">
-    				<span id="span_end" style="margin-left: 20px; top:0;">근무시간</span>
-    			</td>
-    			<td>
-    				<a id="stopwatch">00:00:00</a>
-    			</td>
-    		</tr>
-    	</table>
+    <div align="center" class="mainlogo borderline" style=" color:white;  border-bottom: solid 0.8px #595959; "><a href="<%=ctxPath%>/index.groovy"><img src="<%= ctxPath%>/resources/images/common/로고그루비.png" alt="로고" /></a></div>
+
+    <table class="tableMyinfo" style="border-bottom: solid 0.8px #595959; width: 100%; height: 85px; ">
+        <tr>
+            <td rowspan="2" style="padding-left: 20px; width: 45%;">
+                <a class="iconbar" onclick="OpenMyinfoForm()" type="button"><img class="myprofile-photo" style="width: 60px; height: 60px;" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="icon-myprofile" /></a>
+            </td>
+            <td style="font-size: 18px; padding-top: 5px;">
+                <span class="dept" style="color: #f1f1f1;">
+                    <c:choose>
+                        <c:when test="${sessionScope.loginuser.deptnamekor eq '임원'}">${sessionScope.loginuser.deptnamekor}진</c:when>
+                        <c:when test="${sessionScope.loginuser.deptnamekor ne '임원'}">${sessionScope.loginuser.deptnamekor}부</c:when>
+                    </c:choose>
+                </span>
+                <span class="spot" style="color: #f1f1f1;">
+                    ${sessionScope.loginuser.spotnamekor}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 10px;">
+                <strong class="user-name" style="color: #f1f1f1; font-size:18px;">${sessionScope.loginuser.name}</strong>
+            </td>
+        </tr>
+    </table>
+
+    <div class="timer" style="border-bottom: solid 0.8px #595959; padding: 12px 0 ;">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 40%">
+                    <button id="startBtn" onclick="javascript:startwork('${sessionScope.loginuser.pk_empnum}'); ">출근</button>
+                </td>
+                <td>
+                    <span id="span_start"><span id="time_startwork"></span></span>
+                </td>
+            <tr>
+                <td style="width: 40%">
+                    <button id="endBtn" onclick="javascript:endwork('${sessionScope.loginuser.pk_empnum}'); ">퇴근</button>
+                </td>
+                <td>
+                    <span id="span_end"><span id="time_endwork"></span></span>
+                </td>
+            <tr>
+                <td style="width: 40%; text-align: center;">
+                    <span id="span_end" style="margin-left: 20px; top:0;">근무시간</span>
+                </td>
+                <td>
+                    <a id="stopwatch">00:00:00</a>
+                </td>
+            </tr>
+        </table>
     </div>
-	
-	
-	
-	
-	<!-- <div style="margin: 15px 25.5px;">
+
+
+
+
+    <!-- <div style="margin: 15px 25.5px;">
   		<div class="btn_newpjt" ><i class="fas fa-expand"></i>새 프로젝트</div>
   	</div> -->
-  	
-  	
-  	
-  	
-  	<div class="mb-3 side-header" style="border-bottom: solid 0.8px #595959; padding-bottom: 10px;">
-	  <a href="<%=ctxPath%>/scheduleManagement.groovy"><i class="far fa-calendar"></i>스케줄러</a>
-	  <a href="<%=ctxPath%>/showOneCommuteStatus.groovy"><i class="fas fa-user-clock"></i>내 근태관리</a>	
-	  <a href="<%=ctxPath%>/employeeChart.groovy"><i class="fas fa-network-wired"></i>조직도</a>
-	  <a class="iconbar" onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " style="display: inline-block; "><i class="far fa-address-book"></i>사원조회</a>
-                
-	<!--   <a href="#contact"><i class="fas fa-ellipsis-v"></i>더보기</a> -->
-	</div>
-	
-	
-  	<ul class="scroll" style="list-style: none; padding: 0  0  3px 0 ; overflow-y:scroll; width:227px;  margin-bottom: 40px; ">
-	 <!-- 
+
+
+
+
+    <div class="side-header" style="border-bottom: solid 0.8px #595959; padding-bottom: 10px; margin-bottom: 0px">
+        <a href="<%=ctxPath%>/scheduleManagement.groovy"><i class="far fa-calendar"></i>스케줄러</a>
+        <a href="<%=ctxPath%>/showOneCommuteStatus.groovy"><i class="fas fa-user-clock"></i>내 근태관리</a>
+        <a href="<%=ctxPath%>/employeeChart.groovy"><i class="fas fa-network-wired"></i>조직도</a>
+        <a class="iconbar" onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " style="display: inline-block; "><i class="far fa-address-book"></i>사원조회</a>
+
+        <!--   <a href="#contact"><i class="fas fa-ellipsis-v"></i>더보기</a> -->
+    </div>
+
+
+    <ul class="scroll" style="list-style: none; height:max-content; padding: 0  0  3px 0 ; overflow-y:scroll; width:227px;  margin-bottom: 0px; ">
+        <!-- 
 	  <li class="borderline">
 		  <div class="accord" data-toggle="collapse" data-target="#demo"><a style="cursor: pointer; ">모아보기</a></div>
 		  <div id="demo" class="collapse">
@@ -1579,7 +1592,7 @@ function getTimeFormatString() {
 			</div>
 	    </li>
 	     -->
-	   <!--   
+        <!--   
 	    <li class="borderline">
 		  <div class="accord" data-toggle="collapse" data-target="#recent_update"><a style="cursor: pointer; ">최근 업데이트</a></div>
 		  <div id="recent_update" class="collapse">
@@ -1601,82 +1614,84 @@ function getTimeFormatString() {
 	    </li>
 	    
 	     -->
-	    <!-- ============================================================================================================== 덕노 -->
-	    <li class="borderline">
-		  <div class="accord" data-toggle="collapse" data-target="#myApproval"><a style="cursor: pointer; "><i class="fas fa-balance-scale"></i>결재관리</a></div>
-		  <div id="myApproval" class="collapse">
-				<ul style="list-style: none;">
-					<li>
-						<a href="<%=ctxPath%>/approvalView.groovy"><i class="far fa-file-alt"></i>기안하기</a>
-					</li>
-					
-					<li>
-						<a href="<%=ctxPath%>/myApproval.groovy"><i class="far fa-check-square"></i>내 기안내역 조회</a>
-					</li>
-					
-					<li>
-						<a href="<%=ctxPath%>/waitApproval.groovy"><i class="far fa-file-word"></i>결재 대기 문서</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/endApproval.groovy"><i class="far fa-paper-plane"></i>결재 수신 문서</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/referenceApproval.groovy"><i class="far fa-file"></i>결재 참조 문서</a>
-					</li>
-					
-				</ul>
-			</div>
-	    </li>
-	    
-	     <%-- <li class="borderline">
+        <!-- ============================================================================================================== 덕노 -->
+        <li class="borderline">
+            <div class="accord" data-toggle="collapse" data-target="#myApproval"><a style="cursor: pointer; "><i class="fas fa-balance-scale"></i>결재관리</a></div>
+            <div id="myApproval" class="collapse">
+                <ul style="list-style: none;">
+                    <li>
+                        <a href="<%=ctxPath%>/approvalView.groovy"><i class="far fa-file-alt"></i>기안하기</a>
+                    </li>
+
+                    <li>
+                        <a href="<%=ctxPath%>/myApproval.groovy"><i class="far fa-check-square"></i>내 기안내역 조회</a>
+                    </li>
+
+                    <li>
+                        <a href="<%=ctxPath%>/waitApproval.groovy"><i class="far fa-file-word"></i>결재 대기 문서</a>
+                    </li>
+                    <li>
+                        <a href="<%=ctxPath%>/endApproval.groovy"><i class="far fa-paper-plane"></i>결재 수신 문서</a>
+                    </li>
+                    <li>
+                        <a href="<%=ctxPath%>/referenceApproval.groovy"><i class="far fa-file"></i>결재 참조 문서</a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+
+        <%-- <li class="borderline">
 		  <div class="accord" data-toggle="collapse" data-target="#apprver"><a style="cursor: pointer; ">개인 결재 문서함</a></div>
 		  <div id="apprver" class="collapse">
 				<ul style="list-style: none;">
 					<li>
 						<a href="<%=ctxPath%>/waitApproval.groovy"><i class="fas fa-tag"></i>결재 대기 문서</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/endApproval.groovy"><i class="fas fa-tag"></i>결재 수신 문서</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/referenceApproval.groovy"><i class="fas fa-tag"></i>참조 문서</a>
-					</li>
-				</ul>
-			</div>
-	    </li>
-		 --%>
-	
-	    <!-- ============================================================================================================== 혜림 -->
-	    <li class="borderline">
-		  <div class="accord" data-toggle="collapse" data-target="#admin"><a style="cursor: pointer; "><i class="fas fa-user-cog"></i>어드민</a></div>
-		  <div id="admin" class="collapse">
-				<ul style="list-style: none;">
-					<li>
-						<a href="<%=ctxPath%>/register.groovy"><i class="fas fa-user-plus"></i>사원등록</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/viewEmp.groovy"><i class="fas fa-user-friends"></i>사원정보</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/worktime.groovy"><i class="fas fa-user-clock"></i>근태관리</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/adminApproval.groovy"><i class="fas fa-user-tag"></i>결재관리</a>
-					</li>
-					<li>
-						<a href="<%=ctxPath%>/commutebutton.groovy"><i class="fas fa-tag"></i>임시</a>
-					</li>
-				</ul>
-			</div>
-	    </li>
-	
-	
-	
-	
-	</ul>
-	
-	<!-- ============================================================================================================== 끝 -->
-	
+        </li>
+        <li>
+            <a href="<%=ctxPath%>/endApproval.groovy"><i class="fas fa-tag"></i>결재 수신 문서</a>
+        </li>
+        <li>
+            <a href="<%=ctxPath%>/referenceApproval.groovy"><i class="fas fa-tag"></i>참조 문서</a>
+        </li>
+    </ul>
+</div>
+</li>
+--%>
+
+<!-- ============================================================================================================== 혜림 -->
+<c:if test="${sessionScope.loginuser.fk_spotnum == 0 || sessionScope.loginuser.fk_spotnum >= 7}">
+<li class="borderline">
+    <div class="accord" data-toggle="collapse" data-target="#admin"><a style="cursor: pointer; "><i class="fas fa-user-cog"></i>어드민</a></div>
+    <div id="admin" class="collapse">
+        <ul style="list-style: none;">
+            <li>
+                <a href="<%=ctxPath%>/register.groovy"><i class="fas fa-user-plus"></i>사원등록</a>
+            </li>
+            <li>
+                <a href="<%=ctxPath%>/viewEmp.groovy"><i class="fas fa-user-friends"></i>사원정보</a>
+            </li>
+            <li>
+                <a href="<%=ctxPath%>/worktime.groovy"><i class="fas fa-user-clock"></i>근태관리</a>
+            </li>
+            <li>
+                <a href="<%=ctxPath%>/adminApproval.groovy"><i class="fas fa-user-tag"></i>결재관리</a>
+            </li>
+            <li>
+                <a href="<%=ctxPath%>/commutebutton.groovy"><i class="fas fa-tag"></i>임시</a>
+            </li>
+        </ul>
+    </div>
+</li>
+</c:if>
+
+</ul>
+
+
+<div style="border-bottom: solid 0.8px #595959;"></div>
+
+<!-- ============================================================================================================== 끝 -->
+
 <!-- 	
 	<ul class="borderline side-foot" style="list-style: none; cursor: pointer; padding: 0;">
 		<li>
@@ -1690,198 +1705,202 @@ function getTimeFormatString() {
 	 -->
 
 
- <div class="header-form-popup" id="myForm" >
-					  	<article action="" class="header-form-container" >
-						    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
-							    <strong >조직도</strong>
-							    <button type="button" class="btn cancel" onclick="closeForm()"><i class="fas fa-times icon-search"></i></button>
-							</div>
-							<div style="display:block;">
-							
-								<!-- 조직도 리스트 -->
-							    <label for="name" style="font-size: 14px; margin-left:20px;"><b>그루비</b></label>
-								<div style="display:flex; padding: 0 20px; margin: 10px 0;">
-									<form><input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name phone deptnamekor" required></form>
-								</div>
-								
-								<!-- 조직도리스트 넣기 -->
-								<!-- 3 setup a container element -->
-								<div id="jstree" class="scroll" style="width: 100%; padding-bottom: 40px; height: 600px; overflow:auto;  " ></div>
-					    	</div>
-					  	</article>
-				</div>
-   
-   
-    <!-- ●●● 유저정보 팝업 ●●●================================-->
-        		<div class="myinfo-popup layer_pop" id="myForm4">
-        		
-        			<div class="myinfo-container" style="vertical-align: middle; padding: auto;">
-	        			
-	        			<ul style="list-style: none; margin:0; padding:0;">
-	        				<li style="    display: flex;">
-	        					<img class="userimg myprofile-photo" alt="icon-myprofile"  />
-	        					<div style="display: inline-block; box-sizing: border-box;">
-	        						<strong class="user-name" >${sessionScope.loginuser.name}</strong>
-	        						<span class="dept">
-	        						
-	        							<c:choose>
-	        							<c:when test="${sessionScope.loginuser.deptnamekor eq '임원'}">${sessionScope.loginuser.deptnamekor}진</c:when>
-	        							<c:when test="${sessionScope.loginuser.deptnamekor ne '임원'}">${sessionScope.loginuser.deptnamekor}부</c:when>
-	        							</c:choose>
-	        						</span>
-	        						<span class="spot">
-	        						${sessionScope.loginuser.spotnamekor}
-	        						
-	        						</span>
-	        					</div>
-	        					
-	        				</li>
-	        				<li class="infoList"><a style="color: #555 !important ;"    onclick="getUserInfo()" href="" data-toggle="modal" data-target="#myProfileCard"><i class="far fa-user"></i> 내 프로필</a></li>
-	        				<li class="infoList"><a style="color: #555 !important ;"  href="#" data-toggle="modal" data-target="#myProfileCard2" ><i class="fas fa-cog"></i> 환경설정</a></li>
-	        				<li class="infoList"><a style="color: #555 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
-	        				
-	        			</ul>
-	        			
-        			</div>
-        			
-        		</div>
-	 <!-- ●●● 유저정보 팝업 ●●●================================-->
-   
-   
-   <!-- ●●● 유저정보 팝업 => [유저프로필카드]  ●●●================================-->
-		<div class="modal animate" id="myProfileCard"  >
-			<div class="modal-dialogs"  >
-      	    	<div class="card" id="headerCard" style="width:400px; display: block; ">
+<div class="header-form-popup" id="myForm">
+    <article action="" class="header-form-container">
+        <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
+            <strong>조직도</strong>
+            <button type="button" class="btn cancel" onclick="closeForm()"><i class="fas fa-times icon-search"></i></button>
+        </div>
+        <div style="display:block;">
 
-      	       		<div class="card " style="display: block; ">
+            <!-- 조직도 리스트 -->
+            <label for="name" style="font-size: 14px; margin-left:20px;"><b>그루비</b></label>
+            <div style="display:flex; padding: 0 20px; margin: 10px 0;">
+                <form><input id="organizationInput" type="text" class="searchInput all-setup-input-type-1" placeholder="이름, 소속, 전화번호 검색" autocomplete="off" name="name phone deptnamekor" required>
+                	  <input type="text" style="display:none;">
+                </form>
+            </div>
 
-					   	<div style=" position: relative; ">
-						    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
-						    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
-					    </div>
-					    
-					    <div class="card-body">
-					      <ul style="list-style: none;">
-					      	<li>
-					      		<i class="far fa-envelope"></i>
-					      		<span id="span_email"></span>
-					      	</li>
-					      	<li>
-					      		<i class="fas fa-mobile-alt"></i>
-					      		<span id="span_phone"></span>
-					      	</li>
-					      </ul>
-					    </div>
-		    
-					    <div class="btn-probottom">
-					    	<button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer !important; pointer-">
-					        	채팅
-					        	<i class="far fa-comments"></i>
-					        </button>
-					        <button class="btn-modi js-btn-modi btn-bottom" onclick="myProfileCard2()" data-toggle="modal" data-target="#myProfileCard2" style=" cursor: pointer;" >
-					       		정보수정
-					            <i class="far fa-address-card"></i>
-					        </button>
-					     </div>
-					     
-		  			</div> 
-				</div>
-		 	</div>
-		</div>
-				  
-	<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
-	<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6);" >
-		<div class="modal-content animate" style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
-			<div class="modal-header" style="background-color: #6449fc;">
-	     	   <span style="color: white; font-weight: bold; font-size: 15pt;"><i class="fas fa-id-card-alt"></i>내 정보수정</span>
-		       <button type="button" class="btn  btn-dark" data-dismiss="modal">Close</button>
-	     	</div>
-	     
-	
-			<div class="modal-body scroll" style="width: 100%; overflow:auto;  ">
-	        	<form action="<%=ctxPath%>/MyInfoEdit.groovy"> 
-	        
-					<!-- <form name="InfoFrm"> -->
-					<div>
-						<table id="tbl_myInfo" class="table">
-					      	<tr>
-						        <th style="width: 100px;">사원번호</th>
-						        <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
-						        <td rowspan="4" style="border-left: 1px solid #dee2e6;">
-						        	<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="<%=ctxPath%>/myphotoEdit.groovy">
-							        	<div style="vertical-align: middle;">
-								         	<img class="rounded userimg"  style="width:150px; height:auto; overflow: hidden;" />
-								         	<label href="javascript:uploadFile();" className="input-file-button" for="input-file"   type="button" id="emppicturename" name= "attach" style="cursor: pointer;"><i class="far fa-edit"></i></label>
-											<input type="file" id="input-file" style="display : none;"/> 
-								        </div>
-							        </form>
-							    </td>
-					      	</tr>
-					 	  	<tr>
-						        <th>이름</th>
-						        <td id="td_name"></td>
-					      	</tr>
-					      	<tr>
-						        <th>생년월일</th>
-						        <td id="td_birthday"></td>
-					      	</tr>
-					      	<tr>
-						        <th>성별</th>
-						        <td id="td_gender"></td>
-					      	</tr>
-					      	<tr>
-						        <th>주소</th>
-						        <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
-						        <td><a onclick="addressEdit(pk_empnum)" id ="btn_addressEdit" type="button" ><i class="far fa-edit"></i></a></td>
-					      	</tr>
-					      	<tr class="myphone">
-						        <th>연락처</th>
-						        <td id="td_phone"></td>
-						        <td id="myphone2"><a id ="btn_mobileEdit" onclick="mobileEdit(pk_empnum)"  type="button" ><i class="far fa-edit"></i></a></td>
-					      	</tr>
-					      	<tr>
-						        <th>이메일</th>
-						        <td id="td_email"></td>
-						        <td><a id ="btn_emailEdit" onclick="emailEdit(pk_empnum)"  type="button" ><i class="far fa-edit"></i></a></td>
-					      	</tr>
-					      	<tr>
-						        <th>비밀번호</th>
-						        <td id="td_pwd">
-						        	<table><tr class=''><strong>비밀번호 재설정이 가능합니다.</strong></tr><br/>
-						        	<tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</span></tr></table>
-								</td>
-								<td><a id ="btn_pwdEdit" onclick="pwdEdit(pk_empnum)"  type="button" ><i class="far fa-edit"></i></a></td>
-					      	</tr>
-					      	<tr>
-						        <th>부서</th>
-						        <td >${sessionScope.loginuser.deptnamekor}</td>
-					      	</tr>
-					      	<tr>
-						        <th>직위</th>
-						        <td>${sessionScope.loginuser.spotnamekor}</td>
-					      	</tr>
-					      	<tr>
-						        <th>입사일자</th>
-						        <td>${sessionScope.loginuser.startday}</td>
-					      	</tr>
-					      	<tr>
-						        <th>월급</th>
-						        <td>${sessionScope.loginuser.salary}</td>
-					        </tr>
-				 		</table>
-				 	</div>     
-			 	</form>
-	     	</div>
-	 
-	     
-	     
-	   </div>
-	</div>
-   <!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
+            <!-- 조직도리스트 넣기 -->
+            <!-- 3 setup a container element -->
+            <div id="jstree" class="scroll" style="width: 100%; padding-bottom: 40px; height: 600px; overflow:auto;  "></div>
+        </div>
+    </article>
+</div>
+
+
+<!-- ●●● 유저정보 팝업 ●●●================================-->
+<div class="myinfo-popup layer_pop" id="myForm4">
+
+    <div class="myinfo-container" style="vertical-align: middle; padding: auto;">
+
+        <ul style="list-style: none; margin:0; padding:0;">
+            <li style="display: flex; padding-bottom: 12px; font-size: 16px;" >
+                <img class="userimg myprofile-photo" alt="icon-myprofile" style="width: 50px; height: 50px;" />
+                <div style="display: inline-block; box-sizing: border-box;">
+                    <strong class="user-name" style="font-size: 18px;">${sessionScope.loginuser.name}</strong>
+                    <span class="dept">
+
+                        <c:choose>
+                            <c:when test="${sessionScope.loginuser.deptnamekor eq '임원'}">${sessionScope.loginuser.deptnamekor}진</c:when>
+                            <c:when test="${sessionScope.loginuser.deptnamekor ne '임원'}">${sessionScope.loginuser.deptnamekor}부</c:when>
+                        </c:choose>
+                    </span>
+                    <span class="spot">
+                        ${sessionScope.loginuser.spotnamekor}
+
+                    </span>
+                </div>
+
+            </li>
+            <li class="infoList"><a style="color: #f1f1f1 !important ;" onclick="getUserInfo()" href="" data-toggle="modal" data-target="#myProfileCard"><i class="far fa-user"></i> 내 프로필</a></li>
+            <li class="infoList"><a style="color: #f1f1f1 !important ;" href="#" data-toggle="modal" data-target="#myProfileCard2"><i class="fas fa-cog"></i> 환경설정</a></li>
+            <li class="infoList"><a style="color: #f1f1f1 !important ;" href="<%=ctxPath%>/logout.groovy"><i class="fas fa-sign-out-alt"></i> 로그아웃</a></li>
+
+        </ul>
+
+    </div>
+
+</div>
+<!-- ●●● 유저정보 팝업 ●●●================================-->
+
+
+<!-- ●●● 유저정보 팝업 => [유저프로필카드]  ●●●================================-->
+<div class="modal animate" id="myProfileCard">
+    <div class="modal-dialogs">
+        <div class="card" id="headerCard" style="width:400px; display: block; ">
+
+            <div class="card " style="display: block; ">
+
+                <div style=" position: relative; ">
+                    <img class="userimg card-img-top rounded" alt="Card image" style="width:100%; height: 350px; overflow: hidden;" />
+                    <div class="bottom-left" style="color: white; font-weight:bold; font-size: 18px;">${sessionScope.loginuser.name}</div>
+                </div>
+
+                <div class="card-body">
+                    <ul style="list-style: none;">
+                        <li>
+                            <i class="far fa-envelope"></i>
+                            <span id="span_email"></span>
+                        </li>
+                        <li>
+                            <i class="fas fa-mobile-alt"></i>
+                            <span id="span_phone"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="btn-probottom">
+                    <button class="btn-chat js-btn-chat btn-bottom" style=" cursor: pointer !important; pointer-">
+                        채팅
+                        <i class="far fa-comments"></i>
+                    </button>
+                    <button class="btn-modi js-btn-modi btn-bottom" onclick="myProfileCard2()" data-toggle="modal" data-target="#myProfileCard2" style=" cursor: pointer;">
+                        정보수정
+                        <i class="far fa-address-card"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
+<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6); "data-backdrop="false">
+    <div class="modal-content animate" style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
+        <div class="modal-header" style="background-color: #6449fc;">
+            <span style="color: white; font-weight: bold; font-size: 15pt;"><i class="fas fa-id-card-alt"></i>내 정보수정</span>
+            <button type="button" class="btn  btn-dark" data-dismiss="modal">Close</button>
+        </div>
+
+
+        <div class="modal-body scroll" style="width: 100%; overflow:auto;  ">
+            <form action="<%=ctxPath%>/MyInfoEdit.groovy">
+
+                <!-- <form name="InfoFrm"> -->
+                <div>
+                    <table id="tbl_myInfo" class="table">
+                        <tr>
+                            <th style="width: 100px;">사원번호</th>
+                            <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
+                            <td rowspan="4" style="border-left: 1px solid #dee2e6;">
+                                <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="<%=ctxPath%>/myphotoEdit.groovy">
+                                    <div style="vertical-align: middle;">
+                                        <img class="rounded userimg" style="width:150px; height:auto; overflow: hidden;" />
+                                        <label href="javascript:uploadFile();" className="input-file-button" for="input-file" type="button" id="emppicturename" name="attach" style="cursor: pointer;"><i class="far fa-edit"></i></label>
+                                        <input type="file" id="input-file" style="display : none;" />
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이름</th>
+                            <td id="td_name"></td>
+                        </tr>
+                        <tr>
+                            <th>생년월일</th>
+                            <td id="td_birthday"></td>
+                        </tr>
+                        <tr>
+                            <th>성별</th>
+                            <td id="td_gender"></td>
+                        </tr>
+                        <tr>
+                            <th>주소</th>
+                            <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
+                            <td><a onclick="addressEdit(pk_empnum)" id="btn_addressEdit" type="button"><i class="far fa-edit"></i></a></td>
+                        </tr>
+                        <tr class="myphone">
+                            <th>연락처</th>
+                            <td id="td_phone"></td>
+                            <td id="myphone2"><a id="btn_mobileEdit" onclick="mobileEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td id="td_email"></td>
+                            <td><a id="btn_emailEdit" onclick="emailEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th>비밀번호</th>
+                            <td id="td_pwd">
+                                <table>
+                                    <tr class=''><strong>비밀번호 재설정이 가능합니다.</strong></tr><br />
+                                    <tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를 포함해야 합니다.</span></tr>
+                                </table>
+                            </td>
+                            <td><a id="btn_pwdEdit" onclick="pwdEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
+                        </tr>
+                        <tr>
+                            <th>부서</th>
+                            <td>${sessionScope.loginuser.deptnamekor}</td>
+                        </tr>
+                        <tr>
+                            <th>직위</th>
+                            <td>${sessionScope.loginuser.spotnamekor}</td>
+                        </tr>
+                        <tr>
+                            <th>입사일자</th>
+                            <td>${sessionScope.loginuser.startday}</td>
+                        </tr>
+                        <tr>
+                            <th>월급</th>
+                            <td>${sessionScope.loginuser.salary}</td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
 
 
 
- </div>
+    </div>
+</div>
+<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
+
+
+
+</div>
  <!-- 상단 네비게이션 끝 --> 
  
  

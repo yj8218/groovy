@@ -115,6 +115,10 @@ div#mysideinfo{
 width: 100px;
     position: absolute;
 } */
+
+/* 	.modal-backdrop{
+	z-index:0;
+	} */
 </style>
 
 <script type="text/javascript">
@@ -131,6 +135,8 @@ width: 100px;
 	// 출퇴근 관련(1) 끝 by 혜림  <<< //
 	
 	$(document).ready(function(){
+		
+		
 		
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myProfileCard').appendTo("body"); 
