@@ -373,8 +373,7 @@ function openPersonalChat(pk_empnum) {
 						 	
 						  
 							//html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
-							html += "<div class='card mb-4 feedAll'>";
-							
+							html += "<div class='card mb-4 feedAll' style='max-height:500px;'>";
 							html += "<div class='card-body' style='max-height:700px; overflow:auto; '>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 							html +=  "<thead>";
@@ -407,7 +406,9 @@ function openPersonalChat(pk_empnum) {
 						   
 						   	html +=  "</tr>";
 						   	html +=  "</thead>";
+
 						   	html +=  "<tbody >";
+
 						   	html +=  "<tr>";
 						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.b_subject + "</td>";
 						   	html +=  "</tr>";
@@ -453,7 +454,7 @@ function openPersonalChat(pk_empnum) {
 							 
 					   });
 					  const fkboardseq = $("input[name=fk_board_seqq]").val();
-					  console.log(fkboardseq);
+					//  console.log(fkboardseq);
 					  /* commentShow(item.pk_board_seq,1); */
 						//$("div#feedAllbox").html(html);
 					
@@ -504,7 +505,6 @@ function openPersonalChat(pk_empnum) {
 				 let html = "";
 				   if(json.length > 0) {
 					   
-					 
 						  
 						html += "<div class='card mb-4 feedAll'>";
 						html += "<div class='card-body'>";
@@ -525,7 +525,7 @@ function openPersonalChat(pk_empnum) {
 					  $.each(json, function(index, item){
 	
 						   	html +=  "<tr id='tablehover' style='cursor: pointer;' onclick='javascript:goBoardView("+item.pk_board_seq+")'>";
-						   	html +=  "<td id='list_seq"+index+"'  style='text-align: center;'>"+ (json.length - index)+ "</td>";
+						   	html +=  "<td id='list_seq"+index+"'  style='text-align: center;'>"+ item.pk_board_seq  + "</td>";
 						   	html +=  "<td id='list_subject"+index+"'  ><span class='list_subject' >"+ item.b_subject+"</span>"; 
 						   	${boardvo.subject}
 						    <%-- === 첨부파일이 있는 경우 === --%> 
@@ -598,7 +598,7 @@ function goBoardView(pk_board_seq) {
          html += '</button>';
          html += '</div>';
    	
-         html += '<div class="card-body">';
+         html += '<div class="card-body "  style="max-height: 550px; overflow:auto;" >';
          html += '<div class="card-scroll">';
  		
          html += '<div class="card-body-top">';
@@ -625,7 +625,7 @@ function goBoardView(pk_board_seq) {
          if('${sessionScope.loginuser.pk_empnum}' == json.map.FK_EMPNUM){
         	 html += '<div class="card-option">';
         
-         html += '<button type="button" class="card-edit" onclick="editBoardModal('+pk_board_seq+')" data-toggle="modal" data-target="#editBoardModal" >수정</button>';
+         html += '<button type="button" class="card-edit" onclick="editBoardModal2('+pk_board_seq+')" data-toggle="modal" data-target="#editBoardModal" >수정</button>';
          html += '<button type="button" class="card-delete" onclick="delBoard('+pk_board_seq+')">삭제</button>';
          html += '</div>';
          }
@@ -636,7 +636,7 @@ function goBoardView(pk_board_seq) {
   
          html += '<div class="card-body-bottom">';
          html += '<div class="card-schedule-title-area">';
-         html += '<h4 class="card-schedule-title">'+json.map.B_SUBJECT+'</h4>'; /* <!-- 제목 --> */
+         html += '<h4 class="card-schedule-title" id="detail_subject">'+json.map.B_SUBJECT+'</h4>'; /* <!-- 제목 --> */
          html += '<div class="card-schedule-day">';
          html += '</div>';
          html += '</div>';
@@ -651,7 +651,7 @@ function goBoardView(pk_board_seq) {
          html += '<li>';
          html += '<div class="card-content-title"><i class="icon-text"></i></div>';
          html += '<div class="card-content-memo">';
-         html += '<span class="memo-span"><div>'+json.map.B_CONTENT+'</div></span>';
+         html += '<span class="memo-span"><div id="detail_content">'+json.map.B_CONTENT+'</div></span>';
          html += '</div>';
          html += '</li>';
 
@@ -760,16 +760,24 @@ function goBoardView(pk_board_seq) {
 		 
 		  const origin_content = $("td#write_content"+index).html(); // 원래의 제품후기 엘리먼트
 	 	   //alert(origin_content);   
-	 	  const orgin_content_text = $("td#write_content"+index).text(); // 원래의 제품후기 내용 
+	 	  const orgin_content_val = $("td#write_content"+index).text(); // 원래의 제품후기 내용 
 	 	  //alert(orgin_content_text);
 		  $('input[name="pk_board_seq"]').attr('value',pk_board_seq); 
 		  
 		  const b_orgfilename = $("a#write_file"+index).text();
 		  
-		  document.getElementById("b_content").value = orgin_content_text;
-
+		  document.getElementById("content2").value= orgin_content_val;
+		  
 		 //  oEditors.getById["smarteditor2"].exec("PASTE_HTML", orgin_content_text); //내용밀어넣기
 	  }
+	  
+	  function editBoardModal2(pk_board_seq){
+		  const orgin_subject_text = $("h4#detail_subject").text(); 
+		  $('input#title_edit').attr('value',orgin_subject_text);
+		  const orgin_content_val = $("div#detail_content").text(); // 원래의 제품후기 내용 
+		  document.getElementById("content2").value= orgin_content_val;
+	  }
+	  
 	  
 	  
 	  // 특정 글을 삭제하는 함수
@@ -1493,7 +1501,8 @@ $.ajax({
 					</div><!-- 글쓰기 Modal 끝 -->
 				
 					<!-- 글피드 보기  -->
-					<a type="button" onclick="goReadBoard(1)"><i class="far fa-window-restore"></i>글피드보기</a><a type="button"  onclick="goReadBoardList(1)"><i class="fas fa-th-list"></i>글목록보기</a>
+					<div><div><a style="margin-right: 10px;" type="button" onclick="goReadBoard(1)" ><i class="far fa-window-restore"></i>피드형</a><a   type="button"  onclick="goReadBoardList(1)"><i class="fas fa-th-list"></i>목록형</a></div></div>
+					
 					<div id="feedAllbox"></div>
 					<!-- <div id="paging-feed"></div> -->
 					<div id="paging-list"></div>
@@ -1649,7 +1658,7 @@ $.ajax({
 		
 		
 <!-- 카드 -->
-<div class="card showBoardDetail" style="position: fixed;right: 30px; top:20px;"></div>
+<div class="card showBoardDetail" style=" overflow:auto; position: fixed;right: 30px; top:20px;"></div>
 		
 		
 		
