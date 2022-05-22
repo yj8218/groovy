@@ -972,3 +972,101 @@ create table tbl_holiday
 drop table tbl_holiday purge;
 
 rollback
+
+
+
+
+
+
+
+select M.fk_documentnum as fk_documentnum, M.minSpotnum as minSpotnum
+		from 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+		    from tbl_approvalPerson A
+		    join tbl_approvalDocument B
+		    on A.fk_documentnum = B.pk_documentnum
+		    join tbl_employee C
+		    on A.fk_empnum = C.pk_empnum
+		    join tbl_spot D
+		    on C.fk_spotnum = D.pk_spotnum
+		    where app_status = '1' and appyn = '0'
+		    group by fk_documentnum
+		) M
+		join 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+		    from tbl_approvalPerson AA
+		    join tbl_approvalDocument BB
+		    on AA.fk_documentnum = BB.pk_documentnum
+		    join tbl_employee CC
+		    on AA.fk_empnum = CC.pk_empnum
+		    join tbl_spot DD
+		    on CC.fk_spotnum = DD.pk_spotnum
+		    where app_status = '1' and  APPYN = '0'
+		    and pk_empnum = '20170222-01'
+		    group by fk_documentnum
+		) T
+		on T.fk_documentnum = M.fk_documentnum
+
+select M.fk_documentnum as fk_documentnum, M.minSpotnum as minSpotnum
+		from 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+		    from tbl_approvalPerson A
+		    join tbl_approvalDocument B
+		    on A.fk_documentnum = B.pk_documentnum
+		    join tbl_employee C
+		    on A.fk_empnum = C.pk_empnum
+		    join tbl_spot D
+		    on C.fk_spotnum = D.pk_spotnum
+		    where app_status = '1' and  APPYN = '0'
+		    group by fk_documentnum
+		) M
+		join 
+		(
+		    select fk_documentnum ,min(fk_spotnum) as minSpotnum 
+		    from tbl_approvalPerson AA
+		    join tbl_approvalDocument BB
+		    on AA.fk_documentnum = BB.pk_documentnum
+		    join tbl_employee CC
+		    on AA.fk_empnum = CC.pk_empnum
+		    join tbl_spot DD
+		    on CC.fk_spotnum = DD.pk_spotnum
+		    where app_status = '1' and  APPYN = '0'
+		    and pk_empnum = '20160225-03'
+		    group by fk_documentnum
+		) T
+		on T.fk_documentnum = M.fk_documentnum
+
+select *
+from tbl_approvalPerson
+where fk_documentnum = '20220522022201615'
+
+fk_documentnum ,fk_spotnum 
+select *
+from tbl_approvalPerson AA
+join tbl_approvalDocument BB
+on AA.fk_documentnum = BB.pk_documentnum
+join tbl_employee CC
+on AA.fk_empnum = CC.pk_empnum
+join tbl_spot DD
+on CC.fk_spotnum = DD.pk_spotnum
+where app_status = '1' and  APPYN = '0'
+
+select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				from TBL_APPROVALPERSON B
+				join TBL_APPROVALDOCUMENT C
+				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				where B.fk_empnum = '20160225-03' and B.app_status = '1' and APPYN = '0' 
+				and status in ('1','0') 
+                and C.pk_documentnum in('20220522022138592','20220522021854017','20220522021807830','20220522022242162','20220522022201615')
+				order by C.writeday desc
