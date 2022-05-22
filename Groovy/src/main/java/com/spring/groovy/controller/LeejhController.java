@@ -483,7 +483,7 @@ public class LeejhController {
 	
 		String pk_empnum = request.getParameter("pk_empnum");
 		String myphone = request.getParameter("myphone");
-		System.out.println("myphone:"+myphone);
+		//System.out.println("myphone:"+myphone);
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
@@ -518,7 +518,7 @@ public class LeejhController {
 	
 		String pk_empnum = request.getParameter("pk_empnum");
 		String myemail = request.getParameter("myemail");
-		System.out.println("myemail:"+myemail);
+		//System.out.println("myemail:"+myemail);
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
@@ -554,7 +554,7 @@ public class LeejhController {
 		String myaddress = request.getParameter("myaddress");
 		String mydetailAddress = request.getParameter("mydetailAddress");
 		String myextraAddress = request.getParameter("myextraAddress");
-		System.out.println("my:"+mypostcode);
+		//System.out.println("my:"+mypostcode);
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
@@ -591,7 +591,7 @@ public class LeejhController {
 		String pk_empnum = request.getParameter("pk_empnum");
 		String originpwd = request.getParameter("originpwd");
 		String mypwd = request.getParameter("mypwd");
-		System.out.println("my:"+mypwd);
+		//System.out.println("my:"+mypwd);
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("pk_empnum", pk_empnum);
@@ -1025,7 +1025,7 @@ public class LeejhController {
 		//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
 		String BcurrentShowPageNo = request.getParameter("BcurrentShowPageNo");
 		//System.out.println("페이징"+fk_board_seq);
-		System.out.println("페이징보드2=> "+BcurrentShowPageNo);
+		//System.out.println("페이징보드2=> "+BcurrentShowPageNo);
 		
 		if((BcurrentShowPageNo == null ) || ( Integer.parseInt(BcurrentShowPageNo) <= 0)) {
 			BcurrentShowPageNo = "1";
@@ -1115,7 +1115,7 @@ public class LeejhController {
 			//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
 			String CcurrentShowPageNo = request.getParameter("CcurrentShowPageNo");
 			//System.out.println("페이징"+fk_board_seq);
-			System.out.println("페이징보드2"+CcurrentShowPageNo);
+			//System.out.println("페이징보드2"+CcurrentShowPageNo);
 			
 			
 			if((CcurrentShowPageNo == null ) || ( Integer.parseInt(CcurrentShowPageNo) <= 0)) {
@@ -1204,7 +1204,7 @@ public class LeejhController {
 			//String fk_board_seq = request.getParameter("fk_board_seq");
 			String sizePerPage = request.getParameter("sizePerPage");
 			//System.out.println("페이징3"+fk_board_seq);
-			System.out.println("페이징4 :"+sizePerPage);
+			//System.out.println("페이징4 :"+sizePerPage);
 			Map<String, String> paraMap = new HashMap<>();
 			//paraMap.put("fk_board_seq", fk_board_seq);
 			paraMap.put("sizePerPage",sizePerPage);
@@ -1542,7 +1542,7 @@ public class LeejhController {
 		//  먼저 위의  int n = service.add(boardvo); 부분을 주석처리 하고서 아래와 같이 한다.	
 			
 			int n = 0;
-			System.out.println(pk_board_seq);
+			//System.out.println(pk_board_seq);
 			
 			if( attach.isEmpty() ) {
 				// 파일첨부가 없는 경우라면 
@@ -1743,8 +1743,8 @@ public class LeejhController {
 			
 			String fk_board_seq = request.getParameter("fk_board_seq");
 			String currentShowPageNo = request.getParameter("currentShowPageNo");
-			System.out.println("페이징"+fk_board_seq);
-			System.out.println("페이징2"+currentShowPageNo);
+			//System.out.println("페이징"+fk_board_seq);
+			//System.out.println("페이징2"+currentShowPageNo);
 			if(currentShowPageNo == null) {
 				currentShowPageNo = "1";
 			}
@@ -1791,8 +1791,8 @@ public class LeejhController {
 				
 			String fk_board_seq = request.getParameter("fk_board_seq");
 			String sizePerPage = request.getParameter("sizePerPage");
-			System.out.println("페이징3"+fk_board_seq);
-			System.out.println("페이징4"+sizePerPage);
+			//System.out.println("페이징3"+fk_board_seq);
+			//System.out.println("페이징4"+sizePerPage);
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("fk_board_seq", fk_board_seq);
 			paraMap.put("sizePerPage",sizePerPage);

@@ -453,7 +453,7 @@ function openPersonalChat(pk_empnum) {
 							 
 					   });
 					  const fkboardseq = $("input[name=fk_board_seqq]").val();
-					  console.log(fkboardseq);
+					//  console.log(fkboardseq);
 					  /* commentShow(item.pk_board_seq,1); */
 						//$("div#feedAllbox").html(html);
 					
