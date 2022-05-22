@@ -46,7 +46,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	
 	// 웹소켓에서 파일 전송하기
 	String screenPath = System.getProperty("user.home");
-	private String FILE_UPLOAD_PATH = screenPath + "\\Desktop";	// 파일 업로드 경로
+	private String FILE_UPLOAD_PATH = screenPath + "\\Desktop";	// 파일 업로드 경로(바탕화면)
 	static int fileUploadIdx = 0;
 	static String fileUploadSession = "";
 	
