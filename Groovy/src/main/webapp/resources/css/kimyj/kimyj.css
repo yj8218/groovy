@@ -44,12 +44,12 @@ div.sideCalList {
     padding-right: 0;
     position: fixed;
     z-index: 100;
-    top: 15px;
+  top: 0px;
     left: 0;
     background-color: #eee;
     border-right: 1px solid #555;
     overflow-x: hidden;
-    padding-top: 45px;
+   /*  padding-top: 45px; */
     color: #333;
 }
 

@@ -32,7 +32,7 @@
 <!-- 조직도 -->
 <link rel="stylesheet" href="<%= ctxPath%>/resources/jstree/dist/themes/default/style.min.css" />
 <style type="text/css">
-
+/* 
 div#myProfileCard div.card-body ul{
 	margin:0;
 	padding:0;
@@ -110,6 +110,15 @@ color: #f1f1f1;
     position: relative;
  	top: 4px;
 }
+
+div#mysideinfo{
+width: 100px;
+    position: absolute;
+} */
+
+/* 	.modal-backdrop{
+	z-index:0;
+	} */
 </style>
 
 <script type="text/javascript">
@@ -126,6 +135,8 @@ color: #f1f1f1;
 	// 출퇴근 관련(1) 끝 by 혜림  <<< //
 	
 	$(document).ready(function(){
+		
+		
 		
 	  	$('[data-toggle="tooltip"]').tooltip();   
 	  	$('#myProfileCard').appendTo("body"); 
@@ -1299,9 +1310,9 @@ color: #f1f1f1;
  
  <!-- =================상단 네비게이션 시작 =====================-->
 <div class="header-header">
-
-	<nav class=" navbar  d-flex justify-content-between navbar-expand-lg navbar-dark fixed-top" style="height: 60px; background-color:#2c2a34;">
- 	<!-- 
+<%--
+	 <nav class=" navbar  d-flex justify-content-between navbar-expand-lg navbar-dark fixed-top" style="height: 60px; with:230px; background-color:#2c2a34;"> 
+ 	
 	<div  style="display:flex;    position: relative;">
 		<div class="searchBox" style="  display:flex; position: relative; align-items:center; ">
 			<form id="searchPopupTopButton" class="main-search clearfix" style="display:flex;">
@@ -1312,7 +1323,8 @@ color: #f1f1f1;
 			</form>
 		</div>
     </div>
-	-->
+	
+	
      <div class="timer">
     	<a id="stopwatch">00:00:00</a>
 		<!-- 
@@ -1337,11 +1349,14 @@ color: #f1f1f1;
 	<div class="nav_right"> 
 	
      	<!-- ●●● 조직도 팝업 ●●●================================-->
+        		
+        			
         		<a class="iconbar" onclick=" OpenOrganizationForm()" type="button" id="organizationTopButton " data-toggle="tooltip" data-placement="bottom" title="조직도" style="display: inline-block; ">
                     <i class="fas fa-sitemap"></i>
                 </a>
                 
                 
+                 
                 <div class="header-form-popup" id="myForm" >
 					  	<article action="" class="header-form-container" >
 						    <div style="padding: 15px 20px; margin-bottom: 6px; font-size: 18px; font-weight:bold;">
@@ -1471,7 +1486,7 @@ color: #f1f1f1;
 					 </article>
                 
 				</div>
-            	
+       	
        <!-- ●●● 유저정보 팝업 ●●●================================-->
             	<!-- <a class="iconbar" onclick="OpenMyinfoForm()"  type="button" ><i class="fas fa-user-circle"></i></a> -->
         		<a class="iconbar" onclick="OpenMyinfoForm()"  type="button" ><img class="myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}"  alt="icon-myprofile"  /></a>
@@ -1637,11 +1652,10 @@ color: #f1f1f1;
 				 	</div>     
 			 	</form>
 	     	</div>
-	 
-	     
-	     
+
 	   </div>
 	</div>
+--%>
 
 </div><!-- div.header 가 닫혔다. -->
  <!-- =================상단 네비게이션 끝 =====================-->
@@ -1649,7 +1663,7 @@ color: #f1f1f1;
 
 <script src="<%= ctxPath%>/resources/jstree/dist/jstree.min.js"></script>
 <script>
-
+<%-- 
 // jstree로  조직도 나타내기
 
 $(function() {
@@ -1685,12 +1699,12 @@ function createJSTree(jsondata) {
            /*  "icon" : false  */
 		},
 		'plugins' : ["wholerow","search", "themes","types"],
-		<%--  "types" : {
+		 "types" : {
              "default": {
                  "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
                  <!--icon을 원하는 이미지로 만들때-->
              }
-         } --%>
+         }
 
 		'core' : {
 		    'data' :  jsondata
@@ -1711,6 +1725,7 @@ function createJSTree(jsondata) {
 	 var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
 	 
 } //end of function createJSTree(jsondata) { }--------------
+ --%>
 </script>
 
   
