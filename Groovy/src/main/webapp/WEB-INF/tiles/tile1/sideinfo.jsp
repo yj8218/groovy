@@ -291,7 +291,7 @@ let hour, min, sec;
 
 $(document).ready(function() {
 	
-	$('.modal-backdrop').last().css("z-index", "9999");
+	$('sidenav .modal-backdrop').last().css("z-index", "9999");
 	
     $('[data-toggle="tooltip"]').tooltip();
     $('#myProfileCard').appendTo("body");
@@ -299,7 +299,7 @@ $(document).ready(function() {
 
     getUserInfo();
 
-    $('.modal').on('hidden.bs.modal', function(e) {
+    $('sidenav .modal').on('hidden.bs.modal', function(e) {
         $(this).find('form')[0].reset();
         $(this).find('form[name="editFrm"]')[0].reset();
         $(this).find('form[name="registerFrm"]')[0].reset();
