@@ -373,7 +373,7 @@ function openPersonalChat(pk_empnum) {
 							//html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
 							html += "<div class='card mb-4 feedAll'>";
 							
-							html += "<div class='card-body'>";
+							html += "<div class='card-body' style='max-height:700px; overflow:auto; '>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 							html +=  "<thead>";
 							html +=  "<tr>";
@@ -405,9 +405,9 @@ function openPersonalChat(pk_empnum) {
 						   
 						   	html +=  "</tr>";
 						   	html +=  "</thead>";
-						   	html +=  "<tbody>";
+						   	html +=  "<tbody >";
 						   	html +=  "<tr>";
-						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.pk_board_seq+ item.b_subject + "</td>";
+						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.b_subject + "</td>";
 						   	html +=  "</tr>";
 						   	html +=  "<tr style='border-top: solid 1px lightgray; border-bottom: solid 1px lightgray; height: 150px;'>";
 						   	html +=  "<td id='write_content"+index+"' colspan='2'>"+ item.b_content + "</td>";
@@ -1491,7 +1491,7 @@ $.ajax({
 					</div><!-- 글쓰기 Modal 끝 -->
 				
 					<!-- 글피드 보기  -->
-					<a type="button" onclick="goReadBoard(1)">글피드보기</a><a type="button"  onclick="goReadBoardList(1)">글목록보기</a>
+					<a type="button" onclick="goReadBoard(1)"><i class="far fa-window-restore"></i>글피드보기</a><a type="button"  onclick="goReadBoardList(1)"><i class="fas fa-th-list"></i>글목록보기</a>
 					<div id="feedAllbox"></div>
 					<!-- <div id="paging-feed"></div> -->
 					<div id="paging-list"></div>

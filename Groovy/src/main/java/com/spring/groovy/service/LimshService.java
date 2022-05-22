@@ -30,17 +30,18 @@ public class LimshService implements InterLimshService {
 	    
 	      if(empvoList != null) {
 	         
-	         String email = "";
-	
-	         for(EmployeeVO empvo : empvoList) {
-	            try {
-	               email = aes.decrypt(empvo.getEmail());
-	            } catch(UnsupportedEncodingException | GeneralSecurityException e) {
-	               e.printStackTrace();
-	            }
-	            
-	            empvo.setEmail(email);
-	         }
+	         try {
+	 			for(EmployeeVO emp : empvoList) {
+	 				
+	 				String email = emp.getEmail();
+	 				email = aes.decrypt(email);
+	 				
+	 				emp.setEmail(email);
+	 			}
+	 		
+	 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
+	 			e.printStackTrace();
+	 	} 
 	      }
 	      return empvoList;
 	}
