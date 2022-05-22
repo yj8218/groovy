@@ -1942,12 +1942,12 @@ function createJSTree(jsondata) {
            /*  "icon" : false  */
 		},
 		'plugins' : ["wholerow","search", "themes","types"],
-		<%--  "types" : {
+		 "types" : {
              "default": {
                  "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
                  <!--icon을 원하는 이미지로 만들때-->
              }
-         } --%>
+         }
 
 		'core' : {
 		    'data' :  jsondata
@@ -1968,4 +1968,6 @@ function createJSTree(jsondata) {
 	 var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
 	 
 } //end of function createJSTree(jsondata) { }--------------
+
+
 </script>

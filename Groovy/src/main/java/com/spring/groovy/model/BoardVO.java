@@ -66,6 +66,42 @@ public class BoardVO {
 	
 	private String name; //이름
 	
+	private String emppicturename; //프로필사진명
+	
+	
+	private String spotnamekor;
+	private String deptnamekor;
+	
+	public String getSpotnamekor() {
+		return spotnamekor;
+	}
+
+
+	public void setSpotnamekor(String spotnamekor) {
+		this.spotnamekor = spotnamekor;
+	}
+
+
+	public String getDeptnamekor() {
+		return deptnamekor;
+	}
+
+
+	public void setDeptnamekor(String deptnamekor) {
+		this.deptnamekor = deptnamekor;
+	}
+
+
+	public String getEmppicturename() {
+		return emppicturename;
+	}
+
+
+	public void setEmppicturename(String emppicturename) {
+		this.emppicturename = emppicturename;
+	}
+
+
 	public String getName() {
 		return name;
 	}
@@ -74,6 +110,7 @@ public class BoardVO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 
 
 	public BoardVO() {}
