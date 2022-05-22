@@ -24,25 +24,10 @@
 </style>
 
 <script type="text/javascript">
-/* 	$('.modal').on('hidden.bs.modal', function (e) {
-		$(this).find('form')[0].reset();
-	}); 
-	 */
+
 	
 	$(document).ready(function() {
 
-	     // === 댓글 입력후 엔터하기 === //
-			//$("input#commentContent").keydown(function(key){
-			$(document).on('keyup', 'input#commentContent', function (event) {
-				
-				if(event.keyCode == 13){
-					alert(fk_board_seq);
-					goAddComment(fk_board_seq);
-					
-					
-				}
-			});
-				
 		 $("div.showBoardDetail").hide();
 		
 	    $(document).on("click", "div.card-header button.close", function(){
@@ -226,6 +211,9 @@ $(document).on('keyup', 'form.comment-writer-container input.comment-writer-text
 		commentAdd(fk_board_seq);
 	}
 });
+		
+
+
 
 		 
 		
@@ -301,7 +289,6 @@ function openPersonalChat(pk_empnum) {
 	  // === 피드형 게시판 읽어오기  === //
 	  function goReadBoard(CcurrentShowPageNo) {
 		  $("div.showBoardDetail").hide();
-		  console.log("CcurrentShowPageNo"+CcurrentShowPageNo);
 		  $("div#feedAllbox").empty();
 		  $.ajax({
 			  url:"<%= request.getContextPath()%>/readBoard.groovy",
@@ -309,7 +296,6 @@ function openPersonalChat(pk_empnum) {
 			  dataType:"json",
 			  success:function(json){
 				  
-				 // console.log(json);
 				  let html = "";
 				   if(json.length > 0) {
 					  $.each(json, function(index, item){
@@ -317,6 +303,8 @@ function openPersonalChat(pk_empnum) {
 						 	
 						  
 							html += "<div class='card mb-4 feedAll' onclick='commentShow(\""+item.pk_board_seq+"\",1)'>";
+							html += "<div class='card mb-4 feedAll' onclick='goBoardView(\""+item.pk_board_seq+"\",1)'>";
+							
 							html += "<div class='card-body'>";
 							html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 							html +=  "<thead>";
@@ -327,22 +315,31 @@ function openPersonalChat(pk_empnum) {
 							html +=  "</td>";
 						   	  
 						   	  
-						   	html +=  "<td align='right'>"
+						   
 						 /*   	html +=  "<i class='fas fa-thumbtack'></i>"; */
-						   	html +=  "<i style='padding:3px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
-						   	html +=  "<div class='dropdown-menu'>";
+						   	
 						   <%-- 	html +=  "  	<a class='dropdown-item' href='<%=ctxPath%>/editBoard.groovy?pk_board_seq="+item.pk_board_seq+"'><i class='far fa-board-alt'></i>수정</a>"; --%>
-						    html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer;'><i class='far fa-board-alt'></i>수정</a>";
-						   	html +=  "  	<a class='dropdown-item' onclick='delBoard("+item.pk_board_seq+")' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
+						   if('${sessionScope.loginuser.pk_empnum}' == item.fk_empnum){
+								html +=  "<td align='right'>";
+							   html +=  "<i style='padding:3px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
+							   html +=  "<div class='dropdown-menu'>";
+							   html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer;'><i class='far fa-board-alt'></i>수정</a>";
+							   html +=  "  	<a class='dropdown-item' onclick='delBoard("+item.pk_board_seq+")' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
+							   html +=  "</div>";
+								html +=  "</td>";
+						   } 
+						   
+						   
+						  
 						   	/* html +=  "  	<a class='dropdown-item' href='#'><i class='fas fa-external-link-alt'></i>다른 프로젝트에 복사</a>";
 						   	html +=  "  	<a class='dropdown-item' href='#'><i class='far fa-clone'></i>링크 복사</a>"; */
-						   	html +=  "</div>";
-						   	html +=  "</td>";
+						   
+						   
 						   	html +=  "</tr>";
 						   	html +=  "</thead>";
 						   	html +=  "<tbody>";
 						   	html +=  "<tr>";
-						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.b_subject + "</td>";
+						   	html +=  "<td id='write_subject"+index+"' colspan='2' style='font-size: 18pt;'>"+ item.pk_board_seq+ item.b_subject + "</td>";
 						   	html +=  "</tr>";
 						   	html +=  "<tr style='border-top: solid 1px lightgray; border-bottom: solid 1px lightgray; height: 150px;'>";
 						   	html +=  "<td id='write_content"+index+"' colspan='2'>"+ item.b_content + "</td>";
@@ -372,7 +369,7 @@ function openPersonalChat(pk_empnum) {
 							html +=  "</tr>"; */
 							html +=  "</tbody>";
 							
-							html += '<tbody id="commentDisplay'+item.pk_board_seq+'"></tbody>'; /* <ul class="card-footer-group"></ul> */
+							html += '<tbody></tbody>'; /* <ul class="card-footer-group"></ul> */
 							
 							html +=  "</table> 	";
 							html +=  "</div>";
@@ -380,9 +377,9 @@ function openPersonalChat(pk_empnum) {
 							 html+= "<div><ul class='commentDisplay"+item.pk_board_seq+"'></ul></div>" ;
 								
 							html +=  "<div class='card-footer' align='center'>";
-							html +=  " <form name='addCommentFrm' id='addCommentFrm'><i class='far fa-user-circle'></i>";
-							html +=  '<input type="hidden" name="fk_board_seq" id="fk_board_seq" class="fk-board-seq" value="'+item.pk_board_seq+'" />';
-							html +=  "<input type='text' id='commentContent"+item.pk_board_seq+"'  class='comment-Content comment-writer-text form-control' style='display: inline-block; width: 80%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
+							html +=  " <form name='addCommentFrm' ><i class='far fa-user-circle'></i>";
+							html +=  '<input type="text" name="fk_board_seqq"  class="fkboardseq"  value="'+item.pk_board_seq+'" />';
+							html +=  "<input type='text' id='comment-Content"+index+"'  class='comment-Content form-control' style='display: inline-block; width: 80%;' placeholder='댓글 입력 Enter' /><input type='text' style='display:none;'> <!--의미없는 태그-->";
 							
 							
  		/* 					html +=  '<input type="hidden" name="fk_empnum" id="fk_empnum" value="'+${sessionScope.loginuser.pk_empnum}+'" />';
@@ -394,6 +391,7 @@ function openPersonalChat(pk_empnum) {
 							
 							
 							
+							 
 							
 								
 						  /* 
@@ -401,13 +399,13 @@ function openPersonalChat(pk_empnum) {
 						  goViewComment(index , item.pk_board_seq) ;
 						   */
 							
-						  
+							  const fkboardseq = $("input[name=fk_board_seqq]").val();
+							  console.log(fkboardseq);
 					   });
-					  
-					  
+					
 					  /* commentShow(item.pk_board_seq,1); */
 						//$("div#feedAllbox").html(html);
-						
+					
 					
 					  
 				  }
@@ -416,6 +414,16 @@ function openPersonalChat(pk_empnum) {
 	              
 					//  $("div#feedAllbox").append(html); 
 				  }
+				   
+				   $(document).on('keyup', 'input.comment-Content', function (event) {
+						if(event.keyCode == 13){ 
+							const fk_board_seq = $("input.fkboardseq").val();
+
+							alert(fk_board_seq);
+							goAddComment(fk_board_seq);
+						}
+					});
+				   
 				   
 				   $("div#feedAllbox").html(html);
 				   makeCBoardPageBar(CcurrentShowPageNo);
@@ -442,7 +450,6 @@ function openPersonalChat(pk_empnum) {
 			  dataType:"json",
 			  success:function(json){
 				  
-				 // console.log(json);
 				 let html = "";
 				   if(json.length > 0) {
 					   
@@ -708,21 +715,8 @@ function goBoardView(pk_board_seq) {
 		  
 		  const b_orgfilename = $("a#write_file"+index).text();
 		  
-		  
-		 // alert(b_orgfilename);
-		  
 		  document.getElementById("b_content").value = orgin_content_text;
-		 
-		  /////////
-		/* 
-			  
-			  $('.modal').on('hidden.bs.modal', function (e) {
-					$(this).find('form')[0].reset();
-				}); 
-				 */
-		
-		  
-		  
+
 		 //  oEditors.getById["smarteditor2"].exec("PASTE_HTML", orgin_content_text); //내용밀어넣기
 	  }
 	  
@@ -738,7 +732,10 @@ function goBoardView(pk_board_seq) {
 	          $.ajax({
 	             url:"<%= ctxPath%>/delBoard.groovy",
 	             type:"POST",
-	             data:{"pk_board_seq":pk_board_seq},
+	             data:{"pk_board_seq":pk_board_seq,
+	            	 "fk_empnum": "${sessionScope.loginuser.pk_empnum}"
+	            	 },
+	            
 	             dataType:"JSON",
 	             success:function(json) { // {"n":1} 또는 {"n":0}
 	                if(json.isSuccess) {
@@ -756,180 +753,58 @@ function goBoardView(pk_board_seq) {
 	          });
 	       
 	       }
+	    
+	    
+	    
 	       
 	    }// end of function delMyReview(review_seq) {}--------------------------  
 	    
 	  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~댓글구역~~~~~~~~~~~~~	    
 	 	// == 댓글쓰기 == 
-	    function goAddComment(pk_board_seq){
+	    function goAddComment(fk_board_seq,index){
 	  	  
+	    	const content = $("input#comment-Content"+index).val();
+	    	alert("내용"+content);
+	   	 alert("말해줘:"+fk_board_seq);
+	   	 
+	 	   $.ajax({
+	 		   url:"<%= ctxPath%>/boardCommentAdd.groovy",
+	 		   type:"POST",
+	 		   data:{"fk_board_seq":fk_board_seq,
+	 			   "fk_empnum":"${sessionScope.loginuser.pk_empnum}",
+	 			   "name":"${sessionScope.loginuser.name}",
+	 			   "content":content },
+	 		   dataType:"JSON", 
+	 		   success:function(json){
+	 			   
+	 		  	if(json.n == 1){
+	 		  		$("input#comment-Content"+index).val("");
+	 		  		commentShow(fk_board_seq,1);   
+	 		  	}else{
+	 		  		alert("댓글쓰기 실패");
+	 		  	}
+	 			   
+	 	 
+	 		   },
+	 		   error: function(request, status, error){
+	 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	 		   }
+	 	   });	   
+	 	   ///////////
+	    	
+	    	
+	    	/* 
 	  	  const commentContent = $("input.comment-Content").val().trim();
 	  	  if(commentContent == "") {
 	  		  alert("댓글 내용을 입력하세요!!");
 	  		  return; // 종료
 	  	  }
-	  	  
-	  	  if($("input#commentAttach").val() == "") {
-	  		  // 첨부파일이 없는 댓글쓰기인 경우
-	  		  goAddWrite_noAttach();
-	  	  }
-	  	  else {
-	  		 // 첨부파일이 있는 댓글쓰기인 경우 
-	  		 goAddWrite_withAttach();
-	  	  }
+	  		  goAddWrite_noAttach(); */
+	  	
 	  	  
 	    }// end of function goAddWrite() {}--------------------
 	    
-	    // == 파일첨부가 없는 댓글쓰기 
-	    function goAddWrite_noAttach(){
-	  	  
-	  	  <%--
-	  	      // 보내야할 데이터를 선정하는 또 다른 방법
-	  		  // jQuery에서 사용하는 것으로써,
-	  		  // form태그의 선택자.serialize(); 을 해주면 form 태그내의 모든 값들을 name값을 키값으로 만들어서 보내준다. 
-	  		  const queryString = $("form[name=addCommentFrm]").serialize();
-	  	  --%>
-	  	  //const ${sessionScope.loginuser.pk_empnum}.val() 
-	  	  const fk_board_seq = $("input.fk-board-seq").val();
-	  	  $.ajax({
-	  		  url:"<%= ctxPath %>/addComment.groovy",
-	  		  data:{"fk_empnum":"${sessionScope.loginuser.pk_empnum}" 
-	  			   ,"cmt_name":"${sessionScope.loginuser.name}"
-	  			   ,"cmt_content":$("input.comment-Content").val() 
-	  			   ,"fk_board_seq":fk_board_seq},
-	  	 /*   또는
-	  	      data:queryString, */	   
-	  		  type:"POST",
-	  		  dataType:"JSON",
-	  		  success:function(json){
-	  			 // "{"n":1,"name":"엄정화"}" 또는 "{"n":0,"name":"서영학"}"
-	  			 
-	  			 const n = json.n;
-	  			 if(n == 0) {
-	  				 alert(json.name + "님의 포인트는 300점을 초과할 수 없으므로 댓글쓰기가 불가합니다.");
-	  			 }
-	  			 else {
-	  			  	console.log("댓글작성완료");
-	  				 // goReadComment();  // 페이징 처리 안한 댓글 읽어오기
-	  			     //goViewComment(1); // 페이징 처리한 댓글 읽어오기
-	  			 }
-	  			 
-	  			 $("input.comment-Content").val("");
-	  		  },
-	  		  error: function(request, status, error){
-	  				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	  		  }
-	  	  });
-	  	  
-	    }// end of function goAddWrite_noAttach() {}--------------------------
-	    
-	    
-	    // ==== #169. 파일첨부가 있는 댓글쓰기 ==== // 
-	    function goAddWrite_withAttach() {
-	  	  <%-- === ajax로 파일을 업로드할때 가장 널리 사용하는 방법 ==> ajaxForm === //
-	  		   === 우선 ajaxForm 을 사용하기 위해서는 jquery.form.min.js 이 있어야 하며
-	  		       /WEB-INF/tiles/layout/layout-tiles1.jsp 와 
-	  		       /WEB-INF/tiles/layout/layout-tiles2.jsp 에 기술해 두었다. 
-	  	  --%>
-	  	  
-	  	  <%--
-	  	      // 보내야할 데이터를 선정하는 또 다른 방법
-	  		  // jQuery에서 사용하는 것으로써,
-	  		  // form태그의 선택자.serialize(); 을 해주면 form 태그내의 모든 값들을 name값을 키값으로 만들어서 보내준다. 
-	  		  const queryString = $("form[name=addWriteFrm]").serialize();
-	  	  --%>
-	  	  
-	  	  const queryString = $("form[name=addCommentFrm]").serialize();
-	  	  
-	  	  $("form[name=addCommentFrm]").ajaxForm({
-	  		  url:"<%= request.getContextPath()%>/addComment_withAttach.groovy",
-	  		  data:queryString,
-	  	 	  type:"POST",
-	  	 	  enctype:"multipart/form-data",
-	  		  dataType:"JSON",
-	  		  success:function(json){
-	  			 // "{"n":1,"name":"엄정화"}" 또는 "{"n":0,"name":"서영학"}"
-	  			 
-	  			 const n = json.n;
-	  			 if(n == 0) {
-	  				 alert(json.name + "님의 포인트는 300점을 초과할 수 없으므로 댓글쓰기가 불가합니다.");
-	  			 }
-	  			 else {
-	  			  // goReadComment();  // 페이징 처리 안한 댓글 읽어오기
-	  			     //goViewComment(1); // 페이징 처리한 댓글 읽어오기
-	  			 }
-	  			 
-	  			 $("input#commentContent").val("");
-	  			 $("input#commentAttach").val("");
-	  		  },
-	  		  error: function(request, status, error){
-	  				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	  		  }
-	  	  });
-	  	  
-	  	  $("form[name=addCommentFrm]").submit();
-	  	 
-	    }// end of function goAddWrite_noAttach() {}--------------------------
-	    
-	    
-<%--
-		  // === #127. Ajax로 불러온 댓글내용을  페이징 처리 하기  === //
-		    function goViewComment(currentShowPageNo, index ) {
-		  	  
-		  	  $.ajax({
-		  		  url:"<%= ctxPath%>/commentList.groovy",
-		  		  data:{"fk_board_seq":$("input#fk_board_seq").val(),
-		  			    "currentShowPageNo":currentShowPageNo},
-		  		  dataType:"JSON",
-		  		  success:function(json){
-		  		
-		  			  
-		  			  let html = "";
-		  			  if(json.length > 0) {
-		  				  $.each(json, function(index, item){
-		  					  html += "<tr>";
-		  					  html += "<td class='comment'>"+(index+1)+"</td>";
-		  					  html += "<td>"+item.content+"</td>";
-		  					  
-		  				 === 첨부파일 기능이 추가된 경우 시작 === 
-		  					
-		  					if(${sessionScope.loginuser != null}){ // 로그인을 한 경우 a가 걸리고,
-		  						html += "<td><a href='<%=request.getContextPath()%>/downloadComment.action?seq="+item.seq+"'>"+item.orgFilename+"</a></td>";
-		  					}  
-		  					else{ //비로그인시 보기만 하세요
-		  					  html += "<td>"+item.orgFilename+"</td>";
-		  					}  
-		  					  
-		  					  html += "<td>"+ Number(item.fileSize).toLocaleString('en')+"</td>";
-		  				 === 첨부파일 기능이 추가된 경우 끝 ===
-		  				 
-		  				  html += "<td class='comment'>"+item.name+"</td>";
-		  				  html += "<td class='comment'>"+item.regDate+"</td>";
-		  				  html += "</tr>";
-		  			  });
-		  		  }
-		  		  else {
-		  			  html += "<tr>";
-		  			  html += "<td colspan='4' class='comment'>댓글이 없습니다</td>";
-		  			  html += "</tr>";
-		  		  }
-		  		  
-		  		  $("tbody#commentDisplay"+fk_board_seq).html(html);
-		  		  
-		  		  // 페이지바 함수 호출
-		  		  makeCommentPageBar(currentShowPageNo);
-		  	  },
-		  	  error: function(request, status, error){
-		  			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		  	  }
-		    });
-		    
-		    }// end of function goViewComment(currentShowPageNo) {}-------------------------
-		   --%>
-		  ///////////
-
-
 function commentAdd(fk_board_seq){
 	
 	   const content = $("input.comment-writer-text").val();
@@ -1409,8 +1284,8 @@ $.ajax({
 	     // *** !! 다음은 currentShowPageNo 를 얻어와서 pageNo 를 구하는 공식이다. !! *** //
 	     let pageNo = Math.floor( (CcurrentShowPageNo - 1)/blockSize ) * blockSize + 1;
 	    
-	     console.log("pageNO"+pageNo);
-	     console.log("CcurrentShowPageNo:"+CcurrentShowPageNo);
+	    /// console.log("pageNO"+pageNo);
+	    // console.log("CcurrentShowPageNo:"+CcurrentShowPageNo);
 	 	
 	     
 	     
@@ -1720,7 +1595,7 @@ $.ajax({
 		
 		
 <!-- 카드 -->
-<div class="card showBoardDetail">
+<div class="card showBoardDetail" style="position: relative;">
 
 
   	
