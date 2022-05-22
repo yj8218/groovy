@@ -221,6 +221,8 @@ SELECT '20220507032317', '20210302-01', sysdate, '1' FROM DUAL
 delete from TBL_APPROVALPERSON
 
 
+
+
 ---- 휴가신청
 
 select *
@@ -634,45 +636,276 @@ join TBL_APPROVALPERSON B
 on A.pk_documentNum = B.fk_documentNum
 
 
-update TBL_APP_EQUIP set success = '1'
-where pk_documentnum = '20220516222733788'
+
+select *
+from tbl_spot
 
 
-DELETE FROM tbl_approvaldocument
-WHERE pk_documentnum in ()
+select deptnamekor, name, spotnamekor
+from TBL_EMPLOYEE A
+join TBL_DEPARTMENT B
+on A.fk_deptnum = B.pk_deptnum
+join tbl_spot C
+on A.fk_spotnum = C.pk_spotnum
+order by fk_spotnum
 
-DELETE FROM TBL_APP_EQUIP
-WHERE pk_documentnum in ('20220518000635194') 
 
-delete from TBL_APPROVALPERSON
-WHERE fk_documentnum = '20220512171146349'
 
-DELETE FROM tbl_approvaldocument
-WHERE success = '0'
+
+
+select rownum as rno, C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no
+				, status
+from TBL_APPROVALDOCUMENT C
+join TBL_APPROVAL D
+on C.FK_APL_NO = D.apl_no
+join tbl_employee A
+on C.fk_empnum = A.pk_empnum
+join tbl_department E
+on A.fk_deptnum = E.PK_DEPTNUM
+join tbl_spot F
+on F.PK_SPOTNUM = A.fK_SPOTNUM
+order by writeday desc
+
+
+-------------------
+
+select pk_spotnum
+from TBL_EMPLOYEE A
+join TBL_DEPARTMENT B
+on A.fk_deptnum = B.pk_deptnum
+join tbl_spot C
+on A.fk_spotnum = C.pk_spotnum
+where pk_empnum = '20170222-01'
+
+select deptnamekor, name, spotnamekor, pk_spotnum
+from TBL_EMPLOYEE A
+join TBL_DEPARTMENT B
+on A.fk_deptnum = B.pk_deptnum
+join tbl_spot C
+on A.fk_spotnum = C.pk_spotnum
+where pk_empnum = '20150502-04'
+
+select rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+from
+(	
+    select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
+    from 
+    (
+        select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+        from TBL_APPROVALPERSON B
+        join TBL_APPROVALDOCUMENT C
+        on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+        join TBL_APPROVAL D
+        on C.FK_APL_NO = D.apl_no
+        join tbl_employee A
+        on C.fk_empnum = A.pk_empnum
+        join tbl_department E
+        on A.fk_deptnum = E.PK_DEPTNUM
+        join tbl_spot F
+        on F.PK_SPOTNUM = A.fK_SPOTNUM
+        where B.fk_empnum = '20150502-04' and B.app_status = '1' and APPYN = '0' and status = '0'
+        order by writeday desc
+    )
+)	 
+where rno between 1 and 20	
+
+
+select pk_spotnum
+from TBL_EMPLOYEE A
+join TBL_DEPARTMENT B
+on A.fk_deptnum = B.pk_deptnum
+join tbl_spot C
+on A.fk_spotnum = C.pk_spotnum
+where pk_empnum = '20170222-01'
+
+select fk_documentnum ,min(fk_spotnum) as minSpotnum
+from tbl_approvalPerson A
+join tbl_approvalDocument B
+on A.fk_documentnum = B.pk_documentnum
+join tbl_employee C
+on A.fk_empnum = C.pk_empnum
+join tbl_spot D
+on C.fk_spotnum = D.pk_spotnum
+join 
+(
+    select pk_spotnum
+    from TBL_EMPLOYEE A
+    join TBL_DEPARTMENT B
+   on A.fk_deptnum = B.pk_deptnum
+    join tbl_spot C
+    on A.fk_spotnum = C.pk_spotnum
+    where pk_empnum = '20150502-04'
+) E
+on D.pk_spotnum = E.pk_spotnum
+where app_status = '1' and  APPYN = '0' and E.pk_spotnum = D.pk_spotnum
+group by fk_documentnum
+
+select fk_documentnum, minSpotnum
+from 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson A
+    join tbl_approvalDocument B
+    on A.fk_documentnum = B.pk_documentnum
+    join tbl_employee C
+    on A.fk_empnum = C.pk_empnum
+    join tbl_spot D
+    on C.fk_spotnum = D.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    group by fk_documentnum
+) M
+join 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson A
+    join tbl_approvalDocument B
+    on A.fk_documentnum = B.pk_documentnum
+    join tbl_employee C
+    on A.fk_empnum = C.pk_empnum
+    join tbl_spot D
+    on C.fk_spotnum = D.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    and pk_empnum = '20150502-04'
+    group by fk_documentnum
+) T
+on T.fk_documentnum = M.fk_documentnum
+
+
+select nvl(vacationdate, 0) as vacationdate
+from tbl_employee
+where pk_empnum = '20200902-01'
+
+update tbl_employee set VACATIONDATE = '104' where fk_spotnum = '7'
+
+select *
+from tbl_spot
+
+select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				from TBL_APPROVALPERSON B
+				join TBL_APPROVALDOCUMENT C
+				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+				join TBL_APPROVAL D
+				on C.FK_APL_NO = D.apl_no
+				join tbl_employee A
+				on C.fk_empnum = A.pk_empnum
+				join tbl_department E
+				on A.fk_deptnum = E.PK_DEPTNUM
+				join tbl_spot F
+				on F.PK_SPOTNUM = A.fK_SPOTNUM
+				where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0' and status = '0' 
+				--and C.pk_documentnum in ()
+				order by C.writeday desc
+
+
+-- '20220519143550711', '20220520102918180', '20220519143019920', '20220519143516211', '20220519143458552', '20220519143301178'
+
+
+
+
+
+select M.fk_documentnum, M.minSpotnum
+from 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson A
+    join tbl_approvalDocument B
+    on A.fk_documentnum = B.pk_documentnum
+    join tbl_employee C
+    on A.fk_empnum = C.pk_empnum
+    join tbl_spot D
+    on C.fk_spotnum = D.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    group by fk_documentnum
+) M
+join 
+(
+    select fk_documentnum ,min(fk_spotnum) as minSpotnum
+    from tbl_approvalPerson AA
+    join tbl_approvalDocument BB
+    on AA.fk_documentnum = BB.pk_documentnum
+    join tbl_employee CC
+    on AA.fk_empnum = CC.pk_empnum
+    join tbl_spot DD
+    on CC.fk_spotnum = DD.pk_spotnum
+    where app_status = '1' and  APPYN = '0'
+    and pk_empnum = '20170222-01'
+    group by fk_documentnum
+) T
+on T.fk_documentnum = M.fk_documentnum
+
+
+
+select count(*)
+from TBL_APPROVALPERSON B
+join TBL_APPROVALDOCUMENT C
+on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
+join TBL_APPROVAL D
+on C.FK_APL_NO = D.apl_no
+join tbl_employee A
+on C.fk_empnum = A.pk_empnum
+join tbl_department E
+on A.fk_deptnum = E.PK_DEPTNUM
+join tbl_spot F
+on F.PK_SPOTNUM = A.fK_SPOTNUM
+where B.fk_empnum = '20170222-01' and B.app_status = '1' and APPYN = '0' and status = '0' 
+order by C.writeday desc
+
+-------------------------
+delete from tbl_employee
+where pk_empnum in ('001-01','2-001','001-02','1-33')
+
+
+select CONSTRAINT_NAME, TABLE_NAME, R_CONSTRAINT_NAME
+from user_constraints
+where R_CONSTRAINT_NAME = 'TBL_EMPLOYEE_PK' 
+
+
+
+
+alter table tbl_employee
+add constraint primary key
+foreign key (fk_empnum)
+references  tbl_employee(pk_empnum)
+on delete cascade
+
+ALTER TABLE tbl_employee
+ADD CONSTRAINT primary key
+  FOREIGN KEY (fk_empnum)
+  REFERENCES tbl_employee(pk_empnum)
+  ON DELETE CASCADE;
+
+
+select CONSTRAINT_NAME, TABLE_NAME, R_CONSTRAINT_NAME
+from user_constraints
+where R_CONSTRAINT_NAME = 'TBL_EMPLOYEE_PK' 
+
+select *
+from tbl_employee
+
+delete from TBL_COMMUTE_STATUS
+where fk_empnum in ('001-01','2-001','001-02','1-33')
 
 commit;
 
-rollback
-
-
-
-DELETE A,B,C,D,E,F,G
 select *
-FROM tbl_approvaldocument as A 
-LEFT JOIN TBL_APP_EQUIP as B ON A.success = B.success
-LEFT JOIN TBL_APP_ABSENCE as C ON C.success = B.success
-LEFT JOIN TBL_APP_BUSINESS as D ON D.success = C.success
-LEFT JOIN TBL_APP_FOOD as E ON D.success = E.success 
-LEFT JOIN TBL_APP_PROJECT as F ON E.success = F.success 
-LEFT JOIN TBL_VACATIONLIST as G ON F.success = G.success 
-WHERE A.success = '0'
+from TBL_APPROVALDOCUMENT
 
+select vstartdate
+from TBL_VACATIONLIST
+where PK_DOCUMENTNUM = '20220519143458552'
 
+select venddate
+from TBL_VACATIONLIST
+where PK_DOCUMENTNUM = '20220519143458552'
 
-
-
-
-
+-- 날짜 차이 구하기
+SELECT SUM(1) -- "총날수"
+,SUM(DECODE(TO_CHAR(TO_DATE('20061201','YYYYMMDD')+LV-1,'DY'),'토',0,'일',0,1)) --"토/일 제외날수"
+FROM (
+SELECT LEVEL LV
+FROM DUAL
+CONNECT BY LEVEL<=TO_DATE('20061220','YYYYMMDD')-TO_DATE('20061201','YYYYMMDD')+1
+)
 
 
 

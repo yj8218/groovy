@@ -5,7 +5,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.groovy.model.BoardVO;
 import com.spring.groovy.common.AES256;
 import com.spring.groovy.model.*;
 
@@ -160,20 +159,8 @@ public class LeejhService implements InterLeejhService {
 	public BoardVO getView(Map<String, String> paraMap) {
 		BoardVO boardvo = dao.getView(paraMap); // 글1개 조회하기
 		
-		String login_userid = paraMap.get("login_userid");  
-		// paraMap.get("login_userid") 은 로그인을 한 상태이라면 로그인한 사용자의 userid 이고,
-		// 로그인을 하지 않은 상태이라면  paraMap.get("login_userid") 은 null 이다.
-		
-		if(login_userid != null &&
-		   boardvo != null &&
-		  !login_userid.equals(boardvo.getFk_empnum())) {
-			// 글조회수 증가는 로그인을 한 상태에서 다른 사람의 글을 읽을때만 증가하도록 한다. 
-			
-			dao.setAddReadCount(boardvo.getPk_board_seq());  // 글조회수 1증가 하기 
-			boardvo = dao.getView(paraMap); 
-		}
-		
 		return boardvo;
+		
 	}
 
 	// 글 list로 읽어오기 
@@ -182,6 +169,108 @@ public class LeejhService implements InterLeejhService {
 		List<BoardVO> boardList = dao.getBoardList(); 
 		return boardList;
 	}
+
+	// 글 삭제하기
+	@Override
+	public int del(Map<String, String> paraMap) {
+		int n = dao.del(paraMap);
+		return n;
+	}
+	
+	//댓글추가하기
+	@Override
+	public int addComment(CommentVO commentvo) {
+		int n = dao.addComment(commentvo);
+		return n;
+	}
+	/*
+	//댓글목록 출력하기
+	@Override
+	public List<CommentVO> getCommentListPaging(Map<String, String> paraMap) {
+		List<CommentVO> commentList = dao.getCommentListPaging(paraMap); 
+		return commentList;
+	}*/
+	// 파일첨부 없는 경우 글 수정
+	@Override
+	public int edit_board(Map<String, String> paraMap) {
+		// === #144. 글쓰기가 원글쓰기인지 아니면 답변글쓰기인지를 구분하여 
+		//           tbl_board 테이블에 insert 를 해주어야 한다.
+		//           원글쓰기 이라면 tbl_board 테이블의 groupno 컬럼의 값은 
+		//           groupno 컬럼의 최대값(max)+1 로 해서 insert 해야하고,
+		//           답변글쓰기 이라면 넘겨받은 값(boardvo)을 그대로 insert 해주어야 한다. 
+		
+		
+		int n = dao.edit_board(paraMap);
+		return n;
+	}
+	// 파일첨부 있는 경우 글 수정
+	@Override
+	public int edit_board_withFile(Map<String, String> paraMap) {
+		// === #144. 글쓰기가 원글쓰기인지 아니면 답변글쓰기인지를 구분하여 
+		//           tbl_board 테이블에 insert 를 해주어야 한다.
+		//           원글쓰기 이라면 tbl_board 테이블의 groupno 컬럼의 값은 
+		//           groupno 컬럼의 최대값(max)+1 로 해서 insert 해야하고,
+		//           답변글쓰기 이라면 넘겨받은 값(boardvo)을 그대로 insert 해주어야 한다. 
+		
+		// === 원글쓰기인지, 답변글쓰기인지 구분하기 시작 === //
+		/*
+		 * if("".equals(boardvo.getFk_seq())) { // 원글쓰기인 경우 // groupno 컬럼의 값은 groupno
+		 * 컬럼의 최대값(max)+1 로 해야 한다. int groupno = dao.getGroupnoMax() + 1;
+		 * boardvo.setGroupno(String.valueOf(groupno)); }
+		 */
+		// === 원글쓰기인지, 답변글쓰기인지 구분하기 끝 === //
+		
+		int n = dao.edit_board_withFile(paraMap);
+		return n;
+	}
+	
+	//맵으로 게시글 가져오기   
+	@Override
+	public Map<String, String> boardView(String pk_board_seq) {
+		Map<String,String> map = dao.boardView(pk_board_seq);
+		return map;
+	}
+
+	//댓글추가
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = dao.commentAdd(paraMap);
+		return n;
+	}
+	
+	//댓글보기
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.commentShow(paraMap);
+		return listMap;
+	}
+	//원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = dao.getCommentTotalPage(paraMap);
+		return totalPage;
+	}
+	//댓글수정
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = dao.commentEdit(paraMap);
+		return n;
+	}
+	//댓글삭제
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = dao.commentDel(paraMap);
+		return n;
+	}
+
+	@Override
+	// === #115. 총 게시물 건수(totalCount) 구하기 - 
+	public int getBoardTotalPage(Map<String, String> paraMap) {
+		int n = dao.getBoardTotalPage(paraMap);
+		return n;
+	}
+
+
 
 
 }//end of public class LeejhService implements InterLeejhService

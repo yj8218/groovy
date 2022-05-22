@@ -84,6 +84,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
             HttpSessionHandshakeInterceptor를 추가하면 WebSocketHandler 클래스를 사용하기 전에 
                            먼저 HttpSession에 저장되어진 값들을 읽어 들여 WebSocketHandler 클래스에서 사용할 수 있도록 처리해준다. 
         */
+		
 		String connectingUserName = "「";	// "「"은 자음 ㄴ을 하면 나온다.
         
         for (WebSocketSession webSocketSession : connectedUsers) {

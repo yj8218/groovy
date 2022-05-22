@@ -238,10 +238,55 @@ public class KimyjService implements InterKimyjService {
 		List<Map<String,String>> listMap = dao.voteUndefinedUser(paraMap);
 		return listMap;
 	}
-	
-	
 
 
+	@Override
+	public int commentAdd(Map<String, String> paraMap) {
+		int n = dao.commentAdd(paraMap);
+		return n;
+	}
+
+
+	@Override
+	public List<Map<String, String>> commentShow(Map<String, String> paraMap) {
+		List<Map<String,String>> listMap = dao.commentShow(paraMap);
+		return listMap;
+	}
+
+
+	@Override
+	public int commentEdit(Map<String, String> paraMap) {
+		int n = dao.commentEdit(paraMap);
+		return n;
+	}
+
+
+	@Override
+	public int commentDel(Map<String, String> paraMap) {
+		int n = dao.commentDel(paraMap);
+		return n;
+	}
+
+
+	@Override
+	public int scheduleDel(Map<String, String> paraMap) {
+		int n = dao.scheduleDel(paraMap);
+		return n;
+	}
+
+
+	@Override
+	public int getCommentTotalPage(Map<String, String> paraMap) {
+		int totalPage = dao.getCommentTotalPage(paraMap);
+		return totalPage;
+	}
+
+
+	@Override
+	public List<Map<String, String>> selectVacationlist() {
+		List<Map<String,String>> listMap = dao.selectVacationlist();
+		return listMap;
+	}
 
 
 }//end of public class KimyjService implements InterLeejhService

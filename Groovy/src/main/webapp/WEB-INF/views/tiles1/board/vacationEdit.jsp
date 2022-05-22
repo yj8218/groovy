@@ -275,6 +275,10 @@ function goVacation() {
 
 		<div class="title">아래 양식에 맞추어 신청해주세요.</div>
 		
+		<div style="margin: 20px;">
+			<span>${requestScope.name } 님의 잔여휴가일수는 ${requestScope.day } 일 ${requestScope.hour }시간 입니다. </span> 
+		</div>
+		
 		<form name="vacationEditFrm">
 			<div class="box">
 				<label>휴가 종류 선택</label><br>

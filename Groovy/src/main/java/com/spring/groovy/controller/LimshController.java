@@ -215,6 +215,7 @@ public class LimshController {
    		
 		String pk_empnum = request.getParameter("pk_empnum");
 		String bool = request.getParameter("isPersonalChat");
+		String name = request.getParameter("name");
 		
 		boolean isPersonalChat = false;
 		if(bool.equals("true")) {
@@ -226,6 +227,7 @@ public class LimshController {
 		
 		EmployeeVO empvo = service.getEmp(pk_empnum);
 		
+		mav.addObject("name", name);
 		mav.addObject("pk_empnum", pk_empnum);
 		mav.addObject("isPersonalChat", isPersonalChat);
 		mav.addObject("empvo", empvo);

@@ -129,6 +129,11 @@ table#app_opinion td {
 	
 	$(document).ready(function(){
 		
+		if($("td.reference").text() == "") {
+			
+			$("table#reference").hide();
+		} 
+		
 		$("div#app_opinion_chk").hide();
 		
 		let pk_documentnum = $("td.pk_documentnum").text();
@@ -196,7 +201,7 @@ table#app_opinion td {
 				<c:forEach var="appList" items="${requestScope.approverList }">
 				<c:if test="${appList.app_status eq '0' }">	
 					<tr>
-						<td>${appList.fk_empnum }</td>
+						<td class="reference">${appList.fk_empnum }</td>
 						<td>${appList.name }</td>
 						<td>${appList.spotnamekor }</td>
 					</tr>

@@ -13,13 +13,11 @@
 		where fk_lgcatgono = 2 and smcatgoname = #{com_smcatgoname}  
 	</select>
 
-
     <!-- 사내 캘린더에 캘린더 소분류 추가하기 --> 
 	<insert id="addComCalendar" parameterType="HashMap">
 		insert into tbl_calendar_small_category(pk_smcatgono, fk_lgcatgono, smcatgoname, fk_empnum)
 		values(seq_smcatgono.nextval, 2, #{com_smcatgoname}, #{fk_empnum})
 	</insert>
-	
 	
 	<!-- 내 캘린더에 캘린더 소분류 명 조회 -->
 	<select id="existMyCalendar" parameterType="HashMap" resultType="int">
@@ -28,13 +26,11 @@
 		where fk_lgcatgono = 1 and fk_empnum = #{fk_empnum} and smcatgoname = #{my_smcatgoname}  
 	</select>
 
-
     <!-- 내 캘린더에 캘린더 소분류 추가하기 --> 
 	<insert id="addMyCalendar" parameterType="HashMap">
 		insert into tbl_calendar_small_category(pk_smcatgono, fk_lgcatgono, smcatgoname, fk_empnum)
 		values(seq_smcatgono.nextval, 1, #{my_smcatgoname}, #{fk_empnum})
 	</insert>	
-	
 	
 	<!-- 사내 캘린더에서 사내캘린더 소분류  보여주기 -->
 	<select id="showCompanyCalendar" resultType="com.spring.groovy.model.Calendar_small_category_VO">
@@ -43,7 +39,6 @@
 		where fk_lgcatgono = 2
 		order by pk_smcatgono asc
 	</select>
-	
 	
 	<!-- 내 캘린더에서 내캘린더 소분류  보여주기 -->
 	<select id="showMyCalendar" resultType="com.spring.groovy.model.Calendar_small_category_VO">
@@ -63,14 +58,12 @@
 		order by pk_smcatgono asc
     </select>
     
-    
     <!-- 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 -->
     <select id="searchJoinUserList" parameterType="String" resultType="com.spring.groovy.model.EmployeeVO">
     	select pk_empnum, name
 		from tbl_employee
 		where lower(name) like '%'|| lower(#{joinUserName}) ||'%' or lower(pk_empnum) like '%'|| lower(#{joinUserName}) ||'%'
     </select>
-    
     
     <!-- 일정 등록하기 -->
     <insert id="registerSchedule_end" parameterType="com.spring.groovy.model.Calendar_schedule_VO">
@@ -85,12 +78,6 @@
     	</if>
     </insert>
     
-
-
-	
-    
-
-
     <!-- 등록된 일정에 대한 정보(달력에 표시됨)-->
 	<select id="selectSchedule" resultType="com.spring.groovy.model.Calendar_schedule_VO" parameterType="String">
 		select pk_scheduleno, startdate, enddate, subject, color, place, joinuser, content, fk_smcatgono, fk_lgcatgono, fk_empnum 
@@ -100,7 +87,6 @@
 		(fk_lgcatgono != 2 AND lower(joinuser) like '%'|| lower(#{fk_empnum}) ||'%')
 		order by pk_scheduleno asc
 	</select>
-	
 	
 	<!-- 일정 상세 보기 -->
 	<resultMap type="HashMap" id="detailSchedule_Map">
@@ -118,7 +104,6 @@
 		<result property="NAME" 		   column="name" 			javaType="String" />
 		<result property="SMCATGONAME" 	   column="smcatgoname" 	javaType="String" />
 		<result property="LGCATGONAME" 	   column="lgcatgoname" 	javaType="String" />
-		
 		<result property="VOTE" 	       column="vote" 	        javaType="String" />
 		<result property="PLACENAME" 	   column="placename" 	    javaType="String" />
 		<result property="ADDRESSNAME" 	   column="addressname" 	javaType="String" />
@@ -131,9 +116,10 @@
 		<result property="DEPTNAMEKOR"     column="deptnamekor" 	javaType="String" />
 		<result property="PLACEURL"        column="placeurl" 	    javaType="String" />
 		<result property="FILENAME"        column="filename" 	    javaType="String" />
-		
-		
+		<result property="PK_LGCATGONO"    column="pk_lgcatgono" 	    javaType="String" />
+		<result property="PK_SMCATGONO"    column="pk_smcatgono" 	    javaType="String" />	
 	</resultMap>
+	
 	<select id="detailSchedule" parameterType="String" resultMap="detailSchedule_Map">
 		select SD.pk_scheduleno
 		     , to_char(SD.startdate,'yyyy-mm-dd hh24:mi') as startdate
@@ -141,7 +127,7 @@
 		     , SD.subject
 		     , SD.color
 		     , nvl(SD.place,'-') as place
-		     , nvl(SD.joinuser,'공유자가 없습니다.') as joinuser
+		     , nvl(SD.joinuser,'-') as joinuser
 		     , nvl(SD.content,'-') as content
 		     , SD.fk_smcatgono
 		     , SD.fk_lgcatgono
@@ -149,6 +135,8 @@
 		     , M.name
 		     , SC.smcatgoname
 		     , LC.lgcatgoname
+		     , SC.pk_smcatgono
+		     , LC.pk_lgcatgono
 		     , SD.vote
 		     , nvl(SD.placename, '-') as placename
 		     , nvl(SD.addressname, '-') as addressname
@@ -176,16 +164,15 @@
 		where SD.pk_scheduleno = #{pk_scheduleno}
 	</select>
 	
-	
 	<!-- 일정삭제하기 -->
 	<delete id="deleteSchedule" parameterType="String">
 		delete from tbl_calendar_schedule 
 		where pk_scheduleno = #{pk_scheduleno} 
 	</delete>
 	
-	
 	<!-- 일정수정하가 -->
 	<update id="editSchedule_end" parameterType="com.spring.groovy.model.Calendar_schedule_VO">
+	<if test="fileName == null">
 		update tbl_calendar_schedule set startdate = to_date(#{startdate}, 'yyyymmddhh24miss')
 		                               , enddate = to_date(#{enddate}, 'yyyymmddhh24miss')
 		                               , subject = #{subject}
@@ -195,16 +182,45 @@
 		                               , place = #{place}
 		                               , joinuser = #{joinuser}
 		                               , content = #{content}
-		where pk_scheduleno = #{pk_scheduleno} 
+		                               , vote = #{vote}
+		                               , placename = #{placeName}
+		                               , addressname = #{addressName}
+		                               , placephone = #{placePhone}
+		                               , roadaddressname = #{roadAddressName}
+		                               , regdate = default
+		                               , placeurl = #{placeUrl}
+		where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</if>
+	<if test="fileName != null">
+		update tbl_calendar_schedule set startdate = to_date(#{startdate}, 'yyyymmddhh24miss')
+			                               , enddate = to_date(#{enddate}, 'yyyymmddhh24miss')
+			                               , subject = #{subject}
+			                               , fk_lgcatgono = #{fk_lgcatgono}
+			                               , fk_smcatgono = #{fk_smcatgono}
+			                               , color = #{color}
+			                               , place = #{place}
+			                               , joinuser = #{joinuser}
+			                               , content = #{content}
+			                               , vote = #{vote}
+			                               , placename = #{placeName}
+			                               , addressname = #{addressName}
+			                               , placephone = #{placePhone}
+			                               , roadaddressname = #{roadAddressName}
+			                               , regdate = default
+			                               , placeurl = #{placeUrl}
+			                              
+			                               , filename = #{fileName} 
+			                               , orgfilename = #{orgFilename}
+			                               , filesize = #{fileSize}
+			where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</if>
 	</update>
-	
 	
 	<!-- (사내캘린더 또는 내캘린더)속의  소분류 카테고리인 서브캘린더 삭제하기   -->
 	<delete id="deleteSubCalendar" parameterType="String">
 		delete from tbl_calendar_small_category
 		where pk_smcatgono = #{pk_smcatgono}
 	</delete>
-	
 	
 	<!-- 수정된 (사내캘린더 또는 내캘린더)속의 소분류 카테고리명이 이미 해당 사용자가 만든 소분류 카테고리명으로 존재하는지 유무 알아오기 -->
 	<select id="existsCalendar" parameterType="HashMap" resultType="int">
@@ -215,13 +231,11 @@
 		and smcatgoname = #{smcatgoname}
 	</select>
 	
-	
 	<!-- (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기    -->
 	<update id="editCalendar" parameterType="HashMap">
 		update tbl_calendar_small_category set smcatgoname = #{smcatgoname}
 		where pk_smcatgono = #{pk_smcatgono}
 	</update>
-	
 	
 	<!-- 총 일정 검색 건수(totalCount) -->
 	<select id="getTotalCount" parameterType="HashMap" resultType="int">
@@ -264,18 +278,19 @@
 		</if>
 	</select>
 	
-	
 	<!-- 페이징 처리한 캘린더 가져오기(검색어가 없다라도 날짜범위 검색은 항시 포함된 것임) -->
 	<resultMap type="HashMap" id="scheduleListSearchWithPaging_Map">
-		<result property="PK_SCHEDULENO" column="pk_scheduleno" 	javaType="String" />
-		<result property="STARTDATE" 	column="startdate" 		javaType="String" />
-		<result property="ENDDATE" 		column="enddate" 		javaType="String" />
-		<result property="SMCATGONAME" 	column="smcatgoname" 	javaType="String" />
-		<result property="LGCATGONAME" 	column="lgcatgoname" 	javaType="String" />
-		<result property="NAME" 		column="name" 			javaType="String" />
-		<result property="SUBJECT" 		column="subject" 		javaType="String" />
-		<result property="CONTENT" 		column="content" 		javaType="String" />
+		<result property="PK_SCHEDULENO" column="pk_scheduleno" javaType="String" />
+		<result property="STARTDATE" 	 column="startdate" 	javaType="String" />
+		<result property="ENDDATE" 		 column="enddate" 		javaType="String" />
+		<result property="SMCATGONAME" 	 column="smcatgoname" 	javaType="String" />
+		<result property="LGCATGONAME" 	 column="lgcatgoname" 	javaType="String" />
+		<result property="NAME" 		 column="name" 			javaType="String" />
+		<result property="SUBJECT" 		 column="subject" 		javaType="String" />
+		<result property="CONTENT" 		 column="content" 		javaType="String" />
+		<result property="PK_EMPNUM" 	 column="pk_empnum" 	javaType="String" />
 	</resultMap>
+	
 	<select id="scheduleListSearchWithPaging" parameterType="HashMap" resultMap="scheduleListSearchWithPaging_Map">  
 		select pk_scheduleno 
 		     , startdate, enddate
@@ -289,6 +304,7 @@
 			      , to_char(SD.enddate, 'yyyy-mm-dd hh24:mi') as enddate
 			      , SC.smcatgoname, LC.lgcatgoname, M.name 
 			      , SD.subject, SD.content 
+			      , M.pk_empnum
 			from tbl_calendar_schedule SD 
 			JOIN tbl_employee M 
 			ON SD.fk_empnum = M.pk_empnum
@@ -335,7 +351,6 @@
 		) V 
 		where V.rno between #{startRno} and #{endRno}
 	</select>
-	
 	
 	<delete id="voteNoDelete" parameterType="HashMap">
 		delete from tbl_vote_no where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum}
@@ -428,4 +443,96 @@
 		where fk_scheduleno = #{fk_scheduleno}
 	</select>
 	
+	<insert id="commentAdd" parameterType="HashMap" >
+		insert into tbl_calendar_comment(fk_scheduleno, fk_empnum, commentseq, regdate, name, content) values(#{fk_scheduleno}, #{fk_empnum}, calcommentSeq.nextval, default, #{name}, #{content})
+	</insert>
+	
+	<resultMap type="HashMap" id="commentShow_Map">
+		<result property="FK_SCHEDULENO"    column="fk_scheduleno" 	  javaType="String" />
+		<result property="FK_EMPNUM" 	    column="fk_empnum" 		  javaType="String" />
+		<result property="REGDATE"          column="regdate"          javaType="String" />
+		<result property="NAME"             column="name"             javaType="String" />
+		<result property="CONTENT"          column="content"          javaType="String" />
+		<result property="EMPPICTURENAME"   column="emppicturename"   javaType="String" />
+		<result property="SPOTNAMEKOR"      column="spotnamekor"      javaType="String" />
+		<result property="DEPTNAMEKOR"      column="deptnamekor"      javaType="String" />
+		<result property="COMMENTSEQ"      column="commentseq"      javaType="String" />
+		
+	</resultMap>
+	
+	<select id="commentShow" parameterType="HashMap" resultMap="commentShow_Map" >
+		select fk_scheduleno, fk_empnum, regdate, name, content, emppicturename, spotnamekor, deptnamekor, commentseq 
+		from 
+		(
+		select row_number() over(order by commentseq desc) AS rno
+			 , CC.fk_scheduleno
+		     , CC.fk_empnum
+		     , CC.regdate
+		     , CC.name
+		     , CC.content
+		     , CC.commentseq
+		     , M.emppicturename
+		     , S.spotnamekor
+		     , D.deptnamekor   
+		from tbl_calendar_comment CC
+		JOIN tbl_employee M
+		ON CC.fk_empnum = M.pk_empnum
+		JOIN tbl_spot S
+		ON M.fk_spotnum = S.pk_spotnum
+		JOIN tbl_department D
+		ON M.fk_deptnum = D.pk_deptnum
+		where CC.fk_scheduleno = #{fk_scheduleno}
+		) V 
+		where rno between #{startRno} and #{endRno}
+		
+	</select>
+	
+	<update id="commentEdit">
+		update tbl_calendar_comment set content = #{content}, regdate = default
+		where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} and commentseq = #{commentseq}
+	</update>
+	
+	<delete id="commentDel">
+	 delete from tbl_calendar_comment where fk_scheduleno = #{fk_scheduleno} and fk_empnum = #{fk_empnum} and commentseq = #{commentseq}
+	</delete>
+	
+	<delete id="scheduleDel">
+	 delete from tbl_calendar_schedule where pk_scheduleno = #{pk_scheduleno} and fk_empnum = #{fk_empnum}
+	</delete>
+	
+	<select id="getCommentTotalPage" parameterType="HashMap" resultType="int"> 
+		select ceil(count(*)/#{sizePerPage})
+		from tbl_calendar_comment
+		where fk_scheduleno = #{fk_scheduleno}
+    </select> 
+    
+    <!-- 일정 상세 보기 -->
+	<resultMap type="HashMap" id="selectVacationlist_Map">
+		<result property="PK_DOCUMENTNUM" 	       column="pk_documentnum" 	        javaType="String" />
+		<result property="VSTARTDATE" 	           column="vstartdate" 	            javaType="String" />
+		<result property="VENDDATE" 	           column="venddate" 	            javaType="String" />
+		<result property="VINFO" 	               column="vinfo" 	                javaType="String" />
+		<result property="PK_EMPNUM" 	           column="pk_empnum" 	            javaType="String" />
+		<result property="NAME"                    column="name"                    javaType="String" />
+		<result property="VTYPE" 	               column="vtype" 	                javaType="String" />
+		<result property="SPOTNAMEKOR" 	           column="spotnamekor" 	        javaType="String" />
+		<result property="DEPTNAMEKOR"             column="deptnamekor" 	        javaType="String" />
+	</resultMap>
+	<select id="selectVacationlist" resultMap="selectVacationlist_Map">
+		select  VL.pk_documentnum, VL.vstartdate, VL.venddate, VL.vinfo, E.pk_empnum, E.name, V.vtype, S.spotnamekor, D.deptnamekor
+		from
+		tbl_vacationlist VL
+		join tbl_employee E
+		on E.pk_empnum = VL.fk_empnum
+		join tbl_approvaldocument AD
+		on E.pk_empnum = AD.fk_empnum
+		join tbl_vacation V
+		on V.pk_vstatus = VL.fk_vstatus
+		join tbl_spot S
+		ON E.fk_spotnum = S.pk_spotnum
+		join tbl_department D
+		on E.fk_deptnum = D.pk_deptnum
+		where AD.status = '3' and AD.fk_apl_no = 5
+	</select>
+    
 </mapper>

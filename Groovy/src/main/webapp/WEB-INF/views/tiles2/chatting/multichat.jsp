@@ -139,6 +139,9 @@
 	            $("div#chatMessage").append("<br/>");
 	            $("div#chatMessage").scrollTop(99999999);
 	            $("input#fileUpload").val("");
+	            
+	            $("#sidebar").hide();
+	            $("#sidebar").removeClass("emphasized");
 	   		}
 	   	};
 	   	
@@ -267,8 +270,12 @@
 				<table style="width: 95%; margin: auto; vertical-align: center;">
 					<tr>
 						<td align="center">
-							<%-- <label class="ml-5" style="font-weight: bold;">${requestScope.empvo.name}</label> --%>
-							<!-- 1:n 채팅인 경우 채팅 인원 표시 (인원수) -->
+							<c:if test="${requestScope.isPersonalChat eq true}">
+								<label class="ml-5" style="font-weight: bold;">개인 채팅방</label>
+							</c:if>
+							<c:if test="${requestScope.isPersonalChat ne true}">
+								<label class="ml-5" style="font-weight: bold;">그룹 채팅방</label>
+							</c:if>
 						</td>
 						<td align="right"><i id="chatMenu" class="fas fa-bars"></i></td>
 					</tr>
@@ -278,18 +285,14 @@
 	<!-- 메뉴바 -->
 			<div id="sidebar">
 				<nav id="menu">
-					<input type="button" class="btn btn-danger btn-sm my-3 mx-3" onClick="javascript:window.close()" value="채팅방나가기" />
-					<div id="chatStatus"></div>
-				   <input type="text" id="to" placeholder="귓속말대상웹소켓.getId()"/>
-				   <br/>
-				          ♡ 귓속말대상 : <span id="privateWho" style="font-weight: bold; color: red;"></span>
-				   <br>
-				   <button type="button" id="btnAllDialog" class="btn btn-secondary btn-sm">귓속말대화끊기</button>
-				   <br><br>
-				       현재접속자명단:<br/>
-				   <div id="connectingUserList" style=" max-height: 100px; overFlow: auto;"></div>
+					
+				    <span>현재접속자명단:</span>
+				    <div id="connectingUserList" style=" max-height: 100px; overFlow: auto;"></div>
+				    <br/><br/><br/><br/><br/><br/><br/><br/>
 				   <input type="file" id="fileUpload"/>
-				   <input type="button" id="btnSendFile" class="btn btn-outline-secondatry btn-sm" value="파일 전송" />
+				   <input type="button" id="btnSendFile" class="btn btn-outline-secondary w-100 mt-2" value="파일 전송" />
+				   <br/><br/><br/><br/><br/><br/><br/><br/>
+				   <input type="button" class="btn btn-danger btn-sm my-3 mx-3" onClick="javascript:window.close()" value="채팅방나가기" />
 				</nav>
 			</div>
 			

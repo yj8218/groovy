@@ -22,7 +22,6 @@ public class JodnService implements InterJodnService {
 	@Autowired
 	private InterJodnDAO dao;
 	@Autowired
-	private AES256 aes;
 	/////////////////////////////////////////////////////
 	
 	// 결재 종류 가져오기
@@ -238,7 +237,7 @@ public class JodnService implements InterJodnService {
 
 	// 나의 결재 대기 문서 조회
 	@Override
-	public List<Map<String, String>> waitApproval(Map<String, String> paraMap) {
+	public List<Map<String, String>> waitApproval(Map<String, Object> paraMap) {
 		List<Map<String,String>> waitApprovalList = dao.waitApproval(paraMap);
 		return waitApprovalList;
 	}
@@ -301,7 +300,7 @@ public class JodnService implements InterJodnService {
 
 	// 승인대기 문서 조회 총 페이지 수 구하기
 	@Override
-	public int getWaitApprovalTotalCount(Map<String, String> paraMap) {
+	public int getWaitApprovalTotalCount(Map<String, Object> paraMap) {
 		int totalCount = dao.getWaitApprovalTotalCount(paraMap);
 		return totalCount;
 	}
@@ -346,6 +345,49 @@ public class JodnService implements InterJodnService {
 	public void removeList() {
 		dao.removeList();
 	}
+
+	// 차트용 직원조회
+	@Override
+	public List<EmployeeVO> getAllEmployeeList() {
+		List<EmployeeVO> employeeList = dao.getAllEmployeeList();
+		return employeeList;
+	}
+
+	// 관리자 페이지 결재목록 총게시물 구하기
+	@Override
+	public int getAdminApprovalTotalCount(Map<String, String> paraMap) {
+		int n = dao.getAdminApprovalTotalCount(paraMap);
+		return n;
+	}
+
+	// 관리자 페이지 결재목록 페이징처리 조회
+	@Override
+	public List<Map<String, String>> adminApprovalList(Map<String, String> paraMap) {
+		List<Map<String, String>> adminApprovalList = dao.adminApprovalList(paraMap);
+		return adminApprovalList;
+	}
+
+	// 내 직급넘버 받아오기
+	@Override
+	public int getSpotnum(String fk_empnum) {
+		int n = dao.getSpotnum(fk_empnum);
+		return n;
+	}
+
+	// 문서별 직급 번호 받아오기
+	@Override
+	public List<Map<String, String>> getAppLineList(String fk_empnum) {
+		List<Map<String,String>> appLineList = dao.getAppLineList(fk_empnum);
+		return appLineList;
+	}
+
+	// 남은 휴가 일수 알아오기
+	@Override
+	public String getVacationdate(String fk_empnum) {
+		String str_vacationdate = dao.getVacationdate(fk_empnum);
+		return str_vacationdate;
+	}
+
 
 
 

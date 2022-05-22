@@ -97,7 +97,7 @@ public interface InterJodnDAO {
 	Map<String, String> selectnewProjectDocument(Map<String, String> paraMap);
 
 	// 나의 결재 대기 문서 조회
-	List<Map<String, String>> waitApproval(Map<String, String> paraMap);
+	List<Map<String, String>> waitApproval(Map<String, Object> paraMap);
 
 	// 내결제문서 조회 총페이지수 구하기
 	int getMyApprovalTotalCount(Map<String, String> paraMap);
@@ -124,7 +124,7 @@ public interface InterJodnDAO {
 	int delApprover(Map<String, String> paraMap);
 
 	// 승인대기 문서 조회 총 페이지 수 구하기
-	int getWaitApprovalTotalCount(Map<String, String> paraMap);
+	int getWaitApprovalTotalCount(Map<String, Object> paraMap);
 
 	// 승인완료 문서 조회 총 페이지 수 구하기
 	int getEndApprovalTotalCount(Map<String, String> paraMap);
@@ -143,6 +143,24 @@ public interface InterJodnDAO {
 
 	// 불필요한 결재문서 삭제하기
 	void removeList();
+
+	// 차트용 직원 조회하기
+	List<EmployeeVO> getAllEmployeeList();
+
+	// 관리자 페이지 결재목록 총게시물 구하기
+	int getAdminApprovalTotalCount(Map<String, String> paraMap);
+
+	// 관리자 페이지 결재목록 페이징처리 조회
+	List<Map<String, String>> adminApprovalList(Map<String, String> paraMap);
+
+	// 내 직급 넘버 받아오기
+	int getSpotnum(String fk_empnum);
+
+	// 문서별 직급번호 받아오기
+	List<Map<String, String>> getAppLineList(String fk_empnum);
+
+	// 남은 휴가 일수 알아오기
+	String getVacationdate(String fk_empnum);
 
 	
 	

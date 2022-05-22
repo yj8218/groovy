@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 
+ 
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -259,15 +260,15 @@ div.sideCalList input[type=checkbox]+label {
     width: 16px;
     height: 16px;
     margin-bottom: 0;
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
+    background-image: url('../../images/kimyj/icon-radio-off.svg');
 }
 
 div.sideCalList input[type=checkbox]:checked+label {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-on.svg');
+    background-image: url('../../images/kimyj/icon-radio-on.svg');
 }
 
 div.sideCalList input[type=checkbox]:disabled+label {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-radio-off.svg');
+    background-image: url('../../images/kimyj/icon-radio-off.svg');
 }
 
 div.modal-header {
@@ -353,7 +354,6 @@ div.modal-footer {
 }
 
 div.modal-footer button.btn {
-    /* position:relative;float:left;*/
     height: 30px;
     width: 100px;
     padding: 0 20px;
@@ -416,7 +416,7 @@ div#modal_addSchedule input.subject:not(:hover) {
 }
 
 div#modal_addSchedule i.icon-calendar {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-calendar.svg') !important;
+    background-image: url('../../images/kimyj/icon-calendar.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -458,7 +458,7 @@ div#modal_addSchedule ul li {
 
 div#modal_addSchedule input.selectDay {
     border: 0;
-    width: 260px;
+    width: 46%;
     padding: 5px 2px;
     margin-right: 12px;
     border-bottom: 1px solid #555;
@@ -479,7 +479,7 @@ div#modal_addSchedule input {
 }
 
 div#modal_addSchedule i.icon-select-calendar {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-select-calendar.svg') !important;
+    background-image: url('../../images/kimyj/icon-select-calendar.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -538,7 +538,7 @@ div#modal_addSchedule input.vote_checkbox {
 }
 
 div#modal_addSchedule i.icon-place {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-place.svg') !important;
+    background-image: url('../../images/kimyj/icon-place.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -551,7 +551,7 @@ div#modal_addSchedule div.map {
 }
 
 div#modal_addSchedule i.icon-search {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-search.svg') !important;
+    background-image: url('../../images/kimyj/icon-search.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -561,14 +561,14 @@ div#modal_addSchedule i.icon-search {
 }
 
 div#modal_addSchedule i.icon-share {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-share.svg') !important;
+    background-image: url('../../images/kimyj/icon-share.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
 }
 
 div#modal_addSchedule i.icon-text {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-text.svg') !important;
+    background-image: url('../../images/kimyj/icon-text.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -587,7 +587,7 @@ div#modal_addSchedule input.place {
 }
 
 div#modal_addSchedule i.icon-file-upload {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-file-upload.svg') !important;
+    background-image: url('../../images/kimyj/icon-file-upload.svg') !important;
     width: 20px;
     height: 20px;
     display: inline-block;
@@ -706,7 +706,6 @@ ul.ui-autocomplete {
     width: 200px !important;
     font-size: 15px;
     line-height: 38px;
-    /* border-radius:4px;*/
     border: 1px solid #6449fc !important;
     max-height: 200px;
     overflow: scroll;
@@ -743,21 +742,13 @@ ul.ui-autocomplete li.ui-menu-item div:hover {
     background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
     border: 0;
-    /* border-radius:4px;*/
 }
 
 span.plusUser {
     margin-right: 10px;
 }
 
-<%-- i.fa-trash {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-delete.svg') !important;
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-}
-
---%>div.modal-content {
+div.modal-content {
     border-radius: 10px;
     box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);
     box-sizing: border-box;
@@ -786,10 +777,8 @@ div.fc-event-main-frame {
     margin-right: 10px;
 }
 
-/* ///////// */
 div.showSchedule {
     width: 674px;
-    /* height:100%;*/
     min-height: auto;
     max-height: max-content;
     position: absolute;
@@ -827,7 +816,6 @@ div.showSchedule div.card-header h3 {
 
 div.showSchedule div.card-header h3 span.js-project-title-button {
     overflow: hidden;
-    /* display:inline-block;*/
     max-width: 300px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -844,9 +832,7 @@ div.showSchedule div.card-header button.close {
 }
 
 div.showSchedule div.card-header button.close span {
-    /* font-family:icon-contents!important;*/
-    font-style: normal;
-    /* font-weight:400;*/
+    font-style: normal;   
     font-variant: normal;
     text-transform: none;
     line-height: 1;
@@ -888,7 +874,7 @@ div.showSchedule div.card-author {
 }
 
 div.showSchedule span.card-profileImg {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/profileImg-default.png');
+    background-image: url('../../images/kimyj/profileImg-default.png');
     width: 40px;
     height: 40px;
     display: inline-block;
@@ -973,7 +959,7 @@ div.showSchedule button.card-option-btn {
     color: #999;
     font-size: 100%;
     line-height: normal;
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-option.svg');
+    background-image: url('../../images/kimyj/icon-option.svg');
     width: 20px;
     height: 20px;
 }
@@ -1033,13 +1019,13 @@ div.showSchedule li.card-option-li a i {
 }
 
 div.showSchedule li.card-option-li a i.icon-edit {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-edit-13.svg');
+    background-image: url('../../images/kimyj/icon-edit-13.svg');
     fill: blue;
     color: red;
 }
 
 div.showSchedule li.card-option-li a i.icon-delete {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-delete-13.svg');
+    background-image: url('../../images/kimyj/icon-delete-13.svg');
 }
 
 div.showSchedule div.card-body-bottom {
@@ -1218,7 +1204,7 @@ div.showSchedule div.card-content-title {
 }
 
 div.showSchedule i.icon-text {
-    background-image: url(/groovy/resources/images/kimyj/icon-text.svg) !important;
+    background-image: url(../../images/kimyj/icon-text.svg) !important;
     width: 20px;
     height: 20px;
     position: absolute;
@@ -1358,7 +1344,7 @@ div.showSchedule span.comment-user-profile-span {
     cursor: pointer;
     box-sizing: border-box;
     vertical-align: middle;
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/profileImg-default.png');
+    background-image: url('../../images/kimyj/profileImg-default.png');
 }
 
 div.showSchedule div.comment-container {
@@ -1505,7 +1491,6 @@ div.showSchedule div.card-footer2 {
     bottom: 0;
     margin: 0;
     background: #faf9f9;
-    /* box-shadow:0 -2px 6px rgba(0,0,0,0.06);*/
 }
 
 div.showSchedule div.card-footer2.sticky {
@@ -1535,7 +1520,7 @@ div.showSchedule span.comment-writer-profile-span {
     background-position: center;
     background-color: #fff;
     border: 1px solid #eee;
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/profileImg-default.png');
+    background-image: url('../../images/kimyj/profileImg-default.png');
     cursor: pointer;
     box-sizing: border-box;
     vertical-align: middle;
@@ -1609,14 +1594,14 @@ div.showSchedule div.card-content-map {
 }
 
 div.showSchedule i.icon-place {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-place.svg') !important;
+    background-image: url('../../images/kimyj/icon-place.svg') !important;
     width: 20px;
     height: 20px;
     position: absolute;
 }
 
 div.showSchedule i.icon-file-download {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-file-download.svg') !important;
+    background-image: url('../../images/kimyj/icon-file-download.svg') !important;
     width: 20px;
     height: 20px;
     position: absolute;
@@ -1671,7 +1656,6 @@ div.showSchedule span.download-span a {
 }
 
 div.showSchedule h3.card-title i {
-    /* width:20px;height:20px;*/
     display: inline-block;
     vertical-align: middle;
 }
@@ -1692,7 +1676,7 @@ div.showSchedule span.share-span {
 }
 
 div.showSchedule i.icon-share {
-    background-image: url('<%=ctxPath %>/resources/images/kimyj/icon-share.svg') !important;
+    background-image: url('../../images/kimyj/icon-share.svg') !important;
     width: 20px;
     height: 20px;
     position: absolute;
@@ -1758,10 +1742,8 @@ div.showSchedule div.vote-group em {
 
 div.showSchedule div.vote-group {
     position: relative;
-    /* display:flex;*/
     -webkit-box-pack: justify;
     justify-content: space-between;
-    /* padding:14.5px 30px;*/
     background: #fff;
 }
 
@@ -1778,9 +1760,7 @@ div.showSchedule ul.vote-yes-ul {
     overflow: hidden;
     position: absolute;
     z-index: 1;
-    /* top:50px;*/
-    right: 390px;
-    /* background:transparent;*/
+    right: 390px; 
     background: #fff;
     border: 1px solid #00b695;
     -moz-box-sizing: border-box;
@@ -1824,9 +1804,7 @@ div.showSchedule ul.vote-no-ul {
     overflow: hidden;
     position: absolute;
     z-index: 1;
-    /* top:50px;*/
     right: 300px;
-    /* background:transparent;*/
     background: #fff;
     border: 1px solid #fb2a2a;
     -moz-box-sizing: border-box;
@@ -1860,9 +1838,7 @@ div.showSchedule ul.vote-undefined-ul {
     overflow: hidden;
     position: absolute;
     z-index: 1;
-    /* top:50px;*/
     right: 210px;
-    /* background:transparent;*/
     background: #fff;
     border: 1px solid #777;
     -moz-box-sizing: border-box;
@@ -1906,7 +1882,6 @@ div.comment-text-area input.comment-writer-text {
 
 div.showSchedule div.comment-header {
     padding: 10px 30px 0 30px;
-    /* border-top:1px solid #ddd;*/
 }
 
 h3.card-title i span {
@@ -1952,8 +1927,8 @@ div.comment-header ul li span {
     padding: 0;
     margin: 0;
 }
-
 /* --- */
+
 div#map div {
     width: max-content;
     height: max-content;
@@ -1967,4 +1942,46 @@ span.plusUser i.fas {
 
 span.plusUser i.fas span {
     font-size: 18px;
+}
+
+div.showSchedule img.card-myprofile-photo {
+	width:40px;
+	height:40px;
+	margin:0 10px 0 0;
+	display:inline-block;
+	-webkit-border-radius:16px;
+	border-radius:16px;
+	background-size:cover;
+}
+li.firstli a {
+	background-image:url('../../images/kimyj/double_arrow_left.png');
+	width:24px;
+	height:24px;
+	position:relative;
+	display:inline-block !important;
+	top:7px;
+}
+li.previousli a {
+		background-image:url('../../images/kimyj/arrow_left.png');
+	width:24px;
+	height:24px;
+	position:relative;
+	display:inline-block !important;
+	top:7px;
+}
+li.nextli a {
+	background-image:url('../../images/kimyj/arrow_right.png');
+	width:24px;
+	height:24px;
+	position:relative;
+	display:inline-block !important;
+	top:7px;
+}
+li.lastli a {
+	background-image:url('../../images/kimyj/double_arrow_right.png');
+	width:24px;
+	height:24px;
+	position:relative;
+	display:inline-block !important;
+	top: 7px;
 }
