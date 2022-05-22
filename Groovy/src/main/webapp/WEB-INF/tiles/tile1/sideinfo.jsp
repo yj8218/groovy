@@ -1806,97 +1806,95 @@ function getTimeFormatString() {
     </div>
 </div>
 
-<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
-<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6); "data-backdrop="false">
-    <div class="modal-content animate" style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
-        <div class="modal-header" style="background-color: #6449fc;">
-            <span style="color: white; font-weight: bold; font-size: 15pt;"><i class="fas fa-id-card-alt"></i>내 정보수정</span>
-            <button type="button" class="btn  btn-dark" data-dismiss="modal">Close</button>
-        </div>
-
-
-        <div class="modal-body scroll" style="width: 100%; overflow:auto;  ">
-            <form action="<%=ctxPath%>/MyInfoEdit.groovy">
-
-                <!-- <form name="InfoFrm"> -->
-                <div>
-                    <table id="tbl_myInfo" class="table">
-                        <tr>
-                            <th style="width: 100px;">사원번호</th>
-                            <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
-                            <td rowspan="4" style="border-left: 1px solid #dee2e6;">
-                                <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="<%=ctxPath%>/myphotoEdit.groovy">
-                                    <div style="vertical-align: middle;">
-                                        <img class="rounded userimg" style="width:150px; height:auto; overflow: hidden;" />
-                                        <label href="javascript:uploadFile();" className="input-file-button" for="input-file" type="button" id="emppicturename" name="attach" style="cursor: pointer;"><i class="far fa-edit"></i></label>
-                                        <input type="file" id="input-file" style="display : none;" />
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>이름</th>
-                            <td id="td_name"></td>
-                        </tr>
-                        <tr>
-                            <th>생년월일</th>
-                            <td id="td_birthday"></td>
-                        </tr>
-                        <tr>
-                            <th>성별</th>
-                            <td id="td_gender"></td>
-                        </tr>
-                        <tr>
-                            <th>주소</th>
-                            <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
-                            <td><a onclick="addressEdit(pk_empnum)" id="btn_addressEdit" type="button"><i class="far fa-edit"></i></a></td>
-                        </tr>
-                        <tr class="myphone">
-                            <th>연락처</th>
-                            <td id="td_phone"></td>
-                            <td id="myphone2"><a id="btn_mobileEdit" onclick="mobileEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>이메일</th>
-                            <td id="td_email"></td>
-                            <td><a id="btn_emailEdit" onclick="emailEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호</th>
-                            <td id="td_pwd">
-                                <table>
-                                    <tr class=''><strong>비밀번호 재설정이 가능합니다.</strong></tr><br />
-                                    <tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를 포함해야 합니다.</span></tr>
-                                </table>
-                            </td>
-                            <td><a id="btn_pwdEdit" onclick="pwdEdit(pk_empnum)" type="button"><i class="far fa-edit"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>부서</th>
-                            <td>${sessionScope.loginuser.deptnamekor}</td>
-                        </tr>
-                        <tr>
-                            <th>직위</th>
-                            <td>${sessionScope.loginuser.spotnamekor}</td>
-                        </tr>
-                        <tr>
-                            <th>입사일자</th>
-                            <td>${sessionScope.loginuser.startday}</td>
-                        </tr>
-                        <tr>
-                            <th>월급</th>
-                            <td>${sessionScope.loginuser.salary}</td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-        </div>
-
-
-
-    </div>
-</div>
-<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
+	<!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
+	<div class="modal" id="myProfileCard2" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.6);" >
+		<div class="modal-content animate" style="position: relative; max-width: 850px; min-height: 490px; max-height: 600px; border-radius: 20px; box-shadow: 20px 20px 30px rgb(0 0 0 / 20%);     margin: 0 auto">
+			<div class="modal-header" style="background-color: #6449fc;">
+	     	   <span style="color: white; font-weight: bold; font-size: 15pt;"><i class="fas fa-id-card-alt"></i>내 정보수정</span>
+		       <button type="button" class="btn  btn-dark" data-dismiss="modal">Close</button>
+	     	</div>
+	     
+	
+			<div class="modal-body scroll" style="width: 100%; overflow:auto;  ">
+	        	<form action="<%=ctxPath%>/MyInfoEdit.groovy"> 
+	        
+					<!-- <form name="InfoFrm"> -->
+					<div>
+						<table id="tbl_myInfo" class="table">
+					      	<tr>
+						        <th style="width: 100px;">사원번호</th>
+						        <td id="td_pk_empnum"><span id="span_pk_empnum"></span></td>
+						        <td rowspan="4" style="border-left: 1px solid #dee2e6;">
+						        	<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="<%=ctxPath%>/myphotoEdit.groovy">
+							        	<div style="vertical-align: middle;">
+								         	<img class="rounded userimg"  style="width:150px; height:auto; overflow: hidden;" />
+								         	<label href="javascript:uploadFile();" className="input-file-button" for="input-file"   type="button" id="emppicturename" name= "attach" style="cursor: pointer;"><i class="far fa-edit"></i></label>
+											<input type="file" id="input-file" style="display : none;"/> 
+								        </div>
+							        </form>
+							    </td>
+					      	</tr>
+					 	  	<tr>
+						        <th>이름</th>
+						        <td id="td_name"></td>
+					      	</tr>
+					      	<tr>
+						        <th>생년월일</th>
+						        <td id="td_birthday"></td>
+					      	</tr>
+					      	<tr>
+						        <th>성별</th>
+						        <td id="td_gender"></td>
+					      	</tr>
+					      	<tr>
+						        <th>주소</th>
+						        <td id="td_address">(<span id="my_postcode"></span>)&nbsp;<span id="my_address"></span>&nbsp;<span id="my_detailAddress"></span>&nbsp;<span id="my_extraAddress"></span></td>
+						        <td><a onclick="addressEdit(${sessionScope.loginuser.pk_empnum})" id ="btn_addressEdit" type="button" ><i class="far fa-edit"></i></a></td>
+					      	</tr>
+					      	<tr class="myphone">
+						        <th>연락처</th>
+						        <td id="td_phone"></td>
+						        <td id="myphone2"><a id ="btn_mobileEdit" onclick="mobileEdit(${sessionScope.loginuser.pk_empnum})"  type="button" ><i class="far fa-edit"></i></a></td>
+					      	</tr>
+					      	<tr>
+						        <th>이메일</th>
+						        <td id="td_email"></td>
+						        <td><a id ="btn_emailEdit" onclick="emailEdit(${sessionScope.loginuser.pk_empnum})"  type="button" ><i class="far fa-edit"></i></a></td>
+					      	</tr>
+					      	<tr>
+						        <th>비밀번호</th>
+						        <td id="td_pwd">
+						        	<table><tr class=''><strong>비밀번호 재설정이 가능합니다.</strong></tr><br/>
+						        	<tr><span>비밀번호는 8~16자의 영문 대소문자,숫자,특수문자를  포함해야 합니다.</span></tr></table>
+								</td>
+								<td><a id ="btn_pwdEdit" onclick="pwdEdit(${sessionScope.loginuser.pk_empnum})"  type="button" ><i class="far fa-edit"></i></a></td>
+					      	</tr>
+					      	<tr>
+						        <th>부서</th>
+						        <td >${sessionScope.loginuser.deptnamekor}</td>
+					      	</tr>
+					      	<tr>
+						        <th>직위</th>
+						        <td>${sessionScope.loginuser.spotnamekor}</td>
+					      	</tr>
+					      	<tr>
+						        <th>입사일자</th>
+						        <td>${sessionScope.loginuser.startday}</td>
+					      	</tr>
+					      	<tr>
+						        <th>월급</th>
+						        <td>${sessionScope.loginuser.salary}</td>
+					        </tr>
+				 		</table>
+				 	</div>     
+			 	</form>
+	     	</div>
+	 
+	     
+	     
+	   </div>
+	</div>
+   <!-- ●●● 유저정보 팝업 => 유저프로필카드 => [회원정보수정] ●●●================================-->
 
 
 
