@@ -322,6 +322,9 @@ DELETE FROM TBL_APP_PROJECT
 
 delete from TBL_APPROVALPERSON
 
+select to_char(sysdate, 'yyyy-mm-dd') as birthdate 
+from dual
+
 
 -- 내 전자결재 문서 조회하기 
 select rownum as rno, PK_DOCUMENTNUM, apl_no, FK_EMPNUM , to_char(WRITEDAY, 'yyyy-mm-dd') as WRITEDAY, STATUS, apl_name
@@ -952,3 +955,20 @@ select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status,
 
 UPDATE TBL_EMPLOYEE SET vacationdate = '80' WHERE pk_empnum = '20200902-01'
 commit
+
+
+
+
+
+create table tbl_holiday 
+( seq number,
+  lunar_date varchar2(10),
+  solar_date date,
+  yun number ,
+  ganji varchar2(5),
+  memo varchar2(50)
+);
+
+drop table tbl_holiday purge;
+
+rollback
