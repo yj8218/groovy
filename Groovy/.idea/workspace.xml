@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bfa073d5-91d8-4559-8991-0625d00ce4e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/groovy/controller/JodnController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/spring/groovy/controller/JodnController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles/tile1/header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/tiles/tile1/header.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/tiles1/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/SQL/groovy_jodn.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +38,8 @@
       <workItem from="1651914959613" duration="366000" />
       <workItem from="1652168605749" duration="1000" />
       <workItem from="1652764830688" duration="488000" />
+      <workItem from="1653142197393" duration="1000" />
+      <workItem from="1653156965424" duration="449000" />
     </task>
     <servers />
   </component>

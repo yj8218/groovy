@@ -236,10 +236,23 @@ DELETE FROM tbl_approvaldocument
 
 
 DELETE FROM TBL_VACATIONLIST
+where pk_documentnum in 
+(
+'20220522025131355',
+'20220522025550303',
+'20220522025300223',
+'20220522025937471'
+)
 
 
 delete from TBL_APPROVALPERSON
-
+where fk_documentnum in 
+(
+'20220522025131355',
+'20220522025550303',
+'20220522025300223',
+'20220522025937471'
+)
 
 commit
 
@@ -309,6 +322,9 @@ DELETE FROM TBL_APP_PROJECT
 
 delete from TBL_APPROVALPERSON
 
+select to_char(sysdate, 'yyyy-mm-dd') as birthdate 
+from dual
+
 
 -- 내 전자결재 문서 조회하기 
 select rownum as rno, PK_DOCUMENTNUM, apl_no, FK_EMPNUM , to_char(WRITEDAY, 'yyyy-mm-dd') as WRITEDAY, STATUS, apl_name
@@ -322,6 +338,9 @@ from TBL_APPROVAL
 UPDATE TBL_APPROVAL SET APL_CATEGORYNO = 5 WHERE apl_no = 7
 
 commit;
+
+select *
+from tbl_employee
 
 select *
 from tbl_app_category
@@ -899,14 +918,57 @@ from TBL_VACATIONLIST
 where PK_DOCUMENTNUM = '20220519143458552'
 
 -- 날짜 차이 구하기
-SELECT SUM(1) -- "총날수"
-,SUM(DECODE(TO_CHAR(TO_DATE('20061201','YYYYMMDD')+LV-1,'DY'),'토',0,'일',0,1)) --"토/일 제외날수"
+SELECT SUM(DECODE(TO_CHAR(TO_DATE('2006-12-19','YYYY-MM-DD')+LV-1,'DY'),'토',0,'일',0,1)) as vacationdate
 FROM (
 SELECT LEVEL LV
 FROM DUAL
-CONNECT BY LEVEL<=TO_DATE('20061220','YYYYMMDD')-TO_DATE('20061201','YYYYMMDD')+1
+CONNECT BY LEVEL<=TO_DATE('2006-12-20','YYYY-MM-DD')-TO_DATE('2006-12-19','YYYY-MM-DD')+1
 )
 
 
+select sysdate
+from dual
+
+select vacationdate
+from TBL_APPROVALDOCUMENT A
+join TBL_EMPLOYEE B
+on A.fk_empnum = B.pk_empnum
+where pk_documentnum = '20220521232926193'
 
 
+select vacationdate
+from TBL_EMPLOYEE
+where pk_empnum = '20200902-01'
+
+
+select rownum as rno, A.pk_documentnum, A.fk_empnum, A.status, 
+		pk_vstatus, vtype, vstartdate, venddate, vinfo, vetc
+		from tbl_approvaldocument A 
+		join TBL_APPROVAL B
+		on A.FK_APL_NO = B.apl_no
+		join TBL_VACATIONLIST D
+		on A.PK_DOCUMENTNUM = D.PK_DOCUMENTNUM
+		join TBL_VACATION E 
+		on D.FK_VSTATUS = E.PK_VSTATUS
+		where A.PK_DOCUMENTNUM = '20220522005106569'
+
+
+UPDATE TBL_EMPLOYEE SET vacationdate = '80' WHERE pk_empnum = '20200902-01'
+commit
+
+
+
+
+
+create table tbl_holiday 
+( seq number,
+  lunar_date varchar2(10),
+  solar_date date,
+  yun number ,
+  ganji varchar2(5),
+  memo varchar2(50)
+);
+
+drop table tbl_holiday purge;
+
+rollback
