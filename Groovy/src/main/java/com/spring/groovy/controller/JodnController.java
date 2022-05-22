@@ -913,15 +913,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -931,8 +931,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='li_w70 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -1155,15 +1155,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -1173,8 +1173,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -1516,15 +1516,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -1534,8 +1534,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -1703,15 +1703,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'><a href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -1721,8 +1721,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
@@ -2159,15 +2159,15 @@ public class JodnController {
 			
 			// === [처음][이전] 만들기 == 
 			if(pageNo != 1) {
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo=1'>[처음]</a></li>";
+				pageBar += "<li class='li_w70 li_border' ><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 			}
 			
 			while( !(loop>blockSize || pageNo > totalPage) ) {
 				if(pageNo == currentShowPageNo) {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px #6449FC; color:#6449FC; padding: 2px 4px;'>"+pageNo+"</li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'>"+pageNo+"</li>";
 				} else {
-					pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+					pageBar += "<li class='li_w30 li_border' style='font-weight: bold;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 				}
 
 				loop++;
@@ -2177,8 +2177,8 @@ public class JodnController {
 			// === [다음][마지막] 만들기 ==
 			
 			if(pageNo <= totalPage) {
-				pageBar += "<li style='display:inline-block; width:50px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-				pageBar += "<li style='display:inline-block; width:70px; font-size:12pt; color:#6449FC;'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+				pageBar += "<li class='li_w60 li_border'><a href='"+url+"?searchValue="+searchValue+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 			}
 			
 			pageBar += "</ul>";
