@@ -176,8 +176,8 @@ public class LeejhDAO implements InterLeejhDAO {
 	
 	// 글 list로 읽어오기 
 	@Override
-	public List<BoardVO> getBoardList() {
-		List<BoardVO> boardList = sqlsession.selectList("leejh.getBoardList");
+	public List<BoardVO> getBoardList(Map<String, String> paraMap) {
+		List<BoardVO> boardList = sqlsession.selectList("leejh.getBoardList", paraMap);
 		return boardList;
 	}
 
@@ -254,8 +254,8 @@ public class LeejhDAO implements InterLeejhDAO {
 	// === #115. 총 게시물 건수(totalCount) 구하기 - 
 	@Override
 	public int getBoardTotalPage(Map<String, String> paraMap) {
-		int n = sqlsession.selectOne("leejh.getBoardTotalPage", paraMap);
-		return n;
+		int totalPage = sqlsession.selectOne("leejh.getBoardTotalPage", paraMap);
+		return totalPage;
 	}
 
 

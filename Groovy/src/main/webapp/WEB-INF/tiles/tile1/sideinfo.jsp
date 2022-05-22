@@ -279,8 +279,8 @@ div.sidenav .myprofile-photo{
 
 </style>
 <script type="text/javascript">
-let b_flagEmailDuplicateClick = false;
-let b_flagEmailDuplicateClick2 = false;
+
+
 //  "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기 위한 용도이다.
 
 // >>> 출퇴근 관련(1) 시작 by 혜림 //

@@ -60,7 +60,7 @@ public interface InterLeejhService {
 
 	
 	// 글 list로 읽어오기 
-	List<BoardVO> getBoardList();
+	List<BoardVO> getBoardList(Map<String, String> paraMap);
 
 	//글 삭제하기 
 	int del(Map<String, String> paraMap);

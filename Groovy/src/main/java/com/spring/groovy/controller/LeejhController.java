@@ -1014,31 +1014,120 @@ public class LeejhController {
 	
 	
 		
+	
+	// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
+	@ResponseBody
+	@RequestMapping(value="/readBoardList.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+	public String readBoardList(HttpServletRequest request) {
+	
+	//	String fk_board_seq = request.getParameter("fk_board_seq");
+	//	String pk_board_seq = request.getParameter("pk_board_seq");
+		//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
+		String BcurrentShowPageNo = request.getParameter("BcurrentShowPageNo");
+		//System.out.println("페이징"+fk_board_seq);
+		System.out.println("페이징보드2=> "+BcurrentShowPageNo);
 		
+		if((BcurrentShowPageNo == null ) || ( Integer.parseInt(BcurrentShowPageNo) <= 0)) {
+			BcurrentShowPageNo = "1";
+		}
+		
+		int sizePerPage = 10;
+		int startRno = ((Integer.parseInt(BcurrentShowPageNo) - 1) * sizePerPage) + 1;
+		int endRno = startRno + sizePerPage - 1;
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		
+	//	paraMap.put("fk_board_seq", fk_board_seq);
+		paraMap.put("startRno",String.valueOf(startRno));
+		paraMap.put("endRno",String.valueOf(endRno));
+	
+		
+		/*
+		String pk_board_seq = request.getParameter("pk_board_seq");
+		
+	//	List<Map<String,String>> listMap = service.commentShow(paraMap);
+		
+		
+		BoardVO boardvoo = new BoardVO();
+		String fk_board_seq = boardvoo.getPk_board_seq();
+		
+		Map<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("fk_board_seq", fk_board_seq);
+		
+		List<Map<String, String>> cmtList = service.commentShow(paraMap);
+		*/
+	//	List<Map<String,String>> listMap = service.commentShow(paraMap);
+		
+		List<BoardVO> boardList = service.getBoardList(paraMap);
+		
+		
+		JSONArray jsonArr = new JSONArray();  // []
+		
+		if( boardList != null ) {
+			for(BoardVO boardvo : boardList) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("name", boardvo.getName());
+				jsonObj.put("pk_board_seq", boardvo.getPk_board_seq());
+				jsonObj.put("b_content", boardvo.getB_content());
+				jsonObj.put("b_regDate", boardvo.getB_regdate());
+				jsonObj.put("fk_empnum", boardvo.getFk_empnum());
+				jsonObj.put("b_subject", boardvo.getB_subject());
+				jsonObj.put("b_content", boardvo.getB_content());
+
+				jsonObj.put("b_readcount", boardvo.getB_readcount());
+				jsonObj.put("b_regdate", boardvo.getB_regdate());
+				jsonObj.put("b_pw", boardvo.getB_pw());
+					
+			 	jsonObj.put("b_filename", boardvo.getB_filename());
+			 	jsonObj.put("b_orgfilename", boardvo.getB_orgfilename());
+			 	jsonObj.put("b_filesize", boardvo.getB_filesize());
+			 	jsonObj.put("emppicturename", boardvo.getEmppicturename());
+			 	jsonObj.put("deptnamekor", boardvo.getDeptnamekor());
+			 	jsonObj.put("spotnamekor", boardvo.getSpotnamekor());
+				jsonArr.put(jsonObj);
+			}// end of for---------------------
+		}
+		
+		
+		
+		//댓글용
+		/*
+		if( cmtList != null ) {
+			for( Map<String, String> cmtListMap: cmtList ) {
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("fk_board_seq", cmtListMap.get("fk_board_seq"));
+				
+				jsonArr.put(jsonObj);
+			}// end of for---------------------
+		}
+		*/
+		return jsonArr.toString();
+	}
+	
 		
 		// === #90. 메인화면 글 피드 &목록 조회해오기(Ajax 로 처리) === //
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readBoard(HttpServletRequest request) {
 		
-			String fk_board_seq = request.getParameter("fk_board_seq");
+		//	String fk_board_seq = request.getParameter("fk_board_seq");
 		//	String pk_board_seq = request.getParameter("pk_board_seq");
 			//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
-			String BcurrentShowPageNo = request.getParameter("BcurrentShowPageNo");
-			System.out.println("페이징"+fk_board_seq);
-			System.out.println("페이징2"+BcurrentShowPageNo);
+			String CcurrentShowPageNo = request.getParameter("CcurrentShowPageNo");
+			//System.out.println("페이징"+fk_board_seq);
+			System.out.println("페이징보드2"+CcurrentShowPageNo);
 			
 			
-			if(BcurrentShowPageNo == null) {
-				BcurrentShowPageNo = "1";
+			if((CcurrentShowPageNo == null ) || ( Integer.parseInt(CcurrentShowPageNo) <= 0)) {
+				CcurrentShowPageNo = "1";
 			}
-			int sizePerPage =10;
-			int startRno = ((Integer.parseInt(BcurrentShowPageNo) - 1) * sizePerPage) + 1;
+			int sizePerPage = 10;
+			int startRno = ((Integer.parseInt(CcurrentShowPageNo) - 1) * sizePerPage) + 1;
 			int endRno = startRno + sizePerPage - 1;
 			
 			Map<String, String> paraMap = new HashMap<String, String>();
 			
-			paraMap.put("fk_board_seq", fk_board_seq);
+		//	paraMap.put("fk_board_seq", fk_board_seq);
 			paraMap.put("startRno",String.valueOf(startRno));
 			paraMap.put("endRno",String.valueOf(endRno));
 		
@@ -1057,8 +1146,9 @@ public class LeejhController {
 			
 			List<Map<String, String>> cmtList = service.commentShow(paraMap);
 			*/
+		//	List<Map<String,String>> listMap = service.commentShow(paraMap);
 			
-			List<BoardVO> boardList = service.getBoardList();
+			List<BoardVO> boardList = service.getBoardList(paraMap);
 			
 			
 			JSONArray jsonArr = new JSONArray();  // []
@@ -1103,6 +1193,32 @@ public class LeejhController {
 			*/
 			return jsonArr.toString();
 		}
+		
+		
+
+		// === #132.  원게시물  totalPage 알아오기(ajax로 처리)
+		@ResponseBody
+		@RequestMapping(value ="/getBoardTotalPage.groovy", method = {RequestMethod.GET})
+		public String getBoardTotalPage(HttpServletRequest request) {
+				
+			//String fk_board_seq = request.getParameter("fk_board_seq");
+			String sizePerPage = request.getParameter("sizePerPage");
+			//System.out.println("페이징3"+fk_board_seq);
+			System.out.println("페이징4 :"+sizePerPage);
+			Map<String, String> paraMap = new HashMap<>();
+			//paraMap.put("fk_board_seq", fk_board_seq);
+			paraMap.put("sizePerPage",sizePerPage);
+		
+			int totalPage = service.getBoardTotalPage(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("totalPage",totalPage);
+			
+		
+			return jsonObj.toString();
+			
+		}//end of public String getCommentTotalPage(HttpServletRequest request)
+
 		
 		
 		// === #51. 게시판 글 수정 모달요청 === //
@@ -1691,31 +1807,8 @@ public class LeejhController {
 			
 		}//end of public String getCommentTotalPage(HttpServletRequest request)
 	
-		// === #132.  원게시물  totalPage 알아오기(ajax로 처리)
-		@ResponseBody
-		@RequestMapping(value ="/getBoardTotalPage.groovy", method = {RequestMethod.GET})
-		public String getBoardTotalPage(HttpServletRequest request) {
-				
-			//String fk_board_seq = request.getParameter("fk_board_seq");
-			String sizePerPage = request.getParameter("sizePerPage");
-			//System.out.println("페이징3"+fk_board_seq);
-			System.out.println("페이징4"+sizePerPage);
-			Map<String, String> paraMap = new HashMap<>();
-			//paraMap.put("fk_board_seq", fk_board_seq);
-			paraMap.put("sizePerPage",sizePerPage);
 		
-			int totalPage = service.getBoardTotalPage(paraMap);
-			
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("totalPage",totalPage);
-			
-		
-			return jsonObj.toString();
-			
-		}//end of public String getCommentTotalPage(HttpServletRequest request)
-
-		
-		
+		//댓글수정		
 		@ResponseBody
 		@RequestMapping(value ="/boardCommentEdit.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 		public String commentEdit(HttpServletRequest request) {
@@ -1748,7 +1841,7 @@ public class LeejhController {
 		
 		
 		
-		
+//댓글삭제		
 		@ResponseBody
 		@RequestMapping(value ="/boardCommentDel.groovy", method = {RequestMethod.POST}, produces="text/plain;charset=UTF-8")
 		public String commentDel(HttpServletRequest request) {
