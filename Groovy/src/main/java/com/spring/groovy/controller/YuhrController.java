@@ -636,6 +636,8 @@ public class YuhrController {
 		int countStart = isClicked.get("countStart");
 		int countEnd = isClicked.get("countEnd");
 		
+		System.out.println("확인용 countStart =>"+countStart);
+		System.out.println("확인용 countEnd =>"+countEnd);
 		jsonObj.put("isClicked", isClicked);
 		
 		return jsonObj.toString();
