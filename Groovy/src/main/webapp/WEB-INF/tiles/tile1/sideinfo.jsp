@@ -560,14 +560,14 @@ function getUserInfo() {
 
             $("span#span_phone").html(json.phone);
             $("td#td_phone").html(json.phone);
-
             $("span#span_email").html(json.email);
             $("td#td_email").html(json.email);
 
             // 부서 직위
-            /*		$("span#m_deptnamekor").html(json.deptnamekor);
-            		$("span#m_spotnamekor").html(json.spotnamekor);
-            		
+            /*
+            		$("span#span_deptnamekor").html(json.deptnamekor);
+            		$("span#span_spotnamekor").html(json.spotnamekor);
+            		/*
             		$("span#m_startday").html(json.startday);
             		
             	
@@ -1779,6 +1779,11 @@ function getTimeFormatString() {
 
                 <div class="card-body">
                     <ul style="list-style: none;">
+                        <li>
+                            <i class="far fa-grin"></i>
+                            <span >${sessionScope.loginuser.name}</span>
+                        </li>
+                       
                         <li>
                             <i class="far fa-envelope"></i>
                             <span id="span_email"></span>
