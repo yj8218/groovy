@@ -285,6 +285,7 @@ div.sidenav .myprofile-photo{
 
 // >>> 출퇴근 관련(1) 시작 by 혜림 //
 let isStartWorkClicked = false;
+let isEndWorkClicked = false;
 let timerId;
 let time = 0;
 let hour, min, sec;
@@ -391,11 +392,17 @@ $(document).ready(function() {
         type: "POST",
         dataType: "JSON",
         success: function(json) {
-            //	alert(json.isClickedStartBtn);
+            	alert(json.isClicked);
             // 출근버튼 찍었으면 출근버튼 비활성화
-            if (json.isClickedStartBtn == 1) { // 출근 찍은 경우
+            const isClicked = json.isClicked;
+            
+            if (isClicked.countStart == 1) { // 출근 찍은 경우
                 $("button#startBtn").attr("disabled", true);
                 isStartWorkClicked = true;
+            }
+            if (isClicked.countEnd == 1) { // 퇴근 찍은 경우
+                $("button#endBtn").attr("disabled", true);
+                isEndWorkClicked = true;
             }
         },
         error: function(request, status, error) {
@@ -1328,11 +1335,16 @@ function startwork() {
                 type: "POST",
                 dataType: "JSON",
                 success: function(json) {
-                    //	alert(json.isClickedStartBtn);
+                    	alert(json.isClicked);
+                    	const isClicked = json.isClicked;
                     // 출근버튼 찍었으면 출근버튼 비활성화
-                    if (json.isClickedStartBtn == 1) { // 출근 찍은 경우
+                    if (isClicked.countStart == 1) { // 출근 찍은 경우
                         $("button#startBtn").attr("disabled", true);
                         isStartWorkClicked = true;
+                    }
+                    if (isClicked.countEnd == 1) { // 퇴근 찍은 경우
+                        $("button#endBtn").attr("disabled", true);
+                        isEndWorkClicked = true;
                     }
 
                     let today = new Date();
@@ -1399,7 +1411,7 @@ function startCommuteCheck() {
 function endwork() {
 
     if (isStartWorkClicked == false) { // 출근 버튼을 아직 안누른 상태라면
-        alert("출근 안찍음");
+        alert("출근을 먼저 해주세요");
         return false;
 
     } else { // 출근 버튼을 누른 경우
@@ -1676,9 +1688,6 @@ function getTimeFormatString() {
             </li>
             <li>
                 <a href="<%=ctxPath%>/adminApproval.groovy"><i class="fas fa-user-tag"></i>결재관리</a>
-            </li>
-            <li>
-                <a href="<%=ctxPath%>/commutebutton.groovy"><i class="fas fa-tag"></i>임시</a>
             </li>
         </ul>
     </div>
