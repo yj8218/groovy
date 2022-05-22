@@ -34,6 +34,7 @@
 		
 		// 웹브라우저의 주소창의 포트까지 가져옴
 		const url = window.location.host;
+		//const url = 'localhost:9090';
 	//	alert("url : " + url);
 		// url : 221.155.187.235:9090
 		
@@ -54,6 +55,7 @@
 		// 웹소켓통신을 하기 위해서는 http://을 사용하는 것이 아니라 ws://을 사용해야 한다.
 		// "/multichatstart.action"에 대한 것은 /WEB-INF/spring/config/websocketContext.xml 파일에 있는 내용이다.
 		const wsUrl = "ws://" + root + "/multichatstart.groovy";
+
 	//	alert("wsUrl : " + wsUrl);
 		// wsUrl : ws://221.155.187.235:9090/board/chatting/multichatstart.groovy
 		

@@ -14,8 +14,10 @@
 	String serverIP = inet.getHostAddress();
 	
 	int portnumber = request.getServerPort();
+	String servaername = request.getServerName();
 	
-	String serverName = "http://" + serverIP + ":" + portnumber;
+	//String serverName = "http://" + serverIP + ":" + portnumber;
+	String serverName = "http://" + servaername + ":" + portnumber;
 %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
