@@ -431,7 +431,14 @@ function goSearch(){
 			<td>${InfoMap.total_no_endcheck }</td>
 			<td>${InfoMap.total_no_workday }</td>
 			<td>${InfoMap.totalworkingdays}</td>
+			
+			<c:if test="${InfoMap.totalworkedtime == '일시분초'}">
+			<td>0일0시0분0초</td>
+			</c:if>
+			
+			<c:if test="${InfoMap.totalworkedtime != '일시분초'}">
 			<td>${InfoMap.totalworkedtime}</td>
+			</c:if>
 		</tr>
 	
 		</c:forEach>

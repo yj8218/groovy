@@ -1340,10 +1340,7 @@ function startwork() {
                         $("button#startBtn").attr("disabled", true);
                         isStartWorkClicked = true;
                     }
-                    if (isClicked.countEnd == 1) { // 퇴근 찍은 경우
-                        $("button#endBtn").attr("disabled", true);
-                        isEndWorkClicked = true;
-                    }
+                    
 
                     let today = new Date();
 
@@ -1423,7 +1420,7 @@ function endwork() {
             type: "POST",
             dataType: "JSON",
             success: function(json) {
-                // 현재 넘어오는 값 없음
+            
                 let today = new Date();
 
                 let hours = today.getHours(); // 시

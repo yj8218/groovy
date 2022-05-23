@@ -602,7 +602,7 @@ public class YuhrController {
 		LocalTime now = LocalTime.now();
 		
 		// 정상 출근시각은 9시로 한다
-		LocalTime fixedStartWTime = LocalTime.of(9, 20, 00);
+		LocalTime fixedStartWTime = LocalTime.of(9, 00, 00);
 		
 		// 지각한 경우 
 		if(!now.isBefore(fixedStartWTime)) {
@@ -636,8 +636,6 @@ public class YuhrController {
 		int countStart = isClicked.get("countStart");
 		int countEnd = isClicked.get("countEnd");
 		
-		//System.out.println("확인용 countStart =>"+countStart);
-		//System.out.println("확인용 countEnd =>"+countEnd);
 		jsonObj.put("isClicked", isClicked);
 		
 		return jsonObj.toString();
@@ -699,6 +697,7 @@ public class YuhrController {
 		empsNoWorkToday = service.getEmpsNoWorkToday();
 		
 		for(String emp_nowork : empsNoWorkToday) {
+			System.out.println("확인용 emp_nowork=>"+emp_nowork);
 			service.status_no_workday(emp_nowork);
 		}
 				
