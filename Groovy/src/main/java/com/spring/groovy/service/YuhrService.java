@@ -119,7 +119,7 @@ public class YuhrService implements InterYuhrService {
 	
 	// === Spring Scheduler 를 사용하여 자정에 자동으로 근태 기록하기 ===
 	@Override
-	@Scheduled(cron = "0 0 0 * * *") // 자정에 작동된다
+	@Scheduled(cron = "0 55 23 * * 2-6") // 자정에 작동된다
 	public void checkEndCommuteStatus() {
 
 		// == 현재 시각을 나타내기 ==
