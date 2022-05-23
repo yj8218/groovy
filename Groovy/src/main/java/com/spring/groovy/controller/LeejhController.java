@@ -826,6 +826,13 @@ public class LeejhController {
 				bytes = attach.getBytes();
 				// 첨부파일의 내용물을 읽어오는 것
 				
+				String content = mrequest.getParameter("content");
+				content = content.replaceAll("<", "&lt;");
+		        content = content.replaceAll(">", "&gt;");
+		        
+		        // 입력한 내용에서 엔터는 <br>로 변환시키기 
+		        content = content.replaceAll("\r\n", "<br>");
+				
 				String originalFilename = attach.getOriginalFilename();
 			 // attach.getOriginalFilename() 이 첨부파일명의 파일명(예: 강아지.png) 이다.
 			//	System.out.println("~~~~ 확인용 originalFilename => " + originalFilename);
@@ -839,7 +846,7 @@ public class LeejhController {
 			
 		/*
 		   3. BoardVO boardvo 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 
-		*/
+		*/		boardvo.setB_content(content);
 				boardvo.setB_filename(newFileName);
 				// WAS(톰캣)에 저장될 파일명(2022042912181535243254235235234.png)
 				
