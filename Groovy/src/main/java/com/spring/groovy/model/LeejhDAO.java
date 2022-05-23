@@ -223,12 +223,10 @@ public class LeejhDAO implements InterLeejhDAO {
 		int n = sqlsession.update("leejh.edit_board_withFile", paraMap);
 		return n;
 	}
-
 	//맵으로 게시글 가져오기   
 	@Override
-	public Map<String, String> boardView(String pk_board_seq) {
-		
-		Map<String,String> map = sqlsession.selectOne("leejh.boardView", pk_board_seq);
+	public Map<String, String> boardView(Map<String, String> paraMap) {
+		Map<String,String> map = sqlsession.selectOne("leejh.boardView", paraMap);
 		return map;
 	}
 
@@ -268,6 +266,14 @@ public class LeejhDAO implements InterLeejhDAO {
 		int totalPage = sqlsession.selectOne("leejh.getBoardTotalPage", paraMap);
 		return totalPage;
 	}
+
+	// === #110. 검색어 입력시 자동글 완성하기 5 === //
+	@Override
+	public List<String> wordSearchShow(Map<String, String> paraMap) {
+		List<String> wordList = sqlsession.selectList("leejh.wordSearchShow", paraMap);
+		return wordList;
+	}
+
 
 
 

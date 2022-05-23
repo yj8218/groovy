@@ -77,12 +77,9 @@ public interface InterLeejhService {
 	int edit_board_withFile(Map<String, String> paraMap);
 
 	//맵으로 게시글 가져오기   --추후 getView랑 통합해야함.
-	Map<String, String> boardView(String pk_board_seq);
-
+	Map<String, String> boardView(Map<String, String> paraMap);
 	//댓글추가
 	int commentAdd(Map<String, String> paraMap);
-	
-	//int commentDel(Map<String, String> paraMap);
 	//댓글보기
 	List<Map<String, String>> commentShow(Map<String, String> paraMap);
 	//원게시물에 딸린 댓글 totalPage 알아오기(ajax로 처리)
@@ -93,6 +90,11 @@ public interface InterLeejhService {
 	int commentDel(Map<String, String> paraMap);
 
 	int getBoardTotalPage(Map<String, String> paraMap);
+
+	//검색어 입력시 보여주는거
+	List<String> wordSearchShow(Map<String, String> paraMap);
+
+	
 
 	
 

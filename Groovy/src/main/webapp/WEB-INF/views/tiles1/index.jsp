@@ -278,6 +278,137 @@ $(document).on('keyup', 'form.comment-writer-container input.comment-writer-text
 
 
 
+		
+		/* 
+		
+$("input#searchWord").keyup(function(event){
+	if(event.keyCode == 13){
+		// 엔터를 했을 경우
+		goSearch();
+	}
+	
+}); *//* 
+
+// 검색시 검색조건 및 검색어 값 유지시키기
+if( ${not empty requestScope.paraMap}){ 
+	$("select#searchType").val("${requestScope.paraMap.searchType}");
+	$("input#searchWord").val("${requestScope.paraMap.searchWord}");
+} */
+
+
+<%-- === #107. 검색어 입력시 자동글 완성하기 2 === --%>
+<%-- 
+$("div#displayList").hide();
+
+$("input#searchWord").keyup(function(){
+	
+	const wordLength = $(this).val().trim().length;
+	// 검색어의 길이를 알아온다.
+	
+	if(wordLength == 0){
+		$("div#displayList").hide();
+		// 검색어가 공백이거나 검색어 입력후 백스페이스키를 눌러서 검색어를 모두 지우면 검색된 내용이 안 나오도록 해야 한다.
+	}
+	else{
+		$.ajax({
+			url: "<%= ctxPath%>/wordSearchShow.groovy",
+			type:"GET",
+			data:{"searchType":$("select#searchType").val()
+				 ,"searchWord":$("input#searchWord").val()},
+			dataType:"JSON",
+			success:function(json){
+				//json ==> [{"word":"Korea VS Japan 라이벌 축구대결"},{"word":"JSP 가 뭔가요?"},{"word":"프로그램은 JAVA 가 쉬운가요?"},{"word":"java가 재미 있나요?"}]
+				//[]
+				
+ --%>				<%-- === #112. 검색어 입력시 자동글 완성하기 7 === --%>
+				/* if(json.length > 0){  // != null 로 하는게 아니다.
+					// 검색된 데이터가 있는 경우임
+					let html = "";
+					
+					$.each(json, function(index, item){
+						const word = item.word;
+						// 검색한 word만 색깔처리. 자바스크립트에서 substr로 잘라가면서 찾는다.
+						// word ==> 프로그램은 JAVA 가 쉬운가요?
+						
+						// substr    	[sVal=]String.substr(iStart,iLength)    <== 오라클용  , 글자길이   substr, substring혼동주의
+						// substring	[sVal=]String.substring(iStart,iEnd)    <== 자바
+						// indexOf  	[iPos=]String.indexOf(subString[, startIndex])
+							
+						//두쪽다 대소문자를 맞춰줌. 소문자로 변환
+						const idx = word.toLowerCase().indexOf($("input#searchWord").val().toLowerCase());
+						// 	        word ==> 프로그램은 java 가 쉬운가요?
+						// 검색어(JaVa)가 나오는  idx는 6 이 된다. 시작인덱스 		
+						
+						const len = $("input#searchWord").val().length;								
+						// 검색어(JaVa)의 길이 len 은 4가 된다.
+						 */
+						
+						// word.substr("")
+							/* // substr일 경우
+							console.log("~~~시작~~");
+							console.log(word.substr(0, idx)); 		// 검색어(JaVa) 앞까지의 글자 => "프로그램은 "
+							console.log(word.substr(idx, len)); // 검색어(JaVa) 글자 => "JAVA"
+							console.log(word.substr(idx+len));      // 검색어(JaVa) 뒤부터 끝까지 글자 => " 가 쉬운가요?"
+							console.log("~~~끝~~");
+							*/								
+							/*// substring의 경우	
+							console.log("~~~시작~~");
+							console.log(word.substring(0, idx)); 		// 검색어(JaVa) 앞까지의 글자 => "프로그램은 "
+							console.log(word.substring(idx, idx+len)); // 검색어(JaVa) 글자 => "JAVA"
+							console.log(word.substring(idx+len));      // 검색어(JaVa) 뒤부터 끝까지 글자 => " 가 쉬운가요?"
+							console.log("~~~끝~~");
+							*/
+							
+						// 색을 입힌다.
+						
+						/* const result = word.substring(0, idx) + "<span style='color:blue;'>"+word.substring(idx, idx+len)+"</span>"+word.substring(idx+len); 
+						
+						html += "<span style='cursor:pointer;' class='result'>"+result+"</span><br>";
+						//id나 class를 잡아줘야 한다. span태그에 element를 잡아줘야한다.
+						
+							
+					});// end of $.each(json, function(index, item){})----
+					
+					
+					const input_width = $("input#searchWord").css("width"); //검색어 input 태그 width 알아오기
+					
+					$("div#displayList").css({"width": input_width})// 검색결과 div의 width 크기를 검색어 입력 input 태그 width와 일치시키기
+					
+					$("div#displayList").html(html);
+					$("div#displayList").show();
+					
+					
+				}
+			},
+			error: function(request, status, error){
+                  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+			
+		});
+	}
+	
+});//end of $("input#searchWord").keyup(function(){})-------------------- */
+
+
+<%-- === #113. 검색어 입력시 자동글 완성하기 8 === --%>
+	<%--  얘는 잘 안잡히네 백발백중 잡히는 애가 필요하다!
+	$("span.result").click(function(){
+		alert("헤헤");
+	});
+	--%>
+/* $(document).on() 꼭 암기 !!  *//* 
+$(document).on("click", "span.result", function(){   // 백발백중 잡히는 제이쿼리
+	// $(this) 는 화살표함수 x , function()으로 써줘야함. 
+	// 화살표함수 쓰고싶으면 event.target 으로 써준다.
+	
+	//span태그에서는 .text ,,  input태그에서는 .val
+	const word = $(this).text();
+	$("input#searchWord").val(word); //텍스트박스에 검색된 결과의 문자열을 입력해준다. 
+	$("div#displayList").hide();//값을 넣어줬으니 리스트는 숨긴다.
+	goSearch();
+	
+}); */
+
 		 
 		
 		
@@ -362,7 +493,8 @@ function openPersonalChat(pk_empnum) {
 		  $("div#feedAllbox").empty();
 		  $.ajax({
 			  url:"<%= request.getContextPath()%>/readBoard.groovy",
-			  data:{"CcurrentShowPageNo":CcurrentShowPageNo},
+			  data:{"CcurrentShowPageNo":CcurrentShowPageNo
+				 },
 			  dataType:"json",
 			  success:function(json){
 				  
@@ -380,7 +512,7 @@ function openPersonalChat(pk_empnum) {
 							html +=  "<tr>";
 							html +=  "<td style='vertical-align:middle;'>";
 							html +=  "<a style='margin-right: 5px;'><img style='height:40px; width:40px;      border-radius: 16px;' class='writer-photo' src='<%= ctxPath%>/resources/images/프로필사진/"+item.emppicturename+"'  alt='icon-writerprofile'  /></a>";
-							 html +=  "<strong id='write_name' style='vertical-align:middle; color:#555; margin-right: 5px;'>["+item.deptnamekor +" : "+item.spotnamekor+"] " + item.name + "</strong><span></span>  <span id='write_date' style='color:#aaa;'>"+ item.b_regdate + "</span>  ";
+							html +=  "<strong id='write_name' style='vertical-align:middle; color:#555; margin-right: 5px;'>["+item.deptnamekor +" : "+item.spotnamekor+"] " + item.name + "</strong><span></span>  <span id='write_date' style='color:#aaa;'>"+ item.b_regdate + "</span>  ";
 							html +=  "</td>";
 						   	  
 						   	  
@@ -390,11 +522,11 @@ function openPersonalChat(pk_empnum) {
 						   <%-- 	html +=  "  	<a class='dropdown-item' href='<%=ctxPath%>/editBoard.groovy?pk_board_seq="+item.pk_board_seq+"'><i class='far fa-board-alt'></i>수정</a>"; --%>
 						   if('${sessionScope.loginuser.pk_empnum}' == item.fk_empnum){
 								html +=  "<td align='right'>";
-							   html +=  "<i style='padding:10px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
-							   html +=  "<div class='dropdown-menu'>";
-							   html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer; '><i class='far fa-edit'></i>수정</a>";
-							   html +=  "  	<a class='dropdown-item' onclick='delBoard("+item.pk_board_seq+")' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
-							   html +=  "</div>";
+							    html +=  "<i style='padding:10px; cursor:pointer; margin-left:5px;' class='fas fa-ellipsis-v' data-toggle='dropdown'></i>";
+							    html +=  "<div class='dropdown-menu'>";
+							    html +=  "  	<a class='dropdown-item'  onclick='editBoardModal("+index+","+item.pk_board_seq+")' data-toggle='modal' data-target='#editBoardModal' style=' cursor: pointer; '><i class='far fa-edit'></i>수정</a>";
+							    html +=  "  	<a class='dropdown-item' onclick='delBoard("+item.pk_board_seq+")' href='#'><i class='far fa-trash-alt'></i>삭제</a>";
+							    html +=  "</div>";
 								html +=  "</td>";
 						   } 
 						   
@@ -505,25 +637,19 @@ function openPersonalChat(pk_empnum) {
 				 let html = "";
 				   if(json.length > 0) {
 					   
-						  
 						html += "<div class='card mb-4 feedAll'>";
 						html += "<div class='card-body'>";
 						html +=  "<table style='width: 95%; margin: auto; padding: 10px;' class='tbl_boardInCard mb-3'>";
 						html +=  "<thead>";
 						html +=  "<tr><th style='width: 70px;  text-align: center;'>글번호</th>";
-						
 						html +=   '<th style="width: 360px; text-align: center;">제목</th>';
 						html +=   '<th style="width: 70px;  text-align: center;">성명</th>';
 						html +=   '<th style="width: 150px; text-align: center;">날짜</th>';
-						/* html +=   '<th style="width: 70px;  text-align: center;">조회수</th>'; */
-						
 					   	html +=  "</tr>";
 					   	html +=  "</thead>";
 					   	html +=  "<tbody>";
 					   	
-					   	
 					  $.each(json, function(index, item){
-	
 						   	html +=  "<tr id='tablehover' style='cursor: pointer;' onclick='javascript:goBoardView("+item.pk_board_seq+")'>";
 						   	html +=  "<td id='list_seq"+index+"'  style='text-align: center;'>"+ item.pk_board_seq  + "</td>";
 						   	html +=  "<td id='list_subject"+index+"'  ><span class='list_subject' >"+ item.b_subject+"</span>"; 
@@ -578,9 +704,13 @@ function openPersonalChat(pk_empnum) {
 //자세히보기
 function goBoardView(pk_board_seq) {
 
+	
+ <%-- 	location.href="<%= ctxPath%>/view.action?seq="+seq+"&gobackURL="+gobackURL+"&searchType="+searchType+"&searchWord="+searchWord; --%>  
+ 	
 	 $.ajax({
          url: "<%= ctxPath%>/goBoardView.groovy",
-         data:{"pk_board_seq":pk_board_seq},
+         data:{"pk_board_seq":pk_board_seq
+        	},
          dataType: "json",
          success:function(json) {
         	 
@@ -1398,6 +1528,19 @@ $.ajax({
 
 
 
+
+<%-- 
+
+function goSearch(){
+	const frm = document.searchFrm;
+	frm.method = "GET";
+	frm.action = "<%= ctxPath%>/readBoard.groovy"
+	frm.submit();
+} //end of function goSearch(){}-------------
+
+
+ --%>
+
 	    
 </script>
 
@@ -1506,6 +1649,26 @@ $.ajax({
 					<div id="feedAllbox"></div>
 					<!-- <div id="paging-feed"></div> -->
 					<div id="paging-list"></div>
+					
+					<%-- === #101. 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. ==  --%>
+					<form name="searchFrm" style="margin-top: 20px;">
+					   <select name="searchType" id="searchType" style="height: 26px;">
+					      <option value="b_subject">글제목</option>
+					      <option value="name">글쓴이</option>
+					   </select>
+					   <input type="text" name="searchWord" id="searchWord" size="40" autocomplete="off" /> 
+					   <input type="text" style="display: none;"/> <%-- form 태그내에 input 태그가 오로지 1개 뿐일경우에는 엔터를 했을 경우 검색이 되어지므로 이것을 방지하고자 만든것이다. hidden이 아니고 display : none을 해줘야함.--%>
+					   <button type="button" class="btn btn-secondary btn-sm" onclick="goSearch()">검색</button> 
+					</form>
+					
+					<%-- === #106. 검색어 입력시 자동글 완성하기 1 === --%>
+					<%-- 폼태그 밑에 네이버처럼 자동완성으로 목록 뜨게한다. --%>
+					<div id="displayList" style="border:solid 1px gray; border-top:0px; height:100px; margin-left:75px; margin-top:-1px; overflow:auto;">
+					
+					</div> 
+	
+					
+					
 					
 					
 		  	</div>

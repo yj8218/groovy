@@ -226,8 +226,8 @@ public class LeejhService implements InterLeejhService {
 	
 	//맵으로 게시글 가져오기   
 	@Override
-	public Map<String, String> boardView(String pk_board_seq) {
-		Map<String,String> map = dao.boardView(pk_board_seq);
+	public Map<String, String> boardView(Map<String, String> paraMap) {
+		Map<String,String> map = dao.boardView(paraMap);
 		return map;
 	}
 
@@ -270,6 +270,15 @@ public class LeejhService implements InterLeejhService {
 		return totalPage;
 	}
 
+
+	// === #109. 검색어 입력시 자동글 완성하기 4 === //
+	@Override
+	public List<String> wordSearchShow(Map<String, String> paraMap) {
+		List<String> wordList = dao.wordSearchShow(paraMap);
+		return wordList;
+	}
+
+	
 
 
 

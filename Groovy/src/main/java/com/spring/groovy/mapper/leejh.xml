@@ -231,9 +231,9 @@
 			ON B.FK_EMPNUM = E.PK_EMPNUM
 		    where b_status = 1
             order by B.PK_BOARD_SEQ desc
-		    <if test='searchType != "" and searchWord != "" '>
+		   <!--  <if test='searchType != "" and searchWord != "" '>
 		    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
-		    </if> 
+		    </if>  -->
 		) V
 		where V.PK_BOARD_SEQ = #{pk_board_seq}
     </select>
@@ -284,14 +284,44 @@
 					JOIN TBL_DEPARTMENT D 
 					ON E.fk_deptnum = D.pk_deptnum
 				    where b_status = 1
-		            order by B.PK_BOARD_SEQ desc
-				    <!-- <if test='searchType != "" and searchWord != "" '>
+		            
+				   <!--  <if test='searchType != "" and searchWord != "" '>
 				    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
-				    </if>  -->
+				    </if>   -->
+				    order by B.PK_BOARD_SEQ desc
 				) V 
 		    ) T 
 		    where rno between #{startRno} and #{endRno}
     </select>
+    
+    <!-- 
+    === #111. 검색어 입력시 자동글 완성하기 6 ===
+    <select id="wordSearchShow" parameterType="HashMap" resultType="String">
+    	<choose>
+    		<when test="searchType eq 'name'">
+    			select distinct ${searchType}
+    		</when>
+    		<otherwise>
+    			select ${searchType}
+    		</otherwise>
+    	</choose>
+    	from tbl_board
+    	where b_status = 1 
+    	and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%' 
+    	select 문에서 distinct 와 order by 절을 함께 사용할때는 조심해야 한다.
+		     order by 절에는 select 문에서 사용된 컬럼만 들어올 수가 있다.
+		         또는 order by 절을 사용하지 않아야 한다.
+		
+		 <choose>
+    		<when test="searchType neq 'b_subject'">
+    			order by ${searchType} asc
+    		</when>
+    		<otherwise>
+    			order by pk_board_seq desc
+    		</otherwise>
+    	</choose>
+    </select>
+     -->
     
     <!-- === #80. 1개글 삭제하기 === -->
     <delete id="del" parameterType="HashMap">
@@ -380,7 +410,7 @@
 		<result property="DEPTNAMEKOR" 		column="deptnamekor" 	javaType="String" />
 		<result property="SPOTNAMEKOR" 		column="spotnamekor" 	javaType="String" />
 	</resultMap>
-    <select id="boardView" parameterType="String" resultMap="boardView_Map">
+    <select id="boardView" parameterType="HashMap" resultMap="boardView_Map">
 		select 
 		      pk_board_seq, fk_empnum, name, b_subject, b_content, b_readcount, b_regdate, b_pw 
 		     
@@ -408,9 +438,9 @@
 			ON E.fk_deptnum = D.pk_deptnum
 		    where b_status = 1
             order by B.PK_BOARD_SEQ desc
-		    <!-- <if test='searchType != "" and searchWord != "" '>
+		    <if test='searchType != "" and searchWord != "" '>
 		    and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
-		    </if> -->
+		    </if> 
 		) V
 		where V.pk_board_seq = #{pk_board_seq}
     </select>

@@ -35,22 +35,18 @@
 		});
 		
 		$("input#pwd").keydown(function(event){
-			
 			if(event.keyCode == 13){ //엔터를 했을 경우
 				func_Login();
 			}
 				
 		});
-		
-		 
-		   /* function show() { */
-		   
-		      if( $("input:checkbox[id='keep']").prop("checked") ) {
-		         localStorage.setItem('keep',$("input#pk_empnum").val());
-		      }
-		      else {
-		         localStorage.removeItem('keep');
-		      }
+		// === 로컬스토리지(localStorage)에 저장된 key 가 "saveid" 인 pk_empnum 값을 불러와서 input 태그 pk_empnum 에 넣어주기 === //
+		if( $("input:checkbox[id='keep']").prop("checked") ) {
+		   localStorage.setItem('keep',$("input#pk_empnum").val());
+		}
+		else {
+		   localStorage.removeItem('keep');
+		}
 		   
 		////////////////////////////////////////////////////////////////////
 	/* 	

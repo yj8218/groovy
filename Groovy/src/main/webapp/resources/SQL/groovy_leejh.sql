@@ -451,3 +451,7 @@ update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV10RLrXnqTwbk' wh
 update tbl_employee set email= 'BkDdZlgSTZUDVnQL2ysBwijiYaO0uRWV11RLrXnqTwbk' where pk_empnum = '20170222-01';
 
 commit;
+
+
+update tbl_board set b_readcount = b_readcount + 1
+    	where PK_BOARD_SEQ = #{pk_board_seq}

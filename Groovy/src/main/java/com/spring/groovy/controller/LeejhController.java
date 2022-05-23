@@ -352,8 +352,6 @@ public class LeejhController {
 		/* String test = deptList[0]; */
 		JSONArray jsonArr = new JSONArray();
 		
-		
-		
 		for(int i=0; i<deptList.size(); i++) {
 			JSONObject jsonObj = new JSONObject();
 			
@@ -368,12 +366,9 @@ public class LeejhController {
 			for(EmployeeVO empvo : empList) {
 				JSONObject jsonObj = new JSONObject();
 				
-				
 				jsonObj.put("id", empvo.getPk_empnum());
 				jsonObj.put("parent", empvo.getDeptnamekor());
 				jsonObj.put("text",empvo.getSpotnamekor() +" " +empvo.getName());
-				
-				
 				
 				jsonArr.put(jsonObj);
 			}// end of for(EmployeeVO empvo : empList) {}-----------------------
@@ -1109,15 +1104,28 @@ public class LeejhController {
 		@ResponseBody
 		@RequestMapping(value="/readBoard.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
 		public String readBoard(HttpServletRequest request) {
-		
-		//	String fk_board_seq = request.getParameter("fk_board_seq");
-		//	String pk_board_seq = request.getParameter("pk_board_seq");
-			//getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
+			
+//////////////////////////////////////////////////////
+// === #69. 글조회수(readCount)증가 (DML문 update)는
+//          반드시 목록보기에 와서 해당 글제목을 클릭했을 경우에만 증가되고,
+//          웹브라우저에서 새로고침(F5)을 했을 경우에는 증가가 되지 않도록 해야 한다.
+//          이것을 하기 위해서는 session 을 사용하여 처리하면 된다.
+			HttpSession session = request.getSession();
+			session.setAttribute("readCountPermission", "yes");
+			
 			String CcurrentShowPageNo = request.getParameter("CcurrentShowPageNo");
-			//System.out.println("페이징"+fk_board_seq);
-			//System.out.println("페이징보드2"+CcurrentShowPageNo);
+			/*
+			String searchType = request.getParameter("searchType");
+			String searchWord = request.getParameter("searchWord");
+		
 			
+			if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType)) ) {
+				searchType = "";
+			}
 			
+			if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty() ) {
+				searchWord = "";
+			}*/
 			if((CcurrentShowPageNo == null ) || ( Integer.parseInt(CcurrentShowPageNo) <= 0)) {
 				CcurrentShowPageNo = "1";
 			}
@@ -1130,53 +1138,45 @@ public class LeejhController {
 		//	paraMap.put("fk_board_seq", fk_board_seq);
 			paraMap.put("startRno",String.valueOf(startRno));
 			paraMap.put("endRno",String.valueOf(endRno));
-		
-			
-			/*
-			String pk_board_seq = request.getParameter("pk_board_seq");
-			
-		//	List<Map<String,String>> listMap = service.commentShow(paraMap);
-			
-			
-			BoardVO boardvoo = new BoardVO();
-			String fk_board_seq = boardvoo.getPk_board_seq();
-			
-			Map<String, String> paraMap = new HashMap<String, String>();
-			paraMap.put("fk_board_seq", fk_board_seq);
-			
-			List<Map<String, String>> cmtList = service.commentShow(paraMap);
-			*/
-		//	List<Map<String,String>> listMap = service.commentShow(paraMap);
-			
+			//paraMap.put("searchType", searchType);
+			//paraMap.put("searchWord", searchWord);
 			List<BoardVO> boardList = service.getBoardList(paraMap);
 			
+			// 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 것임.
+			/*
+			 * if( !"".equals(searchType) && !"".equals(searchWord) ) {
+			 * mav.addObject("paraMap", paraMap); }
+			 */
+					
+					
+		
+					
+					JSONArray jsonArr = new JSONArray();  // []
+					if( boardList != null ) {
+						for(BoardVO boardvo : boardList) {
+							JSONObject jsonObj = new JSONObject();
+							jsonObj.put("name", boardvo.getName());
+							jsonObj.put("pk_board_seq", boardvo.getPk_board_seq());
+							jsonObj.put("b_content", boardvo.getB_content());
+							jsonObj.put("b_regDate", boardvo.getB_regdate());
+							jsonObj.put("fk_empnum", boardvo.getFk_empnum());
+							jsonObj.put("b_subject", boardvo.getB_subject());
+							jsonObj.put("b_content", boardvo.getB_content());
+		
+							jsonObj.put("b_readcount", boardvo.getB_readcount());
+							jsonObj.put("b_regdate", boardvo.getB_regdate());
+							jsonObj.put("b_pw", boardvo.getB_pw());
+								
+						 	jsonObj.put("b_filename", boardvo.getB_filename());
+						 	jsonObj.put("b_orgfilename", boardvo.getB_orgfilename());
+						 	jsonObj.put("b_filesize", boardvo.getB_filesize());
+						 	jsonObj.put("emppicturename", boardvo.getEmppicturename());
+						 	jsonObj.put("deptnamekor", boardvo.getDeptnamekor());
+						 	jsonObj.put("spotnamekor", boardvo.getSpotnamekor());
+							jsonArr.put(jsonObj);
+						}// end of for---------------------
+					}
 			
-			JSONArray jsonArr = new JSONArray();  // []
-			
-			if( boardList != null ) {
-				for(BoardVO boardvo : boardList) {
-					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("name", boardvo.getName());
-					jsonObj.put("pk_board_seq", boardvo.getPk_board_seq());
-					jsonObj.put("b_content", boardvo.getB_content());
-					jsonObj.put("b_regDate", boardvo.getB_regdate());
-					jsonObj.put("fk_empnum", boardvo.getFk_empnum());
-					jsonObj.put("b_subject", boardvo.getB_subject());
-					jsonObj.put("b_content", boardvo.getB_content());
-
-					jsonObj.put("b_readcount", boardvo.getB_readcount());
-					jsonObj.put("b_regdate", boardvo.getB_regdate());
-					jsonObj.put("b_pw", boardvo.getB_pw());
-						
-				 	jsonObj.put("b_filename", boardvo.getB_filename());
-				 	jsonObj.put("b_orgfilename", boardvo.getB_orgfilename());
-				 	jsonObj.put("b_filesize", boardvo.getB_filesize());
-				 	jsonObj.put("emppicturename", boardvo.getEmppicturename());
-				 	jsonObj.put("deptnamekor", boardvo.getDeptnamekor());
-				 	jsonObj.put("spotnamekor", boardvo.getSpotnamekor());
-					jsonArr.put(jsonObj);
-				}// end of for---------------------
-			}
 			
 			
 			
@@ -1193,6 +1193,35 @@ public class LeejhController {
 			*/
 			return jsonArr.toString();
 		}
+		
+		/*
+		// === #108. 검색어 입력시 자동글 완성하기 3 === //
+		@ResponseBody
+		@RequestMapping(value="/wordSearchShow.groovy", method= {RequestMethod.GET}, produces="text/plain;charset=UTF-8")
+		public String wordSearchShow(HttpServletRequest request) {
+			
+			String searchType = request.getParameter("searchType");
+			String searchWord = request.getParameter("searchWord");
+			
+			Map<String, String> paraMap = new HashMap<>();
+			paraMap.put("searchType", searchType);
+			paraMap.put("searchWord", searchWord);
+			
+			List<String> wordList = service.wordSearchShow(paraMap);
+			
+			JSONArray jsonArr = new JSONArray(); // []
+			
+			if(wordList != null) {
+				for(String word : wordList) {
+					JSONObject jsonObj = new JSONObject();
+					jsonObj.put("word", word);
+					
+					jsonArr.put(jsonObj);
+				}// end of for-----------------
+			}
+			
+			return jsonArr.toString();
+		}*/
 		
 		
 
@@ -1245,16 +1274,11 @@ public class LeejhController {
 		@ResponseBody
 		@RequestMapping(value="/delBoard.groovy")
 		public String delBoard(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
-		
-			//String fk_empnum = request.getParameter("fk_empnum");
-			//System.out.println("fk_empnum:"+fk_empnum);
-			String pk_board_seq = request.getParameter("pk_board_seq");
 			
+			String pk_board_seq = request.getParameter("pk_board_seq");
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("pk_board_seq", pk_board_seq);
-			
-			
 			/////////////////////////////////////
 			// === #164. 파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. == //
 			paraMap.put("searchType", "");
@@ -1270,7 +1294,6 @@ public class LeejhController {
 			
 			paraMap.put("path", path); //삭제해야할 파일이 저장된 경로
 			paraMap.put("b_fileName", b_fileName); //삭제해야할 파일이 저장된 경로
-			
 			}
 			// ===  파일첨부가 된 글이라면 글 삭제시 먼저 첨부파일을 삭제해주어야 한다. 끝== //
 			////////////////////////////////////
@@ -1673,21 +1696,39 @@ public class LeejhController {
 		@ResponseBody
 		@RequestMapping(value ="/goBoardView.groovy", produces="text/plain;charset=UTF-8")
 		public String goBoardView(HttpServletRequest request ) {
+			getCurrentURL(request); // 로그아웃을 했을 때 현재 보이던 그 페이지로 그대로 돌아가기  위한 메소드 호출 
 			
 			String pk_board_seq = request.getParameter("pk_board_seq"); // 한명의 사원 사번 받아옴
 			
+			// 글목록에서 검색되어진 글내용일 경우 이전글제목, 다음글제목은 검색되어진 결과물내의 이전글과 다음글이 나오도록 하기 위한 것이다. 
+		 	String searchType = request.getParameter("searchType");
+		 	String searchWord = request.getParameter("searchWord");
+		 	
+		 	if(searchType == null) {
+		 		searchType = "";
+		 	}
+		 	
+		 	if(searchWord == null) {
+		 		searchWord = "";
+		 	}
+		 	
+			
 			// 검색하고 나서 취소 버튼 클릭했을 때 필요함
 			String listgobackURL_board = request.getParameter("listgobackURL_board");
-			//mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
 
-			
-			// 일정상세보기에서 일정수정하기로 넘어갔을 때 필요함
 			String gobackURL_detailBoard = MyUtil.getCurrentURL(request);
-			//mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
 			
 			try {
 				Integer.parseInt(pk_board_seq);
-				Map<String,String> map = service.boardView(pk_board_seq);
+				
+				Map<String, String> paraMap = new HashMap<>();
+			 	paraMap.put("pk_board_seq", pk_board_seq);
+			 	
+			 	paraMap.put("searchType", searchType);
+			 	paraMap.put("searchWord", searchWord);
+			 	
+			 	
+				Map<String,String> map = service.boardView(paraMap);
 				
 				JSONObject jsonObj = new JSONObject();//
 				

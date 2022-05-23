@@ -66,7 +66,7 @@ public interface InterLeejhDAO {
 	// 파일첨부 있는 경우 글 수정
 	int edit_board_withFile(Map<String, String> paraMap);
 	//맵으로 게시글 가져오기   
-	Map<String, String> boardView(String pk_board_seq);
+	Map<String, String> boardView(Map<String, String> paraMap);
 
 	//댓글추가
 	int commentAdd(Map<String, String> paraMap);
@@ -78,8 +78,12 @@ public interface InterLeejhDAO {
 	int commentEdit(Map<String, String> paraMap);
 	//댓글삭제
 	int commentDel(Map<String, String> paraMap);
-
+	//글 totalPage
 	int getBoardTotalPage(Map<String, String> paraMap);
+
+	List<String> wordSearchShow(Map<String, String> paraMap);
+
+	
 
 	
 

@@ -1920,66 +1920,58 @@ function getTimeFormatString() {
 <script>
 
 // jstree로  조직도 나타내기
-
 $(function() {
 	
-	
-	
-	
-	
 		    $.ajax({
-		       
 		        type: "GET",
 		        url: "<%= ctxPath%>/getOrganization.groovy",
 		        dataType: "json",
 		        success: function (json) {
 		        	createJSTree(json);
 		        },
-
 		        error: function(request, status, error){
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		      }
 		    });            
  }); //end of $(function() {})---------------
 
-function createJSTree(jsondata) {  
+ function createJSTree(jsondata) {  
 	 
-	$('#jstree').bind("loaded.jstree", function (e, data) {
-        $('#jstree').jstree("open_all"); //WORKS FINE
-    }).jstree({ 
-		'themes' : {
-			/* 'name' : "default-dark", */
-            "theme" : "default", 
-            "dots" : false,
-           /*  "icon" : false  */
-		},
-		'plugins' : ["wholerow","search", "themes","types"],
-		 "types" : {
-             "default": {
-                 <%-- "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
-                 <!--icon을 원하는 이미지로 만들때--> --%>
-             }
-         },
-
-		'core' : {
-		    'data' :  jsondata
-		},
+		$('#jstree').bind("loaded.jstree", function (e, data) {
+	        $('#jstree').jstree("open_all"); //WORKS FINE
+	    }).jstree({ 
+			'themes' : {
+				/* 'name' : "default-dark", */
+	            "theme" : "default", 
+	            "dots" : false,
+	           /*  "icon" : false  */
+			},
+			'plugins' : ["wholerow","search", "themes","types"],
+			 "types" : {
+	             "default": {
+	                 <%-- "icon" :"<%= ctxPath%>/resources/images/common/로고그루비.png" 
+	                 <!--icon을 원하는 이미지로 만들때--> --%>
+	             }
+	         },
+			'core' : {
+			    'data' :  jsondata
+			},
+			
+			 'search': {
+				 show_only_matches: true,
+			     search_callback: function (searchString, node) {
+			            if (node.parent != "#" && node.text.toUpperCase().includes(searchString.toUpperCase()) == true) {
+			                return node;
+			            }
+			        }
+			 }
+			
 		
-		 'search': {
-			 show_only_matches: true,
-		     search_callback: function (searchString, node) {
-		            if (node.parent != "#" && node.text.toUpperCase().includes(searchString.toUpperCase()) == true) {
-		                return node;
-		            }
-		        }
-		 }
+		});
 		
-	
-	});
-	
-	 var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
-	 
-} //end of function createJSTree(jsondata) { }--------------
+		 var to = false; $('#organizationInput').keyup(function () { if(to) { clearTimeout(to); } to = setTimeout(function () { var v = $('#organizationInput').val(); $('#jstree').jstree(true).search(v); }, 250); });
+		 
+	} //end of function createJSTree(jsondata) { }--------------
 
 
 </script>
