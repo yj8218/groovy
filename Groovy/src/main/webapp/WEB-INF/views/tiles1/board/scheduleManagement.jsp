@@ -1517,7 +1517,7 @@ function add_joinUser(value) { // value 가 공유자로 선택한이름 이다.
     if (plusUser_es.includes(value)) { // plusUser_es 문자열 속에 value 문자열이 들어있다라면 
         alert("이미 추가한 회원입니다.");
     } else {
-        $("div.displayUserList").append("<span class='plusUser'>" + value + "&nbsp;<i class='fas'><span class='material-icons-outlined'> add_circle_outline </span></i></span>");
+        $("div.displayUserList").append("<span class='plusUser'>" + value + "&nbsp;<i class='fas'><span class='material-icons-outlined'> cancel </span></i></span>");
     }
 
     $("input#joinUserName").val("");
@@ -2574,12 +2574,14 @@ function scheduleEdit(pk_scheduleno) {
             	$("input#joinUserName").prop('readonly', true);
     		   	$("input#joinUserName").attr("placeholder", "사내 캘린더는 공유자가 필요없습니다.");
             }
-            
+            console.log(json.map.VOTE+","+$("#modal_addSchedule input#vote").val());
             if (json.map.VOTE == 1) {
                 $("#modal_addSchedule input#vote").prop("checked", true);
+                $("div.vote-group label").html('<span class="material-icons-outlined">check_circle</span>');
+               
             } else {
                 $("#modal_addSchedule input#vote").prop("checked", false);
-
+                $("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
             }
 
             if (json.map.ADDRESSNAME != "-") {
@@ -2615,7 +2617,7 @@ function scheduleEdit(pk_scheduleno) {
 
 //파일 있는 캘린더 수정
 function goEditSchedule_withAttach(){
-	alert("<%= ctxPath%>/goEditSchedule_withAttach.groovy");
+	
 	 var formData = $("form[name=scheduleFrm]").serialize();
 	  $("form[name=scheduleFrm]").ajaxForm({
 		 url: "<%= ctxPath%>/goEditSchedule_withAttach.groovy",
@@ -2650,7 +2652,7 @@ function goEditSchedule_withAttach(){
 
 // 파일 없는 캘린더 수정
 function goEditSchedule_noAttach() {
-    alert("<%= ctxPath%>/goEditSchedule_noAttach.groovy");
+    
     var formData = $("form[name=scheduleFrm]").serialize();
     $.ajax({
         url: "<%= ctxPath%>/goEditSchedule_noAttach.groovy",
