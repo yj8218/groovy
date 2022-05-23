@@ -58,7 +58,7 @@
 	<!-- === 새비밀번호 업데이트 메서드(update) === -->
 	<update id="newPwdUpdate" parameterType="HashMap">
 		update tbl_employee set pwd = #{newPassword}
-		where pk_empnum = #{pk_empnum} and  email = #{email} 
+		where pk_empnum = #{pk_empnum}
 	</update>
 
 	<!-- === 직원정보 가져오기 (조직도) === -->
