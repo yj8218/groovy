@@ -532,7 +532,7 @@
 		ON E.fk_spotnum = S.pk_spotnum
 		join tbl_department D
 		on E.fk_deptnum = D.pk_deptnum
-		where AD.status = '3' and AD.fk_apl_no = 5
+		where AD.status = '2' and AD.fk_apl_no = 5
 	</select>
     
 </mapper>
