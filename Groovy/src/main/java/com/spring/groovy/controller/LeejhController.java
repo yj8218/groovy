@@ -768,7 +768,6 @@ public class LeejhController {
 	    request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
 	        자동적으로 BoardVO boardvo 에 set 되어진다.
 	*/
-		System.out.println("되니");
 	/*
 		=== #151. 파일첨부가 된 글쓰기 이므로  
 		        먼저 위의  public ModelAndView pointPlus_addEnd(Map<String,String> paraMap, ModelAndView mav, BoardVO boardvo) { 을 
