@@ -195,9 +195,9 @@
 
 				    		</table>
 				    			<%-- === #143. 답변글쓰기가 추가된 경우 시작 === --%>
-								<%-- <input style="heihgt:0px;" type="hidden" name="fk_seq" value="${requestScope.fk_seq}" />
+								<input style="heihgt:0px;" type="hidden" name="fk_seq" value="${requestScope.fk_seq}" />
 								<input style="heihgt:0px;" type="hidden" name="groupno" value="${requestScope.groupno}" />
-								<input style="heihgt:0px;" type="hidden" name="depthno" value="${requestScope.depthno}" /> --%>
+								<input style="heihgt:0px;" type="hidden" name="depthno" value="${requestScope.depthno}" />
 								<%-- ===  답변글쓰기가 추가된 경우 끝            === --%>
 								
 				    	</form>

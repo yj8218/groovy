@@ -768,7 +768,7 @@ public class LeejhController {
 	    request.getParameter("form 태그의 name명"); 을 사용하지 않더라도
 	        자동적으로 BoardVO boardvo 에 set 되어진다.
 	*/
-		
+		System.out.println("되니");
 	/*
 		=== #151. 파일첨부가 된 글쓰기 이므로  
 		        먼저 위의  public ModelAndView pointPlus_addEnd(Map<String,String> paraMap, ModelAndView mav, BoardVO boardvo) { 을 
@@ -896,7 +896,7 @@ public class LeejhController {
 	
 	
 	
-	
+	/*
 	// ==== #168. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일 업로드 ==== //
 	@RequestMapping(value="/image/multiplePhotoUpload.groovy", method= {RequestMethod.POST} )
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
@@ -906,7 +906,7 @@ public class LeejhController {
 		   >>>> 파일이 업로드 되어질 특정 경로(폴더)지정해주기
 		        우리는 WAS 의 webapp/resources/photo_upload 라는 폴더로 지정해준다.
 		*/
-		
+	/*	
 		// WAS 의 webapp 의 절대경로를 알아와야 한다.
 		HttpSession session = request.getSession();
 		String root = session.getServletContext().getRealPath("/");
@@ -938,7 +938,7 @@ public class LeejhController {
 			
 		//	System.out.println(">>> 확인용 filename ==> " + filename);
 			// >>> 확인용 filename ==> berkelekle%EB%8B%A8%EA%B0%80%EB%9D%BC%ED%8F%AC%EC%9D%B8%ED%8A%B803.jpg 
-			
+	/*		
 			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
 			
 			String newFilename = fileManager.doFileUpload(is, filename, path);
@@ -960,7 +960,7 @@ public class LeejhController {
 		
 	}
 	
-	
+	*/
 	
 	
 	
