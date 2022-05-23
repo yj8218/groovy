@@ -490,7 +490,8 @@
 			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
 			from 
 			(
-				select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, 
+				C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
 				from TBL_APPROVALPERSON B
 				join TBL_APPROVALDOCUMENT C
 				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
