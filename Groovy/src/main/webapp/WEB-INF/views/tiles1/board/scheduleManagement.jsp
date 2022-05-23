@@ -534,6 +534,8 @@ $(document).ready(function(){
 			 resize = resize*7;
 		 }else if(Number(resize)==0){
 			 resize = 69;
+		 }else{
+			 resize = resize*3;
 		 }
 		 $("input.upload-name").css('width',resize); 
 	});
@@ -679,8 +681,7 @@ $(document).ready(function(){
 	});
 
 	// 등록 버튼 클릭
-	$("button#register").click(function() {
-
+	$(document).on('click', 'button#register', function() {
 	    const day = $("input.selectDay").val();
 
 	    var [startDate, endDate] = day.split(' ~ ');
@@ -1517,7 +1518,7 @@ function add_joinUser(value) { // value 가 공유자로 선택한이름 이다.
     if (plusUser_es.includes(value)) { // plusUser_es 문자열 속에 value 문자열이 들어있다라면 
         alert("이미 추가한 회원입니다.");
     } else {
-        $("div.displayUserList").append("<span class='plusUser'>" + value + "&nbsp;<i class='fas'><span class='material-icons-outlined'> cancel </span></i></span>");
+        $("div.displayUserList").append("<span class='plusUser'>" + value + "&nbsp;<i class='fas fa-times-circle'></i></span>");
     }
 
     $("input#joinUserName").val("");
@@ -1667,7 +1668,7 @@ function detailSchedule(pk_scheduleno) {
             html += '<div class="card-body-top">';
             html += '<div class="card-author">';
             html += '<span class="card-profileImg">';
-            html += '<img class="card-myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/${sessionScope.loginuser.emppicturename}" alt="icon-myprofile">';
+            html += '<img class="card-myprofile-photo" src="<%= ctxPath%>/resources/images/프로필사진/'+json.map.EMPPICTURENAME+'" alt="icon-myprofile">';
             html += '</span>';  
             html += '<dl class="card-author-info">';
             html += '<dt>';
@@ -2605,6 +2606,11 @@ function scheduleEdit(pk_scheduleno) {
                 });
 
             }
+            if (json.map.FILENAME != "-") {
+            	$("#modal_addSchedule input.upload-name").val(json.map.ORGFILENAME);
+            }
+            
+          
             $('#modal_addSchedule').modal('show');
         },
         error: function(request, status, error) {
@@ -2633,8 +2639,14 @@ function goEditSchedule_withAttach(){
 		   		  	});
 		        $("select.small_category").empty();
 		        $("select.small_category").hide();
-				
-				 $("div#modal_addSchedule").modal("hide");
+		        $("#modal_addSchedule h5.modal-title").text("일정등록");
+		        let html = "";
+	            html += '<button type="button" id="register" class="btn">등록</button>';
+	            html += '<button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>';
+	            $("#modal_addSchedule div.modal-footer").html(html);
+	            $("#modal_addSchedule input#vote").val("0");
+	            $("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
+				$("div#modal_addSchedule").modal("hide");
 				/* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
 				calendar.refetchEvents();
 			}else{
@@ -2667,7 +2679,13 @@ function goEditSchedule_noAttach() {
                 });
                 $("select.small_category").empty();
                 $("select.small_category").hide();
-
+                $("#modal_addSchedule h5.modal-title").text("일정등록");
+		        let html = "";
+	            html += '<button type="button" id="register" class="btn">등록</button>';
+	            html += '<button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>';
+	            $("#modal_addSchedule div.modal-footer").html(html);
+	            $("#modal_addSchedule input#vote").val("0");
+	            $("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
                 $("div#modal_addSchedule").modal("hide");
                 /* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
                 calendar.refetchEvents()
@@ -2901,6 +2919,7 @@ function goSearch() {
                             </td>
                             <td>
                                 <input type="text" class="add_com_smcatgoname" placeholder="추가할 분류명을 입력하세요." />
+                                <input type="text" style="display:none;">
                             </td>
                         </tr>
                         <tr>
@@ -2945,6 +2964,7 @@ function goSearch() {
                             </td>
                             <td>
                                 <input type="text" class="edit_com_smcatgoname" placeholder="수정할 분류명을 입력하세요." /><input type="hidden" value="" class="edit_com_smcatgono">
+                            	<input type="text" style="display:none;">
                             </td>
                         </tr>
                         <tr>
@@ -2989,6 +3009,7 @@ function goSearch() {
                             </td>
                             <td>
                                 <input type="text" class="add_my_smcatgoname" placeholder="추가할 분류명을 입력하세요." />
+                            	<input type="text" style="display:none;">
                             </td>
                         </tr>
                         <tr>
@@ -3032,7 +3053,9 @@ function goSearch() {
  								소분류명
                             </td>
                             <td>
+                                
                                 <input type="text" class=edit_my_smcatgoname placeholder="수정할 분류명을 입력하세요." /><input type="hidden" value="" class="edit_my_smcatgono">
+                            	<input type="text" style="display:none;">
                             </td>
                         </tr>
                         <tr>
