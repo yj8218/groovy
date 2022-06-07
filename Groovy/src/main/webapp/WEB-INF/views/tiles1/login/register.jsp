@@ -413,7 +413,7 @@
 		$("button#goRegister").click(function(){
 			
 			// ** 필수입력 사항에 모두 입력이 되었는지 검사한다. ** //
-			// 9. 주소, 10. 생일, 12. 입사일자 유효성검사 포함
+			// 9. 주소
 			let b_FlagRequiredInfo = true;
 			
 			$("input.requiredInfo").each(function(index, item){
@@ -510,7 +510,6 @@
          <span id="phonecheckResult"></span>
 
          <br><br>
-		 <!-- 부서선택시 자동으로 사원번호와 비밀번호 처음부분 입력됨 -->         
          <%-- 4. 부서 --%>
          <span class="title">부서</span><br>
          <select class="requiredInfo" id="fk_deptnum" name="fk_deptnum" required style="width: 130px; padding: 8px;">

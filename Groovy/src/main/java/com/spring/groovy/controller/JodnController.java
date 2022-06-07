@@ -1069,17 +1069,6 @@ public class JodnController {
 			// 문서별 직급번호 받아오기
 			List<Map<String,String>> appLineList = service.getAppLineList(fk_empnum);
 			
-			
-//		 	String[] fk_documentnumArr = {};
-			/*
-			 * ArrayList<String> fk_documentnumArr = new ArrayList<>(); for(int i=0;
-			 * i<appLineList.size(); i++ ) { if(spotnum ==
-			 * Integer.parseInt(appLineList.get(i).get("minSpotnum"))) {
-			 * fk_documentnumArr.add(appLineList.get(i).get("fk_documentnum")); }
-			 * 
-			 * }
-			 */
-		 	
 		 	String[] fk_documentnumArr = new String[appLineList.size()];
 		 	
 		 	for(int i=0; i<fk_documentnumArr.length; i++ ) {
@@ -1087,16 +1076,6 @@ public class JodnController {
 					fk_documentnumArr[i] = appLineList.get(i).get("fk_documentnum");
 				}
 			}
-			
-//		 	System.out.println("fk_documentnumArr 확인용 => "+ fk_documentnumArr);
-		 	
-//		 	String str_fk_documentnumArr = fk_documentnumArr.toString();
-//		 	
-//		 	str_fk_documentnumArr = str_fk_documentnumArr.substring(1, str_fk_documentnumArr.length()-1);
-//		 	
-//		 	System.out.println("확인용 str_fk_documentnumArr =>" + str_fk_documentnumArr);
-//		
-//		 	
 			
 			Map<String, Object> paraMap = new HashMap<>();
 			paraMap.put("fk_empnum", fk_empnum);

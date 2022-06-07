@@ -898,6 +898,16 @@ function goBoardView(pk_board_seq) {
 		  
 		  document.getElementById("content2").value= orgin_content_val;
 		  
+		  
+		  if ($("input[name=attach]").val() == "") { // 첨부파일이 없는 댓글쓰기인 경우
+		        //alert("파일없음");
+		        goEditBoard_noAttach();
+		
+		    } else { // 첨부파일이 있는 댓글쓰기인 경우 
+		        // alert("파일있음");
+		        goEditBoard_withAttach();
+		    }
+		  
 		 //  oEditors.getById["smarteditor2"].exec("PASTE_HTML", orgin_content_text); //내용밀어넣기
 	  }
 	  

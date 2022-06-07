@@ -88,6 +88,87 @@
 			
 		}); 
 	
+		
+		
+		//파일 있는 캘린더 수정
+		function goEditSchedule_withAttach(){
+			
+			 var formData = $("form[name=scheduleFrm]").serialize();
+			  $("form[name=scheduleFrm]").ajaxForm({
+				 url: "<%= ctxPath%>/goEditSchedule_withAttach.groovy",
+				data: formData,
+				 type:"POST",
+			 	  enctype:"multipart/form-data",
+				  dataType:"JSON",
+				 success:function(json){
+					if(json.n == 1){
+						alert("일정 수정에 성공하였습니다.");
+						 $('form.scheduleFrm').each(function() {
+				   		      this.reset();
+				   		  	});
+				        $("select.small_category").empty();
+				        $("select.small_category").hide();`
+				        $("#modal_addSchedule h5.modal-title").text("일정등록");
+				        let html = "";
+			            html += '<button type="button" id="register" class="btn">등록</button>';
+			            html += '<button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>';
+			            $("#modal_addSchedule div.modal-footer").html(html);
+			            $("#modal_addSchedule input#vote").val("0");
+			            $("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
+						$("div#modal_addSchedule").modal("hide");
+						/* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
+						calendar.refetchEvents();
+					}else{
+						alert("일정 수정에 실패하였습니다.");
+					}
+				 },
+				 error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			     }	 
+			 });
+			
+			  $("form[name=scheduleFrm]").submit();
+			
+		}//end of function goEditSchedule_withAttach()
+
+		// 파일 없는 캘린더 수정
+		function goEditSchedule_noAttach() {
+		    
+		    var formData = $("form[name=scheduleFrm]").serialize();
+		    $.ajax({
+		        url: "<%= ctxPath%>/goEditSchedule_noAttach.groovy",
+		        data: formData,
+		        type: "POST",
+		        dataType: "JSON",
+		        success: function(json) {
+		            if (json.n == 1) {
+		                alert("일정 수정에 성공하였습니다.");
+		                $('form.scheduleFrm').each(function() {
+		                    this.reset();
+		                });
+		                $("select.small_category").empty();
+		                $("select.small_category").hide();
+		                $("#modal_addSchedule h5.modal-title").text("일정등록");
+				        let html = "";
+			            html += '<button type="button" id="register" class="btn">등록</button>';
+			            html += '<button type="button" class="btn btn-danger btn-sm modal_close" data-dismiss="modal">취소</button>';
+			            $("#modal_addSchedule div.modal-footer").html(html);
+			            $("#modal_addSchedule input#vote").val("0");
+			            $("div.vote-group label").html('<span class="material-icons-outlined">radio_button_unchecked</span>');
+		                $("div#modal_addSchedule").modal("hide");
+		                /* calendar.changeView("dayGridMonth");//해당월 보여주기 수정필요 */
+		                calendar.refetchEvents()
+		            } else {
+		                alert("일정 수정에 실패하였습니다.");
+		            }
+		        },
+		        error: function(request, status, error) {
+		            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		        }
+		    });
+
+		} //end of function goEditSchedule_noAttach()
+		
 
 		//완료버튼
 	    $("button#btnEditEnd").click(function(){

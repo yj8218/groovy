@@ -104,16 +104,8 @@ $(document).ready(function(){
 		
 		const name = $target.val().trim();
 		if(name == ""){
-			
-		//	$target.next().show();
-		// 	또는
 			$target.parent().find(".error").show();
-			
 		} else {
-			// 공백이 아닌 글자를 입력했을 경우
-			
-			//	$target.next().hide();
-			// 	또는
 			$target.parent().find(".error").hide();
 		}
 	}); 

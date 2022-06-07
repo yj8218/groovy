@@ -284,7 +284,7 @@
 				<if test="searchValue != null and searchValue != '' ">
 					and status = #{searchValue}
 				</if>
-				order by writeday desc
+				order by pk_documentnum desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}	
@@ -490,7 +490,8 @@
 			select rownum as rno, pk_documentnum, apl_no, fk_empnum, writeday, status, apl_name, deptnamekor
 			from 
 			(
-				select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
+				select C.pk_documentnum ,to_char(C.writeday, 'yyyy-mm-dd') as writeday, D.apl_name, 
+				C.fk_empnum, A.name, E.deptnamekor, spotnamekor, apl_no, status
 				from TBL_APPROVALPERSON B
 				join TBL_APPROVALDOCUMENT C
 				on B.fK_DOCUMENTNUM = C.PK_DOCUMENTNUM
@@ -510,7 +511,7 @@
 			           '${fk_documentnumArr[i]}'
 			        </foreach>
 			    </if>
-				order by C.writeday desc
+				order by C.pk_documentnum desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}	
@@ -602,7 +603,7 @@
 				join tbl_spot F
 				on F.PK_SPOTNUM = A.fK_SPOTNUM
 				where B.fk_empnum = #{fk_empnum} and APPYN in('1','2')
-				order by writeday desc
+				order by C.pk_documentnum desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}		
@@ -645,7 +646,7 @@
 				join tbl_spot F
 				on F.PK_SPOTNUM = A.fK_SPOTNUM
 				where B.fk_empnum = #{fk_empnum} and B.app_status = '0' 
-				order by writeday desc
+				order by C.pk_documentnum desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}				
@@ -788,7 +789,7 @@
 				<if test="searchValue != null and searchValue != '' ">
 					where status = #{searchValue}
 				</if>
-				order by writeday desc
+				order by C.pk_documentnum desc
 			)
 		)	 
 		where rno between #{startRno} and #{endRno}		
